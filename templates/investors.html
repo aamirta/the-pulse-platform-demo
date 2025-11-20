@@ -1,0 +1,1765 @@
+{% extends "base.html" %}
+
+{% block title %}Investors - The Pulse{% endblock %}
+
+{% block content %}
+<script>
+    // Initialize theme immediately to prevent flash
+    (function() {
+        const savedTheme = localStorage.getItem('theme') || 'dark';
+        document.documentElement.setAttribute('data-theme', savedTheme);
+    })();
+</script>
+<style>
+    /* CSS Variables inherited from base.html */
+    :root {
+        --primary-green: #10B981;
+        --dark-green: #059669;
+        --light-green: #34D399;
+        --accent-blue: #3B82F6;
+        --accent-purple: #8B5CF6;
+        --accent-orange: #F59E0B;
+        --accent-pink: #EC4899;
+        --accent-red: #EF4444;
+        --accent-indigo: #6366F1;
+        --accent-teal: #14B8A6;
+        --accent-cyan: #06B6D4;
+        --bg-dark: #0F172A;
+        --bg-card: #1E293B;
+        --bg-card-hover: #334155;
+        --text-light: #F8FAFC;
+        --text-muted: #94A3B8;
+        --border-color: #334155;
+        --gradient-1: linear-gradient(135deg, #10B981, #34D399);
+        --gradient-2: linear-gradient(135deg, #3B82F6, #60A5FA);
+        --gradient-3: linear-gradient(135deg, #8B5CF6, #A78BFA);
+        --gradient-4: linear-gradient(135deg, #F59E0B, #FBBF24);
+        --gradient-red: linear-gradient(135deg, #EF4444, #F87171);
+        --gradient-indigo: linear-gradient(135deg, #6366F1, #818CF8);
+        --gradient-teal: linear-gradient(135deg, #14B8A6, #2DD4BF);
+        --gradient-cyan: linear-gradient(135deg, #06B6D4, #22D3EE);
+    }
+
+    /* Light Mode Variables */
+    [data-theme="light"] {
+        --bg-dark: #F8FAFC;
+        --bg-card: #FFFFFF;
+        --bg-card-hover: #F1F5F9;
+        --text-light: #1E293B;
+        --text-muted: #64748B;
+        --text-dark: #94A3B8;
+        --border-color: #E2E8F0;
+        --border-light: #CBD5E1;
+        --shadow-color: rgba(0, 0, 0, 0.1);
+        --overlay-color: rgba(248, 250, 252, 0.8);
+    }
+
+    /* Dark Mode Variables (ensure consistency) */
+    [data-theme="dark"] {
+        --bg-dark: #0F172A;
+        --bg-card: #1E293B;
+        --bg-card-hover: #334155;
+        --text-light: #F8FAFC;
+        --text-muted: #94A3B8;
+        --text-dark: #475569;
+        --border-color: #334155;
+        --border-light: #475569;
+        --shadow-color: rgba(0, 0, 0, 0.3);
+        --overlay-color: rgba(15, 23, 42, 0.8);
+    }
+
+    /* Theme Transition for smooth switching - only after initial load */
+    .theme-transitions * {
+        transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .page-header {
+        background: linear-gradient(135deg, rgba(16, 185, 129, 0.1) 0%, rgba(59, 130, 246, 0.1) 100%);
+        padding: 3rem 0 2rem 0;
+        margin-bottom: 2rem;
+        border-radius: 20px;
+        position: relative;
+        overflow: hidden;
+    }
+
+    [data-theme="light"] .page-header {
+        background: linear-gradient(135deg, rgba(16, 185, 129, 0.08) 0%, rgba(59, 130, 246, 0.08) 100%);
+    }
+
+    .page-header::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="dots" width="20" height="20" patternUnits="userSpaceOnUse"><circle cx="10" cy="10" r="1" fill="%23ffffff" opacity="0.1"/></pattern></defs><rect width="100" height="100" fill="url(%23dots)"/></svg>');
+    }
+
+    [data-theme="light"] .page-header::before {
+        background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="dots" width="20" height="20" patternUnits="userSpaceOnUse"><circle cx="10" cy="10" r="1" fill="%23000000" opacity="0.05"/></pattern></defs><rect width="100" height="100" fill="url(%23dots)"/></svg>');
+    }
+
+    .page-title {
+        font-family: 'Poppins', sans-serif;
+        font-weight: 700;
+        font-size: 2.5rem;
+        margin-bottom: 0.5rem;
+        background: linear-gradient(135deg, #10B981, #34D399);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        position: relative;
+        z-index: 2;
+    }
+
+    .page-subtitle {
+        color: var(--text-muted);
+        font-size: 1.1rem;
+        position: relative;
+        z-index: 2;
+    }
+
+    [data-theme="light"] .page-subtitle {
+        color: #64748B;
+    }
+
+    .stats-bar {
+        background: linear-gradient(145deg, var(--bg-card), rgba(51, 65, 85, 0.8));
+        border-radius: 15px;
+        padding: 1.5rem;
+        margin-bottom: 2rem;
+        border: 1px solid rgba(52, 211, 153, 0.1);
+        backdrop-filter: blur(20px);
+    }
+
+    [data-theme="light"] .stats-bar {
+        background: linear-gradient(145deg, rgba(255, 255, 255, 0.95), rgba(248, 250, 252, 0.9));
+        border: 1px solid rgba(226, 232, 240, 0.8);
+    }
+
+    .stat-item {
+        text-align: center;
+    }
+
+    .stat-number {
+        font-size: 2rem;
+        font-weight: 700;
+        color: var(--primary-green);
+        font-family: 'Poppins', sans-serif;
+    }
+
+    .stat-label {
+        color: var(--text-muted);
+        font-size: 0.9rem;
+        font-weight: 500;
+    }
+
+    [data-theme="light"] .stat-label {
+        color: #64748B;
+    }
+
+    /* Main Content Layout - Modified for wider table */
+    .main-content-wrapper {
+        width: 100%;
+        max-width: none;
+        margin: 0 auto;
+        padding: 0 1rem;
+    }
+
+    .main-content-grid {
+        display: grid;
+        grid-template-columns: 300px 1fr; /* Fixed sidebar width, flexible table */
+        gap: 2rem;
+        align-items: start;
+    }
+
+    .filters-column {
+        min-width: 280px;
+    }
+
+    .table-column {
+        min-width: 0;
+        overflow: hidden; /* Prevent overflow issues */
+    }
+
+    /* Filters Section */
+    .filters-container {
+        background: linear-gradient(145deg, var(--bg-card), rgba(51, 65, 85, 0.8));
+        border-radius: 20px;
+        padding: 1.5rem;
+        margin-bottom: 2rem;
+        border: 1px solid rgba(52, 211, 153, 0.1);
+        backdrop-filter: blur(20px);
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        position: sticky;
+        top: 2rem;
+        height: fit-content;
+        max-height: calc(100vh - 4rem);
+        overflow-y: auto;
+        width: 100%;
+    }
+
+    [data-theme="light"] .filters-container {
+        background: linear-gradient(145deg, rgba(255, 255, 255, 0.95), rgba(248, 250, 252, 0.9));
+        border: 1px solid rgba(226, 232, 240, 0.8);
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+    }
+
+    .filters-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 1.5rem;
+        padding-bottom: 1rem;
+        border-bottom: 2px solid var(--border-color);
+    }
+
+    .filters-title {
+        color: var(--text-light);
+        font-size: 1.2rem;
+        font-weight: 600;
+        margin: 0;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    [data-theme="light"] .filters-title {
+        color: #1E293B;
+    }
+
+    .filters-title i {
+        color: var(--primary-green);
+    }
+
+    .clear-filters {
+        background: linear-gradient(135deg, #EF4444, #F87171);
+        color: white;
+        border: none;
+        padding: 0.4rem 0.8rem;
+        border-radius: 10px;
+        font-size: 0.8rem;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+
+    .clear-filters:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
+    }
+
+    [data-theme="light"] .clear-filters:hover {
+        box-shadow: 0 4px 12px rgba(239, 68, 68, 0.2);
+    }
+
+    .accordion-filter {
+        margin-bottom: 1rem;
+        border: 1px solid var(--border-color);
+        border-radius: 12px;
+        overflow: hidden;
+        background: rgba(51, 65, 85, 0.3);
+    }
+
+    .accordion-header {
+        padding: 1rem;
+        background: linear-gradient(135deg, rgba(16, 185, 129, 0.1), rgba(59, 130, 246, 0.1));
+        cursor: pointer;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        transition: all 0.3s ease;
+        border: none;
+        width: 100%;
+        text-align: left;
+    }
+
+    [data-theme="light"] .accordion-header {
+        background: linear-gradient(135deg, rgba(16, 185, 129, 0.05), rgba(59, 130, 246, 0.05));
+    }
+
+    .accordion-header:hover {
+        background: linear-gradient(135deg, rgba(16, 185, 129, 0.2), rgba(59, 130, 246, 0.2));
+    }
+
+    [data-theme="light"] .accordion-header:hover {
+        background: linear-gradient(135deg, rgba(16, 185, 129, 0.1), rgba(59, 130, 246, 0.1));
+    }
+
+    .accordion-header.active {
+        background: linear-gradient(135deg, rgba(16, 185, 129, 0.15), rgba(59, 130, 246, 0.15));
+    }
+
+    [data-theme="light"] .accordion-header.active {
+        background: linear-gradient(135deg, rgba(16, 185, 129, 0.08), rgba(59, 130, 246, 0.08));
+    }
+
+    .accordion-title {
+        color: var(--text-light);
+        font-weight: 600;
+        font-size: 0.95rem;
+        margin: 0;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    [data-theme="light"] .accordion-title {
+        color: #1E293B;
+    }
+
+    .accordion-icon {
+        color: var(--primary-green);
+        transition: transform 0.3s ease;
+        font-size: 0.8rem;
+    }
+
+    .accordion-header.active .accordion-icon {
+        transform: rotate(90deg);
+    }
+
+    .accordion-content {
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.3s ease;
+        background: var(--bg-card-hover);
+    }
+
+    .accordion-content.active {
+        max-height: 300px;
+    }
+
+    .accordion-body {
+        padding: 1rem;
+        max-height: 250px;
+        overflow-y: auto;
+    }
+
+    .filter-option {
+        display: flex;
+        align-items: center;
+        padding: 0.5rem 0;
+        transition: all 0.2s ease;
+        border-radius: 8px;
+        margin-bottom: 0.3rem;
+    }
+
+    .filter-option:hover {
+        background: rgba(16, 185, 129, 0.1);
+        padding-left: 0.5rem;
+    }
+
+    [data-theme="light"] .filter-option:hover {
+        background: rgba(16, 185, 129, 0.05);
+    }
+
+    .filter-checkbox {
+        width: 18px;
+        height: 18px;
+        margin-right: 0.75rem;
+        accent-color: var(--primary-green);
+        cursor: pointer;
+    }
+
+    [data-theme="light"] .filter-checkbox {
+        accent-color: #059669;
+    }
+
+    .filter-label {
+        color: var(--text-light);
+        font-size: 0.9rem;
+        cursor: pointer;
+        flex: 1;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    [data-theme="light"] .filter-label {
+        color: #374151;
+    }
+
+    .filter-count {
+        background: rgba(16, 185, 129, 0.2);
+        color: var(--primary-green);
+        padding: 0.2rem 0.5rem;
+        border-radius: 12px;
+        font-size: 0.75rem;
+        font-weight: 600;
+        min-width: 25px;
+        text-align: center;
+    }
+
+    .apply-filters {
+        width: 100%;
+        background: var(--gradient-1);
+        color: white;
+        border: none;
+        padding: 0.8rem 1.5rem;
+        border-radius: 12px;
+        font-size: 1rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        margin-top: 1.5rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+    }
+
+    .apply-filters:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(16, 185, 129, 0.3);
+    }
+
+    [data-theme="light"] .apply-filters:hover {
+        box-shadow: 0 6px 20px rgba(16, 185, 129, 0.2);
+    }
+
+    .apply-filters:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+        transform: none;
+    }
+
+    .table-container {
+        background: linear-gradient(145deg, var(--bg-card), rgba(51, 65, 85, 0.8));
+        border-radius: 20px;
+        overflow: hidden;
+        border: 1px solid rgba(52, 211, 153, 0.1);
+        backdrop-filter: blur(20px);
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        width: 100%;
+    }
+
+    [data-theme="light"] .table-container {
+        background: linear-gradient(145deg, rgba(255, 255, 255, 0.95), rgba(248, 250, 252, 0.9));
+        border: 1px solid rgba(226, 232, 240, 0.8);
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+    }
+
+    .table-header {
+        background: linear-gradient(90deg, var(--primary-green), var(--dark-green));
+        padding: 1.5rem;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .table-header::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(45deg, transparent 30%, rgba(255,255,255,0.1) 50%, transparent 70%);
+        animation: shimmer 3s infinite;
+    }
+
+    @keyframes shimmer {
+        0% { transform: translateX(-100%); }
+        100% { transform: translateX(100%); }
+    }
+
+    .table-title {
+        color: white;
+        font-size: 1.3rem;
+        font-weight: 600;
+        margin: 0;
+        position: relative;
+        z-index: 2;
+    }
+
+    .table-responsive {
+        max-height: 70vh;
+        overflow-y: auto;
+        overflow-x: auto;
+        position: relative;
+    }
+
+    .startups-table {
+        width: 100%;
+        min-width: 2200px; /* Increased minimum width for wider table */
+        margin: 0;
+        border-collapse: separate;
+        border-spacing: 0;
+    }
+
+    .startups-table th {
+        background: var(--bg-card-hover);
+        color: var(--text-light);
+        font-weight: 600;
+        padding: 1rem 1.2rem;
+        text-align: left;
+        border-bottom: 2px solid var(--border-color);
+        position: sticky;
+        top: 0;
+        z-index: 10;
+        font-size: 0.9rem;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        white-space: nowrap;
+    }
+
+    [data-theme="light"] .startups-table th {
+        background: #F1F5F9;
+        color: #1E293B;
+        border-bottom: 2px solid #E2E8F0;
+    }
+
+    .startups-table td {
+        padding: 1rem 1.2rem;
+        border-bottom: 1px solid var(--border-color);
+        color: var(--text-light);
+        font-size: 0.95rem;
+        vertical-align: middle;
+    }
+
+    [data-theme="light"] .startups-table td {
+        color: #374151;
+        border-bottom: 1px solid #E2E8F0;
+    }
+
+    .startups-table tbody tr {
+        transition: all 0.3s ease;
+    }
+
+    .startups-table tbody tr:hover {
+        background: rgba(16, 185, 129, 0.05);
+    }
+
+    [data-theme="light"] .startups-table tbody tr:hover {
+        background: rgba(16, 185, 129, 0.03);
+    }
+
+    .startup-logo {
+        width: 40px;
+        height: 40px;
+        border-radius: 8px;
+        object-fit: cover;
+        border: 2px solid var(--border-color);
+    }
+
+    .startup-name {
+        font-weight: 600;
+        color: var(--text-light);
+        margin-bottom: 0.25rem;
+    }
+
+    [data-theme="light"] .startup-name {
+        color: #1E293B;
+    }
+
+    .startup-description {
+        color: var(--text-muted);
+        font-size: 0.85rem;
+        max-width: 250px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    [data-theme="light"] .startup-description {
+        color: #64748B;
+    }
+
+    /* Startup Filter Specific Styles */
+    .filter-search-container {
+        position: relative;
+        margin-bottom: 1rem;
+    }
+
+    .filter-search {
+        width: 100%;
+        padding: 0.5rem 0.75rem 0.5rem 2.5rem;
+        border: 1px solid var(--border-color);
+        border-radius: 8px;
+        background: var(--bg-card-hover);
+        color: var(--text-light);
+        font-size: 0.85rem;
+        transition: all 0.3s ease;
+    }
+
+    .filter-search:focus {
+        outline: none;
+        border-color: var(--primary-green);
+        box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1);
+    }
+
+    .filter-search::placeholder {
+        color: var(--text-muted);
+    }
+
+    .filter-search-icon {
+        position: absolute;
+        left: 0.75rem;
+        top: 50%;
+        transform: translateY(-50%);
+        color: var(--text-muted);
+        font-size: 0.8rem;
+        pointer-events: none;
+    }
+
+    [data-theme="light"] .filter-search {
+        background: #f8fafc;
+        color: #374151;
+        border-color: #d1d5db;
+    }
+
+    [data-theme="light"] .filter-search:focus {
+        border-color: #10b981;
+        box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1);
+    }
+
+    [data-theme="light"] .filter-search::placeholder {
+        color: #9ca3af;
+    }
+
+    [data-theme="light"] .filter-search-icon {
+        color: #6b7280;
+    }
+
+    .startup-filter-info {
+        display: flex;
+        flex-direction: column;
+        gap: 0.2rem;
+    }
+
+    .startup-filter-name {
+        font-weight: 600;
+        color: var(--text-light);
+    }
+
+    .startup-filter-sector {
+        font-size: 0.75rem;
+        color: var(--text-muted);
+        font-style: italic;
+    }
+
+    [data-theme="light"] .startup-filter-name {
+        color: #374151;
+    }
+
+    [data-theme="light"] .startup-filter-sector {
+        color: #6b7280;
+    }
+
+    .startup-option.hidden {
+        display: none;
+    }
+
+    /* Search Container Styles */
+    .search-container {
+        background: linear-gradient(145deg, var(--bg-card), rgba(51, 65, 85, 0.8));
+        border-radius: 15px;
+        padding: 1.5rem;
+        margin-bottom: 1.5rem;
+        border: 1px solid rgba(52, 211, 153, 0.1);
+        backdrop-filter: blur(20px);
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Light mode search container styling */
+    [data-theme="light"] .search-container {
+        background: linear-gradient(145deg, var(--bg-card), rgba(248, 250, 252, 0.9));
+        border: 1px solid var(--border-color);
+        box-shadow: 0 8px 32px var(--shadow-color);
+    }
+
+    .search-wrapper {
+        position: relative;
+        display: flex;
+        align-items: center;
+        width: 100%;
+    }
+
+    .search-icon {
+        position: absolute;
+        left: 1rem;
+        color: var(--primary-green);
+        font-size: 1rem;
+        z-index: 2;
+    }
+
+    .investor-search-input {
+        width: 100%;
+        padding: 0.8rem 1rem 0.8rem 2.5rem;
+        border: 2px solid var(--border-color);
+        border-radius: 12px;
+        background: var(--bg-card-hover);
+        color: var(--text-light);
+        font-size: 1rem;
+        font-weight: 500;
+        transition: all 0.3s ease;
+        outline: none;
+    }
+
+    .investor-search-input:focus {
+        border-color: var(--primary-green);
+        box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1);
+        background: var(--bg-card);
+    }
+
+    .investor-search-input::placeholder {
+        color: var(--text-muted);
+        font-weight: 400;
+    }
+
+    /* Light mode styling for investor search input */
+    [data-theme="light"] .investor-search-input {
+        background: var(--bg-card);
+        color: var(--text-dark);
+        border: 2px solid var(--border-light);
+    }
+
+    [data-theme="light"] .investor-search-input:focus {
+        border-color: var(--primary-green);
+        box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.08);
+        background: #ffffff;
+    }
+
+    [data-theme="light"] .investor-search-input::placeholder {
+        color: var(--text-muted);
+    }
+
+    .clear-search-btn {
+        position: absolute;
+        right: 0.5rem;
+        background: var(--gradient-red);
+        color: white;
+        border: none;
+        border-radius: 8px;
+        width: 32px;
+        height: 32px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        font-size: 0.8rem;
+    }
+
+    .clear-search-btn:hover {
+        transform: scale(1.1);
+        box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
+    }
+
+    /* Light mode styling for clear search button */
+    [data-theme="light"] .clear-search-btn:hover {
+        box-shadow: 0 4px 12px rgba(239, 68, 68, 0.25);
+    }
+
+    /* Hidden table rows for search functionality */
+    .startups-table tbody tr.hidden {
+        display: none !important;
+    }
+
+    .sector-badge {
+        background: linear-gradient(135deg, var(--accent-blue), rgba(59, 130, 246, 0.8));
+        color: white;
+        padding: 0.4rem 0.8rem;
+        border-radius: 20px;
+        font-size: 0.8rem;
+        font-weight: 500;
+        display: inline-block;
+        text-align: center;
+        min-width: 80px;
+    }
+
+    .investor-type-badge {
+        background: linear-gradient(135deg, var(--accent-purple), rgba(139, 92, 246, 0.8));
+        color: white;
+        padding: 0.4rem 0.8rem;
+        border-radius: 20px;
+        font-size: 0.8rem;
+        font-weight: 500;
+    }
+
+    .investment-card {
+        background: linear-gradient(135deg, rgba(16, 185, 129, 0.08), rgba(59, 130, 246, 0.05));
+        border: 1px solid rgba(16, 185, 129, 0.2);
+        border-radius: 12px;
+        padding: 1rem;
+        max-width: 280px;
+        position: relative;
+        overflow: hidden;
+    }
+
+    [data-theme="light"] .investment-card {
+        background: linear-gradient(135deg, rgba(16, 185, 129, 0.04), rgba(59, 130, 246, 0.03));
+        border: 1px solid rgba(16, 185, 129, 0.15);
+    }
+
+    .investment-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 3px;
+        background: linear-gradient(90deg, var(--accent-green), var(--accent-blue));
+    }
+
+    .investment-date {
+        display: flex;
+        align-items: center;
+        font-weight: 600;
+        color: var(--accent-green);
+        margin-bottom: 0.5rem;
+        font-size: 0.9rem;
+    }
+
+    .investment-date i {
+        margin-right: 0.5rem;
+        color: var(--accent-blue);
+    }
+
+    .investment-company {
+        font-weight: 600;
+        color: var(--text-light);
+        margin-bottom: 0.4rem;
+        font-size: 1rem;
+        line-height: 1.3;
+    }
+
+    [data-theme="light"] .investment-company {
+        color: #1E293B;
+    }
+
+    .investment-type {
+        background: linear-gradient(135deg, rgba(139, 92, 246, 0.15), rgba(59, 130, 246, 0.1));
+        color: var(--accent-purple);
+        padding: 0.3rem 0.7rem;
+        border-radius: 15px;
+        font-size: 0.75rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        display: inline-block;
+        border: 1px solid rgba(139, 92, 246, 0.2);
+    }
+
+    .investment-empty {
+        color: var(--text-muted);
+        font-style: italic;
+        text-align: center;
+        padding: 1rem;
+        background: rgba(108, 117, 125, 0.1);
+        border-radius: 8px;
+        border: 1px dashed var(--border-color);
+    }
+
+    .status-badge {
+        padding: 0.4rem 0.8rem;
+        border-radius: 15px;
+        font-size: 0.8rem;
+        font-weight: 600;
+        text-align: center;
+        min-width: 100px;
+        display: inline-block;
+        text-transform: uppercase;
+        letter-spacing: 0.3px;
+    }
+
+    .status-active { background: var(--gradient-1); color: white; }
+    .status-inactive { background: var(--gradient-red); color: white; }
+    .status-unknown { background: linear-gradient(135deg, #6B7280, #9CA3AF); color: white; }
+
+    .location-text {
+        color: var(--text-light);
+        font-weight: 500;
+    }
+
+    [data-theme="light"] .location-text {
+        color: #374151;
+    }
+
+    .funding-amount {
+        font-weight: 600;
+        font-family: 'Poppins', sans-serif;
+    }
+
+    .funding-high { color: var(--primary-green); }
+    .funding-medium { color: var(--accent-blue); }
+    .funding-low { color: var(--text-muted); }
+
+    .contact-links {
+        display: flex;
+        gap: 0.4rem;
+        flex-wrap: wrap;
+        align-items: center;
+    }
+
+    .contact-link {
+        width: 28px;
+        height: 28px;
+        border-radius: 6px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-decoration: none;
+        transition: all 0.3s ease;
+        font-size: 0.8rem;
+    }
+
+    .contact-link:hover {
+        transform: translateY(-2px) scale(1.1);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    }
+
+    .link-website { background: var(--gradient-1); color: white; }
+    .link-linkedin { background: #0077B5; color: white; }
+    .link-email { background: var(--gradient-2); color: white; }
+    .link-phone { background: var(--gradient-teal); color: white; }
+    .link-twitter { background: #1DA1F2; color: white; }
+    .link-facebook { background: #1877F2; color: white; }
+
+    /* View Details Button */
+    .view-details-btn {
+        background: var(--gradient-1);
+        color: white;
+        border: none;
+        padding: 0.5rem 1rem;
+        border-radius: 10px;
+        font-size: 0.85rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        white-space: nowrap;
+    }
+
+    .view-details-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3);
+        color: white;
+        text-decoration: none;
+    }
+
+    .view-details-btn:active {
+        transform: translateY(0);
+    }
+
+    .view-details-btn i {
+        font-size: 0.8rem;
+    }
+
+    /* Loader */
+    .loader-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(15, 23, 42, 0.8);
+        backdrop-filter: blur(10px);
+        display: none;
+        align-items: center;
+        justify-content: center;
+        z-index: 9999;
+    }
+
+    .loader-container {
+        background: var(--bg-card);
+        border-radius: 20px;
+        padding: 3rem;
+        text-align: center;
+        border: 1px solid rgba(52, 211, 153, 0.2);
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    }
+
+    .loader {
+        width: 60px;
+        height: 60px;
+        border: 4px solid rgba(16, 185, 129, 0.1);
+        border-left: 4px solid var(--primary-green);
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+        margin: 0 auto 1rem;
+    }
+
+    @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+    }
+
+    .loader-text {
+        color: var(--text-light);
+        font-size: 1.1rem;
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+    }
+
+    .loader-subtext {
+        color: var(--text-muted);
+        font-size: 0.9rem;
+    }
+
+    .no-data {
+        text-align: center;
+        padding: 3rem;
+        color: var(--text-muted);
+    }
+
+    .no-data i {
+        font-size: 3rem;
+        margin-bottom: 1rem;
+        color: var(--primary-green);
+    }
+
+    /* Custom Scrollbar */
+    .table-responsive::-webkit-scrollbar,
+    .filters-container::-webkit-scrollbar,
+    .accordion-body::-webkit-scrollbar {
+        width: 8px;
+        height: 8px;
+    }
+
+    .table-responsive::-webkit-scrollbar-track,
+    .filters-container::-webkit-scrollbar-track,
+    .accordion-body::-webkit-scrollbar-track {
+        background: var(--bg-card);
+        border-radius: 4px;
+    }
+
+    .table-responsive::-webkit-scrollbar-thumb,
+    .filters-container::-webkit-scrollbar-thumb,
+    .accordion-body::-webkit-scrollbar-thumb {
+        background: var(--primary-green);
+        border-radius: 4px;
+    }
+
+    .table-responsive::-webkit-scrollbar-thumb:hover,
+    .filters-container::-webkit-scrollbar-thumb:hover,
+    .accordion-body::-webkit-scrollbar-thumb:hover {
+        background: var(--dark-green);
+    }
+
+    /* Responsive breakpoints */
+    @media (max-width: 1600px) {
+        .startups-table {
+            min-width: 2000px;
+        }
+    }
+
+    @media (max-width: 1400px) {
+        .startups-table {
+            min-width: 1800px;
+        }
+        
+        .startups-table th,
+        .startups-table td {
+            padding: 0.8rem 0.6rem;
+            font-size: 0.85rem;
+        }
+    }
+
+    @media (max-width: 1200px) {
+        .main-content-grid {
+            grid-template-columns: 280px 1fr;
+            gap: 1.5rem;
+        }
+        
+        .startups-table {
+            min-width: 1600px;
+        }
+        
+        .startups-table th,
+        .startups-table td {
+            padding: 0.6rem 0.4rem;
+            font-size: 0.8rem;
+        }
+    }
+
+    @media (max-width: 768px) {
+        .main-content-wrapper {
+            padding: 0 0.5rem;
+        }
+        
+        .main-content-grid {
+            grid-template-columns: 1fr;
+            gap: 1rem;
+        }
+        
+        .filters-column {
+            min-width: auto;
+        }
+        
+        .page-title {
+            font-size: 2rem;
+        }
+        
+        .table-responsive {
+            max-height: 60vh;
+        }
+        
+        .startups-table {
+            min-width: 1400px;
+        }
+        
+        .startups-table th,
+        .startups-table td {
+            padding: 0.5rem 0.3rem;
+            font-size: 0.75rem;
+        }
+        
+        .contact-links {
+            flex-direction: column;
+            max-width: 60px;
+        }
+        
+        .contact-link {
+            width: 24px;
+            height: 24px;
+            font-size: 0.7rem;
+        }
+        
+        .view-details-btn {
+            padding: 0.4rem 0.6rem;
+            font-size: 0.75rem;
+        }
+    }
+</style>
+
+<div class="container-fluid">
+    <div class="page-header">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <h1 class="page-title">Moroccan Investors</h1>
+                    <p class="page-subtitle">Explore the investment landscape and funding ecosystem</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="stats-bar">
+            <div class="row">
+                <div class="col-md-3 col-6">
+                    <div class="stat-item">
+                        <div class="stat-number">{{ investors|length }}</div>
+                        <div class="stat-label">Total Investors</div>
+                    </div>
+                </div>
+                <div class="col-md-3 col-6">
+                    <div class="stat-item">
+                        <div class="stat-number">{{ investors|selectattr('hq_location')|map(attribute='hq_location')|unique|list|length }}</div>
+                        <div class="stat-label">Locations</div>
+                    </div>
+                </div>
+                <div class="col-md-3 col-6">
+                    <div class="stat-item">
+                        <div class="stat-number">{{ investors|selectattr('primary_investor_type')|map(attribute='primary_investor_type')|unique|list|length }}</div>
+                        <div class="stat-label">Investor Types</div>
+                    </div>
+                </div>
+                <div class="col-md-3 col-6">
+                    <div class="stat-item">
+                        <div class="stat-number">{{ investors|selectattr('total_investments')|map(attribute='total_investments')|sum|int or 0 }}</div>
+                        <div class="stat-label">Total Investments</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="main-content-wrapper">
+        <div class="main-content-grid">
+            <!-- Filters Section -->
+            <div class="filters-column">
+                <div class="filters-container">
+                    <div class="filters-header">
+                        <h3 class="filters-title">
+                            <i class="fas fa-filter"></i>
+                            Filters
+                        </h3>
+                        <button type="button" class="clear-filters" onclick="clearAllFilters()">
+                            Clear All
+                        </button>
+                    </div>
+
+                    <form id="filterForm" action="{{ url_for('investors') }}" method="GET">
+                        <!-- Location Filter -->
+                        <div class="accordion-filter">
+                            <button type="button" class="accordion-header" onclick="toggleAccordion(this)">
+                                <h4 class="accordion-title">
+                                    <i class="fas fa-map-marker-alt"></i>
+                                    Location
+                                </h4>
+                                <i class="fas fa-chevron-right accordion-icon"></i>
+                            </button>
+                            <div class="accordion-content">
+                                <div class="accordion-body">
+                                    {% for location in distinct_locations %}
+                                    {% if location %}
+                                    <div class="filter-option">
+                                        <input type="checkbox" 
+                                               id="location_{{ loop.index }}" 
+                                               name="location" 
+                                               value="{{ location }}" 
+                                               class="filter-checkbox"
+                                               {% if location in selected.getlist('location') %}checked{% endif %}>
+                                        <label for="location_{{ loop.index }}" class="filter-label">
+                                            <span>{{ location }}</span>
+                                            <span class="filter-count">{{ investors|selectattr('city', 'equalto', location)|list|length }}</span>
+                                        </label>
+                                    </div>
+                                    {% endif %}
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Investor Type Filter -->
+                        <div class="accordion-filter">
+                            <button type="button" class="accordion-header" onclick="toggleAccordion(this)">
+                                <h4 class="accordion-title">
+                                    <i class="fas fa-chart-pie"></i>
+                                    Investor Type
+                                </h4>
+                                <i class="fas fa-chevron-right accordion-icon"></i>
+                            </button>
+                            <div class="accordion-content">
+                                <div class="accordion-body">
+                                    {% for investor_type in distinct_investor_types %}
+                                    {% if investor_type %}
+                                    <div class="filter-option">
+                                        <input type="checkbox" 
+                                               id="investor_type_{{ loop.index }}" 
+                                               name="investor_type" 
+                                               value="{{ investor_type }}" 
+                                               class="filter-checkbox"
+                                               {% if investor_type in selected.getlist('investor_type') %}checked{% endif %}>
+                                        <label for="investor_type_{{ loop.index }}" class="filter-label">
+                                            <span>{{ investor_type }}</span>
+                                            <span class="filter-count">{{ investors|selectattr('primary_investor_type', 'equalto', investor_type)|list|length }}</span>
+                                        </label>
+                                    </div>
+                                    {% endif %}
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Startup Filter -->
+                        <div class="accordion-filter">
+                            <button type="button" class="accordion-header" onclick="toggleAccordion(this)">
+                                <h4 class="accordion-title">
+                                    <i class="fas fa-rocket"></i>
+                                    Startups ({{ selected.getlist('startup')|length if selected.getlist('startup') else 0 }})
+                                </h4>
+                                <i class="fas fa-chevron-right accordion-icon"></i>
+                            </button>
+                            <div class="accordion-content">
+                                <div class="accordion-body">
+                                    <div class="filter-search-container">
+                                        <input type="text" id="startupSearch" class="filter-search" placeholder="Search startups..." onkeyup="filterStartups()">
+                                        <i class="fas fa-search filter-search-icon"></i>
+                                    </div>
+                                    <div class="filter-options" id="startupOptions">
+                                        {% for startup in distinct_startups %}
+                                        <div class="filter-option startup-option" data-name="{{ startup.startup_name|lower if startup.startup_name else '' }}">
+                                            <input type="checkbox" 
+                                                   id="startup_{{ loop.index }}" 
+                                                   name="startup" 
+                                                   value="{{ startup.startup_id }}" 
+                                                   class="filter-checkbox"
+                                                   {% if startup.startup_id|string in selected.getlist('startup') %}checked{% endif %}>
+                                            <label for="startup_{{ loop.index }}" class="filter-label">
+                                                <div class="startup-filter-info">
+                                                    <span class="startup-filter-name">{{ startup.startup_name }}</span>
+                                                    {% if startup.sector %}
+                                                    <span class="startup-filter-sector">{{ startup.sector }}</span>
+                                                    {% endif %}
+                                                </div>
+                                            </label>
+                                        </div>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <button type="submit" class="apply-filters">
+                            <i class="fas fa-search"></i>
+                            Apply Filters
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Investors Table -->
+            <div class="table-column">
+                <!-- Search Bar -->
+                <div class="search-container">
+                    <div class="search-wrapper">
+                        <i class="fas fa-search search-icon"></i>
+                        <input type="text" 
+                               id="investorsSearch" 
+                               class="investor-search-input" 
+                               placeholder="Search by investor name..."
+                               onkeyup="searchInvestors(this.value)">
+                        <button type="button" class="clear-search-btn" id="clearInvestorSearchBtn" onclick="clearInvestorSearch()" style="display: none;">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="table-container">
+                    <div class="table-header">
+                        <h2 class="table-title">
+                            <i class="fas fa-hand-holding-usd me-2"></i>
+                            Investors Directory
+                        </h2>
+                    </div>
+                    
+                    {% if investors %}
+                    <div class="table-responsive">
+                        <table class="startups-table">
+                            <thead>
+                                <tr>
+                                    <th>Logo</th>
+                                    <th>Investor Name</th>
+                                    <th>Status</th>
+                                    <th>Type</th>
+                                    <th>Location</th>
+                                    <th>Founded</th>
+                                    <th>Investment Count</th>
+                                    <th>Total Investments</th>
+                                    <th>Last Investment</th>
+                                    <th>Preferred Industry</th>
+                                    <th>Preferred Geography</th>
+                                    <th>Total Active Portfolio</th>
+                                    <th>Total Exits</th>
+                                    <th>Description</th>
+                                    <th>Contact</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for investor in investors %}
+                                <tr class="investor-row" 
+                                    data-investor-name="{{ investor.investor_name|lower if investor.investor_name else '' }}">
+                                    <td>
+                                        {% if investor.logo_url %}
+                                            <img src="{{ investor.logo_url }}" alt="{{ investor.investor_name }}" class="startup-logo">
+                                        {% else %}
+                                            <div class="startup-logo d-flex align-items-center justify-content-center" style="background: var(--gradient-1); color: white; font-weight: 600;">
+                                                {{ investor.investor_name[0] if investor.investor_name else 'I' }}
+                                            </div>
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        <div class="startup-name">{{ investor.investor_name or 'Unnamed Investor' }}</div>
+                                        {% if investor.domain %}
+                                            <div class="startup-description">{{ investor.domain }}</div>
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        {% set status = investor.investor_status|lower if investor.investor_status else 'unknown' %}
+                                        {% if 'active' in status %}
+                                            <span class="status-badge status-active">Active</span>
+                                        {% elif 'inactive' in status %}
+                                            <span class="status-badge status-inactive">Inactive</span>
+                                        {% else %}
+                                            <span class="status-badge status-unknown">{{ investor.investor_status or 'Unknown' }}</span>
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        {% if investor.primary_investor_type %}
+                                            <span class="investor-type-badge">{{ investor.primary_investor_type }}</span>
+                                        {% else %}
+                                            <span class="text-muted">N/A</span>
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        
+                                        {% if investor.city %}
+                                            <span class="location-text">{{ investor.city or '-' }}</span>
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        {% if investor.founding_date %}
+                                            <span class="founded-date">{{ investor.founding_date.strftime('%Y') }}</span>
+                                        {% else %}
+                                            <span class="text-muted">N/A</span>
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        {% if investor.investment_count %}
+                                            <span class="employees-count">{{ investor.investment_count|int }}</span>
+                                        {% else %}
+                                            <span class="text-muted">0</span>
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        {% if investor.total_investments %}
+                                            <span class="employees-count">{{ investor.total_investments|int }}</span>
+                                        {% else %}
+                                            <span class="text-muted">0</span>
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        {% if investor.last_investment_date %}
+                                            <div class="investment-card">
+                                                <div class="investment-date">
+                                                    <i class="fas fa-calendar-alt"></i>
+                                                    {{ investor.last_investment_date.strftime('%b %d, %Y') }}
+                                                </div>
+                                                {% if investor.last_investment_company %}
+                                                    <div class="investment-company">
+                                                        <i class="fas fa-building" style="color: var(--accent-blue); margin-right: 0.4rem;"></i>
+                                                        {{ investor.last_investment_company }}
+                                                    </div>
+                                                {% endif %}
+                                                {% if investor.last_investment_type %}
+                                                    <div class="investment-type">
+                                                        {{ investor.last_investment_type }}
+                                                    </div>
+                                                {% endif %}
+                                            </div>
+                                        {% else %}
+                                            <div class="investment-empty">
+                                                <i class="fas fa-chart-line" style="margin-bottom: 0.5rem; display: block; color: var(--text-muted);"></i>
+                                                No recent investments
+                                            </div>
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        {% if investor.preferred_industry %}
+                                            <span class="sector-badge">{{ investor.preferred_industry|truncate(30, True, '...') }}</span>
+                                        {% else %}
+                                            <span class="text-muted">N/A</span>
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        {% if investor.preferred_geography %}
+                                            <span class="location-text">{{ investor.preferred_geography }}</span>
+                                        {% else %}
+                                            <span class="text-muted">N/A</span>
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        {% if investor.total_active_portfolio %}
+                                            <span class="employees-count">{{ investor.total_active_portfolio|int }}</span>
+                                        {% else %}
+                                            <span class="text-muted">0</span>
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        {% if investor.total_exits %}
+                                            <span class="employees-count">{{ investor.total_exits|int }}</span>
+                                        {% else %}
+                                            <span class="text-muted">0</span>
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        {% if investor.description %}
+                                            <span class="startup-description">{{ investor.description|truncate(50, True, '...') }}</span>
+                                        {% else %}
+                                            <span class="text-muted">N/A</span>
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        <div class="contact-links">
+                                            {% if investor.domain %}
+                                                <a href="http://{{ investor.domain }}" target="_blank" class="contact-link link-website" title="Website">
+                                                    <i class="fas fa-globe"></i>
+                                                </a>
+                                            {% endif %}
+                                            {% if investor.linkedin_url %}
+                                                <a href="{{ investor.linkedin_url }}" target="_blank" class="contact-link link-linkedin" title="LinkedIn">
+                                                    <i class="fab fa-linkedin-in"></i>
+                                                </a>
+                                            {% endif %}
+                                            {% if investor.hq_email %}
+                                                <a href="mailto:{{ investor.hq_email }}" class="contact-link link-email" title="Email">
+                                                    <i class="fas fa-envelope"></i>
+                                                </a>
+                                            {% endif %}
+                                            {% if investor.hq_phone %}
+                                                <a href="tel:{{ investor.hq_phone }}" class="contact-link link-phone" title="Phone">
+                                                    <i class="fas fa-phone"></i>
+                                                </a>
+                                            {% endif %}
+                                            {% if investor.twitter_url %}
+                                                <a href="{{ investor.twitter_url }}" target="_blank" class="contact-link link-twitter" title="Twitter">
+                                                    <i class="fab fa-twitter"></i>
+                                                </a>
+                                            {% endif %}
+                                            {% if investor.facebook_url %}
+                                                <a href="{{ investor.facebook_url }}" target="_blank" class="contact-link link-facebook" title="Facebook">
+                                                    <i class="fab fa-facebook-f"></i>
+                                                </a>
+                                            {% endif %}
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <a href="/investor/{{ investor.investor_id }}" class="view-details-btn">
+                                            <i class="fas fa-eye"></i>
+                                            View Details
+                                        </a>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    {% else %}
+                    <div class="no-data">
+                        <i class="fas fa-search"></i>
+                        <h3>No Investors Found</h3>
+                        <p>There are currently no investors in the database.</p>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="loader-overlay" id="loadingOverlay">
+        <div class="loader-container">
+            <div class="loader"></div>
+            <div class="loader-text">Applying Filters...</div>
+            <div class="loader-subtext">Please wait while we update the results</div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Enable smooth transitions after page load to prevent initial flash
+    setTimeout(() => {
+        document.body.classList.add('theme-transitions');
+    }, 50);
+
+    // Animate stats on page load
+    function animateStats() {
+        const statNumbers = document.querySelectorAll('.stat-number');
+        statNumbers.forEach(stat => {
+            const target = parseInt(stat.textContent);
+            let current = 0;
+            const increment = target / 50;
+            
+            const timer = setInterval(() => {
+                current += increment;
+                if (current >= target) {
+                    current = target;
+                    clearInterval(timer);
+                }
+                stat.textContent = Math.floor(current);
+            }, 40);
+        });
+    }
+    
+    // Add smooth hover effects to table rows
+    const tableRows = document.querySelectorAll('.startups-table tbody tr');
+    tableRows.forEach(row => {
+        row.addEventListener('mouseenter', function() {
+            this.style.transform = 'scale(1.01)';
+        });
+        
+        row.addEventListener('mouseleave', function() {
+            this.style.transform = 'scale(1)';
+        });
+    });
+    
+    // Enhanced contact link hover effects
+    const contactLinks = document.querySelectorAll('.contact-link');
+    contactLinks.forEach(link => {
+        link.addEventListener('mouseenter', function() {
+            this.style.transform = 'translateY(-3px) scale(1.15)';
+            this.style.boxShadow = '0 6px 20px rgba(0, 0, 0, 0.4)';
+        });
+        
+        link.addEventListener('mouseleave', function() {
+            this.style.transform = 'translateY(0) scale(1)';
+            this.style.boxShadow = 'none';
+        });
+        
+        // Prevent event bubbling for contact links
+        link.addEventListener('click', function(e) {
+            e.stopPropagation();
+        });
+    });
+
+    // Enhanced view details button hover effects
+    const viewDetailsBtns = document.querySelectorAll('.view-details-btn');
+    viewDetailsBtns.forEach(btn => {
+        btn.addEventListener('mouseenter', function() {
+            this.style.transform = 'translateY(-2px) scale(1.05)';
+        });
+        
+        btn.addEventListener('mouseleave', function() {
+            this.style.transform = 'translateY(0) scale(1)';
+        });
+        
+        // Add click animation
+        btn.addEventListener('click', function() {
+            this.style.transform = 'scale(0.95)';
+            setTimeout(() => {
+                this.style.transform = 'translateY(-2px) scale(1.05)';
+            }, 100);
+        });
+    });
+
+    // Filter form submission with loader
+    const filterForm = document.getElementById('filterForm');
+    const loadingOverlay = document.getElementById('loadingOverlay');
+    
+    filterForm.addEventListener('submit', function(e) {
+        // Show loader
+        loadingOverlay.style.display = 'flex';
+    });
+    
+    // Start animations
+    setTimeout(animateStats, 300);
+    
+    console.log('Enhanced Investors page loaded successfully!');
+});
+
+// Filter startups based on search input
+function filterStartups() {
+    const searchInput = document.getElementById('startupSearch');
+    const searchTerm = searchInput.value.toLowerCase();
+    const startupOptions = document.querySelectorAll('.startup-option');
+    
+    startupOptions.forEach(option => {
+        const startupName = option.getAttribute('data-name');
+        const startupNameElement = option.querySelector('.startup-filter-name');
+        const startupSectorElement = option.querySelector('.startup-filter-sector');
+        
+        let matchFound = false;
+        
+        // Search in startup name
+        if (startupName && startupName.includes(searchTerm)) {
+            matchFound = true;
+        }
+        
+        // Search in sector if it exists
+        if (startupSectorElement && startupSectorElement.textContent.toLowerCase().includes(searchTerm)) {
+            matchFound = true;
+        }
+        
+        // Show/hide option based on match
+        if (searchTerm === '' || matchFound) {
+            option.classList.remove('hidden');
+        } else {
+            option.classList.add('hidden');
+        }
+    });
+}
+
+// Dynamic search function for investors
+function searchInvestors(searchTerm) {
+    const tableRows = document.querySelectorAll('.startups-table tbody tr');
+    const searchTermLower = searchTerm.toLowerCase().trim();
+    const clearSearchBtn = document.getElementById('clearInvestorSearchBtn');
+    
+    let visibleCount = 0;
+    
+    tableRows.forEach(row => {
+        // Get the investor data from the row
+        const investorNameElement = row.querySelector('.startup-name');
+        
+        const investorName = investorNameElement ? investorNameElement.textContent.toLowerCase() : '';
+        
+        // Check if any of the fields match the search term
+        const shouldShow = searchTermLower === '' || 
+                          investorName.includes(searchTermLower);
+        
+        if (shouldShow) {
+            row.classList.remove('hidden');
+            visibleCount++;
+        } else {
+            row.classList.add('hidden');
+        }
+    });
+    
+    // Show/hide clear search button
+    if (searchTerm.trim() !== '') {
+        clearSearchBtn.style.display = 'flex';
+    } else {
+        clearSearchBtn.style.display = 'none';
+    }
+    
+    // Update table title with search results count
+    const tableTitle = document.querySelector('.table-title');
+    const totalInvestors = tableRows.length;
+    
+    if (searchTerm.trim() !== '') {
+        tableTitle.innerHTML = `
+            <i class="fas fa-hand-holding-usd me-2"></i>
+            Investors Directory - ${visibleCount} of ${totalInvestors} investor${visibleCount !== 1 ? 's' : ''} found
+        `;
+    } else {
+        tableTitle.innerHTML = `
+            <i class="fas fa-hand-holding-usd me-2"></i>
+            Investors Directory
+        `;
+    }
+}
+
+// Clear search function
+function clearInvestorSearch() {
+    const searchInput = document.getElementById('investorsSearch');
+    const clearSearchBtn = document.getElementById('clearInvestorSearchBtn');
+    
+    searchInput.value = '';
+    clearSearchBtn.style.display = 'none';
+    
+    // Show all investors
+    searchInvestors('');
+}
+
+// Accordion toggle function
+function toggleAccordion(button) {
+    const content = button.nextElementSibling;
+    const isActive = button.classList.contains('active');
+    
+    // Close all accordions
+    document.querySelectorAll('.accordion-header').forEach(header => {
+        header.classList.remove('active');
+        header.nextElementSibling.classList.remove('active');
+    });
+    
+    // If this one wasn't active, open it
+    if (!isActive) {
+        button.classList.add('active');
+        content.classList.add('active');
+    }
+}
+
+// Clear all filters function
+function clearAllFilters() {
+    const checkboxes = document.querySelectorAll('.filter-checkbox');
+    checkboxes.forEach(checkbox => {
+        checkbox.checked = false;
+    });
+    
+    // Clear search inputs
+    const startupSearchInput = document.getElementById('startupSearch');
+    if (startupSearchInput) {
+        startupSearchInput.value = '';
+        filterStartups();
+    }
+    
+    const investorSearchInput = document.getElementById('investorsSearch');
+    if (investorSearchInput) {
+        investorSearchInput.value = '';
+        searchInvestors('');
+    }
+    
+    // Redirect to base URL without filters
+    window.location.href = window.location.pathname;
+}
+</script>
+{% endblock %}

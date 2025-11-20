@@ -1,0 +1,9 @@
+Flask
+Flask-SQLAlchemy
+SQLAlchemy
+pyodbc
+gunicorn
+Werkzeug
+itsdangerous
+Jinja2
+MarkupSafe

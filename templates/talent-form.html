@@ -1,0 +1,632 @@
+{% extends "base.html" %}
+
+{% block content %}
+<script>
+    // Initialize theme on page load
+    document.addEventListener('DOMContentLoaded', function() {
+        const theme = localStorage.getItem('theme') || 'dark';
+        document.documentElement.setAttribute('data-theme', theme);
+    });
+</script>
+
+<style>
+    .page-container {
+        max-width: 1600px;
+        margin: 0 auto;
+        padding: 2rem 1rem;
+    }
+
+    .page-header {
+        text-align: center;
+        padding: 3rem 2rem;
+        background: var(--gradient-1);
+        border-radius: 16px;
+        margin-bottom: 3rem;
+        box-shadow: 0 10px 30px var(--shadow-color);
+    }
+
+    .page-header h1 {
+        font-size: 2.5rem;
+        font-weight: bold;
+        margin-bottom: 1rem;
+        color: white;
+    }
+
+    .page-header p {
+        font-size: 1.25rem;
+        color: rgba(255, 255, 255, 0.95);
+        max-width: 600px;
+        margin: 0 auto;
+    }
+
+.icon-container.purple {
+    background-color: #8b5cf610;
+    color: #8b5cf6;
+}
+
+.icon-container.orange {
+    background-color: #f9731610;
+    color: #f97316;
+}
+
+.icon {
+    width: 2rem;
+    height: 2rem;
+}
+
+.role-card h3 {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    color: #1e293b;
+}
+
+.role-card p {
+    color: #64748b;
+    margin-bottom: 1.5rem;
+    font-size: 0.875rem;
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, #10B981 0%, #059669 100%);
+    color: white;
+    border: none;
+    padding: 0.75rem 2rem;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    width: 100%;
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(16, 185, 129, 0.3);
+}
+
+.demo-notice {
+    text-align: center;
+}
+
+.badge {
+    display: inline-block;
+    background-color: #f1f5f9;
+    color: #64748b;
+    padding: 0.25rem 0.75rem;
+    border-radius: 6px;
+    font-size: 0.75rem;
+    font-weight: 500;
+    margin-bottom: 1rem;
+}
+
+.demo-notice p {
+    color: #64748b;
+    font-size: 0.875rem;
+}
+
+/* Form Styles */
+.form-container {
+    width: 95%;
+    max-width: 1400px;
+    margin: 0 auto;
+    background: var(--bg-card);
+    border-radius: 16px;
+    padding: 2.5rem;
+    box-shadow: 0 4px 6px -1px var(--shadow-color);
+}
+
+[data-theme="light"] .form-container {
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+.form-section {
+    background: white;
+    border-radius: 12px;
+    padding: 2rem;
+    margin-bottom: 2rem;
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+}
+
+.form-section h2 {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #1e293b;
+    margin-bottom: 1.5rem;
+}
+
+.form-grid {
+    display: grid;
+    gap: 1.5rem;
+}
+
+.form-grid.two-col {
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+}
+
+.form-grid.three-col {
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+}
+
+.form-section {
+    margin-bottom: 2.5rem;
+    padding: 2rem;
+    background: var(--bg-dark);
+    border-radius: 12px;
+    border-left: 4px solid transparent;
+    transition: all 0.3s ease;
+}
+
+.form-section:hover {
+    border-left-color: var(--primary-green);
+}
+
+.form-section h2 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-bottom: 1.5rem;
+    color: var(--text-light);
+    position: relative;
+    padding-left: 1rem;
+}
+
+.form-section h2::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 4px;
+    height: 60%;
+    background: var(--gradient-1);
+    border-radius: 2px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.form-group label {
+    font-weight: 500;
+    color: var(--text-light);
+    font-size: 0.875rem;
+}
+
+.form-group input,
+.form-group textarea,
+.form-group select {
+    padding: 0.75rem;
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    font-size: 1rem;
+    transition: all 0.2s ease;
+    background: var(--bg-card);
+    color: var(--text-light);
+}
+
+.form-group input:focus,
+.form-group textarea:focus,
+.form-group select:focus {
+    outline: none;
+    border-color: var(--primary-green);
+    box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1);
+}
+
+.form-group textarea {
+    resize: vertical;
+    min-height: 100px;
+}
+
+.tags-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    background: var(--gradient-1);
+    color: white;
+    padding: 0.25rem 0.75rem;
+    border-radius: 6px;
+    font-size: 0.75rem;
+    font-weight: 500;
+}
+
+.tag-remove {
+    cursor: pointer;
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 0.75rem;
+    transition: color 0.2s ease;
+}
+
+.tag-remove:hover {
+    color: white;
+}
+
+.tag-input-container {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.btn-add {
+    background: var(--gradient-1);
+    color: white;
+    border: none;
+    padding: 0.75rem 1.5rem;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.btn-add:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(16, 185, 129, 0.3);
+}
+
+.btn-submit {
+    background: var(--gradient-1);
+    color: white;
+    border: none;
+    padding: 1rem 3rem;
+    border-radius: 12px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: block;
+    margin: 2rem auto;
+    box-shadow: 0 4px 15px rgba(16, 185, 129, 0.2);
+}
+
+.btn-submit:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(16, 185, 129, 0.4);
+}
+
+.form-footer {
+    text-align: center;
+    margin-top: 1rem;
+}
+
+.form-footer p {
+    color: var(--text-muted);
+    font-size: 0.875rem;
+    margin-bottom: 0.5rem;
+}
+
+.warning {
+    color: #f59e0b !important;
+    font-weight: 500;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .form-grid.two-col,
+    .form-grid.three-col {
+        grid-template-columns: 1fr;
+    }
+    
+    .page-header h1 {
+        font-size: 2rem;
+    }
+    
+    .form-container {
+        padding: 1.5rem;
+    }
+}
+
+.form-footer {
+    text-align: center;
+    margin-top: 1rem;
+}
+
+.form-footer p {
+    color: #64748b;
+    font-size: 0.875rem;
+    margin-bottom: 0.5rem;
+}
+
+.warning {
+    color: #f97316;
+}
+
+/* Section Header with Button */
+.section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+}
+
+.section-header h2 {
+    margin-bottom: 0;
+}
+
+/* Founder Entries */
+.founder-entry {
+    padding: 1.5rem;
+    border: 2px solid #e2e8f0;
+    border-radius: 12px;
+    margin-bottom: 1.5rem;
+}
+
+.founder-entry:last-child {
+    margin-bottom: 0;
+}
+
+.founder-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+}
+
+.founder-header h3 {
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: #1e293b;
+    margin: 0;
+}
+
+.btn-remove {
+    background: transparent;
+    border: 1px solid #ef4444;
+    color: #ef4444;
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    font-size: 0.875rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.btn-remove:hover {
+    background: #ef4444;
+    color: white;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .form-grid.two-col,
+    .form-grid.three-col {
+        grid-template-columns: 1fr;
+    }
+    
+    .section-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+    }
+    
+    .section-header .btn-add {
+        width: 100%;
+    }
+}
+</style>
+
+<div class="page-container">
+    <div class="page-header">
+        <h1>👤 Talent Registration</h1>
+        <p>Create your professional profile to find opportunities in startups</p>
+    </div>
+
+    <div class="form-container">
+        <form>
+                <!-- Personal Information -->
+                <div class="form-section">
+                    <h2>Personal Information</h2>
+                    <div class="form-grid two-col">
+                        <div class="form-group">
+                            <label for="fullName">Full Name *</label>
+                            <input type="text" id="fullName" placeholder="Enter your full name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Email Address *</label>
+                            <input type="email" id="email" placeholder="your.email@example.com" required>
+                        </div>
+                    </div>
+                    <div class="form-grid two-col">
+                        <div class="form-group">
+                            <label for="location">Location</label>
+                            <input type="text" id="location" placeholder="Casablanca, Morocco">
+                        </div>
+                        <div class="form-group">
+                            <label for="phone">Phone Number</label>
+                            <input type="tel" id="phone" placeholder="+212 6XX XXX XXX">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Professional Background -->
+                <div class="form-section">
+                    <h2>Professional Background</h2>
+                    <div class="form-grid two-col">
+                        <div class="form-group">
+                            <label for="currentTitle">Current Title/Role</label>
+                            <input type="text" id="currentTitle" placeholder="e.g., Senior Software Engineer, Product Manager">
+                        </div>
+                        <div class="form-group">
+                            <label for="experience">Years of Experience</label>
+                            <select id="experience">
+                                <option value="">Select range</option>
+                                <option value="0-1">0-1 years</option>
+                                <option value="2-3">2-3 years</option>
+                                <option value="4-6">4-6 years</option>
+                                <option value="7-10">7-10 years</option>
+                                <option value="10+">10+ years</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="bio">Professional Bio</label>
+                        <textarea id="bio" placeholder="Brief description of your background, expertise, and career highlights" style="min-height: 120px;"></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Skills & Expertise (Add up to 10)</label>
+                        <div class="tags-container" id="skillsContainer">
+                            <span class="tag">JavaScript <span class="tag-remove" onclick="removeTag(this)">×</span></span>
+                            <span class="tag">Product Management <span class="tag-remove" onclick="removeTag(this)">×</span></span>
+                            <span class="tag">Digital Marketing <span class="tag-remove" onclick="removeTag(this)">×</span></span>
+                        </div>
+                        <div class="tag-input-container">
+                            <input type="text" id="skillInput" placeholder="Add skill or expertise area">
+                            <button type="button" class="btn-add" onclick="addTag('skillsContainer', 'skillInput')">+</button>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Industries of Interest</label>
+                        <div class="tags-container" id="industriesContainer">
+                            <span class="tag">FinTech <span class="tag-remove" onclick="removeTag(this)">×</span></span>
+                            <span class="tag">E-commerce <span class="tag-remove" onclick="removeTag(this)">×</span></span>
+                        </div>
+                        <div class="tag-input-container">
+                            <input type="text" id="industryInput" placeholder="Add industry (e.g., HealthTech, EdTech)">
+                            <button type="button" class="btn-add" onclick="addTag('industriesContainer', 'industryInput')">+</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Work Preferences -->
+                <div class="form-section">
+                    <h2>Work Preferences</h2>
+                    <div class="form-grid two-col">
+                        <div class="form-group">
+                            <label for="roleType">Preferred Role Type</label>
+                            <select id="roleType">
+                                <option value="">Select preference</option>
+                                <option value="full-time">Full-time Employee</option>
+                                <option value="contract">Contract/Freelance</option>
+                                <option value="part-time">Part-time</option>
+                                <option value="consultant">Consultant/Advisor</option>
+                                <option value="co-founder">Co-founder</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="workFormat">Work Format</label>
+                            <select id="workFormat">
+                                <option value="">Select preference</option>
+                                <option value="remote">Remote</option>
+                                <option value="on-site">On-site</option>
+                                <option value="hybrid">Hybrid</option>
+                                <option value="flexible">Flexible</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-grid two-col">
+                        <div class="form-group">
+                            <label for="salaryRange">Expected Salary Range (Optional)</label>
+                            <input type="text" id="salaryRange" placeholder="e.g., 15,000-25,000 MAD/month">
+                        </div>
+                        <div class="form-group">
+                            <label for="availability">Availability</label>
+                            <select id="availability">
+                                <option value="">Select availability</option>
+                                <option value="immediate">Immediately</option>
+                                <option value="2-weeks">2 weeks notice</option>
+                                <option value="1-month">1 month notice</option>
+                                <option value="2-months">2+ months</option>
+                                <option value="exploring">Just exploring</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="lookingFor">What are you looking for?</label>
+                        <textarea id="lookingFor" placeholder="Describe your ideal role, company culture, growth opportunities, etc." style="min-height: 100px;"></textarea>
+                    </div>
+                </div>
+
+                <!-- Social & Portfolio -->
+                <div class="form-section">
+                    <h2>Professional Links</h2>
+                    <div class="form-grid two-col">
+                        <div class="form-group">
+                            <label for="linkedinProfile">LinkedIn Profile *</label>
+                            <input type="url" id="linkedinProfile" placeholder="https://linkedin.com/in/..." required>
+                        </div>
+                        <div class="form-group">
+                            <label for="portfolioWebsite">Portfolio/Website</label>
+                            <input type="url" id="portfolioWebsite" placeholder="https://your-portfolio.com">
+                        </div>
+                    </div>
+                    <div class="form-grid two-col">
+                        <div class="form-group">
+                            <label for="githubProfile">GitHub Profile</label>
+                            <input type="url" id="githubProfile" placeholder="https://github.com/username">
+                        </div>
+                        <div class="form-group">
+                            <label for="otherProfile">Other Profile</label>
+                            <input type="url" id="otherProfile" placeholder="Dribbble, Behance, Twitter, etc.">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Additional Information -->
+                <div class="form-section">
+                    <h2>Additional Information</h2>
+                    <div class="form-group">
+                        <label for="education">Education (Optional)</label>
+                        <textarea id="education" placeholder="Your educational background, degrees, certifications" style="min-height: 80px;"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="achievements">Notable Achievements (Optional)</label>
+                        <textarea id="achievements" placeholder="Awards, recognitions, successful projects, publications, etc." style="min-height: 80px;"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="languages">Languages</label>
+                        <input type="text" id="languages" placeholder="e.g., Arabic (Native), French (Fluent), English (Advanced)">
+                    </div>
+                </div>
+
+            <button type="submit" class="btn-submit">Submit Profile</button>
+
+            <div class="form-footer">
+                <p>By submitting, you agree to our Terms of Service and Privacy Policy.</p>
+                <p class="warning">⚠️ This is a demo form - submissions are not processed</p>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+    function addTag(containerId, inputId) {
+        const container = document.getElementById(containerId);
+        const input = document.getElementById(inputId);
+        const value = input.value.trim();
+        
+        if (value) {
+            const tag = document.createElement('span');
+            tag.className = 'tag';
+            tag.innerHTML = `${value} <span class="tag-remove" onclick="removeTag(this)">×</span>`;
+            container.appendChild(tag);
+            input.value = '';
+        }
+    }
+
+    function removeTag(element) {
+        element.parentElement.remove();
+    }
+
+    // Add Enter key support for tags
+    document.addEventListener('keypress', function(e) {
+        if (e.key === 'Enter' && (e.target.id === 'skillInput' || e.target.id === 'industryInput')) {
+            e.preventDefault();
+            if (e.target.id === 'skillInput') {
+                addTag('skillsContainer', 'skillInput');
+            } else {
+                addTag('industriesContainer', 'industryInput');
+            }
+        }
+    });
+</script>
+{% endblock %}

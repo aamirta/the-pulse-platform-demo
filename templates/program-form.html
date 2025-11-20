@@ -1,0 +1,592 @@
+{% extends "base.html" %}
+
+{% block title %}Program Registration - The Pulse{% endblock %}
+
+{% block content %}
+<script>
+    // Initialize theme immediately to prevent flash
+    (function() {
+        const savedTheme = localStorage.getItem('theme') || 'dark';
+        document.documentElement.setAttribute('data-theme', savedTheme);
+    })();
+</script>
+<style>
+    /* CSS Variables inherited from base.html */
+    :root {
+        --primary-green: #10B981;
+        --dark-green: #059669;
+        --light-green: #34D399;
+        --gradient-1: linear-gradient(135deg, #10B981, #34D399);
+    }
+
+    /* Light Mode Variables */
+    [data-theme="light"] {
+        --bg-dark: #F8FAFC;
+        --bg-card: #FFFFFF;
+        --bg-card-hover: #F1F5F9;
+        --text-light: #1E293B;
+        --text-muted: #64748B;
+        --border-color: #E2E8F0;
+        --shadow-color: rgba(0, 0, 0, 0.1);
+    }
+
+    /* Dark Mode Variables */
+    [data-theme="dark"] {
+        --bg-dark: #0F172A;
+        --bg-card: #1E293B;
+        --bg-card-hover: #334155;
+        --text-light: #F8FAFC;
+        --text-muted: #94A3B8;
+        --border-color: #334155;
+        --shadow-color: rgba(0, 0, 0, 0.3);
+    }
+
+    body {
+        background: var(--bg-dark);
+        color: var(--text-light);
+    }
+
+    .page-container {
+        max-width: 1600px;
+        margin: 0 auto;
+        padding: 2rem 1rem;
+    }
+
+    .page-header {
+        background: linear-gradient(135deg, rgba(16, 185, 129, 0.1) 0%, rgba(59, 130, 246, 0.1) 100%);
+        padding: 3rem 0 2rem 0;
+        margin-bottom: 2rem;
+        border-radius: 20px;
+        text-align: center;
+    }
+
+    [data-theme="light"] .page-header {
+        background: linear-gradient(135deg, rgba(16, 185, 129, 0.08) 0%, rgba(59, 130, 246, 0.08) 100%);
+        border: 1px solid var(--border-color);
+    }
+
+    .page-header h1 {
+        font-size: 2.5rem;
+        font-weight: bold;
+        margin-bottom: 1rem;
+        background: var(--gradient-1);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+    }
+
+    .page-header p {
+        font-size: 1.25rem;
+        color: var(--text-muted);
+    }
+
+    /* Form Styles */
+    .form-container {
+        width: 95%;
+        max-width: 1400px;
+        margin: 0 auto;
+    }
+
+    .form-section {
+        background: var(--bg-card);
+        border-radius: 16px;
+        padding: 2rem;
+        margin-bottom: 2rem;
+        box-shadow: 0 4px 6px -1px var(--shadow-color);
+        border: 1px solid var(--border-color);
+    }
+
+    .form-section h2 {
+        font-size: 1.5rem;
+        font-weight: 600;
+        color: var(--text-light);
+        margin-bottom: 1.5rem;
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+    }
+
+    .form-section h2::before {
+        content: '';
+        width: 4px;
+        height: 1.5rem;
+        background: var(--gradient-1);
+        border-radius: 2px;
+    }
+
+    .form-grid {
+        display: grid;
+        gap: 1.5rem;
+    }
+
+    .form-grid.two-col {
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    }
+
+    .form-grid.three-col {
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    }
+
+    .form-group {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+
+    .form-group label {
+        font-weight: 600;
+        color: var(--text-light);
+        font-size: 0.875rem;
+    }
+
+    .form-group input,
+    .form-group textarea,
+    .form-group select {
+        padding: 0.875rem;
+        background: var(--bg-dark);
+        border: 1px solid var(--border-color);
+        border-radius: 10px;
+        font-size: 1rem;
+        color: var(--text-light);
+        transition: all 0.2s ease;
+    }
+
+    .form-group input:focus,
+    .form-group textarea:focus,
+    .form-group select:focus {
+        outline: none;
+        border-color: var(--primary-green);
+        box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1);
+    }
+
+    .form-group textarea {
+        resize: vertical;
+        min-height: 100px;
+    }
+
+    .tags-container {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+        margin-bottom: 0.5rem;
+        min-height: 2.5rem;
+    }
+
+    .tag {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        background: var(--gradient-1);
+        color: white;
+        padding: 0.5rem 0.875rem;
+        border-radius: 8px;
+        font-size: 0.875rem;
+        font-weight: 500;
+    }
+
+    .tag-remove {
+        cursor: pointer;
+        font-size: 1.25rem;
+        font-weight: bold;
+        transition: transform 0.2s ease;
+    }
+
+    .tag-remove:hover {
+        transform: scale(1.2);
+    }
+
+    .tag-input-container {
+        display: flex;
+        gap: 0.5rem;
+    }
+
+    .tag-input-container input {
+        flex: 1;
+    }
+
+    .btn-add {
+        background: var(--gradient-1);
+        color: white;
+        border: none;
+        padding: 0.75rem 1.5rem;
+        border-radius: 10px;
+        cursor: pointer;
+        font-weight: 600;
+        font-size: 1.25rem;
+        transition: all 0.3s ease;
+        min-width: 50px;
+    }
+
+    .btn-add:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 20px rgba(16, 185, 129, 0.3);
+    }
+
+.btn-submit {
+    background: linear-gradient(135deg, #10B981 0%, #059669 100%);
+    color: white;
+    border: none;
+    padding: 1rem 3rem;
+    border-radius: 12px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: block;
+    margin: 2rem auto;
+    box-shadow: 0 4px 15px rgba(16, 185, 129, 0.2);
+}
+
+.btn-submit:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(16, 185, 129, 0.4);
+}
+
+.form-footer {
+    text-align: center;
+    margin-top: 1rem;
+}
+
+.form-footer p {
+    color: #64748b;
+    font-size: 0.875rem;
+    margin-bottom: 0.5rem;
+}
+
+.warning {
+    color: #f97316;
+}
+
+/* Section Header with Button */
+.section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+}
+
+.section-header h2 {
+    margin-bottom: 0;
+}
+
+/* Founder Entries */
+.founder-entry {
+    padding: 1.5rem;
+    border: 2px solid #e2e8f0;
+    border-radius: 12px;
+    margin-bottom: 1.5rem;
+}
+
+.founder-entry:last-child {
+    margin-bottom: 0;
+}
+
+.founder-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+}
+
+.founder-header h3 {
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: #1e293b;
+    margin: 0;
+}
+
+.btn-remove {
+    background: transparent;
+    border: 1px solid #ef4444;
+    color: #ef4444;
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    font-size: 0.875rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.btn-remove:hover {
+    background: #ef4444;
+    color: white;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .form-grid.two-col,
+    .form-grid.three-col {
+        grid-template-columns: 1fr;
+    }
+    
+    .section-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+    }
+    
+    .section-header .btn-add {
+        width: 100%;
+    }
+}</style>
+
+<div class="page-container">
+    <div class="page-header">
+        <h1>🚀 Program Registration</h1>
+        <p>List your accelerator or incubator program for entrepreneurs</p>
+    </div>
+
+    <div class="form-container">
+
+            <form>
+                <!-- Program Information -->
+                <div class="form-section">
+                    <h2>Program Information</h2>
+                    <div class="form-grid two-col">
+                        <div class="form-group">
+                            <label for="programName">Program Name *</label>
+                            <input type="text" id="programName" placeholder="Enter your program name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="programType">Program Type *</label>
+                            <select id="programType" required>
+                                <option value="">Select type</option>
+                                <option value="accelerator">Accelerator</option>
+                                <option value="incubator">Incubator</option>
+                                <option value="bootcamp">Bootcamp</option>
+                                <option value="competition">Competition</option>
+                                <option value="fellowship">Fellowship</option>
+                                <option value="mentorship">Mentorship Program</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-grid two-col">
+                        <div class="form-group">
+                            <label for="organizationName">Organization Name *</label>
+                            <input type="text" id="organizationName" placeholder="Host organization" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="website">Website</label>
+                            <input type="url" id="website" placeholder="https://your-program.com">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="description">Program Description *</label>
+                        <textarea id="description" placeholder="Describe your program, mission, and what makes it unique" style="min-height: 120px;" required></textarea>
+                    </div>
+                    <div class="form-grid three-col">
+                        <div class="form-group">
+                            <label for="duration">Duration</label>
+                            <input type="text" id="duration" placeholder="e.g., 3 months, 6 weeks">
+                        </div>
+                        <div class="form-group">
+                            <label for="location">Location</label>
+                            <input type="text" id="location" placeholder="Casablanca, Morocco">
+                        </div>
+                        <div class="form-group">
+                            <label for="format">Format</label>
+                            <select id="format">
+                                <option value="">Select format</option>
+                                <option value="in-person">In-Person</option>
+                                <option value="virtual">Virtual</option>
+                                <option value="hybrid">Hybrid</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Program Details -->
+                <div class="form-section">
+                    <h2>Program Details</h2>
+                    <div class="form-group">
+                        <label>Focus Sectors (Select all that apply)</label>
+                        <div class="tags-container" id="sectorsContainer">
+                            <span class="tag">FinTech <span class="tag-remove" onclick="removeTag(this)">×</span></span>
+                            <span class="tag">HealthTech <span class="tag-remove" onclick="removeTag(this)">×</span></span>
+                        </div>
+                        <div class="tag-input-container">
+                            <input type="text" id="sectorInput" placeholder="Add sector (e.g., AgriTech, EdTech, CleanTech)">
+                            <button type="button" class="btn-add" onclick="addTag('sectorsContainer', 'sectorInput')">+</button>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Target Stages (Select all that apply)</label>
+                        <div class="tags-container" id="stagesContainer">
+                            <span class="tag">Idea Stage <span class="tag-remove" onclick="removeTag(this)">×</span></span>
+                            <span class="tag">Pre-Seed <span class="tag-remove" onclick="removeTag(this)">×</span></span>
+                        </div>
+                        <div class="tag-input-container">
+                            <input type="text" id="stageInput" placeholder="Add stage (e.g., MVP, Seed, Early Stage)">
+                            <button type="button" class="btn-add" onclick="addTag('stagesContainer', 'stageInput')">+</button>
+                        </div>
+                    </div>
+
+                    <div class="form-grid two-col">
+                        <div class="form-group">
+                            <label for="cohortSize">Cohort Size</label>
+                            <input type="number" id="cohortSize" placeholder="Number of startups per cohort">
+                        </div>
+                        <div class="form-group">
+                            <label for="applicationFee">Application Fee</label>
+                            <input type="text" id="applicationFee" placeholder="e.g., Free, $100, €50">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="benefits">Program Benefits</label>
+                        <textarea id="benefits" placeholder="What do participants get? (e.g., mentorship, funding, office space, legal support)" style="min-height: 100px;"></textarea>
+                    </div>
+                </div>
+
+                <!-- Investment & Support -->
+                <div class="form-section">
+                    <h2>Investment & Support</h2>
+                    <div class="form-grid two-col">
+                        <div class="form-group">
+                            <label for="investmentOffered">Investment Offered</label>
+                            <input type="text" id="investmentOffered" placeholder="e.g., $25K for 6% equity, No investment">
+                        </div>
+                        <div class="form-group">
+                            <label for="equityTaken">Equity Taken</label>
+                            <input type="text" id="equityTaken" placeholder="e.g., 6%, No equity, Varies">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="supportServices">Support Services</label>
+                        <textarea id="supportServices" placeholder="What additional support do you provide? (mentorship, legal, accounting, marketing, etc.)" style="min-height: 100px;"></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="mentorsPartners">Notable Mentors & Partners</label>
+                        <textarea id="mentorsPartners" placeholder="List key mentors, advisors, and partner organizations"></textarea>
+                    </div>
+                </div>
+
+                <!-- Application Process -->
+                <div class="form-section">
+                    <h2>Application Process</h2>
+                    <div class="form-grid two-col">
+                        <div class="form-group">
+                            <label for="applicationDeadline">Next Application Deadline</label>
+                            <input type="date" id="applicationDeadline">
+                        </div>
+                        <div class="form-group">
+                            <label for="startDate">Next Cohort Start Date</label>
+                            <input type="date" id="startDate">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="applicationProcess">Application Process</label>
+                        <textarea id="applicationProcess" placeholder="Describe your application and selection process" style="min-height: 100px;"></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="eligibilityCriteria">Eligibility Criteria</label>
+                        <textarea id="eligibilityCriteria" placeholder="What are the requirements to apply? (stage, location, team size, etc.)"></textarea>
+                    </div>
+                </div>
+
+                <!-- Manager/Founder/Lead Information -->
+                <div class="form-section">
+                    <h2>Manager / Founder / Lead Information</h2>
+                    <div class="form-grid two-col">
+                        <div class="form-group">
+                            <label for="managerName">Full Name *</label>
+                            <input type="text" id="managerName" required placeholder="Full name">
+                        </div>
+                        <div class="form-group">
+                            <label for="managerTitle">Title *</label>
+                            <input type="text" id="managerTitle" required placeholder="e.g., Program Director, Founder, Managing Partner">
+                        </div>
+                    </div>
+                    <div class="form-grid two-col">
+                        <div class="form-group">
+                            <label for="managerEmail">Email *</label>
+                            <input type="email" id="managerEmail" required placeholder="manager@program.com">
+                        </div>
+                        <div class="form-group">
+                            <label for="managerPhone">Phone Number</label>
+                            <input type="tel" id="managerPhone" placeholder="+212 XXX XXX XXX">
+                        </div>
+                    </div>
+                    <div class="form-grid two-col">
+                        <div class="form-group">
+                            <label for="managerLinkedin">LinkedIn Profile</label>
+                            <input type="url" id="managerLinkedin" placeholder="https://linkedin.com/in/...">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="managerBio">Bio</label>
+                        <textarea id="managerBio" placeholder="Brief background and experience" rows="3"></textarea>
+                    </div>
+                </div>
+
+                <!-- Program Contact Information -->
+                <div class="form-section">
+                    <h2>Program Contact Information</h2>
+                    <div class="form-grid two-col">
+                        <div class="form-group">
+                            <label for="contactEmail">General Contact Email *</label>
+                            <input type="email" id="contactEmail" required placeholder="info@program.com">
+                        </div>
+                        <div class="form-group">
+                            <label for="contactPhone">Phone Number</label>
+                            <input type="tel" id="contactPhone" placeholder="+212 XXX XXX XXX">
+                        </div>
+                    </div>
+                    <div class="form-grid two-col">
+                        <div class="form-group">
+                            <label for="linkedinProfile">LinkedIn Profile</label>
+                            <input type="url" id="linkedinProfile" placeholder="https://linkedin.com/company/...">
+                        </div>
+                        <div class="form-group">
+                            <label for="twitter">Twitter/X Handle</label>
+                            <input type="text" id="twitter" placeholder="@yourhandle">
+                        </div>
+                    </div>
+                </div>
+
+            <button type="submit" class="btn-submit">Submit Program</button>
+
+            <div class="form-footer">
+                <p>By submitting, you agree to our Terms of Service and Privacy Policy.</p>
+                <p class="warning">⚠️ This is a demo form - submissions are not processed</p>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+    function addTag(containerId, inputId) {
+        const container = document.getElementById(containerId);
+        const input = document.getElementById(inputId);
+        const value = input.value.trim();
+        
+        if (value) {
+            const tag = document.createElement('span');
+            tag.className = 'tag';
+            tag.innerHTML = `${value} <span class="tag-remove" onclick="removeTag(this)">×</span>`;
+            container.appendChild(tag);
+            input.value = '';
+        }
+    }
+
+    function removeTag(element) {
+        element.parentElement.remove();
+    }
+
+    // Add Enter key support for tags
+    document.addEventListener('keypress', function(e) {
+        if (e.key === 'Enter' && (e.target.id === 'sectorInput' || e.target.id === 'stageInput')) {
+            e.preventDefault();
+            if (e.target.id === 'sectorInput') {
+                addTag('sectorsContainer', 'sectorInput');
+            } else {
+                addTag('stagesContainer', 'stageInput');
+            }
+        }
+    });
+</script>
+{% endblock %}
