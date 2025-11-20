@@ -461,10 +461,3 @@ Each time new code is pushed to this repository, an automated deployment process
 - [Azure Cost Management](https://docs.microsoft.com/en-us/azure/cost-management-billing/)
 - [Azure Security Best Practices](https://docs.microsoft.com/en-us/azure/security/fundamentals/best-practices-and-patterns)
 
----
-
-**Author:** Youness MALHOUNI  
-**Last Updated:** October 31, 2025  
-**Purpose:** Project handover documentation for the continuing development team
-
----
