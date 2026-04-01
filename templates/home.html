@@ -1074,6 +1074,15 @@
     }
     .nf-like-btn:hover, .nf-like-btn.liked { background: rgba(239,68,68,0.1); border-color: #EF4444; color: #EF4444; }
     .nf-like-btn i { font-size: 0.85rem; }
+    .nf-comment-btn, .nf-msg-btn {
+        display: flex; align-items: center; gap: 0.4rem; background: transparent;
+        border: 1px solid var(--border-color); border-radius: 8px;
+        font-family: var(--font-heading); font-size: 0.8rem; font-weight: 600;
+        color: var(--text-muted); padding: 0.38rem 0.8rem; cursor: pointer; transition: all 0.2s;
+    }
+    .nf-comment-btn:hover { background: rgba(139,92,246,0.1); border-color: #8B5CF6; color: #8B5CF6; }
+    .nf-msg-btn:hover { background: rgba(59,130,246,0.1); border-color: #3B82F6; color: #3B82F6; }
+    .nf-comment-btn i, .nf-msg-btn i { font-size: 0.85rem; }
     .nf-read-more {
         display: flex; align-items: center; gap: 0.35rem; font-size: 0.8rem; font-weight: 600;
         font-family: var(--font-heading); color: var(--nf-accent); text-decoration: none;
@@ -1412,6 +1421,13 @@
                             <button class="nf-like-btn" onclick="likePost(this, {{ obj.post_id }})" aria-label="J'aime">
                                 <i class="fas fa-heart"></i>
                                 <span class="like-count">{{ obj.likes_count or 0 }}</span>
+                            </button>
+                            <button class="nf-comment-btn" onclick="window.location.href='/newsfeed#post-{{ obj.post_id }}'" aria-label="Commentaires">
+                                <i class="fas fa-comment-dots"></i>
+                                <span>{{ obj.comments_count or 0 }}</span>
+                            </button>
+                            <button class="nf-msg-btn" onclick="window.location.href='/newsfeed?dm={{ obj.post_id }}'" aria-label="Message privé">
+                                <i class="fas fa-paper-plane"></i> Message
                             </button>
                         </div>
                     </div>
