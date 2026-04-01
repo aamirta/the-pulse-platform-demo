@@ -1,0 +1,1102 @@
+{% extends "base.html" %}
+
+{% block title %}Newsfeed — The Pulse{% endblock %}
+
+{% block content %}
+<style>
+    /* =====================================================
+       NEWSFEED PAGE STYLES
+       ===================================================== */
+    :root {
+        --nf-accent: #8B5CF6;
+        --nf-accent-light: rgba(139, 92, 246, 0.15);
+        --nf-accent-glow: rgba(139, 92, 246, 0.25);
+    }
+
+    .newsfeed-wrapper {
+        max-width: 1180px;
+        margin: 0 auto;
+        padding: 2rem 1.25rem 4rem;
+    }
+
+    /* ---- PAGE HEADER ---- */
+    .nf-page-header {
+        margin-bottom: 2rem;
+    }
+    .nf-page-header h1 {
+        font-family: var(--font-heading, 'Space Grotesk', sans-serif);
+        font-size: 1.85rem;
+        font-weight: 700;
+        color: var(--text-primary);
+        margin: 0 0 0.25rem 0;
+        display: flex;
+        align-items: center;
+        gap: 0.6rem;
+    }
+    .nf-page-header h1 .nf-icon {
+        color: var(--nf-accent);
+    }
+    .nf-page-header p {
+        font-size: 0.92rem;
+        color: var(--text-muted, var(--text-secondary));
+        margin: 0;
+    }
+
+    /* ---- MAIN LAYOUT ---- */
+    .nf-layout {
+        display: grid;
+        grid-template-columns: 1fr 320px;
+        gap: 1.75rem;
+        align-items: start;
+    }
+    @media (max-width: 900px) {
+        .nf-layout {
+            grid-template-columns: 1fr;
+        }
+        .nf-sidebar {
+            order: -1;
+        }
+    }
+
+    /* ---- POST CREATION BOX ---- */
+    .nf-create-box {
+        background: var(--bg-card);
+        border: 1px solid var(--border-color);
+        border-radius: 16px;
+        padding: 1.25rem 1.5rem 1.5rem;
+        margin-bottom: 1.5rem;
+        box-shadow: 0 2px 12px var(--shadow-color, rgba(0,0,0,0.08));
+        transition: border-color 0.2s;
+    }
+    .nf-create-box:focus-within {
+        border-color: var(--nf-accent);
+        box-shadow: 0 0 0 3px var(--nf-accent-glow);
+    }
+    .nf-create-box-header {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        margin-bottom: 0.9rem;
+    }
+    .nf-avatar {
+        width: 42px;
+        height: 42px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, var(--nf-accent), #6D28D9);
+        color: #fff;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-family: var(--font-heading, 'Space Grotesk', sans-serif);
+        font-weight: 700;
+        font-size: 1rem;
+        flex-shrink: 0;
+        text-transform: uppercase;
+    }
+    .nf-avatar.sm {
+        width: 36px;
+        height: 36px;
+        font-size: 0.85rem;
+    }
+    .nf-avatar-placeholder {
+        font-size: 0.82rem;
+        color: var(--text-muted, var(--text-secondary));
+    }
+    .nf-create-textarea {
+        width: 100%;
+        background: var(--bg-dark, var(--bg-card));
+        border: 1px solid var(--border-color);
+        border-radius: 10px;
+        color: var(--text-primary);
+        font-family: var(--font-body, 'DM Sans', sans-serif);
+        font-size: 0.93rem;
+        padding: 0.75rem 1rem;
+        resize: vertical;
+        min-height: 90px;
+        transition: border-color 0.2s;
+        box-sizing: border-box;
+    }
+    .nf-create-textarea:focus {
+        outline: none;
+        border-color: var(--nf-accent);
+    }
+    .nf-create-textarea::placeholder {
+        color: var(--text-muted, var(--text-secondary));
+        opacity: 0.7;
+    }
+    .nf-create-meta {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.6rem;
+        margin-top: 0.75rem;
+        align-items: center;
+    }
+    .nf-create-meta input {
+        flex: 1;
+        min-width: 140px;
+        background: var(--bg-dark, var(--bg-card));
+        border: 1px solid var(--border-color);
+        border-radius: 8px;
+        color: var(--text-primary);
+        font-family: var(--font-body, 'DM Sans', sans-serif);
+        font-size: 0.85rem;
+        padding: 0.45rem 0.75rem;
+        transition: border-color 0.2s;
+    }
+    .nf-create-meta input:focus {
+        outline: none;
+        border-color: var(--nf-accent);
+    }
+    .nf-create-meta input::placeholder {
+        color: var(--text-muted, var(--text-secondary));
+        opacity: 0.65;
+    }
+    .nf-type-select {
+        background: var(--bg-dark, var(--bg-card));
+        border: 1px solid var(--border-color);
+        border-radius: 8px;
+        color: var(--text-primary);
+        font-family: var(--font-body, 'DM Sans', sans-serif);
+        font-size: 0.85rem;
+        padding: 0.45rem 0.75rem;
+        cursor: pointer;
+        transition: border-color 0.2s;
+        min-width: 140px;
+    }
+    .nf-type-select:focus {
+        outline: none;
+        border-color: var(--nf-accent);
+    }
+    .nf-create-footer {
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        margin-top: 1rem;
+    }
+    .nf-submit-btn {
+        background: linear-gradient(135deg, var(--nf-accent), #6D28D9);
+        color: #fff;
+        border: none;
+        border-radius: 10px;
+        font-family: var(--font-heading, 'Space Grotesk', sans-serif);
+        font-weight: 600;
+        font-size: 0.88rem;
+        padding: 0.55rem 1.4rem;
+        cursor: pointer;
+        transition: opacity 0.2s, transform 0.15s;
+        display: flex;
+        align-items: center;
+        gap: 0.4rem;
+    }
+    .nf-submit-btn:hover {
+        opacity: 0.88;
+        transform: translateY(-1px);
+    }
+
+    /* ---- TABS ---- */
+    .nf-tabs {
+        display: flex;
+        gap: 0.25rem;
+        margin-bottom: 1.25rem;
+        background: var(--bg-card);
+        border: 1px solid var(--border-color);
+        border-radius: 12px;
+        padding: 0.35rem;
+        overflow-x: auto;
+    }
+    .nf-tab {
+        flex: 1;
+        text-align: center;
+        padding: 0.5rem 0.9rem;
+        border-radius: 9px;
+        font-family: var(--font-heading, 'Space Grotesk', sans-serif);
+        font-size: 0.84rem;
+        font-weight: 600;
+        color: var(--text-muted, var(--text-secondary));
+        cursor: pointer;
+        border: none;
+        background: transparent;
+        transition: all 0.2s;
+        white-space: nowrap;
+    }
+    .nf-tab.active {
+        background: linear-gradient(135deg, var(--nf-accent), #6D28D9);
+        color: #fff;
+        box-shadow: 0 2px 8px var(--nf-accent-glow);
+    }
+    .nf-tab:hover:not(.active) {
+        background: var(--nf-accent-light);
+        color: var(--nf-accent);
+    }
+
+    /* ---- FEED CARD ---- */
+    .nf-card {
+        background: var(--bg-card);
+        border: 1px solid var(--border-color);
+        border-radius: 16px;
+        padding: 1.25rem 1.4rem 1rem;
+        margin-bottom: 1rem;
+        box-shadow: 0 2px 10px var(--shadow-color, rgba(0,0,0,0.06));
+        transition: border-color 0.2s, transform 0.18s;
+    }
+    .nf-card:hover {
+        border-color: rgba(139, 92, 246, 0.3);
+        transform: translateY(-2px);
+    }
+    .nf-card-header {
+        display: flex;
+        align-items: flex-start;
+        gap: 0.8rem;
+        margin-bottom: 0.85rem;
+    }
+    .nf-card-author {
+        flex: 1;
+        min-width: 0;
+    }
+    .nf-card-author-name {
+        font-family: var(--font-heading, 'Space Grotesk', sans-serif);
+        font-size: 0.92rem;
+        font-weight: 700;
+        color: var(--text-primary);
+        margin: 0;
+        line-height: 1.3;
+    }
+    .nf-card-author-role {
+        font-size: 0.78rem;
+        color: var(--text-muted, var(--text-secondary));
+        margin: 0;
+        line-height: 1.4;
+    }
+    .nf-card-time {
+        font-size: 0.76rem;
+        color: var(--text-muted, var(--text-secondary));
+        white-space: nowrap;
+        margin-top: 2px;
+        flex-shrink: 0;
+    }
+    .nf-type-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.3rem;
+        font-size: 0.7rem;
+        font-weight: 700;
+        font-family: var(--font-heading, 'Space Grotesk', sans-serif);
+        padding: 0.22rem 0.65rem;
+        border-radius: 999px;
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+        flex-shrink: 0;
+    }
+    .nf-type-post { background: rgba(139,92,246,0.15); color: #8B5CF6; }
+    .nf-type-announcement { background: rgba(16,185,129,0.15); color: #10B981; }
+    .nf-type-question { background: rgba(245,158,11,0.15); color: #F59E0B; }
+    .nf-type-opportunity { background: rgba(59,130,246,0.15); color: #3B82F6; }
+    .nf-type-article { background: rgba(0,212,170,0.12); color: #00d4aa; }
+
+    .nf-card-content {
+        font-family: var(--font-body, 'DM Sans', sans-serif);
+        font-size: 0.92rem;
+        line-height: 1.65;
+        color: var(--text-primary);
+        margin-bottom: 0.85rem;
+        white-space: pre-wrap;
+        word-break: break-word;
+    }
+    .nf-card-content.article-content {
+        white-space: normal;
+        display: -webkit-box;
+        -webkit-line-clamp: 3;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+    }
+    .nf-card-link {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        background: var(--bg-dark, rgba(0,0,0,0.05));
+        border: 1px solid var(--border-color);
+        border-radius: 10px;
+        padding: 0.65rem 1rem;
+        text-decoration: none;
+        color: var(--text-primary);
+        font-size: 0.84rem;
+        font-weight: 600;
+        margin-bottom: 0.85rem;
+        transition: background 0.2s, border-color 0.2s;
+    }
+    .nf-card-link:hover {
+        background: var(--nf-accent-light);
+        border-color: var(--nf-accent);
+        color: var(--nf-accent);
+        text-decoration: none;
+    }
+    .nf-card-link i {
+        color: var(--nf-accent);
+        flex-shrink: 0;
+    }
+
+    .nf-tags {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.4rem;
+        margin-bottom: 0.9rem;
+    }
+    .nf-tag {
+        font-size: 0.72rem;
+        font-weight: 600;
+        color: var(--nf-accent);
+        background: var(--nf-accent-light);
+        padding: 0.2rem 0.6rem;
+        border-radius: 999px;
+        font-family: var(--font-heading, 'Space Grotesk', sans-serif);
+        text-transform: lowercase;
+    }
+
+    .nf-card-footer {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        border-top: 1px solid var(--border-color);
+        padding-top: 0.75rem;
+        margin-top: 0.25rem;
+    }
+    /* Message button */
+    .nf-msg-btn {
+        display: flex; align-items: center; gap: 0.4rem;
+        background: transparent; border: 1px solid var(--border-color);
+        border-radius: 8px; font-family: var(--font-heading, 'Space Grotesk', sans-serif);
+        font-size: 0.8rem; font-weight: 600; color: var(--text-muted);
+        padding: 0.38rem 0.8rem; cursor: pointer; transition: all 0.2s;
+    }
+    .nf-msg-btn:hover { background: rgba(139,92,246,0.1); border-color: #8B5CF6; color: #8B5CF6; }
+    .nf-msg-btn i { font-size: 0.85rem; }
+
+    /* DM Modal */
+    .dm-overlay {
+        display: none; position: fixed; inset: 0;
+        background: rgba(0,0,0,0.45); z-index: 9998;
+        align-items: flex-end; justify-content: flex-end;
+        padding: 1.5rem;
+    }
+    .dm-overlay.open { display: flex; }
+    .dm-panel {
+        background: var(--bg-card); border: 1px solid var(--border-color);
+        border-radius: 16px; width: 380px; max-width: 95vw;
+        box-shadow: 0 20px 60px rgba(0,0,0,0.25);
+        animation: slideUpPanel 0.25s ease;
+        display: flex; flex-direction: column; overflow: hidden;
+    }
+    @keyframes slideUpPanel {
+        from { transform: translateY(30px); opacity: 0; }
+        to   { transform: translateY(0);    opacity: 1; }
+    }
+    .dm-panel-header {
+        display: flex; align-items: center; justify-content: space-between;
+        padding: 1rem 1.25rem; border-bottom: 1px solid var(--border-color);
+        background: linear-gradient(135deg, #8B5CF6, #6D28D9);
+    }
+    .dm-panel-header-left { display: flex; align-items: center; gap: 0.65rem; }
+    .dm-to-avatar {
+        width: 34px; height: 34px; border-radius: 50%;
+        background: rgba(255,255,255,0.25); display: flex; align-items: center;
+        justify-content: center; font-family: var(--font-heading); font-weight: 700;
+        font-size: 0.8rem; color: #fff; flex-shrink: 0;
+    }
+    .dm-to-info .dm-to-name { font-family: var(--font-heading); font-weight: 700; font-size: 0.88rem; color: #fff; margin: 0; }
+    .dm-to-info .dm-to-role { font-size: 0.72rem; color: rgba(255,255,255,0.75); margin: 0; }
+    .dm-close-btn {
+        background: none; border: none; color: rgba(255,255,255,0.8);
+        font-size: 1.1rem; cursor: pointer; padding: 0.2rem; line-height: 1;
+        transition: color 0.15s;
+    }
+    .dm-close-btn:hover { color: #fff; }
+    .dm-panel-body { padding: 1.25rem; display: flex; flex-direction: column; gap: 0.75rem; }
+    .dm-input {
+        width: 100%; background: var(--bg-card); border: 1px solid var(--border-color);
+        border-radius: 8px; color: var(--text-primary); font-family: var(--font-body);
+        font-size: 0.85rem; padding: 0.5rem 0.75rem; transition: border-color 0.2s; box-sizing: border-box;
+    }
+    .dm-input:focus { outline: none; border-color: #8B5CF6; }
+    .dm-input::placeholder { color: var(--text-muted); opacity: 0.7; }
+    .dm-textarea {
+        width: 100%; background: var(--bg-card); border: 1px solid var(--border-color);
+        border-radius: 8px; color: var(--text-primary); font-family: var(--font-body);
+        font-size: 0.88rem; padding: 0.65rem 0.75rem; min-height: 110px; resize: vertical;
+        transition: border-color 0.2s; box-sizing: border-box; line-height: 1.55;
+    }
+    .dm-textarea:focus { outline: none; border-color: #8B5CF6; }
+    .dm-textarea::placeholder { color: var(--text-muted); opacity: 0.7; }
+    .dm-send-btn {
+        background: linear-gradient(135deg, #8B5CF6, #6D28D9); color: #fff; border: none;
+        border-radius: 10px; font-family: var(--font-heading); font-weight: 600; font-size: 0.88rem;
+        padding: 0.6rem 1.4rem; cursor: pointer; display: flex; align-items: center; gap: 0.4rem;
+        transition: opacity 0.2s, transform 0.15s; align-self: flex-end;
+    }
+    .dm-send-btn:hover { opacity: 0.88; transform: translateY(-1px); }
+    .dm-success {
+        display: none; text-align: center; padding: 1.5rem; color: #10B981;
+        font-family: var(--font-heading); font-weight: 600; font-size: 0.9rem;
+        flex-direction: column; align-items: center; gap: 0.5rem;
+    }
+    .dm-success i { font-size: 2rem; }
+
+    .nf-like-btn {
+        display: flex; align-items: center; gap: 0.4rem;
+        background: transparent; border: 1px solid var(--border-color);
+        border-radius: 8px; font-family: var(--font-heading, 'Space Grotesk', sans-serif);
+        font-size: 0.8rem; font-weight: 600; color: var(--text-muted, var(--text-secondary));
+        padding: 0.38rem 0.8rem;
+        cursor: pointer;
+        transition: all 0.2s;
+    }
+    .nf-like-btn:hover, .nf-like-btn.liked {
+        background: rgba(239,68,68,0.1);
+        border-color: #EF4444;
+        color: #EF4444;
+    }
+    .nf-like-btn i { font-size: 0.85rem; }
+    .nf-read-more {
+        display: flex;
+        align-items: center;
+        gap: 0.35rem;
+        font-size: 0.8rem;
+        font-weight: 600;
+        font-family: var(--font-heading, 'Space Grotesk', sans-serif);
+        color: var(--nf-accent);
+        text-decoration: none;
+        margin-left: auto;
+        transition: opacity 0.2s;
+    }
+    .nf-read-more:hover {
+        opacity: 0.8;
+        text-decoration: none;
+        color: var(--nf-accent);
+    }
+
+    /* ---- SIDEBAR ---- */
+    .nf-sidebar-widget {
+        background: var(--bg-card);
+        border: 1px solid var(--border-color);
+        border-radius: 16px;
+        padding: 1.25rem 1.4rem;
+        margin-bottom: 1.25rem;
+        box-shadow: 0 2px 10px var(--shadow-color, rgba(0,0,0,0.06));
+    }
+    .nf-widget-title {
+        font-family: var(--font-heading, 'Space Grotesk', sans-serif);
+        font-size: 0.88rem;
+        font-weight: 700;
+        color: var(--text-primary);
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+        margin: 0 0 1rem 0;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+    .nf-widget-title i { color: var(--nf-accent); font-size: 0.9rem; }
+
+    /* Trending tags */
+    .nf-trending-tags {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+    }
+    .nf-trending-tag {
+        font-size: 0.78rem;
+        font-weight: 600;
+        color: var(--nf-accent);
+        background: var(--nf-accent-light);
+        padding: 0.3rem 0.75rem;
+        border-radius: 999px;
+        font-family: var(--font-heading, 'Space Grotesk', sans-serif);
+        cursor: pointer;
+        border: 1px solid rgba(139,92,246,0.2);
+        transition: all 0.2s;
+    }
+    .nf-trending-tag:hover {
+        background: var(--nf-accent);
+        color: #fff;
+        border-color: var(--nf-accent);
+    }
+    .nf-tag-count {
+        font-size: 0.68rem;
+        opacity: 0.7;
+        margin-left: 0.25rem;
+    }
+
+    /* Funding rounds widget */
+    .nf-round-item {
+        display: flex;
+        flex-direction: column;
+        gap: 0.15rem;
+        padding: 0.75rem 0;
+        border-bottom: 1px solid var(--border-color);
+    }
+    .nf-round-item:last-child { border-bottom: none; padding-bottom: 0; }
+    .nf-round-item:first-child { padding-top: 0; }
+    .nf-round-startup {
+        font-family: var(--font-heading, 'Space Grotesk', sans-serif);
+        font-size: 0.87rem;
+        font-weight: 700;
+        color: var(--text-primary);
+    }
+    .nf-round-details {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        flex-wrap: wrap;
+    }
+    .nf-round-amount {
+        font-size: 0.8rem;
+        font-weight: 700;
+        color: #10B981;
+    }
+    .nf-round-type {
+        font-size: 0.72rem;
+        color: var(--text-muted, var(--text-secondary));
+        background: rgba(0,0,0,0.07);
+        padding: 0.15rem 0.5rem;
+        border-radius: 6px;
+    }
+    .nf-round-date {
+        font-size: 0.72rem;
+        color: var(--text-muted, var(--text-secondary));
+    }
+
+    /* Appels à projets widget */
+    .nf-appel-item {
+        padding: 0.75rem 0;
+        border-bottom: 1px solid var(--border-color);
+    }
+    .nf-appel-item:last-child { border-bottom: none; padding-bottom: 0; }
+    .nf-appel-item:first-child { padding-top: 0; }
+    .nf-appel-title {
+        font-family: var(--font-heading, 'Space Grotesk', sans-serif);
+        font-size: 0.85rem;
+        font-weight: 700;
+        color: var(--text-primary);
+        margin-bottom: 0.3rem;
+        line-height: 1.4;
+    }
+    .nf-appel-org {
+        font-size: 0.76rem;
+        color: var(--text-muted, var(--text-secondary));
+        margin-bottom: 0.5rem;
+    }
+    .nf-appel-link {
+        font-size: 0.77rem;
+        font-weight: 600;
+        color: var(--nf-accent);
+        text-decoration: none;
+        font-family: var(--font-heading, 'Space Grotesk', sans-serif);
+        display: inline-flex;
+        align-items: center;
+        gap: 0.3rem;
+        transition: opacity 0.2s;
+    }
+    .nf-appel-link:hover { opacity: 0.75; text-decoration: none; color: var(--nf-accent); }
+
+    /* Empty state */
+    .nf-empty {
+        text-align: center;
+        padding: 3rem 1rem;
+        color: var(--text-muted, var(--text-secondary));
+        font-size: 0.9rem;
+    }
+    .nf-empty i { font-size: 2rem; margin-bottom: 0.75rem; opacity: 0.4; display: block; }
+</style>
+
+<div class="newsfeed-wrapper" id="main-content">
+
+    <!-- Page header -->
+    <div class="nf-page-header">
+        <h1>
+            <i class="fas fa-rss nf-icon"></i>
+            Newsfeed
+        </h1>
+        <p>Actualités, posts membres et opportunités de l'écosystème startup marocain</p>
+    </div>
+
+    <div class="nf-layout">
+
+        <!-- ===================== LEFT COLUMN ===================== -->
+        <div class="nf-main-col">
+
+            <!-- Post creation box -->
+            <div class="nf-create-box">
+                <div class="nf-create-box-header">
+                    <div class="nf-avatar" aria-hidden="true">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <div class="nf-avatar-placeholder">Partagez quelque chose avec l'écosystème</div>
+                </div>
+                <form method="POST" action="/newsfeed/post">
+                    <textarea
+                        class="nf-create-textarea"
+                        name="content"
+                        placeholder="Quoi de neuf dans l'écosystème ?"
+                        maxlength="2000"
+                        required
+                    ></textarea>
+                    <div class="nf-create-meta">
+                        <input type="text" name="author_name" placeholder="Votre nom" maxlength="100">
+                        <input type="text" name="author_role" placeholder="Votre rôle / startup" maxlength="100">
+                        <input type="text" name="tags" placeholder="Tags (ex: fintech,rabat)" maxlength="255">
+                        <select class="nf-type-select" name="post_type">
+                            <option value="post">Post</option>
+                            <option value="announcement">Annonce</option>
+                            <option value="question">Question</option>
+                            <option value="opportunity">Opportunité</option>
+                        </select>
+                    </div>
+                    <div class="nf-create-footer">
+                        <button type="submit" class="nf-submit-btn">
+                            <i class="fas fa-paper-plane"></i>
+                            Publier
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Tabs -->
+            <div class="nf-tabs" role="tablist" aria-label="Filtrer le fil d'actualité">
+                <button class="nf-tab active" role="tab" aria-selected="true" data-filter="all">
+                    <i class="fas fa-border-all"></i> Tout
+                </button>
+                <button class="nf-tab" role="tab" aria-selected="false" data-filter="article">
+                    <i class="fas fa-newspaper"></i> Actualités
+                </button>
+                <button class="nf-tab" role="tab" aria-selected="false" data-filter="post">
+                    <i class="fas fa-users"></i> Posts membres
+                </button>
+                <button class="nf-tab" role="tab" aria-selected="false" data-filter="opportunity">
+                    <i class="fas fa-bullhorn"></i> Opportunités
+                </button>
+            </div>
+
+            <!-- Feed -->
+            <div id="nf-feed">
+                {% for item in feed_items %}
+                {% set obj = item.obj %}
+
+                {% if item.type == 'post' %}
+                {# ---- MEMBER POST CARD ---- #}
+                <div class="nf-card"
+                     data-filter-type="{{ obj.post_type }}"
+                     data-item-type="post"
+                     role="article"
+                     aria-label="Post de {{ obj.author_name }}">
+
+                    <div class="nf-card-header">
+                        <div class="nf-avatar sm" aria-hidden="true">
+                            {{ (obj.author_name or 'M')[:2] | upper }}
+                        </div>
+                        <div class="nf-card-author">
+                            <p class="nf-card-author-name">{{ obj.author_name or 'Membre anonyme' }}</p>
+                            <p class="nf-card-author-role">{{ obj.author_role or 'Membre de l\'écosystème' }}</p>
+                        </div>
+                        <div style="display:flex; flex-direction:column; align-items:flex-end; gap:0.35rem;">
+                            {% if obj.post_type == 'post' %}
+                            <span class="nf-type-badge nf-type-post"><i class="fas fa-pen-nib"></i> Post</span>
+                            {% elif obj.post_type == 'announcement' %}
+                            <span class="nf-type-badge nf-type-announcement"><i class="fas fa-megaphone"></i> Annonce</span>
+                            {% elif obj.post_type == 'question' %}
+                            <span class="nf-type-badge nf-type-question"><i class="fas fa-circle-question"></i> Question</span>
+                            {% elif obj.post_type == 'opportunity' %}
+                            <span class="nf-type-badge nf-type-opportunity"><i class="fas fa-briefcase"></i> Opportunité</span>
+                            {% endif %}
+                            <span class="nf-card-time">
+                                {% if item.date %}
+                                    {{ item.date.strftime('%d %b %Y, %H:%M') }}
+                                {% endif %}
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="nf-card-content">{{ obj.content }}</div>
+
+                    {% if obj.link_url %}
+                    <a href="{{ obj.link_url }}" class="nf-card-link" target="_blank" rel="noopener noreferrer">
+                        <i class="fas fa-link"></i>
+                        {{ obj.link_title or obj.link_url }}
+                    </a>
+                    {% endif %}
+
+                    {% if obj.tags %}
+                    <div class="nf-tags">
+                        {% for tag in obj.tags.split(',') %}
+                        {% if tag.strip() %}
+                        <span class="nf-tag">#{{ tag.strip() }}</span>
+                        {% endif %}
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+
+                    <div class="nf-card-footer">
+                        <button class="nf-like-btn"
+                                data-post-id="{{ obj.post_id }}"
+                                onclick="likePost(this, {{ obj.post_id }})"
+                                aria-label="J'aime ce post">
+                            <i class="fas fa-heart"></i>
+                            <span class="like-count">{{ obj.likes_count or 0 }}</span>
+                        </button>
+                        {% if obj.comments_count and obj.comments_count > 0 %}
+                        <span style="font-size:0.78rem; color:var(--text-muted); display:flex; align-items:center; gap:0.35rem;">
+                            <i class="fas fa-comment-dots"></i> {{ obj.comments_count }}
+                        </span>
+                        {% endif %}
+                        <button class="nf-msg-btn" onclick="openDM({{ obj.post_id }}, '{{ obj.author_name|replace("'", "\\'") }}', '{{ (obj.author_role or '')|replace("'", "\\'") }}')" aria-label="Envoyer un message">
+                            <i class="fas fa-paper-plane"></i> Message
+                        </button>
+                    </div>
+                </div>
+
+                {% else %}
+                {# ---- ARTICLE CARD ---- #}
+                <div class="nf-card"
+                     data-filter-type="article"
+                     data-item-type="article"
+                     role="article"
+                     aria-label="Article: {{ obj.title }}">
+
+                    <div class="nf-card-header">
+                        <div class="nf-avatar sm" style="background: linear-gradient(135deg, #00d4aa, #0099cc);" aria-hidden="true">
+                            <i class="fas fa-newspaper" style="font-size:0.75rem;"></i>
+                        </div>
+                        <div class="nf-card-author">
+                            <p class="nf-card-author-name">{{ obj.author or obj.source or 'The Pulse' }}</p>
+                            <p class="nf-card-author-role">{{ obj.source or 'Actualités curatées' }}</p>
+                        </div>
+                        <div style="display:flex; flex-direction:column; align-items:flex-end; gap:0.35rem;">
+                            <span class="nf-type-badge nf-type-article"><i class="fas fa-bookmark"></i> Actualité</span>
+                            <span class="nf-card-time">
+                                {% if item.date %}
+                                    {{ item.date.strftime('%d %b %Y') }}
+                                {% endif %}
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="nf-card-content" style="font-weight:600; font-size:0.95rem; margin-bottom:0.5rem;">
+                        {{ obj.title }}
+                    </div>
+
+                    {% if obj.summary %}
+                    <div class="nf-card-content article-content" style="font-weight:400; margin-top:0; font-size:0.88rem; color:var(--text-muted, var(--text-secondary));">
+                        {{ obj.summary }}
+                    </div>
+                    {% endif %}
+
+                    {% if obj.source_url %}
+                    <a href="{{ obj.source_url }}" class="nf-card-link" target="_blank" rel="noopener noreferrer">
+                        <i class="fas fa-external-link-alt"></i>
+                        Lire l'article complet
+                    </a>
+                    {% endif %}
+
+                    {% if obj.tags %}
+                    <div class="nf-tags">
+                        {% for tag in obj.tags.split(',') %}
+                        {% if tag.strip() %}
+                        <span class="nf-tag">#{{ tag.strip() }}</span>
+                        {% endif %}
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+
+                    <div class="nf-card-footer">
+                        {% if obj.category %}
+                        <span style="font-size:0.75rem; color:var(--text-muted); background:rgba(0,212,170,0.1); padding:0.2rem 0.55rem; border-radius:6px; font-weight:600;">
+                            {{ obj.category }}
+                        </span>
+                        {% endif %}
+                        <a href="/actualites" class="nf-read-more" aria-label="Voir toutes les actualités">
+                            Voir les actualités <i class="fas fa-arrow-right"></i>
+                        </a>
+                    </div>
+                </div>
+                {% endif %}
+
+                {% else %}
+                <div class="nf-empty">
+                    <i class="fas fa-stream"></i>
+                    <p>Aucun contenu pour l'instant. Soyez le premier à publier !</p>
+                </div>
+                {% endfor %}
+            </div>
+
+        </div>
+        <!-- ===================== END LEFT COLUMN ===================== -->
+
+        <!-- ===================== RIGHT SIDEBAR ===================== -->
+        <aside class="nf-sidebar">
+
+            <!-- Trending tags -->
+            <div class="nf-sidebar-widget">
+                <h3 class="nf-widget-title">
+                    <i class="fas fa-fire"></i>
+                    Tendances
+                </h3>
+                {% if trending_tags %}
+                <div class="nf-trending-tags">
+                    {% for tag, count in trending_tags %}
+                    <span class="nf-trending-tag" onclick="filterByTag('{{ tag }}')">
+                        #{{ tag }}<span class="nf-tag-count">{{ count }}</span>
+                    </span>
+                    {% endfor %}
+                </div>
+                {% else %}
+                <p style="font-size:0.82rem; color:var(--text-muted);">Aucune tendance pour l'instant.</p>
+                {% endif %}
+            </div>
+
+            <!-- Recent funding rounds -->
+            <div class="nf-sidebar-widget">
+                <h3 class="nf-widget-title">
+                    <i class="fas fa-chart-line"></i>
+                    Dernières levées de fonds
+                </h3>
+                {% if recent_rounds %}
+                {% for round in recent_rounds %}
+                <div class="nf-round-item">
+                    <div class="nf-round-startup">{{ round.startup_name or 'Startup' }}</div>
+                    <div class="nf-round-details">
+                        {% if round.raised_amount_usd %}
+                        <span class="nf-round-amount">
+                            ${{ '{:,.0f}'.format(round.raised_amount_usd | float) }}
+                        </span>
+                        {% endif %}
+                        {% if round.round_name %}
+                        <span class="nf-round-type">{{ round.round_name }}</span>
+                        {% endif %}
+                        {% if round.date %}
+                        <span class="nf-round-date">{{ round.date }}</span>
+                        {% endif %}
+                    </div>
+                </div>
+                {% endfor %}
+                <a href="/funding-rounds" style="display:inline-flex; align-items:center; gap:0.35rem; font-size:0.78rem; font-weight:600; color:var(--nf-accent); text-decoration:none; margin-top:0.5rem;">
+                    Voir tous les tours <i class="fas fa-arrow-right" style="font-size:0.7rem;"></i>
+                </a>
+                {% else %}
+                <p style="font-size:0.82rem; color:var(--text-muted);">Aucune donnée disponible.</p>
+                {% endif %}
+            </div>
+
+            <!-- Appels à projets -->
+            <div class="nf-sidebar-widget">
+                <h3 class="nf-widget-title">
+                    <i class="fas fa-bullhorn"></i>
+                    Appels à projets actifs
+                </h3>
+                {% if appels_projets %}
+                {% for appel in appels_projets %}
+                <div class="nf-appel-item">
+                    <div class="nf-appel-title">{{ appel.title }}</div>
+                    {% if appel.organization %}
+                    <div class="nf-appel-org">
+                        <i class="fas fa-building" style="font-size:0.7rem;"></i>
+                        {{ appel.organization }}
+                    </div>
+                    {% endif %}
+                    {% if appel.url %}
+                    <a href="{{ appel.url }}" class="nf-appel-link" target="_blank" rel="noopener noreferrer">
+                        Candidater <i class="fas fa-external-link-alt" style="font-size:0.65rem;"></i>
+                    </a>
+                    {% else %}
+                    <a href="/ressources" class="nf-appel-link">
+                        En savoir plus <i class="fas fa-arrow-right" style="font-size:0.65rem;"></i>
+                    </a>
+                    {% endif %}
+                </div>
+                {% endfor %}
+                <a href="/ressources" style="display:inline-flex; align-items:center; gap:0.35rem; font-size:0.78rem; font-weight:600; color:var(--nf-accent); text-decoration:none; margin-top:0.5rem;">
+                    Toutes les ressources <i class="fas fa-arrow-right" style="font-size:0.7rem;"></i>
+                </a>
+                {% else %}
+                <p style="font-size:0.82rem; color:var(--text-muted);">Aucun appel à projet actif.</p>
+                <a href="/ressources" style="display:inline-flex; align-items:center; gap:0.35rem; font-size:0.78rem; font-weight:600; color:var(--nf-accent); text-decoration:none; margin-top:0.25rem;">
+                    Voir les ressources <i class="fas fa-arrow-right" style="font-size:0.7rem;"></i>
+                </a>
+                {% endif %}
+            </div>
+
+            <!-- About widget -->
+            <div class="nf-sidebar-widget" style="text-align:center; padding: 1.5rem 1.25rem;">
+                <div style="
+                    width: 52px; height: 52px;
+                    border-radius: 50%;
+                    background: linear-gradient(135deg, var(--nf-accent), #6D28D9);
+                    display: flex; align-items: center; justify-content: center;
+                    margin: 0 auto 0.75rem;
+                    font-size: 1.3rem; color: #fff;
+                " aria-hidden="true">
+                    <i class="fas fa-rocket"></i>
+                </div>
+                <p style="font-family:var(--font-heading); font-size:0.88rem; font-weight:700; color:var(--text-primary); margin:0 0 0.4rem 0;">
+                    Rejoignez l'écosystème
+                </p>
+                <p style="font-size:0.78rem; color:var(--text-muted); line-height:1.5; margin:0 0 1rem 0;">
+                    Startup, investisseur ou talent — faites partie de la communauté The Pulse.
+                </p>
+                <a href="/join" style="
+                    display: inline-flex; align-items: center; gap: 0.4rem;
+                    background: linear-gradient(135deg, var(--nf-accent), #6D28D9);
+                    color: #fff; text-decoration: none;
+                    font-family: var(--font-heading); font-size: 0.82rem; font-weight: 600;
+                    padding: 0.5rem 1.2rem; border-radius: 10px;
+                    transition: opacity 0.2s;
+                ">
+                    <i class="fas fa-bolt"></i> Rejoindre
+                </a>
+            </div>
+
+        </aside>
+        <!-- ===================== END SIDEBAR ===================== -->
+
+    </div>
+</div>
+
+<!-- ===== DM MODAL ===== -->
+<div class="dm-overlay" id="dmOverlay" onclick="closeDMIfOutside(event)">
+    <div class="dm-panel" id="dmPanel">
+        <div class="dm-panel-header">
+            <div class="dm-panel-header-left">
+                <div class="dm-to-avatar" id="dmToAvatar">--</div>
+                <div class="dm-to-info">
+                    <p class="dm-to-name" id="dmToName">—</p>
+                    <p class="dm-to-role" id="dmToRole">—</p>
+                </div>
+            </div>
+            <button class="dm-close-btn" onclick="closeDM()" aria-label="Fermer"><i class="fas fa-times"></i></button>
+        </div>
+        <div class="dm-panel-body" id="dmBody">
+            <input  class="dm-input"    id="dmFromName"  type="text"  placeholder="Votre nom" maxlength="100">
+            <input  class="dm-input"    id="dmFromEmail" type="email" placeholder="Votre email (optionnel)" maxlength="255">
+            <textarea class="dm-textarea" id="dmMessage" placeholder="Écrivez votre message…" maxlength="1000"></textarea>
+            <button class="dm-send-btn" onclick="sendDM()">
+                <i class="fas fa-paper-plane"></i> Envoyer
+            </button>
+        </div>
+        <div class="dm-success" id="dmSuccess">
+            <i class="fas fa-check-circle"></i>
+            <span id="dmSuccessText">Message envoyé !</span>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+// ---- TABS ----
+document.querySelectorAll('.nf-tab').forEach(function(tab) {
+    tab.addEventListener('click', function() {
+        document.querySelectorAll('.nf-tab').forEach(function(t) {
+            t.classList.remove('active');
+            t.setAttribute('aria-selected', 'false');
+        });
+        this.classList.add('active');
+        this.setAttribute('aria-selected', 'true');
+
+        var filter = this.getAttribute('data-filter');
+        document.querySelectorAll('#nf-feed .nf-card').forEach(function(card) {
+            if (filter === 'all') {
+                card.style.display = '';
+            } else if (filter === 'article') {
+                card.style.display = (card.getAttribute('data-item-type') === 'article') ? '' : 'none';
+            } else if (filter === 'post') {
+                card.style.display = (card.getAttribute('data-item-type') === 'post') ? '' : 'none';
+            } else if (filter === 'opportunity') {
+                card.style.display = (
+                    card.getAttribute('data-filter-type') === 'opportunity'
+                ) ? '' : 'none';
+            } else {
+                card.style.display = (card.getAttribute('data-filter-type') === filter) ? '' : 'none';
+            }
+        });
+    });
+});
+
+// ---- LIKE ----
+function likePost(btn, postId) {
+    if (btn.classList.contains('liked')) return;
+    btn.classList.add('liked');
+    fetch('/newsfeed/like/' + postId, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'X-Requested-With': 'XMLHttpRequest' }
+    })
+    .then(function(r) { return r.json(); })
+    .then(function(data) {
+        var span = btn.querySelector('.like-count');
+        if (span) span.textContent = data.likes;
+    })
+    .catch(function() {
+        btn.classList.remove('liked');
+    });
+}
+
+// ---- DIRECT MESSAGE ----
+var _dmPostId = null;
+function openDM(postId, authorName, authorRole) {
+    _dmPostId = postId;
+    document.getElementById('dmToAvatar').textContent = authorName.split(' ').map(function(w){return w[0]||'';}).join('').substring(0,2).toUpperCase();
+    document.getElementById('dmToName').textContent  = authorName;
+    document.getElementById('dmToRole').textContent  = authorRole || 'Membre de l\'écosystème';
+    document.getElementById('dmBody').style.display    = 'flex';
+    document.getElementById('dmSuccess').style.display = 'none';
+    document.getElementById('dmMessage').value = '';
+    document.getElementById('dmOverlay').classList.add('open');
+    setTimeout(function(){ document.getElementById('dmMessage').focus(); }, 250);
+}
+function closeDM() {
+    document.getElementById('dmOverlay').classList.remove('open');
+    _dmPostId = null;
+}
+function closeDMIfOutside(e) {
+    if (e.target === document.getElementById('dmOverlay')) closeDM();
+}
+function sendDM() {
+    if (!_dmPostId) return;
+    var msg = document.getElementById('dmMessage').value.trim();
+    if (!msg) { document.getElementById('dmMessage').focus(); return; }
+    var body = new FormData();
+    body.append('from_name',  document.getElementById('dmFromName').value.trim()  || 'Anonyme');
+    body.append('from_email', document.getElementById('dmFromEmail').value.trim());
+    body.append('message',    msg);
+    fetch('/newsfeed/message/' + _dmPostId, { method: 'POST', body: body })
+    .then(function(r){ return r.json(); })
+    .then(function(data){
+        if (data.ok) {
+            document.getElementById('dmBody').style.display    = 'none';
+            document.getElementById('dmSuccessText').textContent = 'Message envoyé à ' + data.to + ' !';
+            document.getElementById('dmSuccess').style.display = 'flex';
+            setTimeout(closeDM, 2200);
+        }
+    })
+    .catch(function(){ alert('Erreur lors de l\'envoi.'); });
+}
+
+// ---- FILTER BY TAG (sidebar) ----
+function filterByTag(tag) {
+    document.querySelectorAll('.nf-tab').forEach(function(t) {
+        t.classList.remove('active');
+        t.setAttribute('aria-selected', 'false');
+    });
+    var allTab = document.querySelector('.nf-tab[data-filter="all"]');
+    if (allTab) {
+        allTab.classList.add('active');
+        allTab.setAttribute('aria-selected', 'true');
+    }
+    document.querySelectorAll('#nf-feed .nf-card').forEach(function(card) {
+        var filterType = card.getAttribute('data-filter-type') || '';
+        var tagsStr = '';
+        card.querySelectorAll('.nf-tag').forEach(function(t) {
+            tagsStr += ' ' + t.textContent.replace('#', '').trim();
+        });
+        card.style.display = tagsStr.toLowerCase().indexOf(tag.toLowerCase()) !== -1 ? '' : 'none';
+    });
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+</script>
+{% endblock %}

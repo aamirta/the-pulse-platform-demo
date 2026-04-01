@@ -1,0 +1,284 @@
+{% extends "base.html" %}
+
+{% block title %}Ressources - The Pulse{% endblock %}
+
+{% block content %}
+<style>
+    .page-header {
+        background: linear-gradient(135deg, rgba(0, 212, 170, 0.12) 0%, rgba(247, 183, 49, 0.08) 100%);
+        padding: 3rem 0 2rem 0;
+        margin-bottom: 2rem;
+        border-radius: 20px;
+        position: relative;
+        overflow: hidden;
+        border: 1px solid var(--border-color);
+    }
+    .page-header::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="dots" width="20" height="20" patternUnits="userSpaceOnUse"><circle cx="10" cy="10" r="1" fill="%23ffffff" opacity="0.05"/></pattern></defs><rect width="100" height="100" fill="url(%23dots)"/></svg>');
+        pointer-events: none;
+    }
+    .page-title {
+        font-family: var(--font-heading); font-weight: 700; font-size: 2rem; margin-bottom: 0.5rem;
+        background: linear-gradient(135deg, #00d4aa, #f7b731);
+        -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+        position: relative; z-index: 2;
+    }
+    .page-subtitle { color: var(--text-secondary); font-size: 1.1rem; position: relative; z-index: 2; }
+    .header-actions { display: flex; gap: 1rem; margin-top: 1.5rem; position: relative; z-index: 2; }
+    .btn-add-resource {
+        display: inline-flex; align-items: center; gap: 0.5rem;
+        padding: 0.75rem 1.5rem;
+        background: linear-gradient(135deg, #00d4aa, #00b894);
+        color: #fff; border: none; border-radius: 12px;
+        font-family: var(--font-heading); font-weight: 600; font-size: 0.95rem;
+        text-decoration: none; transition: all 0.2s ease;
+    }
+    .btn-add-resource:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0, 212, 170, 0.3); color: #fff; }
+
+    /* Stats */
+    .stats-bar {
+        background: var(--bg-card); border-radius: 16px; padding: 1.5rem;
+        margin-bottom: 2rem; border: 1px solid var(--border-color);
+        display: flex; align-items: center; justify-content: center; gap: 2rem; flex-wrap: wrap;
+    }
+    .stat-item { text-align: center; }
+    .stat-number { font-family: var(--font-heading); font-size: 2rem; font-weight: 700; color: #00d4aa; line-height: 1.2; }
+    .stat-number.orange { color: #f7b731; }
+    .stat-number.blue { color: #4361ee; }
+    .stat-label { color: var(--text-secondary); font-size: 0.85rem; font-weight: 500; text-transform: uppercase; letter-spacing: 0.5px; }
+
+    /* Search */
+    .search-filters-bar {
+        background: var(--bg-card); border-radius: 16px; padding: 1.25rem 1.5rem;
+        margin-bottom: 1.5rem; border: 1px solid var(--border-color);
+        display: flex; align-items: center; gap: 1rem; flex-wrap: wrap;
+    }
+    .search-input-wrapper { flex: 1; min-width: 250px; position: relative; }
+    .search-input-wrapper i { position: absolute; left: 1rem; top: 50%; transform: translateY(-50%); color: var(--text-muted); }
+    .search-input {
+        width: 100%; padding: 0.7rem 1rem 0.7rem 2.5rem;
+        border: 1px solid var(--border-color); border-radius: 10px;
+        background: var(--bg-card); color: var(--text-primary);
+        font-family: var(--font-body); font-size: 0.9rem; outline: none;
+    }
+    .search-input:focus { border-color: #00d4aa; }
+    .search-btn {
+        background: linear-gradient(135deg, #00d4aa, #00b894); color: #fff;
+        border: none; padding: 0.7rem 1.5rem; border-radius: 10px;
+        font-family: var(--font-heading); font-size: 0.9rem; font-weight: 600; cursor: pointer;
+    }
+
+    /* Category Tabs */
+    .filter-tabs { display: flex; gap: 0.5rem; margin-bottom: 1.5rem; flex-wrap: wrap; }
+    .filter-tab {
+        padding: 0.5rem 1.1rem; border-radius: 10px; font-size: 0.85rem; font-weight: 500;
+        color: var(--text-secondary); background: var(--bg-card); border: 1px solid var(--border-color);
+        text-decoration: none; transition: all 0.2s ease; cursor: pointer;
+    }
+    .filter-tab:hover { border-color: #00d4aa; color: #00d4aa; }
+    .filter-tab.active { background: linear-gradient(135deg, #00d4aa, #00b894); color: #fff; border-color: #00d4aa; }
+
+    /* Resources Grid */
+    .resources-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; }
+    .resource-card {
+        background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 14px;
+        padding: 1.5rem; transition: all 0.25s ease; position: relative; overflow: hidden;
+        display: flex; flex-direction: column;
+    }
+    .resource-card::before {
+        content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+        background: linear-gradient(135deg, #00d4aa, #f7b731); opacity: 0; transition: opacity 0.25s ease;
+    }
+    .resource-card:hover { transform: translateY(-4px); box-shadow: 0 12px 40px rgba(0,0,0,0.15); }
+    .resource-card:hover::before { opacity: 1; }
+
+    .resource-icon {
+        width: 44px; height: 44px; border-radius: 12px;
+        display: flex; align-items: center; justify-content: center;
+        font-size: 1.1rem; margin-bottom: 1rem;
+    }
+    .resource-icon.pdf { background: rgba(239, 68, 68, 0.1); color: #ef4444; }
+    .resource-icon.link { background: rgba(67, 97, 238, 0.1); color: #4361ee; }
+    .resource-icon.guide { background: rgba(0, 212, 170, 0.1); color: #00d4aa; }
+    .resource-icon.video { background: rgba(249, 115, 22, 0.1); color: #f97316; }
+
+    .resource-category {
+        display: inline-flex; align-items: center; padding: 0.2rem 0.6rem;
+        border-radius: 6px; font-size: 0.72rem; font-weight: 500;
+        margin-bottom: 0.75rem; width: fit-content;
+    }
+    .resource-category.politique { background: rgba(139, 92, 246, 0.08); color: #8b5cf6; }
+    .resource-category.dispositif { background: rgba(0, 212, 170, 0.1); color: #00d4aa; }
+    .resource-category.guide { background: rgba(67, 97, 238, 0.1); color: #4361ee; }
+    .resource-category.appel { background: rgba(247, 183, 49, 0.1); color: #f7b731; }
+
+    .resource-title {
+        font-family: var(--font-heading); font-weight: 600; font-size: 1rem;
+        color: var(--text-primary); margin-bottom: 0.5rem; line-height: 1.4;
+    }
+    .resource-description {
+        color: var(--text-secondary); font-size: 0.82rem; line-height: 1.6; margin-bottom: 1rem;
+        flex: 1;
+        display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;
+    }
+    .resource-org {
+        display: flex; align-items: center; gap: 0.4rem;
+        font-size: 0.78rem; color: var(--text-muted); margin-bottom: 0.75rem;
+    }
+    .resource-org i { color: #00d4aa; }
+
+    .resource-footer {
+        display: flex; align-items: center; justify-content: space-between;
+        padding-top: 0.75rem; border-top: 1px solid var(--border-color);
+    }
+    .resource-type-badge {
+        display: inline-flex; align-items: center; gap: 0.3rem;
+        padding: 0.2rem 0.6rem; border-radius: 6px;
+        font-size: 0.72rem; font-weight: 500;
+        background: var(--bg-card-hover); color: var(--text-secondary);
+    }
+    .resource-link {
+        color: #00d4aa; text-decoration: none; font-weight: 500; font-size: 0.82rem;
+        display: flex; align-items: center; gap: 0.3rem; transition: color 0.2s;
+    }
+    .resource-link:hover { color: #4361ee; }
+
+    .section-heading { font-family: var(--font-heading); font-weight: 700; color: var(--text-primary); margin-bottom: 1.25rem; font-size: 1.2rem; }
+    .empty-state { text-align: center; padding: 4rem 2rem; grid-column: 1 / -1; }
+    .empty-state i { font-size: 3rem; color: var(--text-muted); margin-bottom: 1rem; }
+    .empty-state h3 { font-family: var(--font-heading); color: var(--text-primary); margin-bottom: 0.5rem; }
+    .empty-state p { color: var(--text-secondary); }
+
+    @media (max-width: 1200px) { .resources-grid { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 768px) {
+        .resources-grid { grid-template-columns: 1fr; }
+        .search-filters-bar { flex-direction: column; }
+        .search-input-wrapper { min-width: 100%; }
+    }
+</style>
+
+<!-- Page Header -->
+<div class="page-header">
+    <div class="container">
+        <h1 class="page-title"><i class="fas fa-book-open"></i> <span data-i18n="res_title">Ressources</span></h1>
+        <p class="page-subtitle" data-i18n="res_subtitle">Policies, support programs, guides, and resources for entrepreneurs</p>
+        <div class="header-actions">
+            <a href="{{ url_for('resource_form') }}" class="btn-add-resource">
+                <i class="fas fa-plus"></i> <span data-i18n="res_add">Add Resource</span>
+            </a>
+        </div>
+    </div>
+</div>
+
+<!-- Stats -->
+<div class="container">
+    <div class="stats-bar">
+        <div class="stat-item">
+            <div class="stat-number">{{ resources|length }}</div>
+            <div class="stat-label" data-i18n="res_resources">Resources</div>
+        </div>
+        <div class="stat-item">
+            <div class="stat-number orange">
+                {% set categories = resources|map(attribute='category')|select('string')|unique|list %}
+                {{ categories|length }}
+            </div>
+            <div class="stat-label" data-i18n="res_categories">Categories</div>
+        </div>
+        <div class="stat-item">
+            <div class="stat-number blue">
+                {% set orgs = resources|map(attribute='organization')|select('string')|unique|list %}
+                {{ orgs|length }}
+            </div>
+            <div class="stat-label" data-i18n="res_orgs">Organizations</div>
+        </div>
+    </div>
+</div>
+
+<!-- Search -->
+<div class="container">
+    <form action="{{ url_for('ressources') }}" method="GET">
+        <div class="search-filters-bar">
+            <div class="search-input-wrapper">
+                <i class="fas fa-search"></i>
+                <input type="text" class="search-input" name="search" value="{{ search }}" placeholder="Search resources, organizations, topics..." data-i18n-placeholder="res_search_ph">
+            </div>
+            <input type="hidden" name="category" value="{{ selected_category }}">
+            <button type="submit" class="search-btn"><i class="fas fa-search"></i> <span data-i18n="res_search">Search</span></button>
+        </div>
+    </form>
+
+    <div class="filter-tabs">
+        <a href="{{ url_for('ressources', search=search) }}" class="filter-tab {% if not selected_category %}active{% endif %}" data-i18n="res_all">All</a>
+        <a href="{{ url_for('ressources', search=search, category='Politiques publiques') }}" class="filter-tab {% if selected_category == 'Politiques publiques' %}active{% endif %}" data-i18n="res_politique">Politiques publiques</a>
+        <a href="{{ url_for('ressources', search=search, category='Dispositifs d appui') }}" class="filter-tab {% if selected_category == 'Dispositifs d appui' %}active{% endif %}" data-i18n="res_dispositif">Dispositifs d'appui</a>
+        <a href="{{ url_for('ressources', search=search, category='Guides pratiques') }}" class="filter-tab {% if selected_category == 'Guides pratiques' %}active{% endif %}" data-i18n="res_guide">Guides pratiques</a>
+        <a href="{{ url_for('ressources', search=search, category='Appels à projets') }}" class="filter-tab {% if selected_category == 'Appels à projets' %}active{% endif %}" data-i18n="res_appel">Appels à projets</a>
+    </div>
+</div>
+
+<!-- Resources Grid -->
+<div class="container">
+    <h2 class="section-heading">
+        {% if resources|length > 0 %}
+            {{ resources|length }} <span data-i18n="res_resources">ressources</span>
+        {% else %}
+            <span data-i18n="res_no_found">Aucune ressource trouv\u00e9e</span>
+        {% endif %}
+    </h2>
+
+    <div class="resources-grid">
+        {% if resources|length > 0 %}
+            {% for resource in resources %}
+            <div class="resource-card">
+                <div class="resource-icon {% if resource.resource_type == 'PDF' %}pdf{% elif resource.resource_type == 'Guide' %}guide{% elif resource.resource_type == 'Vidéo' %}video{% else %}link{% endif %}">
+                    {% if resource.resource_type == 'PDF' %}<i class="fas fa-file-pdf"></i>
+                    {% elif resource.resource_type == 'Guide' %}<i class="fas fa-book"></i>
+                    {% elif resource.resource_type == 'Vidéo' %}<i class="fas fa-video"></i>
+                    {% else %}<i class="fas fa-link"></i>{% endif %}
+                </div>
+
+                {% if resource.category %}
+                <span class="resource-category {% if 'Politiques' in resource.category %}politique{% elif 'Dispositifs' in resource.category %}dispositif{% elif 'Guides' in resource.category %}guide{% else %}appel{% endif %}">
+                    {{ resource.category }}
+                </span>
+                {% endif %}
+
+                <h3 class="resource-title">{{ resource.title }}</h3>
+
+                {% if resource.description %}
+                <p class="resource-description">{{ resource.description }}</p>
+                {% endif %}
+
+                {% if resource.organization %}
+                <div class="resource-org">
+                    <i class="fas fa-building"></i> {{ resource.organization }}
+                </div>
+                {% endif %}
+
+                <div class="resource-footer">
+                    {% if resource.resource_type %}
+                    <span class="resource-type-badge">
+                        <i class="fas fa-tag"></i> {{ resource.resource_type }}
+                    </span>
+                    {% endif %}
+                    {% if resource.url %}
+                    <a href="{{ resource.url }}" target="_blank" class="resource-link">
+                        <span data-i18n="res_access">Access</span> <i class="fas fa-external-link-alt"></i>
+                    </a>
+                    {% endif %}
+                </div>
+            </div>
+            {% endfor %}
+        {% else %}
+            <div class="empty-state">
+                <i class="fas fa-book-open"></i>
+                <h3 data-i18n="res_no_yet">No Resources Yet</h3>
+                <p data-i18n="res_no_yet_msg">Resources about policies and support programs will appear here.</p>
+            </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

@@ -4,873 +4,615 @@
 
 {% block content %}
 <style>
-    /* CSS Variables inherited from base.html */
-    :root {
-        --primary-green: #10B981;
-        --dark-green: #059669;
-        --light-green: #34D399;
-        --accent-blue: #3B82F6;
-        --accent-purple: #8B5CF6;
-        --accent-orange: #F59E0B;
-        --accent-pink: #EC4899;
-        --bg-dark: #0F172A;
-        --bg-card: #1E293B;
-        --bg-card-hover: #334155;
-        --text-light: #F8FAFC;
-        --text-muted: #94A3B8;
-        --border-color: #334155;
-        --gradient-1: linear-gradient(135deg, #10B981, #34D399);
-        --gradient-2: linear-gradient(135deg, #3B82F6, #60A5FA);
-        --gradient-3: linear-gradient(135deg, #8B5CF6, #A78BFA);
-        --gradient-4: linear-gradient(135deg, #F59E0B, #FBBF24);
+    /* ============================================
+       ABOUT US PAGE
+       ============================================ */
+
+    .about-page {
+        padding: 2rem 0 4rem;
+        max-width: 1100px;
+        margin: 0 auto;
+        padding-left: 1.5rem;
+        padding-right: 1.5rem;
     }
 
-    /* Light Mode Variables */
-    [data-theme="light"] {
-        --bg-dark: #F8FAFC;
-        --bg-card: #FFFFFF;
-        --bg-card-hover: #F1F5F9;
-        --text-light: #1E293B;
-        --text-muted: #64748B;
-        --border-color: #E2E8F0;
-        --shadow-color: rgba(0, 0, 0, 0.1);
-    }
-
-    /* Theme Transitions */
-    * {
-        transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
-    }
-
-    /* Hero Section */
-    .hero-section {
-        background: linear-gradient(135deg, rgba(16, 185, 129, 0.1) 0%, rgba(59, 130, 246, 0.1) 100%);
-        padding: 4rem 0;
-        margin-bottom: 4rem;
-        border-radius: 25px;
-        position: relative;
-        overflow: hidden;
-    }
-
-    [data-theme="light"] .hero-section {
-        background: linear-gradient(135deg, rgba(16, 185, 129, 0.05) 0%, rgba(59, 130, 246, 0.05) 100%);
-        border: 1px solid var(--border-color);
-    }
-
-    .hero-section::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grid" width="10" height="10" patternUnits="userSpaceOnUse"><path d="M 10 0 L 0 0 0 10" fill="none" stroke="%23ffffff" stroke-width="0.5" opacity="0.1"/></pattern></defs><rect width="100" height="100" fill="url(%23grid)"/></svg>');
-        opacity: 0.3;
-    }
-
-    .hero-content {
-        position: relative;
-        z-index: 2;
-    }
-
-    .hero-title {
-        font-family: 'Poppins', sans-serif;
-        font-weight: 800;
-        font-size: 3.5rem;
-        line-height: 1.2;
-        margin-bottom: 1.5rem;
-        background: linear-gradient(135deg, #10B981, #34D399, #3B82F6);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        background-clip: text;
-    }
-
-    .hero-subtitle {
-        font-size: 1.4rem;
-        color: var(--text-muted);
-        margin-bottom: 2rem;
-        font-weight: 400;
-        line-height: 1.6;
-    }
-
-    /* Content Cards */
-    .content-card {
-        background: linear-gradient(145deg, var(--bg-card), rgba(51, 65, 85, 0.8));
-        border-radius: 25px;
-        padding: 3rem;
-        backdrop-filter: blur(20px);
-        border: 1px solid rgba(52, 211, 153, 0.1);
-        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-        position: relative;
-        overflow: hidden;
-        margin-bottom: 3rem;
-        height: 100%;
-    }
-
-    [data-theme="light"] .content-card {
-        background: linear-gradient(145deg, var(--bg-card), rgba(248, 250, 252, 0.9));
-        border: 1px solid var(--border-color);
-        box-shadow: 0 10px 30px var(--shadow-color);
-    }
-
-    .content-card::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        height: 4px;
-        background: var(--gradient-1);
-        transform: scaleX(0);
-        transition: transform 0.4s ease;
-    }
-
-    .content-card:hover {
-        transform: translateY(-10px);
-        box-shadow: 0 20px 40px rgba(16, 185, 129, 0.2);
-        border-color: rgba(52, 211, 153, 0.3);
-    }
-
-    .content-card:hover::before {
-        transform: scaleX(1);
-    }
-
-    .card-icon {
-        width: 80px;
-        height: 80px;
-        border-radius: 20px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 2rem;
-        margin-bottom: 2rem;
-        position: relative;
-        overflow: hidden;
-    }
-
-    .card-icon::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background: inherit;
-        opacity: 0.1;
-        border-radius: inherit;
-    }
-
-    .card-title {
-        font-family: 'Poppins', sans-serif;
-        font-size: 1.8rem;
-        font-weight: 700;
-        margin-bottom: 1rem;
-        color: var(--text-light);
-    }
-
-    .card-text {
-        color: var(--text-muted);
-        line-height: 1.7;
-        font-size: 1.1rem;
-        margin-bottom: 1.5rem;
-    }
-
-    /* Organization Section */
-    .org-logo {
-        max-width: 300px;
-        height: auto;
-        border-radius: 15px;
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-        transition: all 0.3s ease;
-        margin-bottom: 2rem;
-    }
-
-    [data-theme="light"] .org-logo {
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-    }
-
-    .org-logo:hover {
-        transform: scale(1.05);
-        box-shadow: 0 15px 40px rgba(16, 185, 129, 0.3);
-    }
-
-    [data-theme="light"] .org-logo:hover {
-        box-shadow: 0 15px 40px rgba(16, 185, 129, 0.2);
-    }
-
-    /* Partners Section */
-    .partners-section {
-        background: linear-gradient(145deg, var(--bg-card), rgba(51, 65, 85, 0.8));
-        border-radius: 25px;
-        padding: 3rem 0;
-        backdrop-filter: blur(20px);
-        border: 1px solid rgba(52, 211, 153, 0.1);
-        margin-bottom: 3rem;
-        position: relative;
-        overflow: hidden;
-    }
-
-    [data-theme="light"] .partners-section {
-        background: linear-gradient(145deg, rgba(255, 255, 255, 0.95), rgba(248, 250, 252, 0.9));
-        border: 1px solid rgba(226, 232, 240, 0.8);
-    }
-
-    .partners-section::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        height: 4px;
-        background: linear-gradient(90deg, var(--primary-green), var(--accent-blue), var(--accent-purple), var(--accent-orange));
-    }
-
-    .partners-title {
-        font-family: 'Poppins', sans-serif;
-        font-size: 2.5rem;
-        font-weight: 700;
+    /* --- Hero Section --- */
+    .about-hero {
         text-align: center;
-        margin-bottom: 1rem;
-        background: linear-gradient(135deg, #10B981, #34D399);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        background-clip: text;
-    }
-
-    [data-theme="light"] .partners-title {
-        background: linear-gradient(135deg, #059669, #10B981);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        background-clip: text;
-    }
-
-    .partners-subtitle {
-        text-align: center;
-        color: var(--text-muted);
-        font-size: 1.2rem;
-        margin-bottom: 3rem;
-    }
-
-    [data-theme="light"] .partners-subtitle {
-        color: #64748B;
-    }
-
-    /* Seamless Scrolling Ticker */
-    .partners-ticker {
-        width: 100%;
-        overflow: hidden;
-        position: relative;
-        height: 120px;
-        display: flex;
-        align-items: center;
-        background: linear-gradient(90deg, transparent 0%, rgba(30, 41, 59, 0.8) 10%, rgba(30, 41, 59, 0.8) 90%, transparent 100%);
-    }
-
-    [data-theme="light"] .partners-ticker {
-        background: linear-gradient(90deg, transparent 0%, rgba(241, 245, 249, 0.9) 10%, rgba(241, 245, 249, 0.9) 90%, transparent 100%);
-    }
-
-    .ticker-content {
-        display: flex;
-        align-items: center;
-        animation: scroll-seamless 30s linear infinite;
-        white-space: nowrap;
-        width: max-content;
-    }
-
-    @keyframes scroll-seamless {
-        0% {
-            transform: translateX(0);
-        }
-        100% {
-            transform: translateX(-50%);
-        }
-    }
-
-    .partner-item {
-        display: inline-flex;
-        align-items: center;
-        margin-right: 4rem;
-        background: rgba(255, 255, 255, 0.05);
-        padding: 1.5rem 2rem;
-        border-radius: 15px;
-        border: 1px solid rgba(255, 255, 255, 0.1);
-        transition: all 0.3s ease;
-        min-width: 300px;
-        justify-content: center;
-        flex-shrink: 0;
-    }
-
-    .partner-item:hover {
-        background: rgba(16, 185, 129, 0.1);
-        border-color: rgba(16, 185, 129, 0.3);
-        transform: scale(1.05);
-    }
-
-    .partner-logo {
-        width: 60px;
-        height: 60px;
-        object-fit: contain;
-        margin-right: 1rem;
-        border-radius: 8px;
-    }
-
-    .partner-name {
-        font-weight: 600;
-        font-size: 1.1rem;
-        color: var(--text-light);
-    }
-
-    /* Features Grid */
-    .features-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-        gap: 2rem;
-        margin: 3rem 0;
-    }
-
-    .feature-item {
-        background: linear-gradient(145deg, var(--bg-card), rgba(51, 65, 85, 0.8));
-        border-radius: 20px;
-        padding: 2rem;
-        text-align: center;
-        transition: all 0.3s ease;
-        border: 1px solid rgba(52, 211, 153, 0.1);
-        position: relative;
-        overflow: hidden;
-    }
-
-    .feature-item::before {
-        content: '';
-        position: absolute;
-        top: -50%;
-        left: -50%;
-        width: 200%;
-        height: 200%;
-        background: linear-gradient(45deg, transparent 40%, rgba(16, 185, 129, 0.1) 50%, transparent 60%);
-        transform: rotate(45deg);
-        transition: all 0.5s ease;
-        opacity: 0;
-    }
-
-    .feature-item:hover::before {
-        opacity: 1;
-        animation: shimmer 1.5s ease-in-out;
-    }
-
-    .feature-item:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 15px 30px rgba(16, 185, 129, 0.2);
-    }
-
-    @keyframes shimmer {
-        0% { transform: translateX(-100%) rotate(45deg); }
-        100% { transform: translateX(100%) rotate(45deg); }
-    }
-
-    .feature-icon {
-        font-size: 2.5rem;
-        margin-bottom: 1rem;
-        background: var(--gradient-1);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        background-clip: text;
-    }
-
-    .feature-title {
-        font-size: 1.3rem;
-        font-weight: 600;
-        margin-bottom: 1rem;
-        color: var(--text-light);
-    }
-
-    .feature-text {
-        color: var(--text-muted);
-        line-height: 1.6;
-    }
-
-    /* Contact CTA */
-    .cta-section {
-        background: linear-gradient(135deg, var(--primary-green), var(--dark-green));
-        border-radius: 25px;
         padding: 4rem 2rem;
-        text-align: center;
+        margin-bottom: 3.5rem;
+        background: var(--bg-card);
+        border: 1px solid var(--border-color);
+        border-radius: 24px;
         position: relative;
         overflow: hidden;
-        margin-top: 4rem;
     }
 
-    .cta-section::before {
+    .about-hero::before {
         content: '';
         position: absolute;
-        top: -50%;
-        left: -50%;
-        width: 200%;
-        height: 200%;
-        background: linear-gradient(45deg, transparent 30%, rgba(255,255,255,0.1) 50%, transparent 70%);
-        animation: rotate 10s linear infinite;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 4px;
+        background: linear-gradient(90deg, var(--accent), var(--secondary), var(--tertiary));
     }
 
-    @keyframes rotate {
-        0% { transform: rotate(0deg); }
-        100% { transform: rotate(360deg); }
+    .about-hero::after {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background: radial-gradient(ellipse at 50% 100%, var(--accent-subtle) 0%, transparent 60%);
+        pointer-events: none;
     }
 
-    .cta-content {
-        position: relative;
-        z-index: 2;
-    }
-
-    .cta-title {
-        font-family: 'Poppins', sans-serif;
-        font-size: 2.5rem;
+    .about-hero h1 {
+        font-family: var(--font-heading);
         font-weight: 700;
-        color: white;
+        font-size: 2.8rem;
+        color: var(--text-primary);
+        margin-bottom: 0.75rem;
+        letter-spacing: -0.03em;
+        position: relative;
+        z-index: 1;
+    }
+
+    .about-hero h1 span {
+        background: linear-gradient(135deg, var(--accent), var(--secondary));
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+    }
+
+    .about-hero p {
+        font-family: var(--font-body);
+        font-size: 1.1rem;
+        color: var(--text-secondary);
+        max-width: 560px;
+        margin: 0 auto;
+        line-height: 1.7;
+        position: relative;
+        z-index: 1;
+    }
+
+    /* --- Section Block --- */
+    .about-section {
+        margin-bottom: 3rem;
+    }
+
+    .section-heading {
         margin-bottom: 1rem;
     }
 
-    .cta-text {
-        font-size: 1.2rem;
-        color: rgba(255, 255, 255, 0.9);
-        margin-bottom: 2rem;
+    .section-heading h2 {
+        font-family: var(--font-heading);
+        font-weight: 700;
+        font-size: 1.6rem;
+        color: var(--text-primary);
+        letter-spacing: -0.02em;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
     }
 
-    .btn-cta {
-        background: white;
-        color: var(--primary-green);
-        border: none;
-        padding: 1rem 2rem;
-        border-radius: 15px;
-        font-weight: 600;
+    .section-heading h2 i {
+        color: var(--accent);
         font-size: 1.1rem;
-        transition: all 0.3s ease;
-        position: relative;
-        overflow: hidden;
     }
 
-    .btn-cta:hover {
-        transform: translateY(-3px);
-        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
-        color: var(--dark-green);
+    .about-text {
+        font-family: var(--font-body);
+        font-size: 0.98rem;
+        color: var(--text-secondary);
+        line-height: 1.75;
+        max-width: 760px;
     }
 
-    /* Responsive Design */
+    .about-text + .about-text {
+        margin-top: 0.75rem;
+    }
+
+    /* --- Who We Are Card --- */
+    .who-card {
+        display: flex;
+        align-items: center;
+        gap: 2.5rem;
+        background: var(--bg-card);
+        border: 1px solid var(--border-color);
+        border-radius: 20px;
+        padding: 2.5rem;
+        margin-bottom: 3rem;
+    }
+
+    .who-card-text {
+        flex: 1;
+    }
+
+    .who-card-logo {
+        flex-shrink: 0;
+        text-align: center;
+    }
+
+    .who-card-logo img {
+        max-width: 200px;
+        height: auto;
+        border-radius: 12px;
+        transition: transform var(--transition-smooth);
+    }
+
+    .who-card-logo img:hover {
+        transform: scale(1.04);
+    }
+
+    .who-card-logo .logo-fallback {
+        width: 200px;
+        height: 120px;
+        border-radius: 12px;
+        background: var(--bg-surface);
+        border: 1px solid var(--border-color);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 0.4rem;
+        color: var(--text-muted);
+        font-family: var(--font-body);
+        font-size: 0.82rem;
+    }
+
+    .who-card-logo .logo-fallback i {
+        font-size: 1.8rem;
+        color: var(--accent);
+    }
+
     @media (max-width: 768px) {
-        .hero-title {
-            font-size: 2.5rem;
+        .who-card {
+            flex-direction: column;
+            text-align: center;
         }
-        
-        .hero-subtitle {
-            font-size: 1.1rem;
-        }
-        
-        .content-card {
-            padding: 2rem;
-            margin-bottom: 2rem;
-        }
-        
-        .card-title {
-            font-size: 1.5rem;
-        }
-        
-        .partners-ticker {
-            height: 100px;
-        }
-        
-        .partner-item {
-            min-width: 250px;
-            margin-right: 2rem;
-        }
-        
-        .ticker-content {
-            animation-duration: 25s;
-        }
-        
-        .cta-title {
+        .about-hero h1 {
             font-size: 2rem;
         }
     }
 
-    /* Floating Animation */
-    .floating {
-        animation: floating 3s ease-in-out infinite;
+    /* --- Features Grid --- */
+    .features-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 1.25rem;
+        margin-bottom: 3rem;
     }
 
-    @keyframes floating {
-        0%, 100% { transform: translateY(0px); }
-        50% { transform: translateY(-10px); }
-    }
-
-    /* Animation for cards entrance */
-    .animate-in {
-        animation: slideInUp 0.8s ease-out forwards;
-    }
-    
-    @keyframes slideInUp {
-        from {
-            opacity: 0;
-            transform: translateY(30px);
-        }
-        to {
-            opacity: 1;
-            transform: translateY(0);
+    @media (max-width: 768px) {
+        .features-grid {
+            grid-template-columns: 1fr;
         }
     }
 
-    /* Particle animation */
-    @keyframes float-particle {
-        0%, 100% { 
-            transform: translateY(0px) scale(1);
-            opacity: 0;
-        }
-        50% { 
-            transform: translateY(-20px) scale(1.2);
-            opacity: 1;
-        }
+    .feature-card {
+        background: var(--bg-card);
+        border: 1px solid var(--border-color);
+        border-radius: 16px;
+        padding: 2rem 1.5rem;
+        text-align: center;
+        transition: transform var(--transition-smooth), box-shadow var(--transition-smooth), border-color var(--transition-base);
+        position: relative;
+        overflow: hidden;
+    }
+
+    .feature-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 3px;
+        background: var(--gradient-accent);
+        transform: scaleX(0);
+        transform-origin: left;
+        transition: transform 0.4s ease;
+    }
+
+    .feature-card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 10px 30px rgba(0, 212, 170, 0.06);
+        border-color: rgba(0, 212, 170, 0.2);
+    }
+
+    .feature-card:hover::before {
+        transform: scaleX(1);
+    }
+
+    .feature-icon {
+        width: 56px;
+        height: 56px;
+        border-radius: 14px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 1.25rem;
+        font-size: 1.3rem;
+        color: #fff;
+    }
+
+    .feature-icon.icon-accent { background: var(--gradient-accent); }
+    .feature-icon.icon-secondary { background: var(--gradient-secondary); }
+    .feature-icon.icon-tertiary { background: var(--gradient-tertiary); }
+
+    .feature-card h3 {
+        font-family: var(--font-heading);
+        font-weight: 600;
+        font-size: 1.05rem;
+        color: var(--text-primary);
+        margin-bottom: 0.6rem;
+    }
+
+    .feature-card p {
+        font-family: var(--font-body);
+        font-size: 0.88rem;
+        color: var(--text-secondary);
+        line-height: 1.6;
+        margin: 0;
+    }
+
+    /* --- Partners Marquee --- */
+    .partners-section {
+        margin-bottom: 3.5rem;
+    }
+
+    .partners-section .section-heading {
+        text-align: center;
+        margin-bottom: 1.75rem;
+    }
+
+    .partners-section .section-heading h2 {
+        justify-content: center;
+    }
+
+    .partners-track-wrapper {
+        width: 100%;
+        overflow: hidden;
+        position: relative;
+        border-radius: 16px;
+        background: var(--bg-card);
+        border: 1px solid var(--border-color);
+        padding: 1.5rem 0;
+    }
+
+    /* Fade edges */
+    .partners-track-wrapper::before,
+    .partners-track-wrapper::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        width: 80px;
+        z-index: 2;
+        pointer-events: none;
+    }
+
+    .partners-track-wrapper::before {
+        left: 0;
+        background: linear-gradient(90deg, var(--bg-card) 0%, transparent 100%);
+    }
+
+    .partners-track-wrapper::after {
+        right: 0;
+        background: linear-gradient(270deg, var(--bg-card) 0%, transparent 100%);
+    }
+
+    .partners-track {
+        display: flex;
+        align-items: center;
+        width: max-content;
+        animation: marquee-scroll 35s linear infinite;
+    }
+
+    .partners-track:hover {
+        animation-play-state: paused;
+    }
+
+    @keyframes marquee-scroll {
+        0% { transform: translateX(0); }
+        100% { transform: translateX(-50%); }
+    }
+
+    .partner-item {
+        display: flex;
+        align-items: center;
+        gap: 0.85rem;
+        flex-shrink: 0;
+        margin-right: 3rem;
+        padding: 0.75rem 1.25rem;
+        border-radius: 12px;
+        background: var(--bg-surface);
+        border: 1px solid var(--border-subtle);
+        transition: border-color var(--transition-base), transform var(--transition-base);
+        min-width: 220px;
+    }
+
+    .partner-item:hover {
+        border-color: var(--accent);
+        transform: scale(1.03);
+    }
+
+    .partner-item img {
+        width: 44px;
+        height: 44px;
+        object-fit: contain;
+        border-radius: 8px;
+        flex-shrink: 0;
+    }
+
+    .partner-item .partner-name {
+        font-family: var(--font-body);
+        font-weight: 600;
+        font-size: 0.88rem;
+        color: var(--text-primary);
+        white-space: nowrap;
+    }
+
+    .partner-item .partner-logo-fallback {
+        width: 44px;
+        height: 44px;
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-family: var(--font-heading);
+        font-weight: 700;
+        font-size: 0.65rem;
+        color: #fff;
+        flex-shrink: 0;
+    }
+
+    /* --- CTA Section --- */
+    .about-cta {
+        text-align: center;
+        background: var(--bg-card);
+        border: 1px solid var(--border-color);
+        border-radius: 20px;
+        padding: 3.5rem 2rem;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .about-cta::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background: radial-gradient(ellipse at 50% 0%, var(--accent-subtle) 0%, transparent 60%);
+        pointer-events: none;
+    }
+
+    .about-cta h2 {
+        font-family: var(--font-heading);
+        font-weight: 700;
+        font-size: 1.8rem;
+        color: var(--text-primary);
+        margin-bottom: 0.6rem;
+        position: relative;
+        z-index: 1;
+    }
+
+    .about-cta p {
+        font-family: var(--font-body);
+        font-size: 1rem;
+        color: var(--text-secondary);
+        margin-bottom: 1.75rem;
+        position: relative;
+        z-index: 1;
+    }
+
+    .btn-pulse-accent {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        font-family: var(--font-heading);
+        font-weight: 600;
+        font-size: 0.9rem;
+        color: #0a0e1a;
+        background: var(--accent);
+        border: none;
+        padding: 0.7rem 1.6rem;
+        border-radius: 10px;
+        cursor: pointer;
+        text-decoration: none;
+        transition: all var(--transition-base);
+        position: relative;
+        z-index: 1;
+    }
+
+    .btn-pulse-accent:hover {
+        background: var(--accent-hover);
+        color: #0a0e1a;
+        transform: translateY(-2px);
+        box-shadow: 0 6px 24px rgba(0, 212, 170, 0.3);
     }
 </style>
 
-<!-- Hero Section -->
-<div class="container-fluid">
-    <div class="hero-section">
-        <div class="container hero-content">
-            <div class="row align-items-center">
-                <div class="col-lg-12 text-center">
-                    <h1 class="hero-title">About The Pulse</h1>
-                    <p class="hero-subtitle">
-                        Empowering Morocco's entrepreneurial ecosystem through comprehensive data analytics and strategic insights
-                    </p>
-                </div>
-            </div>
-        </div>
+<div class="about-page">
+
+    <!-- Hero -->
+    <div class="about-hero">
+        <h1><span data-i18n="about_hero">About The Pulse</span></h1>
+        <p data-i18n="about_subtitle">The data backbone of Morocco's startup ecosystem, connecting entrepreneurs, investors, and policymakers through actionable insights.</p>
     </div>
 
-    <div class="container">
-        <!-- What is The Pulse -->
-        <div class="row">
-            <div class="col-lg-6 mb-4">
-                <div class="content-card">
-                    <div class="card-icon" style="background: var(--gradient-1);">
-                        <i class="fas fa-chart-line" style="color: white;"></i>
-                    </div>
-                    <h2 class="card-title">What is The Pulse?</h2>
-                    <p class="card-text">
-                        The Pulse is Morocco's premier startup ecosystem analytics platform, providing comprehensive dashboards and insights for investors, entrepreneurs, and policymakers.
-                    </p>
-                    <p class="card-text">
-                        We deliver real-time data on funding trends, sector analysis, and growth patterns across Morocco's startup ecosystem.
-                    </p>
-                </div>
-            </div>
-            
-            <div class="col-lg-6 mb-4">
-                <div class="content-card">
-                    <div class="card-icon" style="background: var(--gradient-2);">
-                        <i class="fas fa-target" style="color: white;"></i>
-                    </div>
-                    <h2 class="card-title">Our Mission</h2>
-                    <p class="card-text">
-                        To democratize access to startup data and foster informed decision-making that accelerates Morocco's economic transformation through innovation.
-                    </p>
-                    <p class="card-text">
-                        We connect startups with investors, help policymakers make data-driven decisions, and enable researchers to understand market dynamics.
-                    </p>
-                </div>
-            </div>
+    <!-- What is The Pulse -->
+    <div class="about-section">
+        <div class="section-heading">
+            <h2><i class="fas fa-chart-line"></i> <span data-i18n="what_is_pulse">What is The Pulse?</span></h2>
         </div>
-
-        <!-- Who We Are -->
-        <div class="row">
-            <div class="col-12">
-                <div class="content-card">
-                    <div class="row align-items-center">
-                        <div class="col-lg-8">
-                            <div class="card-icon" style="background: var(--gradient-3);">
-                                <i class="fas fa-university" style="color: white;"></i>
-                            </div>
-                            <h2 class="card-title">Who We Are</h2>
-                            <p class="card-text">
-                                The Pulse is developed by the <strong>Centre of Entrepreneurship at Africa Business School - UM6P</strong>, Morocco's leading academic institution driving innovation across Africa.
-                            </p>
-                            <p class="card-text">
-                                Our multidisciplinary team combines academic research with industry experience, bringing together data scientists, entrepreneurship experts, and economic analysts.
-                            </p>
-                        </div>
-                        <div class="col-lg-4 text-center">
-                            <!-- UM6P/Centre of Entrepreneurship Logo -->
-                            <img src="{{ url_for('static', filename='images/um6p_logo.png') }}" 
-                                 alt="Centre of Entrepreneurship - Africa Business School UM6P" 
-                                 class="org-logo floating"
-                                 onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
-                            
-                            <!-- Fallback placeholder (hidden by default) -->
-                            <div class="org-logo floating" style="background: linear-gradient(145deg, var(--bg-card-hover), var(--bg-card)); border: 2px solid var(--border-color); padding: 2rem; display: none; align-items: center; justify-content: center; font-size: 1.2rem; color: var(--text-muted);">
-                                <div>
-                                    <i class="fas fa-university" style="font-size: 3rem; color: var(--primary-green); margin-bottom: 1rem;"></i>
-                                    <div>Centre of Entrepreneurship</div>
-                                    <div style="font-weight: 600; color: var(--text-light);">Africa Business School - UM6P</div>
-                                </div>
-                            </div>
-                            <small class="text-muted"></small>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Platform Features -->
-        <div class="features-grid">
-            <div class="feature-item">
-                <i class="fas fa-database feature-icon"></i>
-                <h3 class="feature-title">Comprehensive Data</h3>
-                <p class="feature-text">Real-time tracking of startups, funding rounds, investors, and market trends across all sectors and regions of Morocco.</p>
-            </div>
-            
-            <div class="feature-item">
-                <i class="fas fa-chart-bar feature-icon"></i>
-                <h3 class="feature-title">Advanced Analytics</h3>
-                <p class="feature-text">Sophisticated visualization tools and predictive analytics to identify patterns and opportunities in the ecosystem.</p>
-            </div>
-            
-            <div class="feature-item">
-                <i class="fas fa-network-wired feature-icon"></i>
-                <h3 class="feature-title">Ecosystem Mapping</h3>
-                <p class="feature-text">Interactive network analysis showing connections between startups, investors, incubators, and support organizations.</p>
-            </div>
-        </div>
+        <p class="about-text" data-i18n="what_is_pulse_p1">
+            The Pulse is Morocco's premier startup ecosystem analytics platform. It provides comprehensive dashboards and real-time data on funding trends, sector analysis, and growth patterns across the Moroccan entrepreneurial landscape.
+        </p>
+        <p class="about-text" data-i18n="what_is_pulse_p2">
+            Designed for investors, entrepreneurs, researchers, and policymakers, the platform aggregates and structures data from hundreds of sources to paint a clear picture of where innovation is happening, how capital flows, and which sectors are emerging.
+        </p>
     </div>
 
-    <!-- Partners Section with Seamless Scrolling -->
-    <div class="partners-section">
-        <div class="container">
-            <h2 class="partners-title">Our Strategic Partners</h2>
-            <p class="partners-subtitle">
-                Collaborating with Morocco's leading financial and investment institutions to strengthen the entrepreneurial ecosystem
+    <!-- Our Mission -->
+    <div class="about-section">
+        <div class="section-heading">
+            <h2><i class="fas fa-bullseye"></i> <span data-i18n="our_mission">Our Mission</span></h2>
+        </div>
+        <p class="about-text" data-i18n="our_mission_p">
+            To democratize access to startup data and foster informed decision-making that accelerates Morocco's economic transformation through innovation. We connect startups with investors, help policymakers make data-driven decisions, and enable researchers to understand market dynamics.
+        </p>
+    </div>
+
+    <!-- Who We Are -->
+    <div class="who-card">
+        <div class="who-card-text">
+            <div class="section-heading">
+                <h2><i class="fas fa-university"></i> <span data-i18n="who_we_are">Who We Are</span></h2>
+            </div>
+            <p class="about-text">
+                <span data-i18n="who_we_are_p1a">The Pulse is developed by the</span> <strong>Centre of Entrepreneurship — Africa Business School — UM6P</strong>, <span data-i18n="who_we_are_p1b">Morocco's leading academic institution driving innovation across Africa.</span>
+            </p>
+            <p class="about-text" data-i18n="who_we_are_p2">
+                Our multidisciplinary team combines academic research with industry experience, bringing together data scientists, entrepreneurship experts, and economic analysts to build the most comprehensive view of the Moroccan startup ecosystem.
             </p>
         </div>
-        
-        <div class="partners-ticker">
-            <div class="ticker-content">
-                <!-- First set of partners -->
-                <div class="partner-item">
-                    <img src="{{ url_for('static', filename='images/bank_almaghrib_logo.png') }}" 
-                         alt="Bank Al-Maghrib" 
-                         class="partner-logo"
-                         onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-                    <div class="partner-logo" style="background: linear-gradient(145deg, #C41E3A, #E60026); border-radius: 10px; display: none; align-items: center; justify-content: center; color: white; font-weight: bold; font-size: 0.8rem;">BAM</div>
-                    <div class="partner-name">Bank Al-Maghrib</div>
+        <div class="who-card-logo">
+            <img src="{{ url_for('static', filename='images/um6p_logo.png') }}"
+                 alt="UM6P"
+                 loading="lazy" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+            <div class="logo-fallback" style="display:none;">
+                <i class="fas fa-university"></i>
+                <span>UM6P</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Platform Features -->
+    <div class="about-section">
+        <div class="section-heading" style="text-align:center; margin-bottom:1.5rem;">
+            <h2 style="justify-content:center;"><i class="fas fa-cubes"></i> <span data-i18n="platform_features">Platform Features</span></h2>
+        </div>
+
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="feature-icon icon-accent">
+                    <i class="fas fa-database"></i>
                 </div>
-                
-                <div class="partner-item">
-                    <img src="{{ url_for('static', filename='images/tamwilcom_logo.png') }}" 
-                         alt="Tamwilcom" 
-                         class="partner-logo"
-                         onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-                    <div class="partner-logo" style="background: linear-gradient(145deg, #1E40AF, #3B82F6); border-radius: 10px; display: none; align-items: center; justify-content: center; color: white; font-weight: bold; font-size: 0.7rem;">TWC</div>
-                    <div class="partner-name">Tamwilcom</div>
+                <h3 data-i18n="comprehensive_data">Comprehensive Data</h3>
+                <p data-i18n="comprehensive_data_p">Real-time tracking of startups, funding rounds, investors, and market trends across all sectors and regions of Morocco.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon icon-secondary">
+                    <i class="fas fa-chart-bar"></i>
                 </div>
-                
-                
-                
-                
-                <div class="partner-item">
-                    <img src="{{ url_for('static', filename='images/azur_innovation_logo.png') }}" 
-                         alt="Azur Innovation Fund" 
-                         class="partner-logo"
-                         onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-                    <div class="partner-logo" style="background: linear-gradient(145deg, #7C3AED, #8B5CF6); border-radius: 10px; display: none; align-items: center; justify-content: center; color: white; font-weight: bold; font-size: 0.6rem;">AZUR</div>
-                    <div class="partner-name">Azur Innovation Fund</div>
+                <h3 data-i18n="advanced_analytics">Advanced Analytics</h3>
+                <p data-i18n="advanced_analytics_p">Sophisticated visualization tools and predictive analytics to identify patterns and opportunities in the ecosystem.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon icon-tertiary">
+                    <i class="fas fa-network-wired"></i>
                 </div>
-                
+                <h3 data-i18n="ecosystem_mapping">Ecosystem Mapping</h3>
+                <p data-i18n="ecosystem_mapping_p">Interactive network analysis showing connections between startups, investors, incubators, and support organizations.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Strategic Partners -->
+    <div class="partners-section">
+        <div class="section-heading">
+            <h2><i class="fas fa-handshake"></i> <span data-i18n="partners">Partners</span></h2>
+        </div>
+
+        <div class="partners-track-wrapper">
+            <div class="partners-track">
+                <!-- First set -->
                 <div class="partner-item">
-                    <img src="{{ url_for('static', filename='images/amic_logo.png') }}" 
-                         alt="AMIC" 
-                         class="partner-logo"
-                         onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-                    <div class="partner-logo" style="background: linear-gradient(145deg, #DC2626, #EF4444); border-radius: 10px; display: none; align-items: center; justify-content: center; color: white; font-weight: bold; font-size: 0.7rem;">AMIC</div>
-                    <div class="partner-name">AMIC</div>
+                    <img src="{{ url_for('static', filename='images/um6p_logo.png') }}" alt="UM6P"
+                         loading="lazy" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                    <div class="partner-logo-fallback" style="background: var(--gradient-accent); display:none;">UM6P</div>
+                    <span class="partner-name">UM6P</span>
                 </div>
-                
-                <!-- EXACT duplicate for seamless loop -->
                 <div class="partner-item">
-                    <img src="{{ url_for('static', filename='images/bank_almaghrib_logo.png') }}" 
-                         alt="Bank Al-Maghrib" 
-                         class="partner-logo"
-                         onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-                    <div class="partner-logo" style="background: linear-gradient(145deg, #C41E3A, #E60026); border-radius: 10px; display: none; align-items: center; justify-content: center; color: white; font-weight: bold; font-size: 0.8rem;">BAM</div>
-                    <div class="partner-name">Bank Al-Maghrib</div>
+                    <img src="{{ url_for('static', filename='images/bank_almaghrib_logo.png') }}" alt="Observatoire BAM PME/TPE"
+                         loading="lazy" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                    <div class="partner-logo-fallback" style="background: var(--gradient-danger); display:none;">BAM</div>
+                    <span class="partner-name">Observatoire BAM PME/TPE</span>
                 </div>
-                
                 <div class="partner-item">
-                    <img src="{{ url_for('static', filename='images/tamwilcom_logo.png') }}" 
-                         alt="Tamwilcom" 
-                         class="partner-logo"
-                         onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-                    <div class="partner-logo" style="background: linear-gradient(145deg, #1E40AF, #3B82F6); border-radius: 10px; display: none; align-items: center; justify-content: center; color: white; font-weight: bold; font-size: 0.7rem;">TWC</div>
-                    <div class="partner-name">Tamwilcom</div>
+                    <img src="{{ url_for('static', filename='images/tamwilcom_logo.png') }}" alt="Tamwilcom"
+                         loading="lazy" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                    <div class="partner-logo-fallback" style="background: var(--gradient-secondary); display:none;">TWC</div>
+                    <span class="partner-name">Tamwilcom</span>
                 </div>
-                
-                
-            
-                
                 <div class="partner-item">
-                    <img src="{{ url_for('static', filename='images/azur_innovation_logo.png') }}" 
-                         alt="Azur Innovation Fund" 
-                         class="partner-logo"
-                         onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-                    <div class="partner-logo" style="background: linear-gradient(145deg, #7C3AED, #8B5CF6); border-radius: 10px; display: none; align-items: center; justify-content: center; color: white; font-weight: bold; font-size: 0.6rem;">AZUR</div>
-                    <div class="partner-name">Azur Innovation Fund</div>
+                    <img src="{{ url_for('static', filename='images/amic_logo.png') }}" alt="AMIC"
+                         loading="lazy" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                    <div class="partner-logo-fallback" style="background: var(--gradient-danger); display:none;">AMIC</div>
+                    <span class="partner-name">AMIC</span>
                 </div>
-                
                 <div class="partner-item">
-                    <img src="{{ url_for('static', filename='images/amic_logo.png') }}" 
-                         alt="AMIC" 
-                         class="partner-logo"
-                         onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-                    <div class="partner-logo" style="background: linear-gradient(145deg, #DC2626, #EF4444); border-radius: 10px; display: none; align-items: center; justify-content: center; color: white; font-weight: bold; font-size: 0.7rem;">AMIC</div>
-                    <div class="partner-name">AMIC</div>
+                    <img src="{{ url_for('static', filename='images/mesc_logo.png') }}" alt="MESC"
+                         loading="lazy" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                    <div class="partner-logo-fallback" style="background: linear-gradient(135deg, #7c3aed, #8b5cf6); display:none;">MESC</div>
+                    <span class="partner-name">MESC</span>
+                </div>
+                <div class="partner-item">
+                    <img src="{{ url_for('static', filename='images/mtn_logo.png') }}" alt="Ministère Transition Numérique"
+                         loading="lazy" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                    <div class="partner-logo-fallback" style="background: var(--gradient-tertiary); display:none;">MTN</div>
+                    <span class="partner-name">Ministère de la Transition Numérique</span>
+                </div>
+
+                <!-- Duplicate set for seamless loop -->
+                <div class="partner-item">
+                    <img src="{{ url_for('static', filename='images/um6p_logo.png') }}" alt="UM6P"
+                         loading="lazy" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                    <div class="partner-logo-fallback" style="background: var(--gradient-accent); display:none;">UM6P</div>
+                    <span class="partner-name">UM6P</span>
+                </div>
+                <div class="partner-item">
+                    <img src="{{ url_for('static', filename='images/bank_almaghrib_logo.png') }}" alt="Observatoire BAM PME/TPE"
+                         loading="lazy" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                    <div class="partner-logo-fallback" style="background: var(--gradient-danger); display:none;">BAM</div>
+                    <span class="partner-name">Observatoire BAM PME/TPE</span>
+                </div>
+                <div class="partner-item">
+                    <img src="{{ url_for('static', filename='images/tamwilcom_logo.png') }}" alt="Tamwilcom"
+                         loading="lazy" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                    <div class="partner-logo-fallback" style="background: var(--gradient-secondary); display:none;">TWC</div>
+                    <span class="partner-name">Tamwilcom</span>
+                </div>
+                <div class="partner-item">
+                    <img src="{{ url_for('static', filename='images/amic_logo.png') }}" alt="AMIC"
+                         loading="lazy" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                    <div class="partner-logo-fallback" style="background: var(--gradient-danger); display:none;">AMIC</div>
+                    <span class="partner-name">AMIC</span>
+                </div>
+                <div class="partner-item">
+                    <img src="{{ url_for('static', filename='images/mesc_logo.png') }}" alt="MESC"
+                         loading="lazy" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                    <div class="partner-logo-fallback" style="background: linear-gradient(135deg, #7c3aed, #8b5cf6); display:none;">MESC</div>
+                    <span class="partner-name">MESC</span>
+                </div>
+                <div class="partner-item">
+                    <img src="{{ url_for('static', filename='images/mtn_logo.png') }}" alt="Ministère Transition Numérique"
+                         loading="lazy" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                    <div class="partner-logo-fallback" style="background: var(--gradient-tertiary); display:none;">MTN</div>
+                    <span class="partner-name">Ministère de la Transition Numérique</span>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- CTA Section -->
-    <div class="container">
-        <div class="cta-section">
-            <div class="cta-content">
-                <h2 class="cta-title">Ready to Explore Morocco's Startup Ecosystem?</h2>
-                <p class="cta-text">Join us in mapping the future of Moroccan entrepreneurship through data-driven insights</p>
-                <button class="btn btn-cta" onclick="location.href='/startups'">
-                    <i class="fas fa-rocket me-2"></i>
-                    Explore Startups
-                </button>
-            </div>
-        </div>
+    <!-- CTA -->
+    <div class="about-cta">
+        <h2 data-i18n="explore_ecosystem">Explore the Ecosystem</h2>
+        <p data-i18n="explore_ecosystem_p">Discover Morocco's most innovative startups, investors, and support programs.</p>
+        <a href="/startups" class="btn-pulse-accent" data-i18n="explore_startups_btn">
+            <i class="fas fa-rocket"></i>
+            Explore Startups
+        </a>
     </div>
+
 </div>
-{% endblock %}
-
-{% block scripts %}
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    // Intersection Observer for animations
-    const observerOptions = {
-        threshold: 0.1,
-        rootMargin: '0px 0px -50px 0px'
-    };
-
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                entry.target.classList.add('animate-in');
-            }
-        });
-    }, observerOptions);
-
-    // Observe all cards
-    const cards = document.querySelectorAll('.content-card, .feature-item');
-    cards.forEach(card => observer.observe(card));
-
-    // Ensure seamless ticker animation - no pause on hover for continuous scrolling
-    const ticker = document.querySelector('.ticker-content');
-    
-    if (ticker) {
-        // Ensure the animation keeps running continuously
-        ticker.style.animationPlayState = 'running';
-        
-        // Optional: Add a slight delay before starting to ensure smooth initialization
-        setTimeout(() => {
-            ticker.style.opacity = '1';
-        }, 100);
-    }
-
-    // Add particle effect to hero section
-    function createParticle() {
-        const particle = document.createElement('div');
-        particle.style.cssText = `
-            position: absolute;
-            width: 4px;
-            height: 4px;
-            background: rgba(16, 185, 129, 0.6);
-            border-radius: 50%;
-            pointer-events: none;
-            animation: float-particle 6s ease-in-out infinite;
-        `;
-        
-        particle.style.left = Math.random() * 100 + '%';
-        particle.style.top = Math.random() * 100 + '%';
-        particle.style.animationDelay = Math.random() * 6 + 's';
-        
-        const heroSection = document.querySelector('.hero-section');
-        if (heroSection) {
-            heroSection.appendChild(particle);
-            
-            setTimeout(() => {
-                if (particle.parentNode) {
-                    particle.remove();
-                }
-            }, 6000);
-        }
-    }
-
-    // Create particles periodically
-    const particleInterval = setInterval(createParticle, 500);
-
-    // Clean up particles when page is unloaded
-    window.addEventListener('beforeunload', () => {
-        clearInterval(particleInterval);
-    });
-
-    // Add smooth scrolling to CTA button
-    const ctaButton = document.querySelector('.btn-cta');
-    if (ctaButton) {
-        ctaButton.addEventListener('click', function(e) {
-            // Add a small animation effect on click
-            this.style.transform = 'translateY(-3px) scale(0.95)';
-            setTimeout(() => {
-                this.style.transform = 'translateY(-3px) scale(1)';
-            }, 150);
-        });
-    }
-
-    // Add hover effects to partner items
-    const partnerItems = document.querySelectorAll('.partner-item');
-    partnerItems.forEach(item => {
-        item.addEventListener('mouseenter', function() {
-            this.style.transform = 'scale(1.05)';
-            this.style.zIndex = '10';
-        });
-        
-        item.addEventListener('mouseleave', function() {
-            this.style.transform = 'scale(1)';
-            this.style.zIndex = '1';
-        });
-    });
-
-    // Optimize performance for animations
-    let ticking = false;
-    
-    function updateAnimations() {
-        // Any performance-critical animation updates can go here
-        ticking = false;
-    }
-    
-    function requestTick() {
-        if (!ticking) {
-            requestAnimationFrame(updateAnimations);
-            ticking = true;
-        }
-    }
-
-    // Throttle scroll events for better performance
-    let scrollTimeout;
-    window.addEventListener('scroll', function() {
-        if (scrollTimeout) {
-            clearTimeout(scrollTimeout);
-        }
-        scrollTimeout = setTimeout(requestTick, 10);
-    });
-
-    console.log('About Us page with seamless ticker loaded successfully!');
-});
-</script>
 {% endblock %}

@@ -1,1465 +1,2264 @@
 {% extends "base.html" %}
 
-{% block title %}The Pulse - Discover Morocco's Startup Ecosystem{% endblock %}
+{% block title %}The Pulse - Morocco's Startup Ecosystem Dashboard{% endblock %}
 
 {% block content %}
 <style>
-    /* CSS Variables - same as base.html */
-    :root {
-        --primary-green: #10B981;
-        --dark-green: #059669;
-        --light-green: #34D399;
-        --accent-blue: #3B82F6;
-        --accent-purple: #8B5CF6;
-        --accent-orange: #F59E0B;
-        --accent-pink: #EC4899;
-        --bg-dark: #0F172A;
-        --bg-card: #1E293B;
-        --bg-card-hover: #334155;
-        --text-light: #F8FAFC;
-        --text-muted: #94A3B8;
-        --border-color: #334155;
-        --gradient-1: linear-gradient(135deg, #10B981, #34D399);
-        --gradient-2: linear-gradient(135deg, #3B82F6, #60A5FA);
-        --gradient-3: linear-gradient(135deg, #8B5CF6, #A78BFA);
-        --gradient-4: linear-gradient(135deg, #F59E0B, #FBBF24);
+    /* ========================================
+       HOME PAGE STYLES
+       ======================================== */
+
+    /* Typography overrides */
+    .home-heading {
+        font-family: 'Space Grotesk', 'Poppins', sans-serif;
+        font-weight: 700;
+    }
+    .home-body {
+        font-family: 'DM Sans', 'Inter', sans-serif;
     }
 
-    /* Light Mode Variables for Home Page */
-    [data-theme="light"] {
-        --bg-dark: #F8FAFC;
-        --bg-card: #FFFFFF;
-        --bg-card-hover: #F1F5F9;
-        --text-light: #1E293B;
-        --text-muted: #64748B;
-        --text-dark: #94A3B8;
-        --border-color: #E2E8F0;
-        --border-light: #CBD5E1;
-        --shadow-color: rgba(0, 0, 0, 0.1);
-        --overlay-color: rgba(248, 250, 252, 0.8);
-        
-        /* Chart Colors for Light Theme */
-        --chart-text-color: #64748B;
-        --chart-grid-color: rgba(226, 232, 240, 0.8);
-        --chart-background: #FFFFFF;
-    }
-
-    /* Dark Mode Variables for Home Page (ensure consistency) */
-    [data-theme="dark"] {
-        --bg-dark: #0F172A;
-        --bg-card: #1E293B;
-        --bg-card-hover: #334155;
-        --text-light: #F8FAFC;
-        --text-muted: #94A3B8;
-        --text-dark: #475569;
-        --border-color: #334155;
-        --border-light: #475569;
-        --shadow-color: rgba(0, 0, 0, 0.3);
-        --overlay-color: rgba(15, 23, 42, 0.8);
-        
-        /* Chart Colors for Dark Theme */
-        --chart-text-color: #94A3B8;
-        --chart-grid-color: rgba(51, 65, 85, 0.5);
-        --chart-background: transparent;
-    }
-
-    /* Theme Transition for smooth switching */
-    * {
-        transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
-    }
-
-    /* Additional styles specific to home page */
+    /* ---------- HERO SECTION ---------- */
     .hero-section {
-        background: linear-gradient(135deg, rgba(16, 185, 129, 0.1) 0%, rgba(59, 130, 246, 0.1) 100%);
-        padding: 4rem 0;
-        margin-bottom: 3rem;
-        border-radius: 20px;
         position: relative;
+        padding: 0;
+        text-align: center;
         overflow: hidden;
-        transition: all 0.3s ease;
     }
-
-    /* Light mode hero section styling */
-    [data-theme="light"] .hero-section {
-        background: linear-gradient(135deg, rgba(16, 185, 129, 0.08) 0%, rgba(59, 130, 246, 0.08) 100%);
-        border: 1px solid var(--border-color);
-    }
-
     .hero-section::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background: radial-gradient(ellipse at 50% 0%, rgba(0, 212, 170, 0.1) 0%, transparent 50%),
+                    radial-gradient(ellipse at 80% 80%, rgba(67, 97, 238, 0.06) 0%, transparent 50%),
+                    radial-gradient(ellipse at 20% 60%, rgba(247, 183, 49, 0.05) 0%, transparent 50%);
+        pointer-events: none;
+        animation: meshShift 20s ease-in-out infinite alternate;
+    }
+    @keyframes meshShift {
+        0% { background-position: 0% 0%, 100% 100%, 0% 50%; }
+        100% { background-position: 50% 50%, 50% 0%, 100% 50%; }
+    }
+
+    /* Floating circles */
+    .hero-float-elements {
+        position: absolute;
+        inset: 0;
+        pointer-events: none;
+        z-index: 1;
+    }
+    .hero-float {
+        position: absolute;
+        border-radius: 50%;
+        opacity: 0;
+        animation: heroFloat linear infinite;
+    }
+    .hero-float:nth-child(1) { width: 8px; height: 8px; background: var(--accent); left: 10%; bottom: -10px; animation-duration: 12s; animation-delay: 0s; }
+    .hero-float:nth-child(2) { width: 5px; height: 5px; background: var(--secondary); left: 30%; bottom: -10px; animation-duration: 16s; animation-delay: 2s; }
+    .hero-float:nth-child(3) { width: 12px; height: 12px; border: 2px solid var(--accent); background: transparent; left: 55%; bottom: -10px; animation-duration: 14s; animation-delay: 4s; }
+    .hero-float:nth-child(4) { width: 6px; height: 6px; background: var(--tertiary); left: 75%; bottom: -10px; animation-duration: 18s; animation-delay: 1s; }
+    .hero-float:nth-child(5) { width: 10px; height: 10px; border: 2px solid var(--secondary); background: transparent; left: 45%; bottom: -10px; animation-duration: 13s; animation-delay: 6s; }
+    .hero-float:nth-child(6) { width: 4px; height: 4px; background: var(--accent); left: 20%; bottom: -10px; animation-duration: 20s; animation-delay: 3s; }
+    .hero-float:nth-child(7) { width: 14px; height: 14px; border: 1px solid rgba(0, 212, 170, 0.3); background: transparent; left: 65%; bottom: -10px; animation-duration: 17s; animation-delay: 8s; }
+    .hero-float:nth-child(8) { width: 7px; height: 7px; background: var(--secondary); left: 85%; bottom: -10px; animation-duration: 15s; animation-delay: 5s; }
+    .hero-float:nth-child(9) { width: 9px; height: 9px; border: 2px solid var(--tertiary); background: transparent; left: 5%; bottom: -10px; animation-duration: 19s; animation-delay: 7s; }
+    .hero-float:nth-child(10) { width: 6px; height: 6px; background: var(--accent); left: 90%; bottom: -10px; animation-duration: 14s; animation-delay: 9s; }
+
+    @keyframes heroFloat {
+        0% { opacity: 0; transform: translateY(0) scale(0.5); }
+        10% { opacity: 0.6; transform: translateY(-30px) scale(1); }
+        90% { opacity: 0.3; transform: translateY(-280px) scale(0.8); }
+        100% { opacity: 0; transform: translateY(-320px) scale(0.3); }
+    }
+
+    /* Grid overlay */
+    .hero-grid-overlay {
+        position: absolute;
+        inset: 0;
+        pointer-events: none;
+        z-index: 0;
+    }
+
+    /* Subtle pulse glow effect */
+    .hero-pulse-line {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        height: 1px;
+        z-index: 1;
+        pointer-events: none;
+        background: linear-gradient(90deg, transparent 0%, var(--accent) 50%, transparent 100%);
+        opacity: 0;
+        animation: pulseGlow 3s ease-in-out infinite;
+    }
+    .hero-pulse-line::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        height: 40px;
+        background: linear-gradient(to top, rgba(0, 212, 170, 0.04), transparent);
+        pointer-events: none;
+    }
+    @keyframes pulseGlow {
+        0%, 100% { opacity: 0; }
+        50% { opacity: 0.6; }
+    }
+
+    /* Subtle top glow */
+    .hero-pulse-line-top {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 1px;
+        z-index: 1;
+        pointer-events: none;
+        background: linear-gradient(90deg, transparent 0%, var(--secondary) 50%, transparent 100%);
+        opacity: 0;
+        animation: pulseGlowTop 4s ease-in-out infinite 1.5s;
+    }
+    .hero-pulse-line-top::after {
         content: '';
         position: absolute;
         top: 0;
         left: 0;
         right: 0;
-        bottom: 0;
-        background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="25" cy="25" r="1" fill="%23ffffff" opacity="0.05"/><circle cx="75" cy="75" r="1" fill="%23ffffff" opacity="0.05"/><circle cx="25" cy="75" r="1" fill="%23ffffff" opacity="0.05"/><circle cx="75" cy="25" r="1" fill="%23ffffff" opacity="0.05"/></pattern></defs><rect width="100" height="100" fill="url(%23grain)"/></svg>');
-        opacity: 0.3;
+        height: 30px;
+        background: linear-gradient(to bottom, rgba(67, 97, 238, 0.03), transparent);
+        pointer-events: none;
+    }
+    @keyframes pulseGlowTop {
+        0%, 100% { opacity: 0; }
+        50% { opacity: 0.4; }
+    }
+    @keyframes pulseSweep {
+        0% { transform: translateX(0); }
+        100% { transform: translateX(-50%); }
     }
 
-    .hero-content {
+    /* Pulsating dot between logo and subtitle */
+    .hero-pulse-dot {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin: 0.5rem auto 0.5rem;
         position: relative;
-        z-index: 2;
+        width: 50px;
+        height: 50px;
+    }
+    .pulse-dot-core {
+        width: 16px;
+        height: 16px;
+        background: var(--accent);
+        border-radius: 50%;
+        position: absolute;
+        z-index: 3;
+        box-shadow: 0 0 20px rgba(0, 212, 170, 0.7), 0 0 60px rgba(0, 212, 170, 0.3);
+        animation: pulseDotCore 2s ease-in-out infinite;
+    }
+    .pulse-dot-ring {
+        position: absolute;
+        width: 16px;
+        height: 16px;
+        border: 2px solid var(--accent);
+        border-radius: 50%;
+        opacity: 0;
+        animation: pulseDotRing 2s ease-out infinite;
+    }
+    .pulse-dot-ring-2 {
+        animation-delay: 0.7s;
+    }
+    @keyframes pulseDotCore {
+        0%, 100% { transform: scale(1); opacity: 0.8; box-shadow: 0 0 20px rgba(0, 212, 170, 0.7), 0 0 60px rgba(0, 212, 170, 0.3); }
+        50% { transform: scale(1.4); opacity: 1; box-shadow: 0 0 30px rgba(0, 212, 170, 0.9), 0 0 80px rgba(0, 212, 170, 0.4); }
+    }
+    @keyframes pulseDotRing {
+        0% { width: 16px; height: 16px; opacity: 0.8; }
+        100% { width: 90px; height: 90px; opacity: 0; }
     }
 
-    .hero-title {
-        font-family: 'Poppins', sans-serif;
+    .hero-headline {
+        font-size: clamp(1.8rem, 4vw, 2.8rem);
         font-weight: 800;
-        font-size: 3.5rem;
-        line-height: 1.2;
-        margin-bottom: 1.5rem;
-        background: linear-gradient(135deg, #10B981, #34D399, #3B82F6);
+        line-height: 1.1;
+        margin-bottom: 0.35rem;
+        background: linear-gradient(135deg, var(--accent), var(--secondary), #8B5CF6);
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
         background-clip: text;
     }
-
     .hero-subtitle {
-        font-size: 1.4rem;
         color: var(--text-muted);
-        margin-bottom: 2rem;
+        font-size: 1rem;
+        margin-bottom: 1rem;
         font-weight: 400;
-        line-height: 1.6;
     }
-
-    .stats-card {
-        background: linear-gradient(145deg, var(--bg-card), rgba(51, 65, 85, 0.8));
-        border-radius: 20px;
-        padding: 2rem;
-        backdrop-filter: blur(20px);
-        border: 1px solid rgba(52, 211, 153, 0.1);
-        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-        position: relative;
-        overflow: hidden;
-        height: 100%;
-    }
-
-    .stats-card::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        height: 4px;
-        background: var(--gradient-1);
-        transform: scaleX(0);
-        transition: transform 0.4s ease;
-    }
-
-    .stats-card:hover {
-        transform: translateY(-10px);
-        box-shadow: 0 20px 40px rgba(16, 185, 129, 0.2);
-        border-color: rgba(52, 211, 153, 0.3);
-    }
-
-    .stats-card:hover::before {
-        transform: scaleX(1);
-    }
-
-    .stats-icon {
-        width: 60px;
-        height: 60px;
-        border-radius: 15px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 1.5rem;
-        margin-bottom: 1.5rem;
-        position: relative;
-        overflow: hidden;
-    }
-
-    .stats-icon::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background: inherit;
-        opacity: 0.1;
-        border-radius: inherit;
-    }
-
-    .stats-number {
-        font-size: 2.5rem;
-        font-weight: 800;
-        margin-bottom: 0.5rem;
-        font-family: 'Poppins', sans-serif;
-    }
-
-    .stats-label {
-        color: var(--text-muted);
-        font-weight: 500;
-        font-size: 0.9rem;
-        text-transform: uppercase;
-        letter-spacing: 0.5px;
-    }
-
-    .chart-card {
-        background: linear-gradient(145deg, var(--bg-card), rgba(51, 65, 85, 0.8));
-        border-radius: 20px;
-        padding: 2rem;
-        backdrop-filter: blur(20px);
-        border: 1px solid rgba(52, 211, 153, 0.1);
-        transition: all 0.3s ease;
-        height: 400px;
-        position: relative;
-        overflow: hidden;
-    }
-
-    /* Light mode chart card styling */
-    [data-theme="light"] .chart-card {
-        background: linear-gradient(145deg, var(--bg-card), rgba(248, 250, 252, 0.9));
-        border: 1px solid var(--border-color);
-        box-shadow: 0 4px 20px var(--shadow-color);
-    }
-
-    /* Light mode stats card styling */
-    [data-theme="light"] .stats-card {
-        background: linear-gradient(145deg, var(--bg-card), rgba(248, 250, 252, 0.9));
-        border: 1px solid var(--border-color);
-        box-shadow: 0 4px 20px var(--shadow-color);
-    }
-
-    /* Hero Action Buttons */
     .hero-actions {
         display: flex;
-        gap: 1rem;
+        justify-content: center;
+        gap: 0.75rem;
         flex-wrap: wrap;
-        margin-top: 2rem;
+        margin-bottom: 2rem;
     }
-
-    .btn-join-pulse {
-        background: var(--gradient-1);
-        color: white;
+    .btn-hero-primary {
+        background: linear-gradient(135deg, var(--accent), #009e7e);
+        color: #fff;
         border: none;
-        padding: 1rem 2rem;
-        border-radius: 12px;
+        padding: 0.6rem 1.5rem;
+        border-radius: 10px;
         font-weight: 600;
-        font-size: 1.1rem;
+        font-size: 0.9rem;
+        text-decoration: none;
         transition: all 0.3s ease;
-        box-shadow: 0 4px 20px rgba(16, 185, 129, 0.3);
-        position: relative;
-        overflow: hidden;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
     }
-
-    .btn-join-pulse:hover {
+    .btn-hero-primary:hover {
         transform: translateY(-2px);
-        box-shadow: 0 8px 30px rgba(16, 185, 129, 0.4);
-        color: white;
+        box-shadow: 0 8px 24px rgba(16, 185, 129, 0.35);
+        color: #fff;
     }
-
-    .btn-join-pulse::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: -100%;
-        width: 100%;
-        height: 100%;
-        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-        transition: left 0.5s;
-    }
-
-    .btn-join-pulse:hover::before {
-        left: 100%;
-    }
-
-    .btn-explore {
+    .btn-hero-secondary {
         background: transparent;
-        color: var(--text-light);
-        border: 2px solid var(--primary-green);
-        padding: 1rem 2rem;
-        border-radius: 12px;
+        color: var(--text-primary);
+        border: 1px solid var(--border-color);
+        padding: 0.6rem 1.5rem;
+        border-radius: 10px;
         font-weight: 600;
-        font-size: 1.1rem;
+        font-size: 0.9rem;
+        text-decoration: none;
+        transition: all 0.3s ease;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+    .btn-hero-secondary:hover {
+        border-color: var(--accent);
+        color: var(--accent);
+        transform: translateY(-2px);
+        box-shadow: 0 8px 24px rgba(16, 185, 129, 0.15);
+    }
+
+    /* ---------- STATS ROW ---------- */
+    .stats-row {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 1.25rem;
+        margin-bottom: 2.5rem;
+    }
+    .stat-card {
+        position: relative;
+        background: var(--bg-card);
+        border: 1px solid var(--border-color);
+        border-radius: 16px;
+        padding: 1.5rem;
+        overflow: hidden;
         transition: all 0.3s ease;
     }
-
-    .btn-explore:hover {
-        background: var(--primary-green);
-        color: white;
-        transform: translateY(-2px);
-        box-shadow: 0 8px 30px rgba(16, 185, 129, 0.3);
-    }
-
-    /* Responsive adjustments for hero buttons */
-    @media (max-width: 768px) {
-        .hero-actions {
-            flex-direction: column;
-            align-items: center;
-        }
-        
-        .btn-join-pulse,
-        .btn-explore {
-            width: 100%;
-            max-width: 300px;
-            text-align: center;
-        }
-    }
-
-    .chart-card canvas {
-        max-height: 300px !important;
-        width: 100% !important;
-    }
-
-    .chart-card::before {
+    .stat-card::before {
         content: '';
         position: absolute;
         top: 0;
         left: 0;
         right: 0;
         height: 3px;
-        background: linear-gradient(90deg, var(--primary-green), var(--accent-blue), var(--accent-purple));
+        border-radius: 16px 16px 0 0;
     }
+    .stat-card:nth-child(1)::before { background: linear-gradient(135deg, var(--accent), #009e7e); }
+    .stat-card:nth-child(2)::before { background: linear-gradient(135deg, var(--secondary), #3451c7); }
+    .stat-card:nth-child(3)::before { background: linear-gradient(135deg, #8B5CF6, #7C3AED); }
+    .stat-card:nth-child(4)::before { background: linear-gradient(135deg, var(--tertiary), #e6a520); }
 
-    .chart-card:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
-    }
-
-    .chart-title {
-        font-size: 1.2rem;
-        font-weight: 600;
-        margin-bottom: 1.5rem;
-        color: var(--text-light);
-        font-family: 'Poppins', sans-serif;
-    }
-
-    .pulse-animation {
-        animation: pulse 2s infinite;
-    }
-
-    @keyframes pulse {
-        0% {
-            box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.4);
-        }
-        70% {
-            box-shadow: 0 0 0 10px rgba(16, 185, 129, 0);
-        }
-        100% {
-            box-shadow: 0 0 0 0 rgba(16, 185, 129, 0);
-        }
-    }
-
-    .moroccan-cities {
-        background: linear-gradient(45deg, #10B981, #059669);
-        color: white;
-        padding: 0.25rem 0.75rem;
-        border-radius: 20px;
-        font-size: 0.85rem;
-        font-weight: 500;
-        display: inline-block;
-        margin: 0.25rem;
-    }
-
-    @media (max-width: 768px) {
-        .hero-title {
-            font-size: 2.5rem;
-        }
-        .hero-subtitle {
-            font-size: 1.1rem;
-        }
-        .chart-card {
-            height: 300px;
-        }
-    }
-
-    .floating-elements {
-        position: absolute;
-        width: 100%;
-        height: 100%;
-        overflow: hidden;
-        pointer-events: none;
-    }
-
-    .floating-elements::before,
-    .floating-elements::after {
+    .stat-card::after {
         content: '';
         position: absolute;
-        width: 200px;
-        height: 200px;
-        background: linear-gradient(135deg, rgba(16, 185, 129, 0.1), rgba(59, 130, 246, 0.1));
-        border-radius: 50%;
-        animation: float 6s ease-in-out infinite;
-    }
-
-    .floating-elements::before {
-        top: 10%;
-        right: 10%;
-        animation-delay: -3s;
-    }
-
-    .floating-elements::after {
-        bottom: 10%;
-        left: 10%;
-    }
-
-    @keyframes float {
-        0%, 100% {
-            transform: translateY(0px);
-        }
-        50% {
-            transform: translateY(-20px);
-        }
-    }
-
-    .chart-container {
-        position: relative;
-        height: 280px;
-        width: 100%;
-    }
-
-    .loading-state {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        height: 280px;
-        color: var(--text-muted);
-        font-size: 0.9rem;
-    }
-
-    .loading-spinner {
-        border: 2px solid var(--border-color);
-        border-top: 2px solid var(--primary-green);
-        border-radius: 50%;
-        width: 20px;
-        height: 20px;
-        animation: spin 1s linear infinite;
-        margin-right: 10px;
-    }
-
-    @keyframes spin {
-        0% { transform: rotate(0deg); }
-        100% { transform: rotate(360deg); }
-    }
-    
-    /* Top Startups Section Styles */
-    .top-startup-card {
-        background: linear-gradient(145deg, var(--bg-card), rgba(51, 65, 85, 0.8));
-        border-radius: 20px;
-        padding: 2rem;
-        backdrop-filter: blur(20px);
-        border: 1px solid rgba(52, 211, 153, 0.1);
-        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-        position: relative;
-        overflow: hidden;
-        height: 100%;
-        cursor: pointer;
-    }
-
-    /* Light mode styling for top startup cards */
-    [data-theme="light"] .top-startup-card {
-        background: linear-gradient(145deg, var(--bg-card), rgba(248, 250, 252, 0.9));
-        border: 1px solid var(--border-color);
-        box-shadow: 0 4px 20px var(--shadow-color);
-    }
-
-    .top-startup-card::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        height: 4px;
-        background: linear-gradient(90deg, var(--primary-green), var(--accent-blue), var(--accent-purple));
-        transform: scaleX(0);
-        transition: transform 0.4s ease;
-    }
-
-    .top-startup-card:hover {
-        transform: translateY(-10px);
-        box-shadow: 0 25px 50px rgba(16, 185, 129, 0.3);
-        border-color: rgba(52, 211, 153, 0.4);
-    }
-
-    /* Light mode hover effects */
-    [data-theme="light"] .top-startup-card:hover {
-        box-shadow: 0 25px 50px rgba(16, 185, 129, 0.2);
-        border-color: var(--primary-green);
-    }
-
-    .top-startup-card:hover::before {
-        transform: scaleX(1);
-    }
-
-    .startup-logo {
+        top: 50%;
+        right: -10px;
+        transform: translateY(-50%);
         width: 80px;
         height: 80px;
-        border-radius: 15px;
-        object-fit: cover;
-        border: 3px solid rgba(16, 185, 129, 0.2);
-        background: var(--bg-card-hover);
+        border-radius: 50%;
+        opacity: 0.06;
+    }
+    .stat-card:nth-child(1)::after { background: var(--accent); }
+    .stat-card:nth-child(2)::after { background: var(--secondary); }
+    .stat-card:nth-child(3)::after { background: #8B5CF6; }
+    .stat-card:nth-child(4)::after { background: var(--tertiary); }
+
+    .stat-card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 12px 32px var(--shadow-color);
+        border-color: var(--border-color);
+    }
+    /* Glass morphism */
+    .stat-card {
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+    }
+    [data-theme="light"] .stat-card {
+        background: rgba(255, 255, 255, 0.85);
+    }
+
+    .stat-icon {
+        width: 40px;
+        height: 40px;
+        border-radius: 10px;
         display: flex;
         align-items: center;
         justify-content: center;
+        font-size: 1.1rem;
+        margin-bottom: 0.75rem;
+        color: #fff;
+    }
+    .stat-card:nth-child(1) .stat-icon { background: linear-gradient(135deg, var(--accent), #009e7e); }
+    .stat-card:nth-child(2) .stat-icon { background: linear-gradient(135deg, var(--secondary), #3451c7); }
+    .stat-card:nth-child(3) .stat-icon { background: linear-gradient(135deg, #8B5CF6, #7C3AED); }
+    .stat-card:nth-child(4) .stat-icon { background: linear-gradient(135deg, var(--tertiary), #e6a520); }
+
+    .stat-number {
+        font-family: 'Space Grotesk', 'Poppins', sans-serif;
         font-size: 2rem;
-        color: var(--primary-green);
-        margin-bottom: 1.5rem;
-        transition: all 0.3s ease;
+        font-weight: 800;
+        line-height: 1;
+        margin-bottom: 0.25rem;
+        color: var(--text-primary);
     }
-
-    /* Light mode styling for startup logo */
-    [data-theme="light"] .startup-logo {
-        background: var(--bg-card-hover);
-        border: 3px solid rgba(16, 185, 129, 0.15);
-    }
-
-    .startup-logo:hover {
-        transform: scale(1.05);
-        border-color: var(--primary-green);
-    }
-
-    .startup-name {
-        font-family: 'Poppins', sans-serif;
-        font-weight: 700;
-        font-size: 1.4rem;
-        margin-bottom: 0.5rem;
-        color: var(--text-light);
-        line-height: 1.2;
-    }
-
-    /* Light mode text colors */
-    [data-theme="light"] .startup-name {
-        color: var(--text-dark);
-    }
-
-    .startup-badges {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 0.5rem;
-        margin-bottom: 1rem;
-    }
-
-    .startup-badge {
-        padding: 0.25rem 0.75rem;
-        border-radius: 15px;
-        font-size: 0.75rem;
+    .stat-label {
+        color: var(--text-muted);
+        font-size: 0.82rem;
         font-weight: 500;
         text-transform: uppercase;
-        letter-spacing: 0.5px;
+        letter-spacing: 0.05em;
     }
 
-    .badge-sector {
-        background: linear-gradient(135deg, var(--accent-blue), #60A5FA);
-        color: white;
-    }
-
-    .badge-stage {
-        background: linear-gradient(135deg, var(--accent-purple), #A78BFA);
-        color: white;
-    }
-
-    .badge-location {
-        background: linear-gradient(135deg, var(--accent-orange), #FBBF24);
-        color: white;
-    }
-
-    .startup-meta {
+    /* ---------- SECTION HEADER ---------- */
+    .section-header {
         display: flex;
         align-items: center;
-        gap: 1rem;
-        margin-bottom: 1rem;
-        font-size: 0.85rem;
-        color: var(--text-muted);
-    }
-
-    .startup-meta i {
-        color: var(--primary-green);
-    }
-
-    .startup-description {
-        color: var(--text-muted);
-        font-size: 0.9rem;
-        line-height: 1.5;
+        gap: 0.75rem;
         margin-bottom: 1.5rem;
-        display: -webkit-box;
-        -webkit-line-clamp: 3;
-        -webkit-box-orient: vertical;
-        overflow: hidden;
     }
-
-    /* Light mode text styling */
-    [data-theme="light"] .startup-meta {
-        color: var(--text-muted);
+    .section-header-icon {
+        width: 36px;
+        height: 36px;
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 0.95rem;
+        color: #fff;
+        flex-shrink: 0;
     }
-
-    [data-theme="light"] .startup-description {
-        color: var(--text-muted);
-    }
-
-    .funding-amount {
-        background: linear-gradient(135deg, var(--primary-green), var(--light-green));
-        color: white;
-        padding: 1rem 1.5rem;
-        border-radius: 25px;
+    .section-header h2 {
+        font-family: 'Space Grotesk', 'Poppins', sans-serif;
+        font-size: 1.4rem;
         font-weight: 700;
-        font-size: 1.1rem;
-        text-align: center;
+        margin: 0;
+        color: var(--text-primary);
+    }
+
+    /* ---------- CHART GRID ---------- */
+    .charts-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1.25rem;
+        margin-bottom: 2.5rem;
+    }
+    .chart-card {
+        background: var(--bg-card);
+        border: 1px solid var(--border-color);
+        border-radius: 16px;
+        padding: 1.25rem;
+        transition: all 0.3s ease;
         position: relative;
-        overflow: hidden;
-        border: 2px solid transparent;
-        background-clip: padding-box;
     }
-
-    .funding-amount::before {
-        content: '';
+    .chart-card:hover {
+        border-color: var(--border-color);
+        box-shadow: 0 8px 24px var(--shadow-color);
+    }
+    [data-theme="light"] .chart-card {
+        background: rgba(255, 255, 255, 0.9);
+    }
+    .chart-card-header {
+        display: flex;
+        align-items: center;
+        gap: 0.6rem;
+        margin-bottom: 1rem;
+        padding-bottom: 0.75rem;
+        border-bottom: 1px solid var(--border-color);
+    }
+    .chart-card-header i {
+        color: var(--accent);
+        font-size: 1rem;
+    }
+    .chart-card-header span {
+        font-family: 'Space Grotesk', 'Poppins', sans-serif;
+        font-weight: 600;
+        font-size: 0.95rem;
+        color: var(--text-primary);
+    }
+    .chart-wrapper {
+        position: relative;
+        height: 400px;
+    }
+    .chart-loading {
         position: absolute;
-        top: 0;
-        left: -100%;
-        width: 100%;
-        height: 100%;
-        background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
-        transition: left 0.6s;
-    }
-
-    .funding-amount:hover::before {
-        left: 100%;
-    }
-
-    .funding-display {
+        inset: 0;
         display: flex;
         flex-direction: column;
-        gap: 0.5rem;
-    }
-
-    .funding-main {
-        display: flex;
         align-items: center;
         justify-content: center;
-        gap: 0.5rem;
-        font-size: 1.3rem;
-        font-weight: 800;
+        gap: 0.75rem;
+        z-index: 2;
     }
-
-    .funding-icon {
+    .chart-spinner {
         width: 32px;
         height: 32px;
-        background: rgba(255, 255, 255, 0.2);
+        border: 3px solid var(--border-color);
+        border-top-color: var(--accent);
         border-radius: 50%;
+        animation: spin 0.8s linear infinite;
+    }
+    @keyframes spin {
+        to { transform: rotate(360deg); }
+    }
+    .chart-loading span {
+        color: var(--text-muted);
+        font-size: 0.8rem;
+    }
+
+    /* ---------- APPELS À PROJETS ---------- */
+    .appels-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 1.25rem;
+        margin-bottom: 1.5rem;
+    }
+    .appel-card {
+        background: var(--bg-card);
+        border: 1px solid var(--border-color);
+        border-radius: 16px;
+        padding: 1.5rem;
+        text-decoration: none;
+        color: inherit;
+        display: flex;
+        flex-direction: column;
+        gap: 0.75rem;
+        transition: all 0.3s ease;
+        border-left: 4px solid #8B5CF6;
+    }
+    .appel-card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 8px 24px rgba(139, 92, 246, 0.15);
+        border-color: #8B5CF6;
+    }
+    .appel-card-top {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+    }
+    .appel-org {
+        font-size: 0.72rem;
+        font-weight: 600;
+        color: #8B5CF6;
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+    }
+    .appel-deadline {
+        font-size: 0.72rem;
+        color: var(--text-muted);
+        display: flex;
+        align-items: center;
+        gap: 0.3rem;
+    }
+    .appel-title {
+        font-size: 0.95rem;
+        font-weight: 700;
+        color: var(--text-primary);
+        line-height: 1.4;
+        margin: 0;
+    }
+    .appel-desc {
+        font-size: 0.8rem;
+        color: var(--text-muted);
+        line-height: 1.5;
+        margin: 0;
+        flex: 1;
+    }
+    .appel-footer {
+        display: flex;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 0.4rem;
+        margin-top: auto;
+        padding-top: 0.75rem;
+        border-top: 1px solid var(--border-color);
+    }
+    .appel-tag {
+        font-size: 0.68rem;
+        background: rgba(139, 92, 246, 0.1);
+        color: #8B5CF6;
+        padding: 0.2rem 0.5rem;
+        border-radius: 6px;
+        font-weight: 500;
+    }
+    .appel-cta {
+        margin-left: auto;
+        font-size: 0.75rem;
+        font-weight: 600;
+        color: #8B5CF6;
+        display: flex;
+        align-items: center;
+        gap: 0.3rem;
+    }
+    @media (max-width: 768px) {
+        .appels-grid { grid-template-columns: 1fr; }
+    }
+
+    /* ---------- STARTUP CARDS ---------- */
+    .startups-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 1.25rem;
+        margin-bottom: 2rem;
+    }
+    .startup-card {
+        position: relative;
+        background: var(--bg-card);
+        border: 1px solid var(--border-color);
+        border-radius: 16px;
+        padding: 1.5rem;
+        text-decoration: none;
+        color: inherit;
+        transition: all 0.35s ease;
+        display: flex;
+        flex-direction: column;
+        gap: 0.75rem;
+        opacity: 0;
+        transform: translateY(20px);
+        min-width: 0;
+        overflow: hidden;
+    }
+    .startup-card.visible {
+        opacity: 1;
+        transform: translateY(0);
+    }
+    .startup-card:hover {
+        transform: translateY(-6px);
+        box-shadow: 0 16px 40px var(--shadow-color);
+        border-color: var(--accent);
+        color: inherit;
+    }
+    .startup-card:hover .startup-card-glow {
+        opacity: 1;
+    }
+    .startup-card-glow {
+        position: absolute;
+        inset: -1px;
+        border-radius: 17px;
+        background: linear-gradient(135deg, rgba(16, 185, 129, 0.15), rgba(59, 130, 246, 0.1));
+        opacity: 0;
+        transition: opacity 0.35s ease;
+        pointer-events: none;
+        z-index: 0;
+    }
+    [data-theme="light"] .startup-card {
+        background: rgba(255, 255, 255, 0.9);
+    }
+    .startup-card > *:not(.startup-card-glow) {
+        position: relative;
+        z-index: 1;
+    }
+    .startup-card-top {
+        display: flex;
+        align-items: flex-start;
+        gap: 0.75rem;
+    }
+    .startup-rank {
+        width: 28px;
+        height: 28px;
+        border-radius: 8px;
         display: flex;
         align-items: center;
         justify-content: center;
-        font-size: 1rem;
-        animation: pulse-money 2s infinite;
-    }
-
-    @keyframes pulse-money {
-        0%, 100% {
-            transform: scale(1);
-            box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.4);
-        }
-        50% {
-            transform: scale(1.05);
-            box-shadow: 0 0 0 10px rgba(255, 255, 255, 0);
-        }
-    }
-
-    .funding-label {
+        font-family: 'Space Grotesk', 'Poppins', sans-serif;
+        font-weight: 800;
         font-size: 0.8rem;
-        opacity: 0.9;
-        text-transform: uppercase;
-        letter-spacing: 0.5px;
-        font-weight: 500;
+        color: #fff;
+        flex-shrink: 0;
+        background: linear-gradient(135deg, var(--accent), #009e7e);
     }
+    .startup-rank.rank-1 { background: linear-gradient(135deg, #f7b731, #f59e0b); }
+    .startup-rank.rank-2 { background: linear-gradient(135deg, #94A3B8, #64748B); }
+    .startup-rank.rank-3 { background: linear-gradient(135deg, #cd7f32, #a0522d); }
 
-    .funding-progress {
-        width: 100%;
-        height: 4px;
-        background: rgba(255, 255, 255, 0.2);
-        border-radius: 2px;
+    .startup-logo {
+        width: 44px;
+        height: 44px;
+        border-radius: 12px;
+        object-fit: cover;
+        background: var(--bg-card-hover);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
         overflow: hidden;
-        margin-top: 0.5rem;
+        border: 1px solid var(--border-color);
     }
-
-    .funding-progress-bar {
+    .startup-logo img {
+        width: 100%;
         height: 100%;
-        background: linear-gradient(90deg, rgba(255, 255, 255, 0.6), rgba(255, 255, 255, 0.9));
-        border-radius: 2px;
-        transition: width 1s ease-out;
-        animation: shimmer 2s infinite;
+        object-fit: cover;
     }
-
-    @keyframes shimmer {
-        0% {
-            background-position: -100% 0;
-        }
-        100% {
-            background-position: 100% 0;
-        }
+    .startup-logo-placeholder {
+        width: 44px;
+        height: 44px;
+        border-radius: 12px;
+        background: var(--bg-card-hover);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+        color: var(--text-muted);
+        font-size: 1.2rem;
+        border: 1px solid var(--border-color);
     }
-
-    .section-header {
-        text-align: center;
-        margin-bottom: 3rem;
+    .startup-info {
+        flex: 1;
+        min-width: 0;
     }
-
-    .section-title {
-        font-family: 'Poppins', sans-serif;
+    .startup-name {
+        font-family: 'Space Grotesk', 'Poppins', sans-serif;
         font-weight: 700;
-        font-size: 2.5rem;
-        margin-bottom: 1rem;
-        background: linear-gradient(135deg, var(--primary-green), var(--accent-blue));
+        font-size: 1.05rem;
+        color: var(--text-primary);
+        margin-bottom: 0.25rem;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+    .startup-location {
+        color: var(--text-muted);
+        font-size: 0.8rem;
+        display: flex;
+        align-items: center;
+        gap: 0.3rem;
+    }
+    .startup-badges {
+        display: flex;
+        gap: 0.5rem;
+        flex-wrap: wrap;
+    }
+    .badge-sector,
+    .badge-stage {
+        padding: 0.2rem 0.6rem;
+        border-radius: 6px;
+        font-size: 0.72rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.03em;
+    }
+    .badge-sector {
+        background: rgba(16, 185, 129, 0.12);
+        color: var(--accent);
+        border: 1px solid rgba(16, 185, 129, 0.2);
+    }
+    .badge-stage {
+        background: rgba(59, 130, 246, 0.12);
+        color: var(--secondary);
+        border: 1px solid rgba(59, 130, 246, 0.2);
+    }
+    .startup-description {
+        color: var(--text-muted);
+        font-size: 0.82rem;
+        line-height: 1.4;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        min-width: 0;
+    }
+    .startup-description.lang-fr { display: none; }
+    html[data-lang="fr"] .startup-description.lang-fr { display: block; }
+    html[data-lang="fr"] .startup-description.lang-en { display: none; }
+    .startup-funding {
+        margin-top: auto;
+        padding-top: 0.75rem;
+        border-top: 1px solid var(--border-color);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+    .funding-label {
+        color: var(--text-muted);
+        font-size: 0.75rem;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+    }
+    .funding-amount {
+        font-family: 'Space Grotesk', 'Poppins', sans-serif;
+        font-weight: 800;
+        font-size: 1.15rem;
+        background: linear-gradient(135deg, var(--accent), #00e6b8);
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
         background-clip: text;
     }
 
-    .section-subtitle {
-        color: var(--text-muted);
-        font-size: 1.1rem;
-        max-width: 600px;
-        margin: 0 auto;
-        line-height: 1.6;
+    /* ---------- BOTTOM CTA ---------- */
+    .bottom-cta {
+        text-align: center;
+        padding: 2rem 0 1rem;
+    }
+    .btn-explore-all {
+        background: linear-gradient(135deg, var(--accent), var(--secondary));
+        color: #fff;
+        border: none;
+        padding: 0.85rem 2.5rem;
+        border-radius: 12px;
+        font-family: 'Space Grotesk', 'Poppins', sans-serif;
+        font-weight: 700;
+        font-size: 1rem;
+        text-decoration: none;
+        transition: all 0.3s ease;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.6rem;
+    }
+    .btn-explore-all:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 12px 32px rgba(16, 185, 129, 0.35);
+        color: #fff;
     }
 
-    .rank-badge {
-        position: absolute;
-        top: 1rem;
-        right: 1rem;
-        width: 40px;
-        height: 40px;
-        border-radius: 50%;
-        background: linear-gradient(135deg, var(--accent-orange), #FBBF24);
-        color: white;
+    /* ---------- MAP SECTION ---------- */
+    .map-section {
+        margin-top: 2rem;
+        margin-bottom: 2rem;
+    }
+    .map-section .section-title {
+        font-family: 'Space Grotesk', 'Poppins', sans-serif;
+        font-weight: 700;
+        font-size: 1.4rem;
+        margin-bottom: 0.25rem;
+        color: var(--text-primary);
+    }
+    .map-section .section-subtitle {
+        color: var(--text-muted);
+        font-size: 0.9rem;
+        margin-bottom: 1rem;
+    }
+    #moroccoMap {
+        height: 500px;
+        border-radius: 16px;
+        overflow: hidden;
+        border: 1px solid var(--border-color);
+        z-index: 1;
+    }
+    #moroccoMap .leaflet-popup-content-wrapper {
+        background: var(--card-bg);
+        color: var(--text-primary);
+        border-radius: 12px;
+        box-shadow: 0 8px 32px rgba(0,0,0,0.18);
+        border: 1px solid var(--border-color);
+    }
+    #moroccoMap .leaflet-popup-tip {
+        background: var(--card-bg);
+    }
+    #moroccoMap .leaflet-popup-content {
+        margin: 10px 14px;
+        font-family: 'DM Sans', 'Inter', sans-serif;
+        font-size: 0.85rem;
+    }
+    .map-popup-city {
+        font-weight: 700;
+        font-size: 1rem;
+        color: var(--accent);
+        margin-bottom: 2px;
+    }
+    .map-popup-count {
+        font-size: 0.85rem;
+        color: var(--text-muted);
+    }
+    .map-popup-count strong {
+        color: var(--text-primary);
+        font-size: 1.1rem;
+    }
+
+    /* ---------- RESPONSIVE ---------- */
+    @media (max-width: 1200px) {
+        .startups-grid {
+            grid-template-columns: repeat(2, 1fr);
+        }
+    }
+    @media (max-width: 992px) {
+        .charts-grid {
+            grid-template-columns: 1fr;
+        }
+        .stats-row {
+            grid-template-columns: repeat(2, 1fr);
+        }
+    }
+    @media (max-width: 768px) {
+        .startups-grid {
+            grid-template-columns: 1fr;
+        }
+        .stats-row {
+            grid-template-columns: 1fr 1fr;
+        }
+        .hero-headline {
+            font-size: 1.6rem;
+        }
+        .stat-number {
+            font-size: 1.6rem;
+        }
+    }
+    @media (max-width: 480px) {
+        .stats-row {
+            grid-template-columns: 1fr;
+        }
+    }
+
+    /* ---------- COUNT-UP ANIMATION ---------- */
+    @keyframes fadeInUp {
+        from { opacity: 0; transform: translateY(24px); }
+        to   { opacity: 1; transform: translateY(0); }
+    }
+    .animate-fade-in-up { animation: fadeInUp 0.5s ease forwards; }
+
+    /* ---------- ACTUALITÉS GRID (full-width, 2 columns) ---------- */
+    .actu-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 0.85rem;
+        margin-bottom: 0.5rem;
+    }
+    @media (max-width: 768px) { .actu-grid { grid-template-columns: 1fr; } }
+    .actu-card {
+        background: var(--bg-card);
+        border: 1px solid var(--border-color);
+        border-radius: 14px;
+        padding: 1rem 1.1rem;
+        text-decoration: none;
+        color: inherit;
+        transition: all 0.25s ease;
+        display: flex;
+        flex-direction: column;
+        gap: 0.35rem;
+    }
+    .actu-card:hover {
+        border-color: var(--accent);
+        transform: translateX(3px);
+        color: inherit;
+    }
+    [data-theme="light"] .actu-card { background: rgba(255,255,255,0.9); }
+    .actu-cat {
+        font-size: 0.68rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+        color: var(--accent);
+    }
+    .actu-cat.cat-interview { color: #8B5CF6; }
+    .actu-cat.cat-analyse   { color: var(--secondary); }
+    .actu-title {
+        font-family: 'Space Grotesk', 'Poppins', sans-serif;
+        font-weight: 600;
+        font-size: 0.88rem;
+        line-height: 1.4;
+        color: var(--text-primary);
+    }
+    .actu-meta {
+        font-size: 0.72rem;
+        color: var(--text-muted);
+        display: flex;
+        align-items: center;
+        gap: 0.4rem;
+    }
+    /* ---------- CO-FOUNDERS SECTION ---------- */
+    .cofound-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 1.25rem;
+        margin-bottom: 1rem;
+    }
+    @media (max-width: 992px) { .cofound-grid { grid-template-columns: repeat(2,1fr); } }
+    @media (max-width: 600px)  { .cofound-grid { grid-template-columns: 1fr; } }
+    .cofound-card {
+        background: var(--bg-card);
+        border: 1px solid var(--border-color);
+        border-radius: 16px;
+        padding: 1.4rem;
+        text-decoration: none;
+        color: inherit;
+        display: flex;
+        flex-direction: column;
+        gap: 0.6rem;
+        transition: all 0.3s ease;
+        border-left: 4px solid #10B981;
+    }
+    .cofound-card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 8px 24px rgba(16,185,129,0.15);
+        border-color: var(--accent);
+        color: inherit;
+    }
+    [data-theme="light"] .cofound-card { background: rgba(255,255,255,0.9); }
+    .cofound-stage {
+        font-size: 0.68rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        color: var(--accent);
+    }
+    .cofound-title {
+        font-family: 'Space Grotesk','Poppins',sans-serif;
+        font-weight: 700;
+        font-size: 0.95rem;
+        line-height: 1.35;
+        color: var(--text-primary);
+    }
+    .cofound-desc {
+        font-size: 0.78rem;
+        color: var(--text-muted);
+        line-height: 1.45;
+        flex: 1;
+    }
+    .cofound-footer {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding-top: 0.6rem;
+        border-top: 1px solid var(--border-color);
+        gap: 0.5rem;
+        flex-wrap: wrap;
+    }
+    .cofound-author {
+        font-size: 0.75rem;
+        color: var(--text-muted);
+        display: flex;
+        align-items: center;
+        gap: 0.35rem;
+    }
+    .cofound-commitment {
+        font-size: 0.7rem;
+        font-weight: 600;
+        padding: 0.2rem 0.55rem;
+        border-radius: 6px;
+        background: rgba(16,185,129,0.1);
+        color: var(--accent);
+    }
+
+    /* ---------- NEWSFEED EMBEDDED (home) ---------- */
+    :root { --nf-accent: #8B5CF6; --nf-accent-light: rgba(139,92,246,0.15); --nf-accent-glow: rgba(139,92,246,0.25); }
+    .home-nf-section { margin-bottom: 3rem; }
+    .home-nf-layout {
+        display: grid;
+        grid-template-columns: 1fr 300px;
+        gap: 1.5rem;
+        align-items: start;
+    }
+    @media (max-width: 900px) { .home-nf-layout { grid-template-columns: 1fr; } }
+    .nf-create-box {
+        background: var(--bg-card); border: 1px solid var(--border-color);
+        border-radius: 16px; padding: 1.25rem 1.5rem 1.5rem;
+        margin-bottom: 1.25rem;
+        box-shadow: 0 2px 12px var(--shadow-color);
+        transition: border-color 0.2s;
+    }
+    .nf-create-box:focus-within { border-color: var(--nf-accent); box-shadow: 0 0 0 3px var(--nf-accent-glow); }
+    .nf-create-box-header { display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.9rem; }
+    .nf-avatar {
+        width: 42px; height: 42px; border-radius: 50%;
+        background: linear-gradient(135deg, var(--nf-accent), #6D28D9);
+        color: #fff; display: flex; align-items: center; justify-content: center;
+        font-family: var(--font-heading); font-weight: 700; font-size: 1rem;
+        flex-shrink: 0; text-transform: uppercase;
+    }
+    .nf-avatar.sm { width: 36px; height: 36px; font-size: 0.85rem; }
+    .nf-avatar-placeholder { font-size: 0.82rem; color: var(--text-muted); }
+    .nf-create-textarea {
+        width: 100%; background: var(--bg-card); border: 1px solid var(--border-color);
+        border-radius: 10px; color: var(--text-primary); font-family: var(--font-body);
+        font-size: 0.93rem; padding: 0.75rem 1rem; resize: vertical; min-height: 90px;
+        transition: border-color 0.2s; box-sizing: border-box;
+    }
+    .nf-create-textarea:focus { outline: none; border-color: var(--nf-accent); }
+    .nf-create-textarea::placeholder { color: var(--text-muted); opacity: 0.7; }
+    .nf-create-meta { display: flex; flex-wrap: wrap; gap: 0.6rem; margin-top: 0.75rem; align-items: center; }
+    .nf-create-meta input {
+        flex: 1; min-width: 130px; background: var(--bg-card); border: 1px solid var(--border-color);
+        border-radius: 8px; color: var(--text-primary); font-family: var(--font-body);
+        font-size: 0.85rem; padding: 0.45rem 0.75rem; transition: border-color 0.2s;
+    }
+    .nf-create-meta input:focus { outline: none; border-color: var(--nf-accent); }
+    .nf-create-meta input::placeholder { color: var(--text-muted); opacity: 0.65; }
+    .nf-type-select {
+        background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 8px;
+        color: var(--text-primary); font-family: var(--font-body); font-size: 0.85rem;
+        padding: 0.45rem 0.75rem; cursor: pointer; min-width: 130px; transition: border-color 0.2s;
+    }
+    .nf-type-select:focus { outline: none; border-color: var(--nf-accent); }
+    .nf-create-footer { display: flex; align-items: center; justify-content: flex-end; margin-top: 1rem; }
+    .nf-submit-btn {
+        background: linear-gradient(135deg, var(--nf-accent), #6D28D9); color: #fff; border: none;
+        border-radius: 10px; font-family: var(--font-heading); font-weight: 600; font-size: 0.88rem;
+        padding: 0.55rem 1.4rem; cursor: pointer; transition: opacity 0.2s, transform 0.15s;
+        display: flex; align-items: center; gap: 0.4rem;
+    }
+    .nf-submit-btn:hover { opacity: 0.88; transform: translateY(-1px); }
+    /* Tabs */
+    .nf-tabs {
+        display: flex; gap: 0.25rem; margin-bottom: 1.25rem;
+        background: var(--bg-card); border: 1px solid var(--border-color);
+        border-radius: 12px; padding: 0.35rem; overflow-x: auto;
+    }
+    .nf-tab {
+        flex: 1; text-align: center; padding: 0.5rem 0.9rem; border-radius: 9px;
+        font-family: var(--font-heading); font-size: 0.84rem; font-weight: 600;
+        color: var(--text-muted); cursor: pointer; border: none; background: transparent;
+        transition: all 0.2s; white-space: nowrap;
+    }
+    .nf-tab.active { background: linear-gradient(135deg, var(--nf-accent), #6D28D9); color: #fff; box-shadow: 0 2px 8px var(--nf-accent-glow); }
+    .nf-tab:hover:not(.active) { background: var(--nf-accent-light); color: var(--nf-accent); }
+    /* Feed card */
+    .nf-card {
+        background: var(--bg-card); border: 1px solid var(--border-color);
+        border-radius: 16px; padding: 1.25rem 1.4rem 1rem; margin-bottom: 1rem;
+        box-shadow: 0 2px 10px var(--shadow-color); transition: border-color 0.2s, transform 0.18s;
+    }
+    .nf-card:hover { border-color: rgba(139,92,246,0.3); transform: translateY(-2px); }
+    [data-theme="light"] .nf-card { background: rgba(255,255,255,0.9); }
+    .nf-card-header { display: flex; align-items: flex-start; gap: 0.8rem; margin-bottom: 0.85rem; }
+    .nf-card-author { flex: 1; min-width: 0; }
+    .nf-card-author-name { font-family: var(--font-heading); font-size: 0.92rem; font-weight: 700; color: var(--text-primary); margin: 0; line-height: 1.3; }
+    .nf-card-author-role { font-size: 0.78rem; color: var(--text-muted); margin: 0; line-height: 1.4; }
+    .nf-card-time { font-size: 0.76rem; color: var(--text-muted); white-space: nowrap; margin-top: 2px; flex-shrink: 0; }
+    .nf-type-badge {
+        display: inline-flex; align-items: center; gap: 0.3rem; font-size: 0.7rem; font-weight: 700;
+        font-family: var(--font-heading); padding: 0.22rem 0.65rem; border-radius: 999px;
+        text-transform: uppercase; letter-spacing: 0.04em; flex-shrink: 0;
+    }
+    .nf-type-post         { background: rgba(139,92,246,0.15); color: #8B5CF6; }
+    .nf-type-announcement { background: rgba(16,185,129,0.15);  color: #10B981; }
+    .nf-type-question     { background: rgba(245,158,11,0.15);  color: #F59E0B; }
+    .nf-type-opportunity  { background: rgba(59,130,246,0.15);  color: #3B82F6; }
+    .nf-type-article      { background: rgba(0,212,170,0.12);   color: #00d4aa; }
+    .nf-card-content {
+        font-family: var(--font-body); font-size: 0.92rem; line-height: 1.65;
+        color: var(--text-primary); margin-bottom: 0.85rem; white-space: pre-wrap; word-break: break-word;
+    }
+    .nf-card-content.article-content {
+        white-space: normal; display: -webkit-box;
+        -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;
+    }
+    .nf-tags { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-bottom: 0.9rem; }
+    .nf-tag {
+        font-size: 0.72rem; font-weight: 600; color: var(--nf-accent);
+        background: var(--nf-accent-light); padding: 0.2rem 0.6rem;
+        border-radius: 999px; font-family: var(--font-heading); text-transform: lowercase;
+    }
+    .nf-card-footer {
+        display: flex; align-items: center; gap: 1rem;
+        border-top: 1px solid var(--border-color); padding-top: 0.75rem; margin-top: 0.25rem;
+    }
+    .nf-like-btn {
+        display: flex; align-items: center; gap: 0.4rem; background: transparent;
+        border: 1px solid var(--border-color); border-radius: 8px;
+        font-family: var(--font-heading); font-size: 0.8rem; font-weight: 600;
+        color: var(--text-muted); padding: 0.38rem 0.8rem; cursor: pointer; transition: all 0.2s;
+    }
+    .nf-like-btn:hover, .nf-like-btn.liked { background: rgba(239,68,68,0.1); border-color: #EF4444; color: #EF4444; }
+    .nf-like-btn i { font-size: 0.85rem; }
+    .nf-read-more {
+        display: flex; align-items: center; gap: 0.35rem; font-size: 0.8rem; font-weight: 600;
+        font-family: var(--font-heading); color: var(--nf-accent); text-decoration: none;
+        margin-left: auto; transition: opacity 0.2s;
+    }
+    .nf-read-more:hover { opacity: 0.8; text-decoration: none; color: var(--nf-accent); }
+    /* Sidebar */
+    .nf-sidebar-widget {
+        background: var(--bg-card); border: 1px solid var(--border-color);
+        border-radius: 16px; padding: 1.25rem 1.4rem; margin-bottom: 1.25rem;
+        box-shadow: 0 2px 10px var(--shadow-color);
+    }
+    [data-theme="light"] .nf-sidebar-widget { background: rgba(255,255,255,0.9); }
+    .nf-widget-title {
+        font-family: var(--font-heading); font-size: 0.88rem; font-weight: 700;
+        color: var(--text-primary); text-transform: uppercase; letter-spacing: 0.06em;
+        margin: 0 0 1rem 0; display: flex; align-items: center; gap: 0.5rem;
+    }
+    .nf-widget-title i { color: var(--nf-accent); font-size: 0.9rem; }
+    .nf-trending-tags { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+    .nf-trending-tag {
+        font-size: 0.78rem; font-weight: 600; color: var(--nf-accent);
+        background: var(--nf-accent-light); padding: 0.3rem 0.75rem; border-radius: 999px;
+        font-family: var(--font-heading); cursor: pointer;
+        border: 1px solid rgba(139,92,246,0.2); transition: all 0.2s;
+    }
+    .nf-trending-tag:hover { background: var(--nf-accent); color: #fff; border-color: var(--nf-accent); }
+    .nf-tag-count { font-size: 0.68rem; opacity: 0.7; margin-left: 0.25rem; }
+    .nf-round-item { display: flex; flex-direction: column; gap: 0.15rem; padding: 0.75rem 0; border-bottom: 1px solid var(--border-color); }
+    .nf-round-item:last-child { border-bottom: none; padding-bottom: 0; }
+    .nf-round-item:first-child { padding-top: 0; }
+    .nf-round-startup { font-family: var(--font-heading); font-size: 0.87rem; font-weight: 700; color: var(--text-primary); }
+    .nf-round-details { display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap; }
+    .nf-round-amount { font-size: 0.8rem; font-weight: 700; color: #10B981; }
+    .nf-round-type { font-size: 0.72rem; color: var(--text-muted); background: rgba(0,0,0,0.07); padding: 0.15rem 0.5rem; border-radius: 6px; }
+    .nf-round-date { font-size: 0.72rem; color: var(--text-muted); }
+    .nf-appel-item { padding: 0.75rem 0; border-bottom: 1px solid var(--border-color); }
+    .nf-appel-item:last-child { border-bottom: none; padding-bottom: 0; }
+    .nf-appel-item:first-child { padding-top: 0; }
+    .nf-appel-title { font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: var(--text-primary); margin-bottom: 0.3rem; line-height: 1.4; }
+    .nf-appel-org { font-size: 0.76rem; color: var(--text-muted); margin-bottom: 0.5rem; }
+    .nf-appel-link {
+        font-size: 0.77rem; font-weight: 600; color: var(--nf-accent); text-decoration: none;
+        font-family: var(--font-heading); display: inline-flex; align-items: center; gap: 0.3rem; transition: opacity 0.2s;
+    }
+    .nf-appel-link:hover { opacity: 0.75; text-decoration: none; color: var(--nf-accent); }
+    .nf-card-link {
+        display: flex; align-items: center; gap: 0.5rem;
+        background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 10px;
+        padding: 0.65rem 1rem; text-decoration: none; color: var(--text-primary);
+        font-size: 0.84rem; font-weight: 600; margin-bottom: 0.85rem; transition: background 0.2s, border-color 0.2s;
+    }
+    .nf-card-link:hover { background: var(--nf-accent-light); border-color: var(--nf-accent); color: var(--nf-accent); }
+    .nf-card-link i { color: var(--nf-accent); flex-shrink: 0; }
+
+    /* ---------- FORUM / NEWSFEED BANNER (kept for other use) ---------- */
+    .forum-banner {
+        background: linear-gradient(135deg, rgba(139,92,246,0.08), rgba(67,97,238,0.06));
+        border: 1px solid rgba(139,92,246,0.25);
+        border-radius: 16px;
+        padding: 1.5rem 2rem;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 1.5rem;
+        margin-bottom: 2rem;
+        flex-wrap: wrap;
+    }
+    .forum-banner-left {
+        display: flex;
+        align-items: center;
+        gap: 1.1rem;
+    }
+    .forum-banner-icon {
+        width: 48px;
+        height: 48px;
+        border-radius: 14px;
+        background: linear-gradient(135deg, #8B5CF6, #6D28D9);
         display: flex;
         align-items: center;
         justify-content: center;
+        font-size: 1.3rem;
+        color: #fff;
+        flex-shrink: 0;
+    }
+    .forum-banner-text h3 {
+        font-family: 'Space Grotesk','Poppins',sans-serif;
         font-weight: 700;
-        font-size: 1.1rem;
-        box-shadow: 0 4px 15px rgba(245, 158, 11, 0.3);
+        font-size: 1rem;
+        color: var(--text-primary);
+        margin: 0 0 0.2rem;
+    }
+    .forum-banner-text p {
+        font-size: 0.82rem;
+        color: var(--text-muted);
+        margin: 0;
+    }
+    .forum-banner-cta {
+        background: linear-gradient(135deg, #8B5CF6, #6D28D9);
+        color: #fff;
+        padding: 0.6rem 1.5rem;
+        border-radius: 10px;
+        text-decoration: none;
+        font-family: 'Space Grotesk','Poppins',sans-serif;
+        font-weight: 600;
+        font-size: 0.88rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        transition: all 0.25s ease;
+        white-space: nowrap;
+    }
+    .forum-banner-cta:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 20px rgba(139,92,246,0.35);
+        color: #fff;
     }
 
-    /* Light mode rank badge styling */
-    [data-theme="light"] .rank-badge {
-        box-shadow: 0 4px 15px rgba(245, 158, 11, 0.2);
+    /* ---------- SECTION CTAs — uniform shape ---------- */
+    .section-cta {
+        text-align: center;
+        padding: 1rem 0 2rem;
     }
-
-    @media (max-width: 768px) {
-        .section-title {
-            font-size: 2rem;
-        }
-        .startup-name {
-            font-size: 1.2rem;
-        }
-        .startup-logo {
-            width: 60px;
-            height: 60px;
-            font-size: 1.5rem;
-        }
+    .cta-row {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.75rem;
+        flex-wrap: wrap;
+        padding: 1rem 0 2rem;
+    }
+    /* All CTAs — same size, all coloured, no white */
+    .btn-section-cta {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.7rem 2rem;
+        border-radius: 10px;
+        font-family: 'Space Grotesk','Poppins',sans-serif;
+        font-weight: 600;
+        font-size: 0.88rem;
+        text-decoration: none;
+        transition: all 0.25s ease;
+        border: none;
+        color: #fff;
+        white-space: nowrap;
+        /* default = blue */
+        background: linear-gradient(135deg, #3B82F6, #2563eb);
+    }
+    .btn-section-cta:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 20px rgba(59,130,246,0.35);
+        color: #fff;
+    }
+    .btn-section-cta.accent {
+        background: linear-gradient(135deg, #10B981, #00c896);
+    }
+    .btn-section-cta.accent:hover {
+        box-shadow: 0 8px 20px rgba(16,185,129,0.35);
+        color: #fff;
+    }
+    .btn-section-cta.purple {
+        background: linear-gradient(135deg, #8B5CF6, #7C3AED);
+    }
+    .btn-section-cta.purple:hover {
+        box-shadow: 0 8px 20px rgba(139,92,246,0.35);
+        color: #fff;
     }
 </style>
 
-<!-- Hero Section -->
-<div class="hero-section">
-    <div class="floating-elements"></div>
-    <div class="container hero-content">
-        <div class="row align-items-center">
-            <div class="col-lg-8">
-                <h1 class="hero-title">Discover Morocco's<br>Startup Ecosystem</h1>
-                <p class="hero-subtitle">
-                    Explore Morocco’s startup ecosystem : startups, investors, and deals shaping the country’s innovation landscape
-                </p>
-                <div class="hero-actions mb-4">
-                    <button class="btn btn-join-pulse" onclick="location.href='/join'">
-                        <i class="fas fa-rocket me-2"></i>
-                        Join the Pulse
-                        <i class="fas fa-arrow-right ms-2"></i>
-                    </button>
-                    <button class="btn btn-explore" onclick="location.href='/startups'">
-                        <i class="fas fa-search me-2"></i>
-                        Explore The Ecosystem
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div>
+<!-- Disclaimer Banner -->
+<div class="disclaimer-banner" style="background: linear-gradient(90deg, var(--tertiary), #f59e0b); color: #0a0e1a; text-align: center; padding: 0.55rem 1rem; font-size: 0.8rem; font-weight: 600; font-family: var(--font-body); letter-spacing: 0.02em; position: relative; z-index: 100;">
+    <i class="fas fa-flask" style="margin-right: 0.4rem;"></i>
+    <span data-i18n="disclaimer_banner">This is a demo version of The Pulse platform. Data shown is for preview purposes only.</span>
+    <button onclick="this.parentElement.style.display='none'" style="background: none; border: none; color: #0a0e1a; font-size: 1rem; cursor: pointer; margin-left: 0.75rem; opacity: 0.7; line-height: 1;" aria-label="Close">&times;</button>
 </div>
 
-<!-- Stats Overview -->
-<div class="container mb-5">
-    <div class="row g-4">
-        <div class="col-xl-3 col-lg-6 col-md-6">
-            <div class="stats-card pulse-animation">
-                <div class="stats-icon" style="background: var(--gradient-1);">
-                    <i class="fas fa-rocket" style="color: white;"></i>
-                </div>
-                <div class="stats-number" style="color: var(--primary-green);">{{ startups|length }}</div>
-                <div class="stats-label">Total Startups</div>
-            </div>
-        </div>
-        <div class="col-xl-3 col-lg-6 col-md-6">
-            <div class="stats-card">
-                <div class="stats-icon" style="background: var(--gradient-2);">
-                    <i class="fas fa-users" style="color: white;"></i>
-                </div>
-                <div class="stats-number" style="color: var(--accent-blue);">{{ founders|length }}</div>
-                <div class="stats-label">Active Founders</div>
-            </div>
-        </div>
-        <div class="col-xl-3 col-lg-6 col-md-6">
-            <div class="stats-card">
-                <div class="stats-icon" style="background: var(--gradient-3);">
-                    <i class="fas fa-handshake" style="color: white;"></i>
-                </div>
-                <div class="stats-number" style="color: var(--accent-purple);">{{ investors|length }}</div>
-                <div class="stats-label">Total Investors</div>
-            </div>
-        </div>
-        <div class="col-xl-3 col-lg-6 col-md-6">
-            <div class="stats-card">
-                <div class="stats-icon" style="background: var(--gradient-4);">
-                    <i class="fas fa-coins" style="color: white;"></i>
-                </div>
-                <div class="stats-number" style="color: var(--accent-orange);">${{ "%.1f"|format(total_funding) }}M</div>
-                <div class="stats-label">Total Funding</div>
-            </div>
-        </div>
-    </div>
-</div>
+<div class="container-fluid px-3 px-md-4 home-body">
 
-<!-- Charts Section -->
-<div class="container">
-    <div class="row g-4">
-        <!-- Startups by Sector -->
-        <div class="col-lg-6">
-            <div class="chart-card">
-                <h3 class="chart-title">
-                    <i class="fas fa-chart-pie me-2" style="color: var(--primary-green);"></i>
-                    Startups by Sector
-                </h3>
-                <div class="chart-container">
-                    <div id="sectorLoading" class="loading-state">
-                        <div class="loading-spinner"></div>
-                        Loading chart...
+    <!-- ==================== HERO ==================== -->
+    <section class="hero-section">
+        <div class="hero-grid-overlay"></div>
+        <div class="hero-float-elements">
+            <div class="hero-float"></div>
+            <div class="hero-float"></div>
+            <div class="hero-float"></div>
+            <div class="hero-float"></div>
+            <div class="hero-float"></div>
+            <div class="hero-float"></div>
+            <div class="hero-float"></div>
+            <div class="hero-float"></div>
+            <div class="hero-float"></div>
+            <div class="hero-float"></div>
+        </div>
+        <!-- Subtle pulse glow lines -->
+        <div class="hero-pulse-line"></div>
+        <div class="hero-pulse-line-top"></div>
+        <!-- Heartbeat pulse sweep -->
+        <div class="pulse-line-container" style="position:absolute; bottom:22%; left:0; width:100%; height:80px; z-index:1; overflow:hidden; opacity:0.2; pointer-events:none;">
+            <div style="position:absolute; width:200%; height:100%; animation: pulseSweep 4s linear infinite;">
+                <svg viewBox="0 0 600 80" preserveAspectRatio="none" fill="none" xmlns="http://www.w3.org/2000/svg" style="width:50%; height:100%;">
+                    <polyline points="0,40 80,40 100,40 120,40 140,40 160,40 180,40 200,40 220,15 230,65 240,10 250,55 260,40 280,40 300,40 320,40 340,40 380,40 400,40 420,40 440,40 460,40 480,40 500,40 520,15 530,65 540,10 550,55 560,40 580,40 600,40" stroke="url(#homePulseGrad1)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <defs><linearGradient id="homePulseGrad1" x1="0" y1="0" x2="600" y2="0" gradientUnits="userSpaceOnUse">
+                        <stop offset="0%" stop-color="#00d4aa" stop-opacity="0.1"/><stop offset="30%" stop-color="#00d4aa" stop-opacity="0.7"/><stop offset="50%" stop-color="#4361ee" stop-opacity="0.8"/><stop offset="70%" stop-color="#00d4aa" stop-opacity="0.7"/><stop offset="100%" stop-color="#00d4aa" stop-opacity="0.1"/>
+                    </linearGradient></defs>
+                </svg><svg viewBox="0 0 600 80" preserveAspectRatio="none" fill="none" xmlns="http://www.w3.org/2000/svg" style="width:50%; height:100%;">
+                    <polyline points="0,40 80,40 100,40 120,40 140,40 160,40 180,40 200,40 220,15 230,65 240,10 250,55 260,40 280,40 300,40 320,40 340,40 380,40 400,40 420,40 440,40 460,40 480,40 500,40 520,15 530,65 540,10 550,55 560,40 580,40 600,40" stroke="url(#homePulseGrad2)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <defs><linearGradient id="homePulseGrad2" x1="0" y1="0" x2="600" y2="0" gradientUnits="userSpaceOnUse">
+                        <stop offset="0%" stop-color="#00d4aa" stop-opacity="0.1"/><stop offset="30%" stop-color="#00d4aa" stop-opacity="0.7"/><stop offset="50%" stop-color="#4361ee" stop-opacity="0.8"/><stop offset="70%" stop-color="#00d4aa" stop-opacity="0.7"/><stop offset="100%" stop-color="#00d4aa" stop-opacity="0.1"/>
+                    </linearGradient></defs>
+                </svg>
+            </div>
+        </div>
+        <img src="{{ url_for('static', filename='images/thepulse-noir.png') }}" alt="The Pulse" class="hero-logo-img logo-dark" style="width: 100%; max-width: 600px; height: auto; margin: 0 auto; position: relative; z-index: 2;">
+        <img src="{{ url_for('static', filename='images/thepulse-blanc.png') }}" alt="The Pulse" class="hero-logo-img logo-light" style="width: 100%; max-width: 600px; height: auto; margin: 0 auto; position: relative; z-index: 2;">
+
+        <!-- Pulsating dot -->
+        <div class="hero-pulse-dot" style="position: relative; z-index: 2;">
+            <span class="pulse-dot-core"></span>
+            <span class="pulse-dot-ring"></span>
+            <span class="pulse-dot-ring pulse-dot-ring-2"></span>
+        </div>
+
+        <p class="hero-subtitle" data-i18n="hero_subtitle" style="position: relative; z-index: 2;">Real-time data on startups, founders, investors &amp; funding across Morocco</p>
+        <div class="hero-actions" style="position: relative; z-index: 2;">
+            <a href="/join" class="btn-hero-primary" data-i18n="btn_join_pulse">
+                <i class="fas fa-bolt"></i> Join the Pulse
+            </a>
+            <a href="{{ url_for('startups') }}" class="btn-hero-secondary" data-i18n="btn_explore">
+                <i class="fas fa-compass"></i> Explore Startups
+            </a>
+        </div>
+    </section>
+
+    <!-- ==================== STATS ROW ==================== -->
+    <section class="stats-row">
+        <div class="stat-card">
+            <div class="stat-icon"><i class="fas fa-rocket"></i></div>
+            <div class="stat-number" data-target="{{ startups|length }}">0</div>
+            <div class="stat-label" data-i18n="stat_startups">Total Startups</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-icon"><i class="fas fa-user-tie"></i></div>
+            <div class="stat-number" data-target="{{ founders|length }}">0</div>
+            <div class="stat-label" data-i18n="stat_founders">Active Founders</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-icon"><i class="fas fa-hand-holding-usd"></i></div>
+            <div class="stat-number" data-target="{{ investors|length }}">0</div>
+            <div class="stat-label" data-i18n="stat_investors">Investors</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-icon"><i class="fas fa-chart-line"></i></div>
+            <div class="stat-number" data-target="{{ total_funding }}" data-prefix="$" data-suffix="M" data-decimals="1">0</div>
+            <div class="stat-label" data-i18n="stat_funding">Total Funding</div>
+        </div>
+    </section>
+
+    <!-- ==================== NEWSFEED EMBEDDED ==================== -->
+    <div class="home-nf-section">
+        <div class="section-header">
+            <div class="section-header-icon" style="background: linear-gradient(135deg, #8B5CF6, #6D28D9);">
+                <i class="fas fa-rss"></i>
+            </div>
+            <h2 class="home-heading">Newsfeed</h2>
+            <span style="margin-left:auto; font-size:0.78rem; color:var(--text-muted);">Posts, annonces &amp; opportunités de l'écosystème</span>
+        </div>
+
+        <div class="home-nf-layout">
+
+            <!-- ===== LEFT COLUMN ===== -->
+            <div>
+                <!-- Post creation box -->
+                <div class="nf-create-box">
+                    <div class="nf-create-box-header">
+                        <div class="nf-avatar" aria-hidden="true"><i class="fas fa-user"></i></div>
+                        <div class="nf-avatar-placeholder">Partagez quelque chose avec l'écosystème</div>
                     </div>
-                    <canvas id="sectorChart" style="display: none;"></canvas>
-                </div>
-            </div>
-        </div>
-
-        <!-- Startups by City -->
-        <div class="col-lg-6">
-            <div class="chart-card">
-                <h3 class="chart-title">
-                    <i class="fas fa-map-marked-alt me-2" style="color: var(--accent-blue);"></i>
-                    Startups by City
-                </h3>
-                <div class="chart-container">
-                    <div id="cityLoading" class="loading-state">
-                        <div class="loading-spinner"></div>
-                        Loading chart...
-                    </div>
-                    <canvas id="cityChart" style="display: none;"></canvas>
-                </div>
-            </div>
-        </div>
-
-        <!-- Funding Evolution -->
-        <div class="col-lg-8">
-            <div class="chart-card">
-                <h3 class="chart-title">
-                    <i class="fas fa-chart-line me-2" style="color: var(--accent-purple);"></i>
-                    Evolution of Funding
-                </h3>
-                <div class="chart-container">
-                    <div id="fundingEvolutionLoading" class="loading-state">
-                        <div class="loading-spinner"></div>
-                        Loading chart...
-                    </div>
-                    <canvas id="fundingEvolutionChart" style="display: none;"></canvas>
-                </div>
-            </div>
-        </div>
-
-        <!-- Funding by Sector -->
-        <div class="col-lg-4">
-            <div class="chart-card">
-                <h3 class="chart-title">
-                    <i class="fas fa-wallet me-2" style="color: var(--accent-orange);"></i>
-                    Funding by Sector
-                </h3>
-                <div class="chart-container">
-                    <div id="fundingSectorLoading" class="loading-state">
-                        <div class="loading-spinner"></div>
-                        Loading chart...
-                    </div>
-                    <canvas id="fundingSectorChart" style="display: none;"></canvas>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- Top Startups by Funding Section -->
-<div class="container mt-5 mb-5">
-    <div class="d-flex align-items-center mb-4">
-        <i class="fas fa-trophy me-3" style="color: var(--accent-orange); font-size: 2rem;"></i>
-        <h2 class="section-title mb-0" style="text-align: left; font-size: 2rem;">
-            Top Funded Startups
-        </h2>
-    </div>
-    
-    <div class="row g-4">
-        {% for startup in top_startups_funding %}
-        <div class="col-lg-4 col-md-6">
-            <div class="top-startup-card" onclick="window.location.href='{{ url_for('startup_detail', startup_id=startup.startup_id) }}'">
-                <!-- Rank Badge -->
-                <div class="rank-badge">{{ loop.index }}</div>
-                
-                <!-- Startup Logo -->
-                <div class="d-flex align-items-center">
-                    {% if startup.logo_url %}
-                        <img src="{{ startup.logo_url }}" alt="{{ startup.startup_name }} Logo" class="startup-logo">
-                    {% else %}
-                        <div class="startup-logo">
-                            <i class="fas fa-rocket"></i>
+                    <form method="POST" action="/newsfeed/post">
+                        <textarea class="nf-create-textarea" name="content"
+                            placeholder="Quoi de neuf dans l'écosystème ?" maxlength="2000" required></textarea>
+                        <div class="nf-create-meta">
+                            <input type="text" name="author_name" placeholder="Votre nom" maxlength="100">
+                            <input type="text" name="author_role" placeholder="Votre rôle / startup" maxlength="100">
+                            <input type="text" name="tags" placeholder="Tags (ex: fintech,rabat)" maxlength="255">
+                            <select class="nf-type-select" name="post_type">
+                                <option value="post">Post</option>
+                                <option value="announcement">Annonce</option>
+                                <option value="question">Question</option>
+                                <option value="opportunity">Opportunité</option>
+                            </select>
                         </div>
-                    {% endif %}
+                        <div class="nf-create-footer">
+                            <button type="submit" class="nf-submit-btn">
+                                <i class="fas fa-paper-plane"></i> Publier
+                            </button>
+                        </div>
+                    </form>
                 </div>
-                
-                <!-- Startup Name -->
-                <h3 class="startup-name">{{ startup.startup_name or 'Unnamed Startup' }}</h3>
-                
-                <!-- Badges -->
-                <div class="startup-badges">
-                    {% if startup.sector %}
-                        <span class="startup-badge badge-sector">{{ startup.sector.split(',')[0].strip() }}</span>
-                    {% endif %}
-                    {% if startup.stage %}
-                        <span class="startup-badge badge-stage">{{ startup.stage }}</span>
-                    {% endif %}
-                    {% if startup.location %}
-                        <span class="startup-badge badge-location">
-                            <i class="fas fa-map-marker-alt"></i> {{ startup.location }}
-                        </span>
-                    {% endif %}
+
+                <!-- Tabs -->
+                <div class="nf-tabs" role="tablist">
+                    <button class="nf-tab active" role="tab" data-filter="all"><i class="fas fa-border-all"></i> Tout</button>
+                    <button class="nf-tab" role="tab" data-filter="article"><i class="fas fa-newspaper"></i> Actualités</button>
+                    <button class="nf-tab" role="tab" data-filter="post"><i class="fas fa-users"></i> Posts membres</button>
+                    <button class="nf-tab" role="tab" data-filter="opportunity"><i class="fas fa-bullhorn"></i> Opportunités</button>
                 </div>
-                
-                <!-- Meta Information -->
-                <div class="startup-meta">
-                    {% if startup.date_immatriculation %}
-                        <span><i class="fas fa-calendar-alt"></i> Founded {{ startup.date_immatriculation.strftime('%Y') }}</span>
-                    {% elif startup.year_founded %}
-                        <span><i class="fas fa-calendar-alt"></i> Founded {{ startup.year_founded }}</span>
+
+                <!-- Feed (home version = 4 items) -->
+                <div id="home-nf-feed">
+                    {% for item in home_feed_items %}
+                    {% set obj = item.obj %}
+
+                    {% if item.type == 'post' %}
+                    <div class="nf-card" data-filter-type="{{ obj.post_type }}" data-item-type="post">
+                        <div class="nf-card-header">
+                            <div class="nf-avatar sm">{{ (obj.author_name or 'M')[:2] | upper }}</div>
+                            <div class="nf-card-author">
+                                <p class="nf-card-author-name">{{ obj.author_name or 'Membre anonyme' }}</p>
+                                <p class="nf-card-author-role">{{ obj.author_role or 'Membre de l\'écosystème' }}</p>
+                            </div>
+                            <div style="display:flex;flex-direction:column;align-items:flex-end;gap:0.35rem;">
+                                {% if obj.post_type == 'post' %}<span class="nf-type-badge nf-type-post"><i class="fas fa-pen-nib"></i> Post</span>
+                                {% elif obj.post_type == 'announcement' %}<span class="nf-type-badge nf-type-announcement"><i class="fas fa-megaphone"></i> Annonce</span>
+                                {% elif obj.post_type == 'question' %}<span class="nf-type-badge nf-type-question"><i class="fas fa-circle-question"></i> Question</span>
+                                {% elif obj.post_type == 'opportunity' %}<span class="nf-type-badge nf-type-opportunity"><i class="fas fa-briefcase"></i> Opportunité</span>
+                                {% endif %}
+                                <span class="nf-card-time">{% if item.date %}{{ item.date.strftime('%d %b %Y, %H:%M') }}{% endif %}</span>
+                            </div>
+                        </div>
+                        <div class="nf-card-content">{{ obj.content }}</div>
+                        {% if obj.tags %}
+                        <div class="nf-tags">{% for tag in obj.tags.split(',') %}{% if tag.strip() %}<span class="nf-tag">#{{ tag.strip() }}</span>{% endif %}{% endfor %}</div>
+                        {% endif %}
+                        <div class="nf-card-footer">
+                            <button class="nf-like-btn" onclick="likePost(this, {{ obj.post_id }})" aria-label="J'aime">
+                                <i class="fas fa-heart"></i>
+                                <span class="like-count">{{ obj.likes_count or 0 }}</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    {% else %}
+                    <div class="nf-card" data-filter-type="article" data-item-type="article">
+                        <div class="nf-card-header">
+                            <div class="nf-avatar sm" style="background:linear-gradient(135deg,#00d4aa,#0099cc);"><i class="fas fa-newspaper" style="font-size:0.75rem;"></i></div>
+                            <div class="nf-card-author">
+                                <p class="nf-card-author-name">{{ obj.author or obj.source or 'The Pulse' }}</p>
+                                <p class="nf-card-author-role">{{ obj.source or 'Actualités curatées' }}</p>
+                            </div>
+                            <div style="display:flex;flex-direction:column;align-items:flex-end;gap:0.35rem;">
+                                <span class="nf-type-badge nf-type-article"><i class="fas fa-bookmark"></i> Actualité</span>
+                                <span class="nf-card-time">{% if item.date %}{{ item.date.strftime('%d %b %Y') }}{% endif %}</span>
+                            </div>
+                        </div>
+                        <div class="nf-card-content" style="font-weight:600;font-size:0.95rem;margin-bottom:0.5rem;">{{ obj.title }}</div>
+                        {% if obj.summary %}<div class="nf-card-content article-content" style="font-weight:400;margin-top:0;font-size:0.88rem;color:var(--text-muted);">{{ obj.summary }}</div>{% endif %}
+                        {% if obj.source_url %}
+                        <a href="{{ obj.source_url }}" class="nf-card-link" target="_blank" rel="noopener">
+                            <i class="fas fa-external-link-alt"></i> Lire l'article complet
+                        </a>
+                        {% endif %}
+                        <div class="nf-card-footer">
+                            <a href="{{ url_for('actualites') }}" class="nf-read-more">Voir les actualités <i class="fas fa-arrow-right"></i></a>
+                        </div>
+                    </div>
                     {% endif %}
-                    {% if startup.employees %}
-                        <span><i class="fas fa-users"></i> {{ startup.employees }} employees</span>
-                    {% endif %}
+
+                    {% else %}
+                    <div style="text-align:center;padding:2rem;color:var(--text-muted);font-size:0.9rem;">
+                        <i class="fas fa-stream" style="font-size:1.5rem;opacity:0.4;display:block;margin-bottom:0.5rem;"></i>
+                        Aucun contenu pour l'instant. Soyez le premier à publier !
+                    </div>
+                    {% endfor %}
                 </div>
-                
-                <!-- Description -->
-                {% if startup.description %}
-                <p class="startup-description">
-                    {{ startup.description }}
-                </p>
-                {% endif %}
-                
-                <!-- Funding Amount -->
-                <div class="funding-amount">
-                    <i class="fas fa-dollar-sign me-2"></i>
-                    ${{ "%.1f"|format(total_funding_by_startup[loop.index0]) }}M Raised
-                </div>
+
             </div>
+
+            <!-- ===== RIGHT SIDEBAR ===== -->
+            <aside>
+                <!-- Tendances -->
+                <div class="nf-sidebar-widget">
+                    <h3 class="nf-widget-title"><i class="fas fa-fire"></i> Tendances</h3>
+                    {% if home_trending_tags %}
+                    <div class="nf-trending-tags">
+                        {% for tag, count in home_trending_tags %}
+                        <span class="nf-trending-tag">#{{ tag }}<span class="nf-tag-count">{{ count }}</span></span>
+                        {% endfor %}
+                    </div>
+                    {% else %}
+                    <p style="font-size:0.82rem;color:var(--text-muted);">Aucune tendance.</p>
+                    {% endif %}
+                </div>
+
+                <!-- Dernières levées -->
+                <div class="nf-sidebar-widget">
+                    <h3 class="nf-widget-title"><i class="fas fa-chart-line"></i> Dernières levées de fonds</h3>
+                    {% for round in home_recent_rounds %}
+                    <div class="nf-round-item">
+                        <div class="nf-round-startup">{{ round.startup_name or 'Startup' }}</div>
+                        <div class="nf-round-details">
+                            {% if round.raised_amount_usd %}<span class="nf-round-amount">${{ '{:,.0f}'.format(round.raised_amount_usd | float) }}</span>{% endif %}
+                            {% if round.round_name %}<span class="nf-round-type">{{ round.round_name }}</span>{% endif %}
+                            {% if round.date %}<span class="nf-round-date">{{ round.date }}</span>{% endif %}
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+
+                <!-- Appels à projets -->
+                <div class="nf-sidebar-widget">
+                    <h3 class="nf-widget-title"><i class="fas fa-bullhorn"></i> Appels à projets actifs</h3>
+                    {% if home_appels_sidebar %}
+                    {% for appel in home_appels_sidebar %}
+                    <div class="nf-appel-item">
+                        <div class="nf-appel-title">{{ appel.title }}</div>
+                        {% if appel.organization %}<div class="nf-appel-org"><i class="fas fa-building" style="font-size:0.7rem;"></i> {{ appel.organization }}</div>{% endif %}
+                        <a href="{{ appel.url or url_for('ressources') }}" class="nf-appel-link" {% if appel.url %}target="_blank" rel="noopener"{% endif %}>
+                            Candidater <i class="fas fa-external-link-alt" style="font-size:0.65rem;"></i>
+                        </a>
+                    </div>
+                    {% endfor %}
+                    {% else %}
+                    <p style="font-size:0.82rem;color:var(--text-muted);">Aucun appel actif.</p>
+                    {% endif %}
+                    <a href="{{ url_for('ressources') }}" style="display:inline-flex;align-items:center;gap:0.35rem;font-size:0.78rem;font-weight:600;color:var(--nf-accent);text-decoration:none;margin-top:0.5rem;">
+                        Toutes les ressources <i class="fas fa-arrow-right" style="font-size:0.7rem;"></i>
+                    </a>
+                </div>
+            </aside>
+
+        </div><!-- end home-nf-layout -->
+
+        <!-- CTA centré sous les 2 colonnes -->
+        <div class="section-cta" style="padding:1.25rem 0 0;">
+            <a href="{{ url_for('newsfeed') }}" class="btn-section-cta purple">
+                <i class="fas fa-comments"></i> Explorer tout le Newsfeed
+            </a>
         </div>
+    </div><!-- end home-nf-section -->
+
+    <!-- ==================== 1) ACTUALITÉS ==================== -->
+    <div class="section-header">
+        <div class="section-header-icon" style="background: linear-gradient(135deg, var(--secondary), #2563eb);">
+            <i class="fas fa-newspaper"></i>
+        </div>
+        <h2 class="home-heading">Actualités</h2>
+    </div>
+    <div class="actu-grid">
+        {% for article in recent_articles %}
+        <a href="{{ article.source_url or '#' }}" {% if article.source_url %}target="_blank" rel="noopener"{% endif %} class="actu-card">
+            <span class="actu-cat {% if article.category == 'Interview' %}cat-interview{% elif article.category == 'Analyse' %}cat-analyse{% endif %}">{{ article.category }}</span>
+            <div class="actu-title">{{ article.title }}</div>
+            <div class="actu-meta">
+                <i class="fas fa-building-columns"></i> {{ article.source }}
+                {% if article.published_at %}&nbsp;·&nbsp;<i class="fas fa-clock"></i>
+                {{ article.published_at[:10] if article.published_at is string else article.published_at.strftime('%d/%m/%Y') }}{% endif %}
+            </div>
+        </a>
         {% endfor %}
     </div>
-    
-    <!-- View All Startups Button -->
-    <div class="text-center mt-4">
-        <a href="{{ url_for('startups') }}" class="btn btn-lg" style="background: linear-gradient(135deg, var(--primary-green), var(--light-green)); color: white; border: none; padding: 1rem 2rem; border-radius: 25px; font-weight: 600; text-decoration: none; transition: all 0.3s ease;">
-            <i class="fas fa-rocket me-2"></i>
-            Explore All Startups
+    <div class="section-cta">
+        <a href="{{ url_for('actualites') }}" class="btn-section-cta accent">
+            <i class="fas fa-arrow-right"></i> Toutes les actualités
         </a>
     </div>
+
+
+    <!-- ==================== 2) APPELS À PROJETS ==================== -->
+    {% if appels_a_projets %}
+    <div class="section-header">
+        <div class="section-header-icon" style="background: linear-gradient(135deg, #8B5CF6, #7C3AED);">
+            <i class="fas fa-bullhorn"></i>
+        </div>
+        <h2 class="home-heading">Appels à Projets</h2>
+    </div>
+    <section class="appels-grid">
+        {% for appel in appels_a_projets %}
+        <a href="{{ appel.url }}" target="_blank" rel="noopener" class="appel-card">
+            <div class="appel-card-top">
+                <span class="appel-org">{{ appel.organization }}</span>
+                {% if appel.published_at %}
+                <span class="appel-deadline"><i class="fas fa-calendar-alt"></i> {{ appel.published_at[:10] if appel.published_at is string else appel.published_at.strftime('%d/%m/%Y') }}</span>
+                {% endif %}
+            </div>
+            <h3 class="appel-title">{{ appel.title }}</h3>
+            <p class="appel-desc">{{ appel.description[:120] }}…</p>
+            <div class="appel-footer">
+                {% if appel.tags %}{% for tag in appel.tags.split(',')[:3] %}<span class="appel-tag">{{ tag.strip() }}</span>{% endfor %}{% endif %}
+                <span class="appel-cta">Voir <i class="fas fa-external-link-alt"></i></span>
+            </div>
+        </a>
+        {% endfor %}
+    </section>
+    <div class="section-cta">
+        <a href="{{ url_for('ressources') }}" class="btn-section-cta purple">
+            <i class="fas fa-arrow-right"></i> Voir tous les appels à projets
+        </a>
+    </div>
+    {% endif %}
+
+
+    <!-- ==================== 3) CHERCHENT UN CO-FONDATEUR ==================== -->
+    {% if cofound_projects %}
+    <div class="section-header">
+        <div class="section-header-icon" style="background: linear-gradient(135deg, #10B981, #059669);">
+            <i class="fas fa-handshake"></i>
+        </div>
+        <h2 class="home-heading">Cherchent un Co-fondateur</h2>
+    </div>
+    <section class="cofound-grid">
+        {% for project in cofound_projects %}
+        <a href="{{ url_for('cofounders') }}" class="cofound-card">
+            <span class="cofound-stage">{{ project.project_stage or 'Projet' }}</span>
+            <div class="cofound-title">{{ project.project_title }}</div>
+            {% if project.description %}
+            <div class="cofound-desc">{{ project.description[:130] }}{% if project.description|length > 130 %}…{% endif %}</div>
+            {% endif %}
+            <div class="cofound-footer">
+                <span class="cofound-author">
+                    <i class="fas fa-user-circle"></i> {{ project.author_name or 'Anonyme' }}
+                    {% if project.domain %} · {{ project.domain }}{% endif %}
+                </span>
+                {% if project.commitment_type %}<span class="cofound-commitment">{{ project.commitment_type }}</span>{% endif %}
+            </div>
+        </a>
+        {% endfor %}
+    </section>
+    <div class="section-cta">
+        <a href="{{ url_for('cofounders') }}" class="btn-section-cta">
+            <i class="fas fa-arrow-right"></i> Voir toutes les opportunités
+        </a>
+    </div>
+    {% endif %}
+
+
+    <!-- ==================== 4) TOP FUNDED STARTUPS ==================== -->
+    <div class="section-header">
+        <div class="section-header-icon" style="background: linear-gradient(135deg, var(--tertiary), #e6a520);">
+            <i class="fas fa-trophy"></i>
+        </div>
+        <h2 class="home-heading" data-i18n="section_top">Top Funded Startups</h2>
+    </div>
+    <section class="startups-grid">
+        {% for startup in top_startups_funding %}
+        <a href="{{ url_for('startup_detail', startup_id=startup.startup_id) }}" class="startup-card" style="transition-delay: {{ loop.index0 * 80 }}ms;">
+            <div class="startup-card-glow"></div>
+            <div class="startup-card-top">
+                <div class="startup-rank {% if loop.index == 1 %}rank-1{% elif loop.index == 2 %}rank-2{% elif loop.index == 3 %}rank-3{% endif %}">{{ loop.index }}</div>
+                {% if startup.logo_url %}
+                <div class="startup-logo"><img src="{{ startup.logo_url }}" alt="{{ startup.startup_name }}" loading="lazy"></div>
+                {% else %}
+                <div class="startup-logo-placeholder"><i class="fas fa-building"></i></div>
+                {% endif %}
+                <div class="startup-info">
+                    <div class="startup-name">{{ startup.startup_name }}</div>
+                    {% if startup.location %}<div class="startup-location"><i class="fas fa-map-pin"></i> {{ startup.location }}</div>{% endif %}
+                </div>
+            </div>
+            <div class="startup-badges">
+                {% if startup.sector %}<span class="badge-sector">{{ startup.sector }}</span>{% endif %}
+                {% if startup.stage %}<span class="badge-stage">{{ startup.stage }}</span>{% endif %}
+            </div>
+            {% if startup.description or startup.description_en %}
+            <div class="startup-description lang-en">{{ startup.description_en or startup.description }}</div>
+            <div class="startup-description lang-fr">{{ startup.description }}</div>
+            {% endif %}
+            <div class="startup-funding">
+                <span class="funding-label">Total Funding</span>
+                <span class="funding-amount" id="startup-funding-{{ loop.index0 }}"></span>
+            </div>
+        </a>
+        {% endfor %}
+    </section>
+    <div class="section-cta">
+        <a href="{{ url_for('startups') }}" class="btn-section-cta accent">
+            <i class="fas fa-arrow-right"></i> <span data-i18n="btn_explore_all">Explorer toutes les startups</span>
+        </a>
+    </div>
+
+
+    <!-- ==================== 5) ANALYTICS ==================== -->
+    <div class="section-header">
+        <div class="section-header-icon" style="background: linear-gradient(135deg, var(--accent), #009e7e);">
+            <i class="fas fa-chart-pie"></i>
+        </div>
+        <h2 class="home-heading">Analytics</h2>
+    </div>
+    <section class="charts-grid">
+        <div class="chart-card">
+            <div class="chart-card-header">
+                <i class="fas fa-th-large"></i>
+                <span data-i18n="chart_sector">Startups par secteur</span>
+            </div>
+            <div class="chart-wrapper">
+                <div class="chart-loading" id="loading-sector"><div class="chart-spinner"></div><span>Loading...</span></div>
+                <canvas id="sectorDoughnutChart"></canvas>
+            </div>
+        </div>
+        <div class="chart-card">
+            <div class="chart-card-header">
+                <i class="fas fa-map-marker-alt"></i>
+                <span data-i18n="chart_city">Startups par ville</span>
+            </div>
+            <div class="chart-wrapper">
+                <div class="chart-loading" id="loading-city"><div class="chart-spinner"></div><span>Loading...</span></div>
+                <canvas id="cityBarChart"></canvas>
+            </div>
+        </div>
+        <div class="chart-card">
+            <div class="chart-card-header">
+                <i class="fas fa-chart-area"></i>
+                <span data-i18n="chart_funding_evo">Évolution du financement</span>
+            </div>
+            <div class="chart-wrapper">
+                <div class="chart-loading" id="loading-funding"><div class="chart-spinner"></div><span>Loading...</span></div>
+                <canvas id="fundingLineChart"></canvas>
+            </div>
+        </div>
+        <div class="chart-card">
+            <div class="chart-card-header">
+                <i class="fas fa-coins"></i>
+                <span data-i18n="chart_funding_sector">Financement par secteur</span>
+            </div>
+            <div class="chart-wrapper">
+                <div class="chart-loading" id="loading-fundingSector"><div class="chart-spinner"></div><span>Loading...</span></div>
+                <canvas id="fundingSectorBarChart"></canvas>
+            </div>
+        </div>
+    </section>
+    <div class="section-cta">
+        <a href="/" class="btn-section-cta">
+            <i class="fas fa-chart-pie"></i> Toutes les analytics
+        </a>
+    </div>
+
+
 </div>
 {% endblock %}
 
 {% block scripts %}
-<!-- Pass Flask data to JavaScript -->
+<!-- Leaflet.js for interactive map -->
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
 <script>
-    // Get data from Flask template
-    window.chartData = {
-        sectorLabels: {{ topsectors | tojson }},
-        sectorData: {{ nbstartupsbysector | tojson }},
-        cityLabels: {{ topcities | tojson }},
-        cityData: {{ NbStartupsByCity | tojson }},
-        years: {{ years | tojson }},
-        totalByYear: {{ total_by_year | tojson }},
-        fundingBySectorLabels: {{ topsectors_funding | tojson }},
-        fundingBySectorData: {{ total_funding_by_sector | tojson }},
-        topStartupsFunding: {{ total_funding_by_startup | tojson }}
-    };
-    
-    console.log('Chart data loaded:', window.chartData);
+(function() {
+    'use strict';
+
+    /* ============================================================
+       MOROCCO ECOSYSTEM MAP
+       ============================================================ */
+    function initMoroccoMap() {
+        var mapEl = document.getElementById('moroccoMap');
+        if (!mapEl) return;
+
+        var isDark = document.documentElement.getAttribute('data-theme') !== 'light';
+
+        var tileLight = 'https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png';
+        var tileDark = 'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png';
+
+        // Morocco complete bounds: from Dakhla in south to Tangier in north
+        var moroccoBounds = L.latLngBounds(
+            L.latLng(21.0, -17.5),  // Southwest corner (south of Dakhla)
+            L.latLng(36.5, -0.5)    // Northeast corner (north of Oujda)
+        );
+
+        var map = L.map('moroccoMap', {
+            center: [29.5, -8.0],
+            zoom: 5,
+            minZoom: 4,
+            maxZoom: 12,
+            maxBounds: moroccoBounds,
+            maxBoundsViscosity: 1.0,
+            scrollWheelZoom: true,
+            attributionControl: true
+        });
+
+        var currentTileLayer = L.tileLayer(isDark ? tileDark : tileLight, {
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OSM</a> &copy; <a href="https://carto.com/">CARTO</a>',
+            subdomains: 'abcd',
+            maxZoom: 19
+        }).addTo(map);
+
+        // Store references for theme switching
+        window._moroccoMap = map;
+        window._moroccoTileLayer = currentTileLayer;
+
+        // Fetch startup data and add markers
+        fetch('/api/map-data')
+            .then(function(res) { return res.json(); })
+            .then(function(data) {
+                if (!data || data.length === 0) return;
+
+                var maxCount = Math.max.apply(null, data.map(function(d) { return d.count; }));
+
+                data.forEach(function(item) {
+                    var radius = Math.max(8, Math.min(35, (item.count / maxCount) * 35));
+
+                    var circle = L.circleMarker([item.lat, item.lng], {
+                        radius: radius,
+                        fillColor: '#00d4aa',
+                        color: '#00d4aa',
+                        weight: 2,
+                        opacity: 0.8,
+                        fillOpacity: 0.35
+                    }).addTo(map);
+
+                    var plural = item.count > 1 ? 's' : '';
+                    circle.bindPopup(
+                        '<div class="map-popup-city">' + item.city + '</div>' +
+                        '<div class="map-popup-count"><strong>' + item.count + '</strong> startup' + plural + '</div>'
+                    );
+
+                    // Hover effect
+                    circle.on('mouseover', function() {
+                        this.setStyle({ fillOpacity: 0.6, weight: 3 });
+                    });
+                    circle.on('mouseout', function() {
+                        this.setStyle({ fillOpacity: 0.35, weight: 2 });
+                    });
+                });
+            })
+            .catch(function(err) {
+                console.error('Failed to load map data:', err);
+            });
+    }
+
+    // Theme switching for the map
+    function updateMapTheme() {
+        if (!window._moroccoMap || !window._moroccoTileLayer) return;
+        var isDark = document.documentElement.getAttribute('data-theme') !== 'light';
+        var tileLight = 'https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png';
+        var tileDark = 'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png';
+
+        window._moroccoMap.removeLayer(window._moroccoTileLayer);
+        window._moroccoTileLayer = L.tileLayer(isDark ? tileDark : tileLight, {
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OSM</a> &copy; <a href="https://carto.com/">CARTO</a>',
+            subdomains: 'abcd',
+            maxZoom: 19
+        }).addTo(window._moroccoMap);
+    }
+
+    // Watch for theme changes for the map
+    var mapThemeObserver = new MutationObserver(function(mutations) {
+        mutations.forEach(function(m) {
+            if (m.type === 'attributes' && m.attributeName === 'data-theme') {
+                updateMapTheme();
+            }
+        });
+    });
+    mapThemeObserver.observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
+
+    // Initialize map on DOM ready
+    document.addEventListener('DOMContentLoaded', initMoroccoMap);
+})();
 </script>
 
 <script>
-    // Wait for DOM and Chart.js to load completely
-    document.addEventListener('DOMContentLoaded', function() {
-        console.log('DOM loaded, checking Chart.js...');
-        
-        // Function to check if Chart.js is loaded
-        function checkChartJS() {
-            return new Promise((resolve) => {
-                if (typeof Chart !== 'undefined') {
-                    console.log('Chart.js is available, version:', Chart.version);
-                    resolve(true);
-                } else {
-                    console.log('Chart.js not yet available, retrying...');
-                    setTimeout(() => checkChartJS().then(resolve), 100);
-                }
-            });
-        }
+(function() {
+    'use strict';
 
-        // Initialize everything once Chart.js is confirmed loaded
-        checkChartJS().then(() => {
-            initializeCharts();
-        });
-    });
+    /* ============================================================
+       GLOBAL CHART STORAGE & THEME HELPERS
+       ============================================================ */
+    window.chartInstances = {};
 
-    function hideLoadingState(chartId) {
-        const loadingElement = document.getElementById(chartId + 'Loading');
-        const canvasElement = document.getElementById(chartId);
-        
-        console.log(`Hiding loading state for ${chartId}:`, {
-            loadingElement: !!loadingElement,
-            canvasElement: !!canvasElement
-        });
-        
-        if (loadingElement) {
-            loadingElement.style.display = 'none';
-            console.log(`✓ Hidden loading for ${chartId}`);
-        }
-        if (canvasElement) {
-            canvasElement.style.display = 'block';
-            console.log(`✓ Shown canvas for ${chartId}`);
-        }
+    var PALETTE = [
+        '#10B981', '#3B82F6', '#8B5CF6', '#F59E0B', '#EC4899',
+        '#EF4444', '#6366F1', '#14B8A6', '#06B6D4', '#84CC16',
+        '#EAB308', '#F97316', '#A855F7', '#22D3EE', '#34D399'
+    ];
+
+    function isDarkTheme() {
+        return document.documentElement.getAttribute('data-theme') !== 'light';
     }
 
-    function showError(chartId, message) {
-        const loadingElement = document.getElementById(chartId + 'Loading');
-        if (loadingElement) {
-            loadingElement.innerHTML = '<i class="fas fa-exclamation-triangle" style="color: #F59E0B; margin-right: 8px;"></i>' + message;
-        }
-    }
-
-    function getThemeAwareColors() {
-        const currentTheme = document.documentElement.getAttribute('data-theme') || 'dark';
-        
+    function themeColors() {
+        var dark = isDarkTheme();
         return {
-            textColor: currentTheme === 'light' ? '#64748B' : '#94A3B8',
-            gridColor: currentTheme === 'light' ? 'rgba(226, 232, 240, 0.8)' : '#334155',
-            backgroundColor: currentTheme === 'light' ? '#FFFFFF' : 'transparent'
+            text: dark ? '#94A3B8' : '#64748B',
+            grid: dark ? 'rgba(51,65,85,0.5)' : 'rgba(226,232,240,0.8)',
+            cardBg: dark ? '#1E293B' : '#FFFFFF',
+            tooltipBg: dark ? '#1E293B' : '#FFFFFF',
+            tooltipText: dark ? '#F8FAFC' : '#1E293B',
+            tooltipBorder: dark ? '#334155' : '#E2E8F0'
         };
     }
 
-    function initializeCharts() {
-        try {
-            console.log('Initializing charts...');
-            
-            // Get theme-aware colors
-            const themeColors = getThemeAwareColors();
+    function hideLoader(id) {
+        var el = document.getElementById(id);
+        if (el) el.style.display = 'none';
+    }
 
-            // Chart.js configuration
-            Chart.defaults.font.family = "'Inter', sans-serif";
-            Chart.defaults.color = themeColors.textColor;
-            Chart.defaults.responsive = true;
-            Chart.defaults.maintainAspectRatio = false;
+    /* ============================================================
+       TOOLTIP CONFIG (SHARED)
+       ============================================================ */
+    function tooltipConfig() {
+        var tc = themeColors();
+        return {
+            backgroundColor: tc.tooltipBg,
+            titleColor: tc.tooltipText,
+            bodyColor: tc.tooltipText,
+            borderColor: tc.tooltipBorder,
+            borderWidth: 1,
+            cornerRadius: 8,
+            padding: 10,
+            titleFont: { family: "'Space Grotesk','Poppins',sans-serif", weight: '600' },
+            bodyFont: { family: "'DM Sans','Inter',sans-serif" },
+            displayColors: true,
+            boxPadding: 4
+        };
+    }
 
-            // Colors for consistency
-            const colors = {
-                primary: '#10B981',
-                blue: '#3B82F6',
-                purple: '#8B5CF6',
-                orange: '#F59E0B',
-                pink: '#EC4899',
-                cyan: '#06B6D4',
-                lime: '#84CC16',
-                red: '#EF4444',
-                yellow: '#EAB308',
-                indigo: '#6366F1'
-            };
+    /* ============================================================
+       CHART: STARTUPS BY SECTOR (DOUGHNUT)
+       ============================================================ */
+    function createSectorChart() {
+        var ctx = document.getElementById('sectorDoughnutChart');
+        if (!ctx) return;
+        var tc = themeColors();
+        var labels = {{ topsectors | tojson }}.map(function(l) { return l.replace(/_/g, '-'); });
+        var data = {{ nbstartupsbysector | tojson }};
 
-            // Create color array for dynamic number of sectors
-            const sectorColors = [
-                colors.primary, colors.blue, colors.purple, colors.orange, 
-                colors.pink, colors.cyan, colors.lime, colors.red, 
-                colors.yellow, colors.indigo
-            ];
-
-            // 1. Startups by Sector (Doughnut Chart) - NOW WITH REAL DATA
-            const sectorCtx = document.getElementById('sectorChart');
-            if (sectorCtx && window.chartData.sectorLabels && window.chartData.sectorData) {
-                try {
-                    window.chartInstances.sectorChart = new Chart(sectorCtx, {
-                        type: 'doughnut',
-                        data: {
-                            labels: window.chartData.sectorLabels,
-                            datasets: [{
-                                data: window.chartData.sectorData,
-                                backgroundColor: sectorColors.slice(0, window.chartData.sectorLabels.length),
-                                borderWidth: 0,
-                                hoverOffset: 8
-                            }]
-                        },
-                        options: {
-                            plugins: {
-                                legend: {
-                                    position: 'right',
-                                    labels: {
-                                        usePointStyle: true,
-                                        padding: 15,
-                                        font: {
-                                            size: 11
-                                        },
-                                        color: themeColors.textColor
-                                    }
-                                }
-                            },
-                            cutout: '65%',
-                            layout: {
-                                padding: 10
-                            }
+        window.chartInstances.sectorDoughnut = new Chart(ctx, {
+            type: 'doughnut',
+            data: {
+                labels: labels,
+                datasets: [{
+                    data: data,
+                    backgroundColor: PALETTE.slice(0, labels.length),
+                    borderColor: tc.cardBg,
+                    borderWidth: 3,
+                    hoverOffset: 8
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                cutout: '62%',
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                        labels: {
+                            color: tc.text,
+                            padding: 14,
+                            usePointStyle: true,
+                            pointStyle: 'circle',
+                            font: { family: "'DM Sans','Inter',sans-serif", size: 12 }
                         }
-                    });
-                    hideLoadingState('sector');
-                    console.log('✓ Sector chart created with real data');
-                } catch (error) {
-                    console.error('Error creating sector chart:', error);
-                    showError('sector', 'Failed to load sector chart');
+                    },
+                    tooltip: tooltipConfig()
+                },
+                animation: {
+                    animateRotate: true,
+                    duration: 1000
                 }
             }
+        });
+        hideLoader('loading-sector');
+    }
 
-            // 2. Startups by City (Bar Chart) - NOW WITH REAL DATA
-            const cityCtx = document.getElementById('cityChart');
-            if (cityCtx && window.chartData.cityLabels && window.chartData.cityData) {
-                try {
-                    window.chartInstances.cityChart = new Chart(cityCtx, {
-                        type: 'bar',
-                        data: {
-                            labels: window.chartData.cityLabels,
-                            datasets: [{
-                                label: 'Number of Startups',
-                                data: window.chartData.cityData,
-                                backgroundColor: sectorColors.slice(0, window.chartData.cityLabels.length),
-                                borderRadius: 6,
-                                borderSkipped: false
-                            }]
+    /* ============================================================
+       CHART: STARTUPS BY CITY (BAR)
+       ============================================================ */
+    function createCityChart() {
+        var ctx = document.getElementById('cityBarChart');
+        if (!ctx) return;
+        var tc = themeColors();
+        var labels = {{ topcities | tojson }};
+        var data = {{ NbStartupsByCity | tojson }};
+
+        window.chartInstances.cityBar = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: 'Startups',
+                    data: data,
+                    backgroundColor: PALETTE.slice(0, labels.length).map(function(c) { return c + 'CC'; }),
+                    borderColor: PALETTE.slice(0, labels.length),
+                    borderWidth: 1,
+                    borderRadius: 6,
+                    borderSkipped: false,
+                    maxBarThickness: 48
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                indexAxis: 'x',
+                plugins: {
+                    legend: { display: false },
+                    tooltip: tooltipConfig()
+                },
+                scales: {
+                    x: {
+                        ticks: { color: tc.text, font: { family: "'DM Sans','Inter',sans-serif", size: 11 } },
+                        grid: { display: false }
+                    },
+                    y: {
+                        beginAtZero: true,
+                        ticks: { color: tc.text, font: { family: "'DM Sans','Inter',sans-serif", size: 11 }, precision: 0 },
+                        grid: { color: tc.grid, drawBorder: false }
+                    }
+                },
+                animation: { duration: 1000 }
+            }
+        });
+        hideLoader('loading-city');
+    }
+
+    /* ============================================================
+       CHART: FUNDING EVOLUTION (LINE WITH GRADIENT)
+       ============================================================ */
+    function createFundingLineChart() {
+        var ctx = document.getElementById('fundingLineChart');
+        if (!ctx) return;
+        var tc = themeColors();
+        var context2d = ctx.getContext('2d');
+        var gradient = context2d.createLinearGradient(0, 0, 0, 380);
+        gradient.addColorStop(0, 'rgba(16,185,129,0.35)');
+        gradient.addColorStop(1, 'rgba(16,185,129,0.02)');
+
+        var labels = {{ years | tojson }};
+        var data = {{ total_by_year | tojson }};
+
+        window.chartInstances.fundingLine = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: 'Funding ($M)',
+                    data: data,
+                    borderColor: '#10B981',
+                    backgroundColor: gradient,
+                    borderWidth: 3,
+                    pointBackgroundColor: '#10B981',
+                    pointBorderColor: tc.cardBg,
+                    pointBorderWidth: 2,
+                    pointRadius: 5,
+                    pointHoverRadius: 8,
+                    fill: true,
+                    tension: 0.35
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { display: false },
+                    tooltip: tooltipConfig()
+                },
+                scales: {
+                    x: {
+                        ticks: { color: tc.text, font: { family: "'DM Sans','Inter',sans-serif", size: 11 } },
+                        grid: { display: false }
+                    },
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            color: tc.text,
+                            font: { family: "'DM Sans','Inter',sans-serif", size: 11 },
+                            callback: function(value) { return '$' + value + 'M'; }
                         },
-                        options: {
-                            plugins: {
-                                legend: {
-                                    display: false
-                                }
-                            },
-                            scales: {
-                                y: {
-                                    beginAtZero: true,
-                                    grid: {
-                                        color: themeColors.gridColor
-                                    },
-                                    ticks: {
-                                        color: themeColors.textColor
-                                    }
-                                },
-                                x: {
-                                    grid: {
-                                        display: false
-                                    },
-                                    ticks: {
-                                        color: themeColors.textColor
-                                    }
-                                }
-                            }
-                        }
-                    });
-                    hideLoadingState('city');
-                    console.log('✓ City chart created with real data');
-                } catch (error) {
-                    console.error('Error creating city chart:', error);
-                    showError('city', 'Failed to load city chart');
+                        grid: { color: tc.grid, drawBorder: false }
+                    }
+                },
+                animation: { duration: 1200 }
+            }
+        });
+        hideLoader('loading-funding');
+    }
+
+    /* ============================================================
+       CHART: FUNDING BY SECTOR (HORIZONTAL BAR)
+       ============================================================ */
+    function createFundingSectorChart() {
+        var ctx = document.getElementById('fundingSectorBarChart');
+        if (!ctx) return;
+        var tc = themeColors();
+        var labels = {{ topsectors_funding | tojson }};
+        var data = {{ total_funding_by_sector | tojson }};
+
+        window.chartInstances.fundingSectorBar = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: 'Funding ($M)',
+                    data: data,
+                    backgroundColor: PALETTE.slice(0, labels.length).map(function(c) { return c + 'CC'; }),
+                    borderColor: PALETTE.slice(0, labels.length),
+                    borderWidth: 1,
+                    borderRadius: 6,
+                    borderSkipped: false,
+                    maxBarThickness: 36
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                indexAxis: 'y',
+                plugins: {
+                    legend: { display: false },
+                    tooltip: tooltipConfig()
+                },
+                scales: {
+                    x: {
+                        beginAtZero: true,
+                        ticks: {
+                            color: tc.text,
+                            font: { family: "'DM Sans','Inter',sans-serif", size: 11 },
+                            callback: function(value) { return '$' + value + 'M'; }
+                        },
+                        grid: { color: tc.grid, drawBorder: false }
+                    },
+                    y: {
+                        ticks: { color: tc.text, font: { family: "'DM Sans','Inter',sans-serif", size: 11 } },
+                        grid: { display: false }
+                    }
+                },
+                animation: { duration: 1000 }
+            }
+        });
+        hideLoader('loading-fundingSector');
+    }
+
+    /* ============================================================
+       REBUILD ALL CHARTS (THEME CHANGE)
+       ============================================================ */
+    function destroyAllCharts() {
+        Object.keys(window.chartInstances).forEach(function(key) {
+            if (window.chartInstances[key]) {
+                window.chartInstances[key].destroy();
+                window.chartInstances[key] = null;
+            }
+        });
+    }
+
+    function buildAllCharts() {
+        destroyAllCharts();
+        // Show loaders
+        ['loading-sector','loading-city','loading-funding','loading-fundingSector'].forEach(function(id) {
+            var el = document.getElementById(id);
+            if (el) el.style.display = 'flex';
+        });
+        createSectorChart();
+        createCityChart();
+        createFundingLineChart();
+        createFundingSectorChart();
+    }
+
+    /* ============================================================
+       COUNTER ANIMATION
+       ============================================================ */
+    function animateCounters() {
+        var counters = document.querySelectorAll('.stat-number[data-target]');
+        counters.forEach(function(el) {
+            var target = parseFloat(el.getAttribute('data-target'));
+            var prefix = el.getAttribute('data-prefix') || '';
+            var suffix = el.getAttribute('data-suffix') || '';
+            var decimals = parseInt(el.getAttribute('data-decimals') || '0', 10);
+            var duration = 1400;
+            var startTime = null;
+
+            function step(timestamp) {
+                if (!startTime) startTime = timestamp;
+                var progress = Math.min((timestamp - startTime) / duration, 1);
+                /* ease-out cubic */
+                var eased = 1 - Math.pow(1 - progress, 3);
+                var current = eased * target;
+                el.textContent = prefix + current.toFixed(decimals).replace(/\B(?=(\d{3})+(?!\d))/g, ',') + suffix;
+                if (progress < 1) {
+                    requestAnimationFrame(step);
                 }
             }
+            requestAnimationFrame(step);
+        });
+    }
 
-            // 3. Funding Evolution (Line Chart)
-            const fundingEvolutionCtx = document.getElementById('fundingEvolutionChart');
-            if (fundingEvolutionCtx) {
-                try {
-                    window.chartInstances.fundingEvolutionChart = new Chart(fundingEvolutionCtx, {
-                        type: 'line',
-                        data: {
-                            labels: window.chartData.years,
-                            datasets: [{
-                                label: 'Funding Amount ($M)',
-                                data: window.chartData.totalByYear,
-                                borderColor: colors.primary,
-                                backgroundColor: 'rgba(16, 185, 129, 0.1)',
-                                fill: true,
-                                tension: 0.4,
-                                pointBackgroundColor: colors.primary,
-                                pointBorderColor: '#ffffff',
-                                pointBorderWidth: 2,
-                                pointRadius: 5
-                            }]
-                        },
-                        options: {
-                            plugins: {
-                                legend: {
-                                    display: false
-                                }
-                            },
-                            scales: {
-                                y: {
-                                    beginAtZero: true,
-                                    grid: {
-                                        color: themeColors.gridColor
-                                    },
-                                    ticks: {
-                                        color: themeColors.textColor,
-                                        callback: function(value) {
-                                            return '$' + value + 'M';
-                                        }
-                                    }
-                                },
-                                x: {
-                                    grid: {
-                                        color: themeColors.gridColor
-                                    },
-                                    ticks: {
-                                        color: themeColors.textColor
-                                    }
-                                }
-                            },
-                            interaction: {
-                                intersect: false,
-                                mode: 'index'
-                            }
-                        }
-                    });
-                    hideLoadingState('fundingEvolution');
-                    console.log('✓ Funding evolution chart created');
-                } catch (error) {
-                    console.error('Error creating funding evolution chart:', error);
-                    showError('fundingEvolution', 'Failed to load funding evolution chart');
+    /* ============================================================
+       STARTUP FUNDING AMOUNTS
+       ============================================================ */
+    function setStartupFundingAmounts() {
+        var amounts = {{ total_funding_by_startup | tojson }};
+        amounts.forEach(function(amount, i) {
+            var el = document.getElementById('startup-funding-' + i);
+            if (el) {
+                var val = parseFloat(amount);
+                if (isNaN(val)) {
+                    el.textContent = '$' + amount + 'M';
+                } else {
+                    el.textContent = '$' + val.toFixed(1).replace(/\B(?=(\d{3})+(?!\d))/g, ',') + 'M';
                 }
             }
+        });
+    }
 
-            // 4. Funding by Sector (Horizontal Bar)
-            const fundingSectorCtx = document.getElementById('fundingSectorChart');
-            if (fundingSectorCtx) {
-                try {
-                    window.chartInstances.fundingSectorChart = new Chart(fundingSectorCtx, {
-                        type: 'bar',
-                        data: {
-                            labels: window.chartData.fundingBySectorLabels,
-                            datasets: [{
-                                label: 'Funding ($M)',
-                                data: window.chartData.fundingBySectorData,
-                                backgroundColor: [
-                                    colors.primary,
-                                    colors.blue,
-                                    colors.purple,
-                                    colors.orange,
-                                    colors.pink
-                                ],
-                                borderRadius: 4
-                            }]
-                        },
-                        options: {
-                            indexAxis: 'y',
-                            plugins: {
-                                legend: {
-                                    display: false
-                                }
-                            },
-                            scales: {
-                                x: {
-                                    beginAtZero: true,
-                                    grid: {
-                                        color: themeColors.gridColor
-                                    },
-                                    ticks: {
-                                        color: themeColors.textColor,
-                                        callback: function(value) {
-                                            return '$' + value + 'M';
-                                        }
-                                    }
-                                },
-                                y: {
-                                    grid: {
-                                        display: false
-                                    },
-                                    ticks: {
-                                        color: themeColors.textColor
-                                    }
-                                }
-                            }
-                        }
-                    });
-                    hideLoadingState('fundingSector');
-                    console.log('✓ Funding sector chart created');
-                } catch (error) {
-                    console.error('Error creating funding sector chart:', error);
-                    showError('fundingSector', 'Failed to load funding sector chart');
-                }
-            }
+    /* ============================================================
+       SCROLL-TRIGGERED STARTUP CARD ANIMATION
+       ============================================================ */
+    function observeStartupCards() {
+        var cards = document.querySelectorAll('.startup-card');
+        if (!cards.length) return;
 
-            // Start number animations after charts are created
-            setTimeout(() => {
-                animateNumbers();
-                
-                // Force canvas visibility and sizing
-                const canvases = document.querySelectorAll('canvas[id*="Chart"]');
-                canvases.forEach((canvas, index) => {
-                    console.log(`Canvas ${canvas.id} check:`, {
-                        display: getComputedStyle(canvas).display,
-                        visibility: getComputedStyle(canvas).visibility,
-                        width: canvas.offsetWidth,
-                        height: canvas.offsetHeight,
-                        parentWidth: canvas.parentElement.offsetWidth,
-                        parentHeight: canvas.parentElement.offsetHeight
-                    });
-                    
-                    // Force redraw
-                    canvas.style.display = 'block';
-                    canvas.style.visibility = 'visible';
-                    
-                    // Trigger resize event
-                    if (canvas.chart) {
-                        canvas.chart.resize();
+        if ('IntersectionObserver' in window) {
+            var observer = new IntersectionObserver(function(entries) {
+                entries.forEach(function(entry) {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                        observer.unobserve(entry.target);
                     }
                 });
-                
-                console.log('Charts should now be visible!');
-            }, 500);
-            console.log('🎉 All charts initialized successfully!');
+            }, { threshold: 0.1 });
 
-        } catch (error) {
-            console.error('Error during chart initialization:', error);
+            cards.forEach(function(card) {
+                observer.observe(card);
+            });
+        } else {
+            /* fallback: show all */
+            cards.forEach(function(card) { card.classList.add('visible'); });
         }
     }
 
-    // Animate stats numbers
-    function animateNumbers() {
-        const statsNumbers = document.querySelectorAll('.stats-number');
-        
-        statsNumbers.forEach(stat => {
-            const target = stat.textContent.trim();
-            console.log('Animating:', target);
-            
-            // Handle different formats: $123.4M, €123M, or plain numbers
-            const isDollar = target.includes('$');
-            const isEuro = target.includes('€');
-            const hasM = target.includes('M');
-            
-            // Extract numeric value
-            let numericValue;
-            if (isDollar || isEuro || hasM) {
-                numericValue = parseFloat(target.replace(/[$€M]/g, ''));
-            } else {
-                numericValue = parseInt(target);
-            }
-            
-            if (isNaN(numericValue)) {
-                console.log('Skipping non-numeric value:', target);
-                return;
-            }
-            
-            let current = 0;
-            const increment = numericValue / 60;
-            
-            const timer = setInterval(() => {
-                current += increment;
-                if (current >= numericValue) {
-                    current = numericValue;
-                    clearInterval(timer);
-                }
-                
-                let displayValue;
-                if (isDollar && hasM) {
-                    displayValue = '$' + current.toFixed(1) + 'M';
-                } else if (isEuro && hasM) {
-                    displayValue = '€' + Math.floor(current) + 'M';
-                } else {
-                    displayValue = Math.floor(current);
-                }
-                
-                stat.textContent = displayValue;
-            }, 30);
-        });
-    }
-
-    // Add animations for startup cards
-    function animateStartupCards() {
-        const startupCards = document.querySelectorAll('.top-startup-card');
-        
-        startupCards.forEach((card, index) => {
-            // Initial state
-            card.style.opacity = '0';
-            card.style.transform = 'translateY(30px)';
-            card.style.transition = 'all 0.6s ease';
-            
-            // Animate in
-            setTimeout(() => {
-                card.style.opacity = '1';
-                card.style.transform = 'translateY(0)';
-            }, 100 * index);
-            
-            // Add click sound effect (optional)
-            card.addEventListener('click', function() {
-                this.style.transform = 'scale(0.98)';
-                setTimeout(() => {
-                    this.style.transform = '';
-                }, 150);
-            });
-        });
-    }
-
-    // Initialize startup card animations after DOM load
-    document.addEventListener('DOMContentLoaded', function() {
-        setTimeout(animateStartupCards, 1000); // Delay to show after other animations
-    });
-
-    // Store chart instances for theme updates
-    window.chartInstances = {};
-
-    // Function to destroy and reinitialize charts when theme changes
-    function updateChartsForTheme() {
-        console.log('Updating charts for theme change...');
-        
-        // Destroy existing charts
-        Object.keys(window.chartInstances).forEach(key => {
-            if (window.chartInstances[key]) {
-                window.chartInstances[key].destroy();
-            }
-        });
-        
-        // Clear chart instances
-        window.chartInstances = {};
-        
-        // Reinitialize charts with new theme colors
-        setTimeout(() => {
-            initializeCharts();
-        }, 100);
-    }
-
-    // Listen for theme changes (works with the theme toggle from base.html)
-    document.addEventListener('DOMContentLoaded', function() {
-        // Watch for theme attribute changes
-        const observer = new MutationObserver(function(mutations) {
+    /* ============================================================
+       MUTATION OBSERVER FOR THEME CHANGES
+       ============================================================ */
+    function watchThemeChanges() {
+        var observer = new MutationObserver(function(mutations) {
             mutations.forEach(function(mutation) {
                 if (mutation.type === 'attributes' && mutation.attributeName === 'data-theme') {
-                    console.log('Theme changed, updating charts...');
-                    updateChartsForTheme();
+                    buildAllCharts();
                 }
             });
         });
+        observer.observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
+    }
 
-        // Start observing theme changes
-        observer.observe(document.documentElement, {
-            attributes: true,
-            attributeFilter: ['data-theme']
+    /* ============================================================
+       INIT
+       ============================================================ */
+    document.addEventListener('DOMContentLoaded', function() {
+        animateCounters();
+        setStartupFundingAmounts();
+        buildAllCharts();
+        observeStartupCards();
+        watchThemeChanges();
+    });
+
+})();
+</script>
+
+<!-- Newsfeed embedded interactions -->
+<script>
+// Tabs (home feed)
+document.querySelectorAll('.home-nf-section .nf-tab').forEach(function(tab) {
+    tab.addEventListener('click', function() {
+        document.querySelectorAll('.home-nf-section .nf-tab').forEach(function(t) {
+            t.classList.remove('active'); t.setAttribute('aria-selected','false');
+        });
+        this.classList.add('active'); this.setAttribute('aria-selected','true');
+        var filter = this.getAttribute('data-filter');
+        document.querySelectorAll('#home-nf-feed .nf-card').forEach(function(card) {
+            if (filter === 'all') { card.style.display = ''; }
+            else if (filter === 'article') { card.style.display = (card.getAttribute('data-item-type') === 'article') ? '' : 'none'; }
+            else if (filter === 'post') { card.style.display = (card.getAttribute('data-item-type') === 'post') ? '' : 'none'; }
+            else { card.style.display = (card.getAttribute('data-filter-type') === filter) ? '' : 'none'; }
         });
     });
+});
+// Like button
+function likePost(btn, postId) {
+    if (btn.classList.contains('liked')) return;
+    btn.classList.add('liked');
+    fetch('/newsfeed/like/' + postId, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'X-Requested-With': 'XMLHttpRequest' }
+    })
+    .then(function(r) { return r.json(); })
+    .then(function(data) {
+        var span = btn.querySelector('.like-count');
+        if (span) span.textContent = data.likes;
+    })
+    .catch(function() { btn.classList.remove('liked'); });
+}
 </script>
 {% endblock %}

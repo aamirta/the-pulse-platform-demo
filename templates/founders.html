@@ -1,1698 +1,282 @@
 {% extends "base.html" %}
 
-{% block title %}Founders - The Pulse{% endblock %}
+{% block title %}Fondateurs - The Pulse{% endblock %}
 
 {% block content %}
-<script>
-    // Initialize theme immediately to prevent flash
-    (function() {
-        const savedTheme = localStorage.getItem('theme') || 'dark';
-        document.documentElement.setAttribute('data-theme', savedTheme);
-    })();
-</script>
-<style>
-    /* CSS Variables inherited from base.html */
-    :root {
-        --primary-green: #10B981;
-        --dark-green: #059669;
-        --light-green: #34D399;
-        --accent-blue: #3B82F6;
-        --accent-purple: #8B5CF6;
-        --accent-orange: #F59E0B;
-        --accent-pink: #EC4899;
-        --accent-red: #EF4444;
-        --accent-indigo: #6366F1;
-        --accent-teal: #14B8A6;
-        --accent-cyan: #06B6D4;
-        --bg-dark: #0F172A;
-        --bg-card: #1E293B;
-        --bg-card-hover: #334155;
-        --text-light: #F8FAFC;
-        --text-muted: #94A3B8;
-        --border-color: #334155;
-        --gradient-1: linear-gradient(135deg, #10B981, #34D399);
-        --gradient-2: linear-gradient(135deg, #3B82F6, #60A5FA);
-        --gradient-3: linear-gradient(135deg, #8B5CF6, #A78BFA);
-        --gradient-4: linear-gradient(135deg, #F59E0B, #FBBF24);
-        --gradient-red: linear-gradient(135deg, #EF4444, #F87171);
-        --gradient-indigo: linear-gradient(135deg, #6366F1, #818CF8);
-        --gradient-teal: linear-gradient(135deg, #14B8A6, #2DD4BF);
-        --gradient-cyan: linear-gradient(135deg, #06B6D4, #22D3EE);
-    }
+<link rel="stylesheet" href="{{ url_for('static', filename='css/founders.css')}}">
 
-    /* Light Mode Variables */
-    [data-theme="light"] {
-        --bg-dark: #F8FAFC;
-        --bg-card: #FFFFFF;
-        --bg-card-hover: #F1F5F9;
-        --text-light: #1E293B;
-        --text-muted: #64748B;
-        --text-dark: #94A3B8;
-        --border-color: #E2E8F0;
-        --border-light: #CBD5E1;
-        --shadow-color: rgba(0, 0, 0, 0.1);
-        --overlay-color: rgba(248, 250, 252, 0.8);
-    }
-
-    /* Dark Mode Variables (ensure consistency) */
-    [data-theme="dark"] {
-        --bg-dark: #0F172A;
-        --bg-card: #1E293B;
-        --bg-card-hover: #334155;
-        --text-light: #F8FAFC;
-        --text-muted: #94A3B8;
-        --text-dark: #475569;
-        --border-color: #334155;
-        --border-light: #475569;
-        --shadow-color: rgba(0, 0, 0, 0.3);
-        --overlay-color: rgba(15, 23, 42, 0.8);
-    }
-
-    /* Theme Transition for smooth switching - only after initial load */
-    .theme-transitions * {
-        transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
-    }
-
-    .page-header {
-        background: linear-gradient(135deg, rgba(16, 185, 129, 0.1) 0%, rgba(59, 130, 246, 0.1) 100%);
-        padding: 3rem 0 2rem 0;
-        margin-bottom: 2rem;
-        border-radius: 20px;
-        position: relative;
-        overflow: hidden;
-    }
-
-    [data-theme="light"] .page-header {
-        background: linear-gradient(135deg, rgba(16, 185, 129, 0.08) 0%, rgba(59, 130, 246, 0.08) 100%);
-    }
-
-    .page-header::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="dots" width="20" height="20" patternUnits="userSpaceOnUse"><circle cx="10" cy="10" r="1" fill="%23ffffff" opacity="0.1"/></pattern></defs><rect width="100" height="100" fill="url(%23dots)"/></svg>');
-    }
-
-    [data-theme="light"] .page-header::before {
-        background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="dots" width="20" height="20" patternUnits="userSpaceOnUse"><circle cx="10" cy="10" r="1" fill="%23000000" opacity="0.05"/></pattern></defs><rect width="100" height="100" fill="url(%23dots)"/></svg>');
-    }
-
-    .page-title {
-        font-family: 'Poppins', sans-serif;
-        font-weight: 700;
-        font-size: 2.5rem;
-        margin-bottom: 0.5rem;
-        background: linear-gradient(135deg, #10B981, #34D399);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        background-clip: text;
-        position: relative;
-        z-index: 2;
-    }
-
-    .page-subtitle {
-        color: var(--text-muted);
-        font-size: 1.1rem;
-        position: relative;
-        z-index: 2;
-    }
-
-    [data-theme="light"] .page-subtitle {
-        color: #64748B;
-    }
-
-    .stats-bar {
-        background: linear-gradient(145deg, var(--bg-card), rgba(51, 65, 85, 0.8));
-        border-radius: 15px;
-        padding: 1.5rem;
-        margin-bottom: 2rem;
-        border: 1px solid rgba(52, 211, 153, 0.1);
-        backdrop-filter: blur(20px);
-    }
-
-    [data-theme="light"] .stats-bar {
-        background: linear-gradient(145deg, rgba(255, 255, 255, 0.95), rgba(248, 250, 252, 0.9));
-        border: 1px solid rgba(226, 232, 240, 0.8);
-    }
-
-    .stat-item {
-        text-align: center;
-    }
-
-    .stat-number {
-        font-size: 2rem;
-        font-weight: 700;
-        color: var(--primary-green);
-        font-family: 'Poppins', sans-serif;
-    }
-
-    .stat-label {
-        color: var(--text-muted);
-        font-size: 0.9rem;
-        font-weight: 500;
-    }
-
-    [data-theme="light"] .stat-label {
-        color: #64748B;
-    }
-
-    /* Main Content Layout - Modified for wider table */
-    .main-content-wrapper {
-        width: 100%;
-        max-width: none;
-        margin: 0 auto;
-        padding: 0 1rem;
-    }
-
-    .main-content-grid {
-        display: grid;
-        grid-template-columns: 300px 1fr; /* Fixed sidebar width, flexible table */
-        gap: 2rem;
-        align-items: start;
-    }
-
-    .filters-column {
-        min-width: 280px;
-    }
-
-    .table-column {
-        min-width: 0;
-        overflow: hidden; /* Prevent overflow issues */
-    }
-
-    /* Filters Section */
-    .filters-container {
-        background: linear-gradient(145deg, var(--bg-card), rgba(51, 65, 85, 0.8));
-        border-radius: 20px;
-        padding: 1.5rem;
-        margin-bottom: 2rem;
-        border: 1px solid rgba(52, 211, 153, 0.1);
-        backdrop-filter: blur(20px);
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-        position: sticky;
-        top: 2rem;
-        height: fit-content;
-        max-height: calc(100vh - 4rem);
-        overflow-y: auto;
-        width: 100%;
-    }
-
-    [data-theme="light"] .filters-container {
-        background: linear-gradient(145deg, rgba(255, 255, 255, 0.95), rgba(248, 250, 252, 0.9));
-        border: 1px solid rgba(226, 232, 240, 0.8);
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
-    }
-
-    .filters-header {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        margin-bottom: 1.5rem;
-        padding-bottom: 1rem;
-        border-bottom: 2px solid var(--border-color);
-    }
-
-    .filters-title {
-        color: var(--text-light);
-        font-size: 1.2rem;
-        font-weight: 600;
-        margin: 0;
-        display: flex;
-        align-items: center;
-        gap: 0.5rem;
-    }
-
-    [data-theme="light"] .filters-title {
-        color: #1E293B;
-    }
-
-    .filters-title i {
-        color: var(--primary-green);
-    }
-
-    .clear-filters {
-        background: linear-gradient(135deg, #EF4444, #F87171);
-        color: white;
-        border: none;
-        padding: 0.4rem 0.8rem;
-        border-radius: 10px;
-        font-size: 0.8rem;
-        font-weight: 500;
-        cursor: pointer;
-        transition: all 0.3s ease;
-    }
-
-    .clear-filters:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
-    }
-
-    [data-theme="light"] .clear-filters:hover {
-        box-shadow: 0 4px 12px rgba(239, 68, 68, 0.2);
-    }
-
-    .accordion-filter {
-        margin-bottom: 1rem;
-        border: 1px solid var(--border-color);
-        border-radius: 12px;
-        overflow: hidden;
-        background: rgba(51, 65, 85, 0.3);
-    }
-
-    .accordion-header {
-        padding: 1rem;
-        background: linear-gradient(135deg, rgba(16, 185, 129, 0.1), rgba(59, 130, 246, 0.1));
-        cursor: pointer;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        transition: all 0.3s ease;
-        border: none;
-        width: 100%;
-        text-align: left;
-    }
-
-    [data-theme="light"] .accordion-header {
-        background: linear-gradient(135deg, rgba(16, 185, 129, 0.05), rgba(59, 130, 246, 0.05));
-    }
-
-    .accordion-header:hover {
-        background: linear-gradient(135deg, rgba(16, 185, 129, 0.2), rgba(59, 130, 246, 0.2));
-    }
-
-    [data-theme="light"] .accordion-header:hover {
-        background: linear-gradient(135deg, rgba(16, 185, 129, 0.1), rgba(59, 130, 246, 0.1));
-    }
-
-    .accordion-header.active {
-        background: linear-gradient(135deg, rgba(16, 185, 129, 0.15), rgba(59, 130, 246, 0.15));
-    }
-
-    [data-theme="light"] .accordion-header.active {
-        background: linear-gradient(135deg, rgba(16, 185, 129, 0.08), rgba(59, 130, 246, 0.08));
-    }
-
-    .accordion-title {
-        color: var(--text-light);
-        font-weight: 600;
-        font-size: 0.95rem;
-        margin: 0;
-        display: flex;
-        align-items: center;
-        gap: 0.5rem;
-    }
-
-    [data-theme="light"] .accordion-title {
-        color: #1E293B;
-    }
-
-    .accordion-icon {
-        color: var(--primary-green);
-        transition: transform 0.3s ease;
-        font-size: 0.8rem;
-    }
-
-    .accordion-header.active .accordion-icon {
-        transform: rotate(90deg);
-    }
-
-    .accordion-content {
-        max-height: 0;
-        overflow: hidden;
-        transition: max-height 0.3s ease;
-        background: var(--bg-card-hover);
-    }
-
-    .accordion-content.active {
-        max-height: 300px;
-    }
-
-    .accordion-body {
-        padding: 1rem;
-        max-height: 250px;
-        overflow-y: auto;
-    }
-
-    .filter-option {
-        display: flex;
-        align-items: center;
-        padding: 0.5rem 0;
-        transition: all 0.2s ease;
-        border-radius: 8px;
-        margin-bottom: 0.3rem;
-    }
-
-    .filter-option:hover {
-        background: rgba(16, 185, 129, 0.1);
-        padding-left: 0.5rem;
-    }
-
-    [data-theme="light"] .filter-option:hover {
-        background: rgba(16, 185, 129, 0.05);
-    }
-
-    .filter-checkbox {
-        width: 18px;
-        height: 18px;
-        margin-right: 0.75rem;
-        accent-color: var(--primary-green);
-        cursor: pointer;
-    }
-
-    [data-theme="light"] .filter-checkbox {
-        accent-color: #059669;
-    }
-
-    .filter-label {
-        color: var(--text-light);
-        font-size: 0.9rem;
-        cursor: pointer;
-        flex: 1;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-    }
-
-    [data-theme="light"] .filter-label {
-        color: #374151;
-    }
-
-    /* Startup Filter Specific Styles */
-    .filter-search-container {
-        position: relative;
-        margin-bottom: 1rem;
-    }
-
-    .filter-search {
-        width: 100%;
-        padding: 0.5rem 0.75rem 0.5rem 2.5rem;
-        border: 1px solid var(--border-color);
-        border-radius: 8px;
-        background: var(--bg-card-hover);
-        color: var(--text-light);
-        font-size: 0.85rem;
-        transition: all 0.3s ease;
-    }
-
-    .filter-search:focus {
-        outline: none;
-        border-color: var(--primary-green);
-        box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1);
-    }
-
-    .filter-search::placeholder {
-        color: var(--text-muted);
-    }
-
-    .filter-search-icon {
-        position: absolute;
-        left: 0.75rem;
-        top: 50%;
-        transform: translateY(-50%);
-        color: var(--text-muted);
-        font-size: 0.8rem;
-        pointer-events: none;
-    }
-
-    [data-theme="light"] .filter-search {
-        background: #f8fafc;
-        color: #374151;
-        border-color: #d1d5db;
-    }
-
-    [data-theme="light"] .filter-search:focus {
-        border-color: #10b981;
-        box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1);
-    }
-
-    [data-theme="light"] .filter-search::placeholder {
-        color: #9ca3af;
-    }
-
-    [data-theme="light"] .filter-search-icon {
-        color: #6b7280;
-    }
-
-    .startup-filter-info {
-        display: flex;
-        flex-direction: column;
-        gap: 0.2rem;
-    }
-
-    .startup-filter-name {
-        font-weight: 600;
-        color: var(--text-light);
-    }
-
-    .startup-filter-sector {
-        font-size: 0.75rem;
-        color: var(--text-muted);
-        font-style: italic;
-    }
-
-    [data-theme="light"] .startup-filter-name {
-        color: #374151;
-    }
-
-    [data-theme="light"] .startup-filter-sector {
-        color: #6b7280;
-    }
-
-    .startup-option.hidden {
-        display: none;
-    }
-
-    /* Search Container Styles */
-    .search-container {
-        background: linear-gradient(145deg, var(--bg-card), rgba(51, 65, 85, 0.8));
-        border-radius: 15px;
-        padding: 1.5rem;
-        margin-bottom: 1.5rem;
-        border: 1px solid rgba(52, 211, 153, 0.1);
-        backdrop-filter: blur(20px);
-        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
-    }
-
-    /* Light mode search container styling */
-    [data-theme="light"] .search-container {
-        background: linear-gradient(145deg, var(--bg-card), rgba(248, 250, 252, 0.9));
-        border: 1px solid var(--border-color);
-        box-shadow: 0 8px 32px var(--shadow-color);
-    }
-
-    .search-wrapper {
-        position: relative;
-        display: flex;
-        align-items: center;
-        width: 100%;
-    }
-
-    .search-icon {
-        position: absolute;
-        left: 1rem;
-        color: var(--primary-green);
-        font-size: 1rem;
-        z-index: 2;
-    }
-
-    .founder-search-input {
-        width: 100%;
-        padding: 0.8rem 1rem 0.8rem 2.5rem;
-        border: 2px solid var(--border-color);
-        border-radius: 12px;
-        background: var(--bg-card-hover);
-        color: var(--text-light);
-        font-size: 1rem;
-        font-weight: 500;
-        transition: all 0.3s ease;
-        outline: none;
-    }
-
-    .founder-search-input:focus {
-        border-color: var(--primary-green);
-        box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1);
-        background: var(--bg-card);
-    }
-
-    .founder-search-input::placeholder {
-        color: var(--text-muted);
-        font-weight: 400;
-    }
-
-    /* Light mode styling for founder search input */
-    [data-theme="light"] .founder-search-input {
-        background: var(--bg-card);
-        color: var(--text-dark);
-        border: 2px solid var(--border-light);
-    }
-
-    [data-theme="light"] .founder-search-input:focus {
-        border-color: var(--primary-green);
-        box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.08);
-        background: #ffffff;
-    }
-
-    [data-theme="light"] .founder-search-input::placeholder {
-        color: var(--text-muted);
-    }
-
-    .clear-search-btn {
-        position: absolute;
-        right: 0.5rem;
-        background: var(--gradient-red);
-        color: white;
-        border: none;
-        border-radius: 8px;
-        width: 32px;
-        height: 32px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        cursor: pointer;
-        transition: all 0.3s ease;
-        font-size: 0.8rem;
-    }
-
-    .clear-search-btn:hover {
-        transform: scale(1.1);
-        box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
-    }
-
-    /* Light mode styling for clear search button */
-    [data-theme="light"] .clear-search-btn:hover {
-        box-shadow: 0 4px 12px rgba(239, 68, 68, 0.25);
-    }
-
-    /* Hidden table rows for search functionality */
-    .startups-table tbody tr.hidden {
-        display: none !important;
-    }
-
-    /* Table Search Bar Styles */
-    .table-search-container {
-        background: var(--bg-card);
-        border-radius: 15px;
-        padding: 1.5rem;
-        margin-bottom: 1rem;
-        border: 1px solid var(--border-color);
-        backdrop-filter: blur(10px);
-        position: relative;
-    }
-
-    [data-theme="light"] .table-search-container {
-        background: rgba(255, 255, 255, 0.95);
-        border-color: #e2e8f0;
-    }
-
-    .table-search-wrapper {
-        position: relative;
-        max-width: 500px;
-    }
-
-    .table-search-input {
-        width: 100%;
-        padding: 1rem 1.25rem 1rem 3rem;
-        border: 2px solid var(--border-color);
-        border-radius: 12px;
-        background: var(--bg-card-hover);
-        color: var(--text-light);
-        font-size: 1rem;
-        font-weight: 500;
-        transition: all 0.3s ease;
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-    }
-
-    .table-search-input:focus {
-        outline: none;
-        border-color: var(--primary-green);
-        box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.15), 0 4px 12px rgba(0, 0, 0, 0.15);
-        transform: translateY(-1px);
-    }
-
-    .table-search-input::placeholder {
-        color: var(--text-muted);
-        font-weight: 400;
-    }
-
-    [data-theme="light"] .table-search-input {
-        background: #f8fafc;
-        color: #374151;
-        border-color: #d1d5db;
-    }
-
-    [data-theme="light"] .table-search-input:focus {
-        border-color: #10b981;
-        box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.1), 0 4px 12px rgba(0, 0, 0, 0.08);
-    }
-
-    [data-theme="light"] .table-search-input::placeholder {
-        color: #9ca3af;
-    }
-
-    .table-search-icon {
-        position: absolute;
-        left: 1rem;
-        top: 50%;
-        transform: translateY(-50%);
-        color: var(--text-muted);
-        font-size: 1.1rem;
-        pointer-events: none;
-        transition: all 0.3s ease;
-    }
-
-    .table-search-wrapper:focus-within .table-search-icon {
-        color: var(--primary-green);
-        transform: translateY(-50%) scale(1.1);
-    }
-
-    [data-theme="light"] .table-search-icon {
-        color: #6b7280;
-    }
-
-    [data-theme="light"] .table-search-wrapper:focus-within .table-search-icon {
-        color: #10b981;
-    }
-
-    .search-results-count {
-        position: absolute;
-        right: 0;
-        top: 50%;
-        transform: translateY(-50%);
-        background: var(--primary-green);
-        color: white;
-        padding: 0.5rem 1rem;
-        border-radius: 8px;
-        font-size: 0.85rem;
-        font-weight: 600;
-        opacity: 0;
-        transition: all 0.3s ease;
-        pointer-events: none;
-    }
-
-    .search-results-count.show {
-        opacity: 1;
-    }
-
-    [data-theme="light"] .search-results-count {
-        background: #10b981;
-    }
-
-    .founder-row.hidden {
-        display: none;
-    }
-
-    .filter-count {
-        background: rgba(16, 185, 129, 0.2);
-        color: var(--primary-green);
-        padding: 0.2rem 0.5rem;
-        border-radius: 12px;
-        font-size: 0.75rem;
-        font-weight: 600;
-        min-width: 25px;
-        text-align: center;
-    }
-
-    .apply-filters {
-        width: 100%;
-        background: var(--gradient-1);
-        color: white;
-        border: none;
-        padding: 0.8rem 1.5rem;
-        border-radius: 12px;
-        font-size: 1rem;
-        font-weight: 600;
-        cursor: pointer;
-        transition: all 0.3s ease;
-        margin-top: 1.5rem;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 0.5rem;
-    }
-
-    .apply-filters:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 6px 20px rgba(16, 185, 129, 0.3);
-    }
-
-    [data-theme="light"] .apply-filters:hover {
-        box-shadow: 0 6px 20px rgba(16, 185, 129, 0.2);
-    }
-
-    .apply-filters:disabled {
-        opacity: 0.6;
-        cursor: not-allowed;
-        transform: none;
-    }
-
-    .table-container {
-        background: linear-gradient(145deg, var(--bg-card), rgba(51, 65, 85, 0.8));
-        border-radius: 20px;
-        overflow: hidden;
-        border: 1px solid rgba(52, 211, 153, 0.1);
-        backdrop-filter: blur(20px);
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-        width: 100%;
-    }
-
-    [data-theme="light"] .table-container {
-        background: linear-gradient(145deg, rgba(255, 255, 255, 0.95), rgba(248, 250, 252, 0.9));
-        border: 1px solid rgba(226, 232, 240, 0.8);
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
-    }
-
-    .table-header {
-        background: linear-gradient(90deg, var(--primary-green), var(--dark-green));
-        padding: 1.5rem;
-        position: relative;
-        overflow: hidden;
-    }
-
-    .table-header::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background: linear-gradient(45deg, transparent 30%, rgba(255,255,255,0.1) 50%, transparent 70%);
-        animation: shimmer 3s infinite;
-    }
-
-    @keyframes shimmer {
-        0% { transform: translateX(-100%); }
-        100% { transform: translateX(100%); }
-    }
-
-    .table-title {
-        color: white;
-        font-size: 1.3rem;
-        font-weight: 600;
-        margin: 0;
-        position: relative;
-        z-index: 2;
-    }
-
-    .table-responsive {
-        max-height: 70vh;
-        overflow-y: auto;
-        overflow-x: auto;
-        position: relative;
-    }
-
-    .startups-table {
-        width: 100%;
-        min-width: 1800px; /* Increased minimum width for wider table */
-        margin: 0;
-        border-collapse: separate;
-        border-spacing: 0;
-    }
-
-    .startups-table th {
-        background: var(--bg-card-hover);
-        color: var(--text-light);
-        font-weight: 600;
-        padding: 1rem 1.2rem;
-        text-align: left;
-        border-bottom: 2px solid var(--border-color);
-        position: sticky;
-        top: 0;
-        z-index: 10;
-        font-size: 0.9rem;
-        text-transform: uppercase;
-        letter-spacing: 0.5px;
-        white-space: nowrap;
-    }
-
-    [data-theme="light"] .startups-table th {
-        background: #F1F5F9;
-        color: #1E293B;
-        border-bottom: 2px solid #E2E8F0;
-    }
-
-    .startups-table td {
-        padding: 1rem 1.2rem;
-        border-bottom: 1px solid var(--border-color);
-        color: var(--text-light);
-        font-size: 0.95rem;
-        vertical-align: middle;
-    }
-
-    [data-theme="light"] .startups-table td {
-        color: #374151;
-        border-bottom: 1px solid #E2E8F0;
-    }
-
-    .startups-table tbody tr {
-        transition: all 0.3s ease;
-    }
-
-    .startups-table tbody tr:hover {
-        background: rgba(16, 185, 129, 0.05);
-    }
-
-    [data-theme="light"] .startups-table tbody tr:hover {
-        background: rgba(16, 185, 129, 0.03);
-    }
-
-    .startup-logo {
-        width: 40px;
-        height: 40px;
-        border-radius: 8px;
-        object-fit: cover;
-        border: 2px solid var(--border-color);
-    }
-
-    .startup-name {
-        font-weight: 600;
-        color: var(--text-light);
-        margin-bottom: 0.25rem;
-    }
-
-    .startup-description {
-        color: var(--text-muted);
-        font-size: 0.85rem;
-        max-width: 250px; /* Increased width for better description visibility */
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-    }
-
-    .sector-badge {
-        background: linear-gradient(135deg, var(--accent-blue), rgba(59, 130, 246, 0.8));
-        color: white;
-        padding: 0.4rem 0.8rem;
-        border-radius: 20px;
-        font-size: 0.8rem;
-        font-weight: 500;
-        display: inline-block;
-        text-align: center;
-        min-width: 80px;
-    }
-
-    .location-text {
-        color: var(--text-light);
-        font-weight: 500;
-    }
-
-    .contact-links {
-        display: flex;
-        gap: 0.4rem;
-        flex-wrap: wrap;
-        align-items: center;
-    }
-
-    .contact-link {
-        width: 28px;
-        height: 28px;
-        border-radius: 6px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        text-decoration: none;
-        transition: all 0.3s ease;
-        font-size: 0.8rem;
-    }
-
-    .contact-link:hover {
-        transform: translateY(-2px) scale(1.1);
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-    }
-
-    .link-linkedin { background: #0077B5; color: white; }
-    .link-twitter { background: #1DA1F2; color: white; }
-    .link-facebook { background: #1877F2; color: white; }
-    .link-instagram { background: linear-gradient(45deg, #405DE6, #5851DB, #833AB4, #C13584, #E1306C, #FD1D1D, #F56040, #F77737, #FCAF45, #FFDC80); color: white; }
-
-    /* View Details Button */
-    .view-details-btn {
-        background: var(--gradient-1);
-        color: white;
-        border: none;
-        padding: 0.5rem 1rem;
-        border-radius: 10px;
-        font-size: 0.85rem;
-        font-weight: 600;
-        cursor: pointer;
-        transition: all 0.3s ease;
-        text-decoration: none;
-        display: inline-flex;
-        align-items: center;
-        gap: 0.5rem;
-        white-space: nowrap;
-    }
-
-    .view-details-btn:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3);
-        color: white;
-        text-decoration: none;
-    }
-
-    .view-details-btn:active {
-        transform: translateY(0);
-    }
-
-    .view-details-btn i {
-        font-size: 0.8rem;
-    }
-
-    /* Loader */
-    .loader-overlay {
-        position: fixed;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background: rgba(15, 23, 42, 0.8);
-        backdrop-filter: blur(10px);
-        display: none;
-        align-items: center;
-        justify-content: center;
-        z-index: 9999;
-    }
-
-    .loader-container {
-        background: var(--bg-card);
-        border-radius: 20px;
-        padding: 3rem;
-        text-align: center;
-        border: 1px solid rgba(52, 211, 153, 0.2);
-        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-    }
-
-    .loader {
-        width: 60px;
-        height: 60px;
-        border: 4px solid rgba(16, 185, 129, 0.1);
-        border-left: 4px solid var(--primary-green);
-        border-radius: 50%;
-        animation: spin 1s linear infinite;
-        margin: 0 auto 1rem;
-    }
-
-    @keyframes spin {
-        0% { transform: rotate(0deg); }
-        100% { transform: rotate(360deg); }
-    }
-
-    .loader-text {
-        color: var(--text-light);
-        font-size: 1.1rem;
-        font-weight: 600;
-        margin-bottom: 0.5rem;
-    }
-
-    .loader-subtext {
-        color: var(--text-muted);
-        font-size: 0.9rem;
-    }
-
-    .no-data {
-        text-align: center;
-        padding: 3rem;
-        color: var(--text-muted);
-    }
-
-    .no-data i {
-        font-size: 3rem;
-        margin-bottom: 1rem;
-        color: var(--primary-green);
-    }
-
-    /* Custom Scrollbar */
-    .table-responsive::-webkit-scrollbar,
-    .filters-container::-webkit-scrollbar,
-    .accordion-body::-webkit-scrollbar {
-        width: 8px;
-        height: 8px;
-    }
-
-    .table-responsive::-webkit-scrollbar-track,
-    .filters-container::-webkit-scrollbar-track,
-    .accordion-body::-webkit-scrollbar-track {
-        background: var(--bg-card);
-        border-radius: 4px;
-    }
-
-    .table-responsive::-webkit-scrollbar-thumb,
-    .filters-container::-webkit-scrollbar-thumb,
-    .accordion-body::-webkit-scrollbar-thumb {
-        background: var(--primary-green);
-        border-radius: 4px;
-    }
-
-    .table-responsive::-webkit-scrollbar-thumb:hover,
-    .filters-container::-webkit-scrollbar-thumb:hover,
-    .accordion-body::-webkit-scrollbar-thumb:hover {
-        background: var(--dark-green);
-    }
-
-    /* Responsive breakpoints */
-    @media (max-width: 1600px) {
-        .startups-table {
-            min-width: 1600px;
-        }
-    }
-
-    @media (max-width: 1400px) {
-        .startups-table {
-            min-width: 1400px;
-        }
-        
-        .startups-table th,
-        .startups-table td {
-            padding: 0.8rem 0.6rem;
-            font-size: 0.85rem;
-        }
-    }
-
-    @media (max-width: 1200px) {
-        .main-content-grid {
-            grid-template-columns: 280px 1fr;
-            gap: 1.5rem;
-        }
-        
-        .startups-table {
-            min-width: 1200px;
-        }
-        
-        .startups-table th,
-        .startups-table td {
-            padding: 0.6rem 0.4rem;
-            font-size: 0.8rem;
-        }
-    }
-
-    @media (max-width: 768px) {
-        .main-content-wrapper {
-            padding: 0 0.5rem;
-        }
-        
-        .main-content-grid {
-            grid-template-columns: 1fr;
-            gap: 1rem;
-        }
-        
-        .filters-column {
-            min-width: auto;
-        }
-        
-        .page-title {
-            font-size: 2rem;
-        }
-        
-        .table-responsive {
-            max-height: 60vh;
-        }
-        
-        .startups-table {
-            min-width: 1000px;
-        }
-        
-        .startups-table th,
-        .startups-table td {
-            padding: 0.5rem 0.3rem;
-            font-size: 0.75rem;
-        }
-        
-        .contact-links {
-            flex-direction: column;
-            max-width: 60px;
-        }
-        
-        .contact-link {
-            width: 24px;
-            height: 24px;
-            font-size: 0.7rem;
-        }
-        
-        .view-details-btn {
-            padding: 0.4rem 0.6rem;
-            font-size: 0.75rem;
-        }
-    }
-</style>
-
-<div class="container-fluid">
-    <div class="page-header">
-        <div class="container">
-            <div class="row">
-                <div class="col-12">
-                    <h1 class="page-title">Moroccan Founders</h1>
-                    <p class="page-subtitle">Discover the visionaries behind Morocco's startups</p>
-                </div>
-            </div>
-        </div>
-    </div>
-
+<!-- Page Header -->
+<div class="page-header">
     <div class="container">
-        <div class="stats-bar">
-            <div class="row">
-                <div class="col-md-4 col-6">
-                    <div class="stat-item">
-                        <div class="stat-number">{{ founders|length }}</div>
-                        <div class="stat-label">Total Founders</div>
-                    </div>
-                </div>
-                <div class="col-md-4 col-6">
-                    <div class="stat-item">
-                        <div class="stat-number">{{ founders|selectattr('location')|map(attribute='location')|unique|list|length }}</div>
-                        <div class="stat-label">Cities</div>
-                    </div>
-                </div>
-            </div>
-        </div>
+        <h1 class="page-title"><i class="fas fa-users"></i> <span data-i18n="founders_title">Fondateurs</span></h1>
+        <p class="page-subtitle" data-i18n="founders_subtitle">Découvrez les acteurs de l'écosystème startup marocain</p>
     </div>
+</div>
 
-    <div class="main-content-wrapper">
-        <div class="main-content-grid">
-            <!-- Filters Section -->
-            <div class="filters-column">
-                <div class="filters-container">
-                    <div class="filters-header">
-                        <h3 class="filters-title">
-                            <i class="fas fa-filter"></i>
-                            Filters
-                        </h3>
-                        <button type="button" class="clear-filters" onclick="clearAllFilters()">
-                            Clear All
-                        </button>
-                    </div>
-                    <form id="filterForm" action="{{ url_for('founders') }}" method="GET">
-                        <!-- City Filter -->
-                        <div class="accordion-filter">
-                            <button type="button" class="accordion-header" onclick="toggleAccordion(this)">
-                                <h4 class="accordion-title">
-                                    <i class="fas fa-map-marker-alt"></i>
-                                    City
-                                </h4>
-                                <i class="fas fa-chevron-right accordion-icon"></i>
-                            </button>
-                            <div class="accordion-content">
-                                <div class="accordion-body">
-                                    {% for city in distinct_cities %}
-                                    {% if city %}
-                                    <div class="filter-option">
-                                        <input type="checkbox" 
-                                               id="city_{{ loop.index }}" 
-                                               name="city" 
-                                               value="{{ city }}" 
-                                               class="filter-checkbox"
-                                               {% if city in selected.getlist('city') %}checked{% endif %}>
-                                        <label for="city_{{ loop.index }}" class="filter-label">
-                                            <span>{{ city }}</span>
-                                            <span class="filter-count">{{ founders|selectattr('location', 'equalto', city)|list|length }}</span>
-                                        </label>
-                                    </div>
-                                    {% endif %}
-                                    {% endfor %}
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Startup Filter -->
-                        <div class="accordion-filter">
-                            <button type="button" class="accordion-header" onclick="toggleAccordion(this)">
-                                <h4 class="accordion-title">
-                                    <i class="fas fa-rocket"></i>
-                                    Startups ({{ selected.getlist('startup')|length if selected.getlist('startup') else 0 }})
-                                </h4>
-                                <i class="fas fa-chevron-right accordion-icon"></i>
-                            </button>
-                            <div class="accordion-content">
-                                <div class="accordion-body">
-                                    <div class="filter-search-container">
-                                        <input type="text" id="startupSearch" class="filter-search" placeholder="Search startups..." onkeyup="filterStartups()">
-                                        <i class="fas fa-search filter-search-icon"></i>
-                                    </div>
-                                    <div class="filter-options" id="startupOptions">
-                                        {% for startup in distinct_startups %}
-                                        <div class="filter-option startup-option" data-name="{{ startup.startup_name|lower if startup.startup_name else '' }}">
-                                            <input type="checkbox" 
-                                                   id="startup_{{ loop.index }}" 
-                                                   name="startup" 
-                                                   value="{{ startup.startup_id }}" 
-                                                   class="filter-checkbox"
-                                                   {% if startup.startup_id|string in selected.getlist('startup') %}checked{% endif %}>
-                                            <label for="startup_{{ loop.index }}" class="filter-label">
-                                                <div class="startup-filter-info">
-                                                    <span class="startup-filter-name">{{ startup.startup_name }}</span>
-                                                    {% if startup.sector %}
-                                                    <span class="startup-filter-sector">{{ startup.sector }}</span>
-                                                    {% endif %}
-                                                </div>
-                                            </label>
-                                        </div>
-                                        {% endfor %}
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <button type="submit" class="apply-filters">
-                            <i class="fas fa-search"></i>
-                            Apply Filters
-                        </button>
-                    </form>
-                </div>
-            </div>
-
-            <!-- Founders Table -->
-            <div class="table-column">
-                <!-- Search Bar -->
-                <div class="search-container">
-                    <div class="search-wrapper">
-                        <i class="fas fa-search search-icon"></i>
-                        <input type="text" 
-                               id="foundersSearch" 
-                               class="founder-search-input" 
-                               placeholder="Search by founder name or startup..."
-                               onkeyup="searchFounders(this.value)">
-                        <button type="button" class="clear-search-btn" id="clearFounderSearchBtn" onclick="clearFounderSearch()" style="display: none;">
-                            <i class="fas fa-times"></i>
-                        </button>
-                    </div>
-                </div>
-                
-                <div class="table-container">
-                    <div class="table-header">
-                        <h2 class="table-title">
-                            <i class="fas fa-user-friends me-2"></i>
-                            Founders Directory (<span id="founderCount">{{ founders|length }}</span>)
-                        </h2>
-                    </div>
-                    
-                    {% if founders %}
-                    <div class="table-responsive">
-                        <table class="startups-table">
-                            <thead>
-                                <tr>
-                                    <th>Profile</th>
-                                    <th>Name</th>
-                                    <th>Current Title</th>
-                                    <th>Startup</th>
-                                    <th>Location</th>
-                                    <th>Company Details</th>
-                                    <th>Previous Company</th>
-                                    <th>Most Recent Experience</th>
-                                    <th>Last Job Change</th>
-                                    <th>Contact</th>
-                                    <th>Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {% for founder in founders %}
-                                <tr class="founder-row" 
-                                    data-founder-name="{{ founder.founder_name|lower if founder.founder_name else '' }}"
-                                    data-startups="{% for startup in founder.startups %}{{ startup.startup_name|lower if startup.startup_name else '' }}{% if not loop.last %} {% endif %}{% endfor %}">
-                                    <td>
-                                        {% if founder.profile_pic %}
-                                            <img src="{{ founder.profile_pic }}" alt="{{ founder.name or founder.first_name }}" class="startup-logo me-3">
-                                        {% else %}
-                                            <div class="startup-logo me-3 d-flex align-items-center justify-content-center" style="background: var(--gradient-1); color: white; font-weight: 600;">
-                                                {{ founder.first_name[0] if founder.first_name else (founder.name[0] if founder.name else 'F') }}
-                                            </div>
-                                        {% endif %}
-                                    </td>
-                                    <td>
-                                        <div class="startup-name">{{ founder.name or founder.first_name ~ ' ' ~ founder.last_name }}</div>
-                                    </td>
-                                    <td>{{ founder.current_title or 'N/A' }}</td>
-                                    <td>{{ founder.current_employer or 'N/A' }}</td>
-                                    <td><span class="location-text">{{ founder.location or 'N/A' }}</span></td>
-                                    <td>
-                                        {% if founder.company_details_name %}
-                                            <div class="d-flex align-items-center">
-                                                {% if founder.company_details_logo_url %}
-                                                    <img src="{{ founder.company_details_logo_url }}" alt="{{ founder.company_details_name }}" style="width: 20px; height: 20px; border-radius: 4px; margin-right: 8px;">
-                                                {% endif %}
-                                                <span class="startup-name">{{ founder.company_details_name }}</span>
-                                            </div>
-                                        {% else %}
-                                            <span class="text-muted">N/A</span>
-                                        {% endif %}
-                                    </td>
-                                    <td>
-                                        {% if founder.prev_company_name %}
-                                            <div class="d-flex align-items-center">
-                                                {% if founder.prev_company_logo_url %}
-                                                    <img src="{{ founder.prev_company_logo_url }}" alt="{{ founder.prev_company_name }}" style="width: 20px; height: 20px; border-radius: 4px; margin-right: 8px;">
-                                                {% endif %}
-                                                <span class="startup-name">{{ founder.prev_company_name }}</span>
-                                            </div>
-                                        {% else %}
-                                            <span class="text-muted">N/A</span>
-                                        {% endif %}
-                                    </td>
-                                    <td>
-                                        {% if founder.most_recent_ended_exp_title and founder.most_recent_ended_exp_employer %}
-                                            <div>
-                                                <div class="startup-name">{{ founder.most_recent_ended_exp_title }}</div>
-                                                <div class="startup-description">{{ founder.most_recent_ended_exp_employer }}</div>
-                                                {% if founder.most_recent_ended_exp_end_date %}
-                                                    <div class="mt-1">
-                                                        <span class="badge" style="background: var(--gradient-red); color: white; font-size: 0.7rem;">
-                                                            <i class="fas fa-calendar-times me-1"></i>
-                                                            Ended: {{ founder.most_recent_ended_exp_end_date }}
-                                                        </span>
-                                                    </div>
-                                                {% endif %}
-                                            </div>
-                                        {% else %}
-                                            <span class="text-muted">N/A</span>
-                                        {% endif %}
-                                    </td>
-                                    <td>
-                                        {% if founder.last_job_change %}
-                                            <span class="founded-date">{{ founder.last_job_change }}</span>
-                                        {% else %}
-                                            <span class="text-muted">N/A</span>
-                                        {% endif %}
-                                    </td>
-                                
-                                    <td>
-                                        <div class="contact-links">
-                                            {% if founder.linkedin_url %}
-                                                <a href="{{ founder.linkedin_url }}" target="_blank" class="contact-link link-linkedin" title="LinkedIn">
-                                                    <i class="fab fa-linkedin-in"></i>
-                                                </a>
-                                            {% endif %}
-                                            {% if founder.link_twitter %}
-                                                <a href="{{ founder.link_twitter }}" target="_blank" class="contact-link link-twitter" title="Twitter">
-                                                    <i class="fab fa-twitter"></i>
-                                                </a>
-                                            {% endif %}
-                                            {% if founder.link_facebook %}
-                                                <a href="{{ founder.link_facebook }}" target="_blank" class="contact-link link-facebook" title="Facebook">
-                                                    <i class="fab fa-facebook-f"></i>
-                                                </a>
-                                            {% endif %}
-                                            {% if founder.link_instagram %}
-                                                <a href="{{ founder.link_instagram }}" target="_blank" class="contact-link link-instagram" title="Instagram">
-                                                    <i class="fab fa-instagram"></i>
-                                                </a>
-                                            {% endif %}
-                                            {% if founder.link_github %}
-                                                <a href="{{ founder.link_github }}" target="_blank" class="contact-link" style="background: #333; color: white;" title="GitHub">
-                                                    <i class="fab fa-github"></i>
-                                                </a>
-                                            {% endif %}
-                                            {% if founder.link_angellist %}
-                                                <a href="{{ founder.link_angellist }}" target="_blank" class="contact-link" style="background: #000; color: white;" title="AngelList">
-                                                    <i class="fab fa-angellist"></i>
-                                                </a>
-                                            {% endif %}
-                                            {% if founder.link_stackoverflow %}
-                                                <a href="{{ founder.link_stackoverflow }}" target="_blank" class="contact-link" style="background: #F48024; color: white;" title="StackOverflow">
-                                                    <i class="fab fa-stack-overflow"></i>
-                                                </a>
-                                            {% endif %}
-                                            {% if founder.link_quora %}
-                                                <a href="{{ founder.link_quora }}" target="_blank" class="contact-link" style="background: #A82400; color: white;" title="Quora">
-                                                    <i class="fab fa-quora"></i>
-                                                </a>
-                                            {% endif %}
-                                            {% if founder.link_aboutme %}
-                                                <a href="{{ founder.link_aboutme }}" target="_blank" class="contact-link" style="background: var(--gradient-3); color: white;" title="About.me">
-                                                    <i class="fas fa-user"></i>
-                                                </a>
-                                            {% endif %}
-                                            {% if founder.url %}
-                                                <a href="{{ founder.url }}" target="_blank" class="contact-link" style="background: var(--gradient-1); color: white;" title="Website">
-                                                    <i class="fas fa-globe"></i>
-                                                </a>
-                                            {% endif %}
-                                            {% if founder.teaser_emails or founder.teaser_personal_emails or founder.teaser_professional_emails %}
-                                                <a href="mailto:{{ founder.teaser_emails or founder.teaser_personal_emails or founder.teaser_professional_emails }}" class="contact-link" style="background: var(--gradient-2); color: white;" title="Email">
-                                                    <i class="fas fa-envelope"></i>
-                                                </a>
-                                            {% endif %}
-                                            {% if founder.teaser_phones %}
-                                                <a href="tel:{{ founder.teaser_phones }}" class="contact-link" style="background: var(--gradient-teal); color: white;" title="Phone">
-                                                    <i class="fas fa-phone"></i>
-                                                </a>
-                                            {% endif %}
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <a href="/founder/{{ founder.founder_id }}" class="view-details-btn">
-                                            <i class="fas fa-eye"></i>
-                                            View Details
-                                        </a>
-                                    </td>
-                                </tr>
-                                {% endfor %}
-                            </tbody>
-                        </table>
-                    </div>
-                    {% else %}
-                    <div class="no-data">
-                        <i class="fas fa-search"></i>
-                        <h3>No Founders Found</h3>
-                        <p>There are currently no founders in the database.</p>
-                    </div>
-                    {% endif %}
-                </div>
-            </div>
-        </div>
+<!-- Stats Bar -->
+<div class="container">
+    <div style="display:flex; align-items:center; justify-content:flex-end; margin-bottom:0.5rem;">
+        <a href="/founders/export?{{ request.query_string.decode() }}" class="btn-export" title="Export CSV">
+            <i class="fas fa-download"></i> <span data-i18n="export_csv">Exporter CSV</span>
+        </a>
     </div>
-
-    <div class="loader-overlay" id="loadingOverlay">
-        <div class="loader-container">
-            <div class="loader"></div>
-            <div class="loader-text">Applying Filters...</div>
-            <div class="loader-subtext">Please wait while we update the results</div>
+    <div class="stats-bar">
+        <div class="stat-item">
+            <div class="stat-number">{{ pagination.total }}</div>
+            <div class="stat-label" data-i18n="total_founders">Total fondateurs</div>
+        </div>
+        <div class="stat-item">
+            <div class="stat-number secondary">{{ distinct_cities|length }}</div>
+            <div class="stat-label" data-i18n="locations">Localisations</div>
         </div>
     </div>
 </div>
-{% endblock %}
 
-{% block scripts %}
+<!-- Main Content -->
+<div class="main-content-wrapper">
+    <div class="main-content-grid">
+
+        <!-- Filters Sidebar -->
+        <div class="filters-column">
+            <div class="filters-container">
+                <div class="filters-header">
+                    <h3 class="filters-title"><i class="fas fa-sliders-h"></i> <span data-i18n="filters">Filtres</span></h3>
+                    <a href="{{ url_for('founders') }}" class="clear-filters"><i class="fas fa-times"></i> <span data-i18n="clear">Effacer</span></a>
+                </div>
+
+                <form action="{{ url_for('founders') }}" method="GET" id="filterForm">
+
+                    <!-- City Filter -->
+                    <div class="accordion-filter">
+                        <button type="button" class="accordion-header active" onclick="toggleAccordion(this)">
+                            <span class="accordion-title"><i class="fas fa-map-marker-alt"></i> <span data-i18n="city">Ville</span></span>
+                            <i class="fas fa-chevron-right accordion-icon"></i>
+                        </button>
+                        <div class="accordion-content active">
+                            <div class="accordion-body">
+                                {% for city in distinct_cities %}
+                                <div class="filter-option">
+                                    <input type="checkbox" class="filter-checkbox" name="cities" id="city_{{ loop.index }}" value="{{ city }}"
+                                        {% if selected and selected.cities and city in selected.cities %}checked{% endif %}
+                                        onchange="document.getElementById('filterForm').submit()">
+                                    <label class="filter-label" for="city_{{ loop.index }}">{{ city }}</label>
+                                </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Startup Filter -->
+                    <div class="accordion-filter">
+                        <button type="button" class="accordion-header" onclick="toggleAccordion(this)">
+                            <span class="accordion-title"><i class="fas fa-rocket"></i> <span data-i18n="startup">Startup</span></span>
+                            <i class="fas fa-chevron-right accordion-icon"></i>
+                        </button>
+                        <div class="accordion-content">
+                            <div class="accordion-body">
+                                {% for startup_id, startup_name, _sector in distinct_startups %}
+                                <div class="filter-option">
+                                    <input type="checkbox" class="filter-checkbox" name="startups" id="startup_{{ loop.index }}" value="{{ startup_id }}"
+                                        {% if selected and selected.startups and startup_id|string in selected.startups %}checked{% endif %}
+                                        onchange="document.getElementById('filterForm').submit()">
+                                    <label class="filter-label" for="startup_{{ loop.index }}">{{ startup_name }}</label>
+                                </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+
+                    <noscript>
+                        <button type="submit" class="apply-filters">
+                            <i class="fas fa-search"></i> <span data-i18n="apply_filters">Appliquer les filtres</span>
+                        </button>
+                    </noscript>
+
+                </form>
+            </div>
+        </div>
+
+        <!-- Founders Grid -->
+        <div class="grid-column">
+            <!-- Search Bar -->
+            <div class="search-bar-wrapper" style="margin-bottom: 1rem;">
+                <div style="position: relative;">
+                    <i class="fas fa-search" style="position: absolute; left: 0.85rem; top: 50%; transform: translateY(-50%); color: var(--text-muted); font-size: 0.8rem;"></i>
+                    <input type="text" id="founderSearch" placeholder="Rechercher un fondateur..."
+                        style="width: 100%; padding: 0.6rem 0.85rem 0.6rem 2.3rem; border: 1px solid var(--border-color); border-radius: 10px; background: var(--bg-card); color: var(--text-primary); font-size: 0.82rem; font-family: var(--font-body); outline: none; transition: border-color 0.2s ease;"
+                        onfocus="this.style.borderColor='var(--accent)'" onblur="this.style.borderColor='var(--border-color)'">
+                </div>
+            </div>
+
+            <h2 class="section-heading">
+                {% if founders|length > 0 %}
+                    {{ founders|length }} <span data-i18n="founders_label">fondateur{{ 's' if founders|length != 1 else '' }}</span>
+                {% else %}
+                    <span data-i18n="no_founders_found">Aucun fondateur trouv\u00e9</span>
+                {% endif %}
+            </h2>
+            <div class="founders-grid">
+                {% if founders|length > 0 %}
+                    {% for founder in founders %}
+                    <a href="/founder/{{ founder.founder_id }}" class="founder-card" style="text-decoration:none; color:inherit; display:block;">
+                        <button class="btn-favorite" data-type="founder" data-id="{{ founder.founder_id }}" onclick="event.stopPropagation(); toggleFavorite(this);" title="Ajouter aux favoris">
+                            <i class="far fa-heart"></i>
+                        </button>
+
+                        <div class="founder-card-header">
+                            {% if founder.profile_pic %}
+                                <img src="{{ founder.profile_pic }}" alt="{{ founder.name }}" class="founder-avatar" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+                                <div class="founder-initials" style="display:none;">
+                                    {% if founder.first_name and founder.last_name %}
+                                        {{ founder.first_name[0] }}{{ founder.last_name[0] }}
+                                    {% elif founder.name %}
+                                        {{ founder.name[0] }}
+                                    {% else %}
+                                        F
+                                    {% endif %}
+                                </div>
+                            {% else %}
+                                <div class="founder-initials">
+                                    {% if founder.first_name and founder.last_name %}
+                                        {{ founder.first_name[0] }}{{ founder.last_name[0] }}
+                                    {% elif founder.name %}
+                                        {{ founder.name[0] }}
+                                    {% else %}
+                                        F
+                                    {% endif %}
+                                </div>
+                            {% endif %}
+
+                            <div class="founder-name-block">
+                                <h3 class="founder-name">
+                                    {% if founder.first_name or founder.last_name %}
+                                        {% if founder.first_name %}{{ founder.first_name }}{% endif %} {% if founder.last_name %}{{ founder.last_name }}{% endif %}
+                                    {% else %}
+                                        {{ founder.name or 'Fondateur inconnu' }}
+                                    {% endif %}
+                                </h3>
+                                {% if founder.current_title or founder.current_employer %}
+                                <div class="founder-title">
+                                    {% if founder.current_title %}{{ founder.current_title }}{% endif %}{% if founder.current_title and founder.current_employer %} <span data-i18n="at_employer">chez</span> {% endif %}{% if founder.current_employer %}{{ founder.current_employer }}{% endif %}
+                                </div>
+                                {% endif %}
+                            </div>
+                        </div>
+
+                        <div class="founder-meta">
+                            {% if founder.location %}
+                            <div class="founder-meta-item">
+                                <i class="fas fa-map-marker-alt"></i>
+                                <span>{{ founder.location }}</span>
+                            </div>
+                            {% endif %}
+
+                            {% if founder.company_details_name %}
+                            <div class="founder-meta-item">
+                                <i class="fas fa-building"></i>
+                                <span class="founder-company-badge">{{ founder.company_details_name }}</span>
+                            </div>
+                            {% endif %}
+
+                            {% if founder.prev_company_name %}
+                            <div class="founder-meta-item">
+                                <i class="fas fa-history"></i>
+                                <span class="founder-prev-company"><span data-i18n="prev_label">Pr&eacute;c. :</span> {{ founder.prev_company_name }}</span>
+                            </div>
+                            {% endif %}
+
+                            {% if founder.most_recent_ended_exp_title and founder.most_recent_ended_exp_employer %}
+                            <div class="founder-meta-item">
+                                <i class="fas fa-briefcase"></i>
+                                <span>{{ founder.most_recent_ended_exp_title }} <span data-i18n="at_employer">chez</span> {{ founder.most_recent_ended_exp_employer }}</span>
+                            </div>
+                            {% endif %}
+
+                            {% if founder.last_job_change %}
+                            <div class="founder-meta-item">
+                                <i class="fas fa-calendar-alt"></i>
+                                <span><span data-i18n="last_change">Dernier changement :</span> {{ founder.last_job_change }}</span>
+                            </div>
+                            {% endif %}
+                        </div>
+
+                        <div class="founder-card-footer">
+                            <div class="founder-social-links">
+                                {% if founder.linkedin_url %}
+                                <a href="{{ founder.linkedin_url }}" target="_blank" rel="noopener" class="social-link" onclick="event.stopPropagation();" title="LinkedIn">
+                                    <i class="fab fa-linkedin-in"></i>
+                                </a>
+                                {% endif %}
+                                {% if founder.link_twitter %}
+                                <a href="{{ founder.link_twitter }}" target="_blank" rel="noopener" class="social-link twitter" onclick="event.stopPropagation();" title="Twitter">
+                                    <i class="fab fa-twitter"></i>
+                                </a>
+                                {% endif %}
+                                {% if founder.link_facebook %}
+                                <a href="{{ founder.link_facebook }}" target="_blank" rel="noopener" class="social-link" onclick="event.stopPropagation();" title="Facebook" style="background: var(--secondary-subtle); color: var(--secondary);">
+                                    <i class="fab fa-facebook-f"></i>
+                                </a>
+                                {% endif %}
+                            </div>
+                            <i class="fas fa-arrow-right founder-arrow"></i>
+                        </div>
+
+                    </a>
+                    {% endfor %}
+                {% else %}
+                    <div class="empty-state">
+                        <i class="fas fa-user-slash"></i>
+                        <h3 data-i18n="no_founders_found">Aucun fondateur trouvé</h3>
+                        <p><span data-i18n="no_founders_msg">Essayez d'ajuster vos filtres ou</span> <a href="{{ url_for('founders') }}" data-i18n="clear_all_filters">réinitialiser les filtres</a>.</p>
+                    </div>
+                {% endif %}
+            </div>
+
+            {% if pagination.pages > 1 %}
+            <nav class="pagination-nav" aria-label="Pagination">
+                {% if pagination.has_prev %}
+                <a href="?{% for key, value in request.args.items(multi=True) %}{% if key != 'page' %}{{ key }}={{ value }}&{% endif %}{% endfor %}page={{ pagination.prev_num }}" class="page-btn"><i class="fas fa-chevron-left"></i></a>
+                {% endif %}
+                {% for p in pagination.iter_pages(left_edge=1, right_edge=1, left_current=2, right_current=2) %}
+                    {% if p %}
+                        <a href="?{% for key, value in request.args.items(multi=True) %}{% if key != 'page' %}{{ key }}={{ value }}&{% endif %}{% endfor %}page={{ p }}" class="page-btn {% if p == pagination.page %}active{% endif %}">{{ p }}</a>
+                    {% else %}
+                        <span class="page-dots">...</span>
+                    {% endif %}
+                {% endfor %}
+                {% if pagination.has_next %}
+                <a href="?{% for key, value in request.args.items(multi=True) %}{% if key != 'page' %}{{ key }}={{ value }}&{% endif %}{% endfor %}page={{ pagination.next_num }}" class="page-btn"><i class="fas fa-chevron-right"></i></a>
+                {% endif %}
+            </nav>
+            {% endif %}
+
+            <!-- Explore All Button -->
+            <div style="text-align: center; margin-top: 2rem;">
+                <a href="/founders" class="btn-explore-all">
+                    <i class="fas fa-arrow-right"></i> <span data-i18n="btn_explore_all_founders">Explorer tous les fondateurs</span>
+                </a>
+            </div>
+
+        </div>
+
+    </div>
+</div>
+
 <script>
-// Filter startups based on search input
-function filterStartups() {
-        const searchInput = document.getElementById('startupSearch');
-        const searchTerm = searchInput.value.toLowerCase();
-        const startupOptions = document.querySelectorAll('.startup-option');
-        
-        startupOptions.forEach(option => {
-            const startupName = option.getAttribute('data-name');
-            const startupNameElement = option.querySelector('.startup-filter-name');
-            const startupSectorElement = option.querySelector('.startup-filter-sector');
-            
-            let matchFound = false;
-            
-            // Search in startup name
-            if (startupName && startupName.includes(searchTerm)) {
-                matchFound = true;
-            }
-            
-            // Search in sector if it exists
-            if (startupSectorElement && startupSectorElement.textContent.toLowerCase().includes(searchTerm)) {
-                matchFound = true;
-            }
-            
-            // Show/hide option based on match
-            if (searchTerm === '' || matchFound) {
-                option.classList.remove('hidden');
-            } else {
-                option.classList.add('hidden');
-            }
-        });
+    function toggleAccordion(header) {
+        const content = header.nextElementSibling;
+        const isActive = header.classList.contains('active');
+
+        header.classList.toggle('active');
+        content.classList.toggle('active');
     }
 
-// Dynamic search function for founders
-function searchFounders(searchTerm) {
-    const tableRows = document.querySelectorAll('.startups-table tbody tr');
-    const searchTermLower = searchTerm.toLowerCase().trim();
-    const clearSearchBtn = document.getElementById('clearFounderSearchBtn');
-    
-    let visibleCount = 0;
-    
-    tableRows.forEach(row => {
-        // Get the founder data from the row
-        const founderNameElement = row.querySelector('.startup-name');
-        const currentEmployerElement = row.querySelector('td:nth-child(4)');
-        
-        const founderName = founderNameElement ? founderNameElement.textContent.toLowerCase() : '';
-        const currentEmployer = currentEmployerElement ? currentEmployerElement.textContent.toLowerCase() : '';
-        
-        // Check if any of the fields match the search term
-        const shouldShow = searchTermLower === '' || 
-                          founderName.includes(searchTermLower) || 
-                          currentEmployer.includes(searchTermLower);
-        
-        if (shouldShow) {
-            row.classList.remove('hidden');
-            visibleCount++;
-        } else {
-            row.classList.add('hidden');
-        }
-    });
-    
-    // Show/hide clear search button
-    if (searchTerm.trim() !== '') {
-        clearSearchBtn.style.display = 'flex';
-    } else {
-        clearSearchBtn.style.display = 'none';
-    }
-    
-    // Update table title with search results count
-    const tableTitle = document.querySelector('.table-title');
-    const totalFounders = tableRows.length;
-    
-    if (searchTerm.trim() !== '') {
-        tableTitle.innerHTML = `
-            <i class="fas fa-user-friends me-2"></i>
-            Founders Directory - ${visibleCount} of ${totalFounders} founder${visibleCount !== 1 ? 's' : ''} found
-        `;
-    } else {
-        tableTitle.innerHTML = `
-            <i class="fas fa-user-friends me-2"></i>
-            Founders Directory (<span id="founderCount">${totalFounders}</span>)
-        `;
-    }
-}
-
-// Clear search function
-function clearFounderSearch() {
-    const searchInput = document.getElementById('foundersSearch');
-    const clearSearchBtn = document.getElementById('clearFounderSearchBtn');
-    
-    searchInput.value = '';
-    clearSearchBtn.style.display = 'none';
-    
-    // Show all founders
-    searchFounders('');
-}
-
-// Clear search function for startup filter (keep existing)
-function clearSearch(inputId) {
-    if (inputId === 'startupSearch') {
-        const searchInput = document.getElementById(inputId);
-        if (searchInput) {
-            searchInput.value = '';
-            filterStartups();
-        }
-    }
-}
-
-document.addEventListener('DOMContentLoaded', function() {
-    // Enable smooth transitions after page load to prevent initial flash
-    setTimeout(() => {
-        document.body.classList.add('theme-transitions');
-    }, 50);
-
-    // Animate stats on page load
-    function animateStats() {
-        const statNumbers = document.querySelectorAll('.stat-number');
-        statNumbers.forEach(stat => {
-            const target = parseInt(stat.textContent);
-            let current = 0;
-            const increment = target / 50;
-            
-            const timer = setInterval(() => {
-                current += increment;
-                if (current >= target) {
-                    current = target;
-                    clearInterval(timer);
-                }
-                stat.textContent = Math.floor(current);
-            }, 40);
-        });
-    }
-    
-    // Add smooth hover effects to table rows (without click functionality)
-    const tableRows = document.querySelectorAll('.startups-table tbody tr');
-    tableRows.forEach(row => {
-        row.addEventListener('mouseenter', function() {
-            this.style.transform = 'scale(1.01)';
-        });
-        
-        row.addEventListener('mouseleave', function() {
-            this.style.transform = 'scale(1)';
+    // Search bar filtering
+    document.getElementById('founderSearch').addEventListener('input', function() {
+        var query = this.value.toLowerCase();
+        document.querySelectorAll('.founder-card').forEach(function(card) {
+            card.style.display = card.textContent.toLowerCase().includes(query) ? '' : 'none';
         });
     });
-    
-    // Enhanced contact link hover effects
-    const contactLinks = document.querySelectorAll('.contact-link');
-    contactLinks.forEach(link => {
-        link.addEventListener('mouseenter', function() {
-            this.style.transform = 'translateY(-3px) scale(1.15)';
-            this.style.boxShadow = '0 6px 20px rgba(0, 0, 0, 0.4)';
-        });
-        
-        link.addEventListener('mouseleave', function() {
-            this.style.transform = 'translateY(0) scale(1)';
-            this.style.boxShadow = 'none';
-        });
-        
-        // Prevent event bubbling for contact links
-        link.addEventListener('click', function(e) {
-            e.stopPropagation();
-        });
-    });
-
-    // Enhanced view details button hover effects
-    const viewDetailsBtns = document.querySelectorAll('.view-details-btn');
-    viewDetailsBtns.forEach(btn => {
-        btn.addEventListener('mouseenter', function() {
-            this.style.transform = 'translateY(-2px) scale(1.05)';
-        });
-        
-        btn.addEventListener('mouseleave', function() {
-            this.style.transform = 'translateY(0) scale(1)';
-        });
-        
-        // Add click animation
-        btn.addEventListener('click', function() {
-            this.style.transform = 'scale(0.95)';
-            setTimeout(() => {
-                this.style.transform = 'translateY(-2px) scale(1.05)';
-            }, 100);
-        });
-    });
-
-    // Filter form submission with loader
-    const filterForm = document.getElementById('filterForm');
-    const loadingOverlay = document.getElementById('loadingOverlay');
-    
-    filterForm.addEventListener('submit', function(e) {
-        // Show loader
-        loadingOverlay.style.display = 'flex';
-    });
-    
-    // Start animations
-    setTimeout(animateStats, 300);
-    
-    console.log('Enhanced Founders page with wider table and view details buttons loaded successfully!');
-});
-
-// Accordion toggle function
-function toggleAccordion(button) {
-    const content = button.nextElementSibling;
-    const isActive = button.classList.contains('active');
-    
-    // Close all accordions
-    document.querySelectorAll('.accordion-header').forEach(header => {
-        header.classList.remove('active');
-        header.nextElementSibling.classList.remove('active');
-    });
-    
-    // If this one wasn't active, open it
-    if (!isActive) {
-        button.classList.add('active');
-        content.classList.add('active');
-    }
-}
-
-// Clear all filters function
-function clearAllFilters() {
-    const checkboxes = document.querySelectorAll('.filter-checkbox');
-    checkboxes.forEach(checkbox => {
-        checkbox.checked = false;
-    });
-    
-    // Clear search inputs
-    const startupSearchInput = document.getElementById('startupSearch');
-    if (startupSearchInput) {
-        startupSearchInput.value = '';
-        filterStartups();
-    }
-    
-    const founderSearchInput = document.getElementById('foundersSearch');
-    if (founderSearchInput) {
-        founderSearchInput.value = '';
-        searchFounders('');
-    }
-    
-    // Redirect to base URL without filters
-    window.location.href = window.location.pathname;
-}
 </script>
 {% endblock %}
-

@@ -124,10 +124,12 @@ def compute_phaseinvestissement_counts(incubators, distinct_investementphase):
 def toptotalfundingByStartup(startups, n=7):
     funding_dict = {}
     for startup in startups:
-        total_funding = sum(
+        total_from_rounds = sum(
             fr.raised_amount_usd for fr in startup.funding_rounds if fr.raised_amount_usd
         )
-        # Store the object itself, not just the ID
+        # Use total_funding_usd field as fallback if no funding rounds
+        total_from_field = float(startup.total_funding_usd or 0)
+        total_funding = max(total_from_rounds, total_from_field)
         funding_dict[startup] = total_funding / 1_000_000  # in millions
 
     # Sort by total funding and get top n

@@ -10,6 +10,10 @@
 </script>
 
 <style>
+    :root {
+        --gradient-1: linear-gradient(135deg, #10B981, #34D399);
+    }
+
     .page-container {
         max-width: 1600px;
         margin: 0 auto;
@@ -158,14 +162,14 @@
 }
 
 .form-section:hover {
-    border-left-color: var(--primary-green);
+    border-left-color: var(--accent);
 }
 
 .form-section h2 {
     font-size: 1.5rem;
     font-weight: 600;
     margin-bottom: 1.5rem;
-    color: var(--text-light);
+    color: var(--text-primary);
     position: relative;
     padding-left: 1rem;
 }
@@ -190,7 +194,7 @@
 
 .form-group label {
     font-weight: 500;
-    color: var(--text-light);
+    color: var(--text-primary);
     font-size: 0.875rem;
 }
 
@@ -203,14 +207,14 @@
     font-size: 1rem;
     transition: all 0.2s ease;
     background: var(--bg-card);
-    color: var(--text-light);
+    color: var(--text-primary);
 }
 
 .form-group input:focus,
 .form-group textarea:focus,
 .form-group select:focus {
     outline: none;
-    border-color: var(--primary-green);
+    border-color: var(--accent);
     box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1);
 }
 
@@ -412,32 +416,32 @@
 
 <div class="page-container">
     <div class="page-header">
-        <h1>👤 Talent Registration</h1>
-        <p>Create your professional profile to find opportunities in startups</p>
+        <h1>👤 <span data-i18n="talent_title">Talent Registration</span></h1>
+        <p data-i18n="talent_subtitle">Create your professional profile to find opportunities in startups</p>
     </div>
 
     <div class="form-container">
         <form>
                 <!-- Personal Information -->
                 <div class="form-section">
-                    <h2>Personal Information</h2>
+                    <h2 data-i18n="personal_info">Personal Information</h2>
                     <div class="form-grid two-col">
                         <div class="form-group">
-                            <label for="fullName">Full Name *</label>
+                            <label for="fullName"><span data-i18n="full_name">Full Name</span> *</label>
                             <input type="text" id="fullName" placeholder="Enter your full name" required>
                         </div>
                         <div class="form-group">
-                            <label for="email">Email Address *</label>
+                            <label for="email"><span data-i18n="email_address">Email Address</span> *</label>
                             <input type="email" id="email" placeholder="your.email@example.com" required>
                         </div>
                     </div>
                     <div class="form-grid two-col">
                         <div class="form-group">
-                            <label for="location">Location</label>
+                            <label for="location" data-i18n="location_filter">Location</label>
                             <input type="text" id="location" placeholder="Casablanca, Morocco">
                         </div>
                         <div class="form-group">
-                            <label for="phone">Phone Number</label>
+                            <label for="phone" data-i18n="phone_number">Phone Number</label>
                             <input type="tel" id="phone" placeholder="+212 6XX XXX XXX">
                         </div>
                     </div>
@@ -445,14 +449,14 @@
 
                 <!-- Professional Background -->
                 <div class="form-section">
-                    <h2>Professional Background</h2>
+                    <h2 data-i18n="professional_background">Professional Background</h2>
                     <div class="form-grid two-col">
                         <div class="form-group">
-                            <label for="currentTitle">Current Title/Role</label>
+                            <label for="currentTitle" data-i18n="current_title_role">Current Title/Role</label>
                             <input type="text" id="currentTitle" placeholder="e.g., Senior Software Engineer, Product Manager">
                         </div>
                         <div class="form-group">
-                            <label for="experience">Years of Experience</label>
+                            <label for="experience" data-i18n="years_experience">Years of Experience</label>
                             <select id="experience">
                                 <option value="">Select range</option>
                                 <option value="0-1">0-1 years</option>
@@ -465,12 +469,12 @@
                     </div>
 
                     <div class="form-group">
-                        <label for="bio">Professional Bio</label>
+                        <label for="bio" data-i18n="professional_bio">Professional Bio</label>
                         <textarea id="bio" placeholder="Brief description of your background, expertise, and career highlights" style="min-height: 120px;"></textarea>
                     </div>
 
                     <div class="form-group">
-                        <label>Skills & Expertise (Add up to 10)</label>
+                        <label data-i18n="skills_label">Skills & Expertise (Add up to 10)</label>
                         <div class="tags-container" id="skillsContainer">
                             <span class="tag">JavaScript <span class="tag-remove" onclick="removeTag(this)">×</span></span>
                             <span class="tag">Product Management <span class="tag-remove" onclick="removeTag(this)">×</span></span>
@@ -483,7 +487,7 @@
                     </div>
 
                     <div class="form-group">
-                        <label>Industries of Interest</label>
+                        <label data-i18n="industries_interest">Industries of Interest</label>
                         <div class="tags-container" id="industriesContainer">
                             <span class="tag">FinTech <span class="tag-remove" onclick="removeTag(this)">×</span></span>
                             <span class="tag">E-commerce <span class="tag-remove" onclick="removeTag(this)">×</span></span>
@@ -497,10 +501,10 @@
 
                 <!-- Work Preferences -->
                 <div class="form-section">
-                    <h2>Work Preferences</h2>
+                    <h2 data-i18n="work_preferences">Work Preferences</h2>
                     <div class="form-grid two-col">
                         <div class="form-group">
-                            <label for="roleType">Preferred Role Type</label>
+                            <label for="roleType" data-i18n="role_type">Preferred Role Type</label>
                             <select id="roleType">
                                 <option value="">Select preference</option>
                                 <option value="full-time">Full-time Employee</option>
@@ -511,7 +515,7 @@
                             </select>
                         </div>
                         <div class="form-group">
-                            <label for="workFormat">Work Format</label>
+                            <label for="workFormat" data-i18n="work_format">Work Format</label>
                             <select id="workFormat">
                                 <option value="">Select preference</option>
                                 <option value="remote">Remote</option>
@@ -524,11 +528,11 @@
 
                     <div class="form-grid two-col">
                         <div class="form-group">
-                            <label for="salaryRange">Expected Salary Range (Optional)</label>
+                            <label for="salaryRange" data-i18n="salary_range">Expected Salary Range (Optional)</label>
                             <input type="text" id="salaryRange" placeholder="e.g., 15,000-25,000 MAD/month">
                         </div>
                         <div class="form-group">
-                            <label for="availability">Availability</label>
+                            <label for="availability" data-i18n="availability">Availability</label>
                             <select id="availability">
                                 <option value="">Select availability</option>
                                 <option value="immediate">Immediately</option>
@@ -541,21 +545,21 @@
                     </div>
 
                     <div class="form-group">
-                        <label for="lookingFor">What are you looking for?</label>
+                        <label for="lookingFor" data-i18n="looking_for">What are you looking for?</label>
                         <textarea id="lookingFor" placeholder="Describe your ideal role, company culture, growth opportunities, etc." style="min-height: 100px;"></textarea>
                     </div>
                 </div>
 
                 <!-- Social & Portfolio -->
                 <div class="form-section">
-                    <h2>Professional Links</h2>
+                    <h2 data-i18n="professional_links">Professional Links</h2>
                     <div class="form-grid two-col">
                         <div class="form-group">
-                            <label for="linkedinProfile">LinkedIn Profile *</label>
+                            <label for="linkedinProfile"><span data-i18n="linkedin_profile">LinkedIn Profile</span> *</label>
                             <input type="url" id="linkedinProfile" placeholder="https://linkedin.com/in/..." required>
                         </div>
                         <div class="form-group">
-                            <label for="portfolioWebsite">Portfolio/Website</label>
+                            <label for="portfolioWebsite" data-i18n="portfolio_website">Portfolio/Website</label>
                             <input type="url" id="portfolioWebsite" placeholder="https://your-portfolio.com">
                         </div>
                     </div>
@@ -565,7 +569,7 @@
                             <input type="url" id="githubProfile" placeholder="https://github.com/username">
                         </div>
                         <div class="form-group">
-                            <label for="otherProfile">Other Profile</label>
+                            <label for="otherProfile" data-i18n="other_profile">Other Profile</label>
                             <input type="url" id="otherProfile" placeholder="Dribbble, Behance, Twitter, etc.">
                         </div>
                     </div>
@@ -573,26 +577,26 @@
 
                 <!-- Additional Information -->
                 <div class="form-section">
-                    <h2>Additional Information</h2>
+                    <h2 data-i18n="additional_info">Additional Information</h2>
                     <div class="form-group">
-                        <label for="education">Education (Optional)</label>
+                        <label for="education" data-i18n="education_optional">Education (Optional)</label>
                         <textarea id="education" placeholder="Your educational background, degrees, certifications" style="min-height: 80px;"></textarea>
                     </div>
                     <div class="form-group">
-                        <label for="achievements">Notable Achievements (Optional)</label>
+                        <label for="achievements" data-i18n="achievements">Notable Achievements (Optional)</label>
                         <textarea id="achievements" placeholder="Awards, recognitions, successful projects, publications, etc." style="min-height: 80px;"></textarea>
                     </div>
                     <div class="form-group">
-                        <label for="languages">Languages</label>
+                        <label for="languages" data-i18n="languages">Languages</label>
                         <input type="text" id="languages" placeholder="e.g., Arabic (Native), French (Fluent), English (Advanced)">
                     </div>
                 </div>
 
-            <button type="submit" class="btn-submit">Submit Profile</button>
+            <button type="submit" class="btn-submit" data-i18n="submit_profile">Submit Profile</button>
 
             <div class="form-footer">
-                <p>By submitting, you agree to our Terms of Service and Privacy Policy.</p>
-                <p class="warning">⚠️ This is a demo form - submissions are not processed</p>
+                <p data-i18n="terms_notice">By submitting, you agree to our Terms of Service and Privacy Policy.</p>
+                <p class="warning" data-i18n="demo_warning">⚠️ This is a demo form - submissions are not processed</p>
             </div>
         </form>
     </div>

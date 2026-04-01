@@ -4,83 +4,85 @@
 
 {% block content %}
 <style>
-    /* Join Page Specific Styles */
-    .join-container {
-        padding: 6rem 0 4rem;
-        min-height: 100vh;
-        background: var(--bg-dark);
-        position: relative;
+    /* ============================================
+       JOIN PAGE
+       ============================================ */
+
+    .join-page {
+        padding: 2rem 0 4rem;
+        max-width: 1100px;
+        margin: 0 auto;
+        padding-left: 1.5rem;
+        padding-right: 1.5rem;
     }
 
+    /* --- Header --- */
     .join-header {
         text-align: center;
-        margin-bottom: 4rem;
-        position: relative;
-        z-index: 2;
+        margin-bottom: 3.5rem;
     }
 
     .join-header h1 {
-        font-family: 'Poppins', sans-serif;
-        font-weight: 800;
-        font-size: 3rem;
-        margin-bottom: 1.5rem;
-        background: linear-gradient(135deg, var(--primary-green), var(--light-green), var(--accent-blue));
+        font-family: var(--font-heading);
+        font-weight: 700;
+        font-size: 2.6rem;
+        color: var(--text-primary);
+        margin-bottom: 0.75rem;
+        letter-spacing: -0.03em;
+    }
+
+    .join-header h1 span {
+        background: linear-gradient(135deg, var(--accent), var(--secondary));
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
         background-clip: text;
     }
 
     .join-header p {
-        font-size: 1.2rem;
-        color: var(--text-muted);
-        max-width: 600px;
+        font-family: var(--font-body);
+        font-size: 1.05rem;
+        color: var(--text-secondary);
+        max-width: 540px;
         margin: 0 auto;
-        line-height: 1.6;
+        line-height: 1.7;
     }
 
+    /* --- Roles Grid --- */
     .roles-grid {
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-        gap: 2rem;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 1.5rem;
         margin-bottom: 3rem;
     }
 
-    /* Style for all card containers */
-    .roles-grid > div {
+    @media (max-width: 1024px) {
+        .roles-grid {
+            grid-template-columns: repeat(2, 1fr);
+        }
+    }
+    @media (max-width: 768px) {
+        .roles-grid {
+            grid-template-columns: 1fr;
+        }
+        .join-header h1 {
+            font-size: 2rem;
+        }
+    }
+
+    /* --- Role Card --- */
+    .role-card {
+        background: var(--bg-card);
+        border: 1px solid var(--border-color);
+        border-radius: 18px;
+        padding: 2.25rem 2rem;
         display: flex;
         flex-direction: column;
-        height: 100%;
-    }
-
-    /* Make all role cards the same height */
-    .role-card {
-        flex: 1;
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
-    }
-
-    /* Ensure all buttons have proper spacing and alignment */
-    .roles-grid .btn-primary {
-        margin-top: 1rem;
-        align-self: stretch;
-    }
-
-    .role-card {
-        background: linear-gradient(145deg, var(--bg-card), rgba(51, 65, 85, 0.8));
-        border-radius: 20px;
-        padding: 2.5rem;
+        align-items: center;
         text-align: center;
-        border: 1px solid rgba(52, 211, 153, 0.1);
-        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        cursor: pointer;
+        transition: transform var(--transition-smooth), box-shadow var(--transition-smooth), border-color var(--transition-base);
         position: relative;
         overflow: hidden;
-        backdrop-filter: blur(20px);
-        flex: 1;
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
-        min-height: 280px;
     }
 
     .role-card::before {
@@ -89,385 +91,293 @@
         top: 0;
         left: 0;
         right: 0;
-        bottom: 0;
-        background: linear-gradient(135deg, var(--primary-green), var(--accent-blue));
-        opacity: 0;
-        transition: opacity 0.3s ease;
-        pointer-events: none; /* This allows clicks to pass through */
-    }
-
-    .role-card:hover::before {
-        opacity: 0.05;
+        height: 3px;
+        transform: scaleX(0);
+        transform-origin: left;
+        transition: transform 0.4s ease;
     }
 
     .role-card:hover {
-        transform: translateY(-8px);
-        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
-        border-color: var(--primary-green);
+        transform: translateY(-5px);
+        box-shadow: 0 14px 40px rgba(0, 0, 0, 0.1);
     }
 
-    [data-theme="light"] .role-card {
-        background: linear-gradient(145deg, var(--bg-card), rgba(248, 250, 252, 0.9));
-        border: 1px solid var(--border-color);
-        box-shadow: 0 4px 20px var(--shadow-color);
+    .role-card:hover::before {
+        transform: scaleX(1);
     }
 
-    [data-theme="light"] .role-card:hover {
-        box-shadow: 0 20px 40px var(--shadow-color);
-    }
+    /* Per-role accent colors */
+    .role-card.role-accent::before { background: var(--gradient-accent); }
+    .role-card.role-accent:hover { border-color: rgba(0, 212, 170, 0.25); }
 
-    .icon-container {
-        width: 80px;
-        height: 80px;
-        border-radius: 20px;
+    .role-card.role-secondary::before { background: var(--gradient-secondary); }
+    .role-card.role-secondary:hover { border-color: rgba(67, 97, 238, 0.25); }
+
+    .role-card.role-tertiary::before { background: var(--gradient-tertiary); }
+    .role-card.role-tertiary:hover { border-color: rgba(247, 183, 49, 0.25); }
+
+    .role-card.role-purple::before { background: linear-gradient(135deg, #8b5cf6, #a78bfa); }
+    .role-card.role-purple:hover { border-color: rgba(139, 92, 246, 0.25); }
+
+    /* Icon Circle */
+    .role-icon {
+        width: 64px;
+        height: 64px;
+        border-radius: 16px;
         display: flex;
         align-items: center;
         justify-content: center;
-        margin: 0 auto 1.5rem;
-        position: relative;
-        z-index: 2;
+        font-size: 1.5rem;
+        color: #fff;
+        margin-bottom: 1.25rem;
+        flex-shrink: 0;
     }
 
-    .icon-container.blue {
-        background: var(--gradient-2);
-    }
-
-    .icon-container.green {
-        background: var(--gradient-1);
-    }
-
-    .icon-container.purple {
-        background: var(--gradient-3);
-    }
-
-    .icon-container.orange {
-        background: var(--gradient-4);
-    }
-
-    .icon-container svg {
-        width: 36px;
-        height: 36px;
-        color: white;
-    }
+    .role-icon.icon-accent { background: var(--gradient-accent); }
+    .role-icon.icon-secondary { background: var(--gradient-secondary); }
+    .role-icon.icon-tertiary { background: var(--gradient-tertiary); }
+    .role-icon.icon-purple { background: linear-gradient(135deg, #8b5cf6, #a78bfa); }
 
     .role-card h3 {
-        font-family: 'Poppins', sans-serif;
-        font-weight: 700;
-        font-size: 1.5rem;
-        margin-bottom: 1rem;
-        color: var(--text-light);
-        position: relative;
-        z-index: 2;
+        font-family: var(--font-heading);
+        font-weight: 600;
+        font-size: 1.15rem;
+        color: var(--text-primary);
+        margin-bottom: 0.6rem;
     }
 
-    .role-card p {
-        color: var(--text-muted);
-        margin-bottom: 0;
+    .role-card .role-desc {
+        font-family: var(--font-body);
+        font-size: 0.88rem;
+        color: var(--text-secondary);
         line-height: 1.6;
-        position: relative;
-        z-index: 2;
+        margin-bottom: 1.5rem;
         flex: 1;
     }
 
-    .btn-primary {
-        background: var(--primary-green);
-        color: white !important;
-        border: none;
-        padding: 0.8rem 2rem;
-        border-radius: 12px;
-        font-weight: 600;
-        transition: all 0.3s ease;
-        position: relative;
-        z-index: 100 !important; /* Much higher z-index to ensure clickability */
-        width: 100%;
-        cursor: pointer !important;
-        text-decoration: none !important;
+    /* Button */
+    .btn-pulse-role {
         display: inline-flex;
         align-items: center;
         justify-content: center;
-        font-family: inherit;
-        font-size: inherit;
-        pointer-events: auto !important; /* Ensure the button can receive click events */
+        gap: 0.45rem;
+        font-family: var(--font-heading);
+        font-weight: 600;
+        font-size: 0.85rem;
+        padding: 0.6rem 1.5rem;
+        border-radius: 10px;
+        border: none;
+        cursor: pointer;
+        text-decoration: none;
+        transition: all var(--transition-base);
+        width: 100%;
     }
 
-    .btn-primary:hover {
-        background: var(--dark-green);
-        transform: translateY(-2px);
-        box-shadow: 0 8px 25px rgba(16, 185, 129, 0.4);
-        color: white !important;
-        text-decoration: none !important;
+    .btn-pulse-role:hover {
+        transform: translateY(-1px);
     }
 
-    .btn-primary:focus, .btn-primary:active {
-        outline: none;
-        color: white !important;
-        text-decoration: none !important;
+    .btn-pulse-accent {
+        color: #0a0e1a;
+        background: var(--accent);
+    }
+    .btn-pulse-accent:hover {
+        background: var(--accent-hover);
+        color: #0a0e1a;
+        box-shadow: 0 6px 20px rgba(0, 212, 170, 0.3);
     }
 
-    .demo-notice {
-        background: rgba(251, 191, 36, 0.1);
-        border: 1px solid rgba(251, 191, 36, 0.3);
-        border-radius: 15px;
-        padding: 1.5rem;
+    .btn-pulse-secondary {
+        color: #fff;
+        background: var(--secondary);
+    }
+    .btn-pulse-secondary:hover {
+        background: #3a56d4;
+        color: #fff;
+        box-shadow: 0 6px 20px rgba(67, 97, 238, 0.3);
+    }
+
+    .btn-pulse-tertiary {
+        color: #0a0e1a;
+        background: var(--tertiary);
+    }
+    .btn-pulse-tertiary:hover {
+        background: #f0a500;
+        color: #0a0e1a;
+        box-shadow: 0 6px 20px rgba(247, 183, 49, 0.3);
+    }
+
+    .btn-pulse-purple {
+        color: #fff;
+        background: #8b5cf6;
+    }
+    .btn-pulse-purple:hover {
+        background: #7c3aed;
+        color: #fff;
+        box-shadow: 0 6px 20px rgba(139, 92, 246, 0.3);
+    }
+
+    .btn-pulse-orange {
+        color: #0a0e1a;
+        background: #f97316;
+    }
+    .btn-pulse-orange:hover {
+        background: #ea580c;
+        color: #0a0e1a;
+        box-shadow: 0 6px 20px rgba(249, 115, 22, 0.3);
+    }
+
+    .icon-orange {
+        background: rgba(249, 115, 22, 0.12);
+        color: #f97316;
+    }
+
+    .role-card.role-orange:hover::before {
+        background: linear-gradient(90deg, #f97316, #fb923c);
+        transform: scaleX(1);
+    }
+
+    /* --- Disclaimer --- */
+    .join-disclaimer {
         text-align: center;
-        max-width: 600px;
+        background: var(--bg-card);
+        border: 1px solid var(--border-color);
+        border-radius: 14px;
+        padding: 1.5rem 2rem;
+        max-width: 620px;
         margin: 0 auto;
     }
 
-    .badge {
-        background: var(--accent-orange);
-        color: white;
-        padding: 0.5rem 1rem;
-        border-radius: 25px;
-        font-size: 0.8rem;
+    .disclaimer-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.4rem;
+        background: var(--tertiary-subtle);
+        color: var(--tertiary);
+        font-family: var(--font-body);
         font-weight: 600;
+        font-size: 0.72rem;
+        letter-spacing: 0.04em;
         text-transform: uppercase;
-        letter-spacing: 0.5px;
-        display: inline-block;
-        margin-bottom: 1rem;
+        padding: 0.3rem 0.75rem;
+        border-radius: 6px;
+        margin-bottom: 0.75rem;
     }
 
-    .demo-notice p {
-        color: var(--text-muted);
+    .join-disclaimer p {
+        font-family: var(--font-body);
+        font-size: 0.88rem;
+        color: var(--text-secondary);
         margin: 0;
-        font-size: 0.95rem;
+        line-height: 1.6;
     }
 
-    /* Floating background elements */
-    .floating-elements {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        overflow: hidden;
-        z-index: 1;
-    }
-
-    .floating-elements::before,
-    .floating-elements::after {
-        content: '';
-        position: absolute;
-        border-radius: 50%;
-        background: var(--primary-green);
-        opacity: 0.03;
-        animation: float 20s infinite linear;
-    }
-
-    .floating-elements::before {
-        width: 300px;
-        height: 300px;
-        top: 10%;
-        left: -5%;
-        animation-delay: 0s;
-    }
-
-    .floating-elements::after {
-        width: 200px;
-        height: 200px;
-        top: 60%;
-        right: -5%;
-        animation-delay: -10s;
-    }
-
-    @keyframes float {
-        0%, 100% { transform: translateY(0px) rotate(0deg); }
-        50% { transform: translateY(-20px) rotate(180deg); }
-    }
-
-    /* Responsive design */
-    @media (max-width: 768px) {
-        .join-container {
-            padding: 5rem 0 3rem;
-        }
-
-        .join-header h1 {
-            font-size: 2.2rem;
-        }
-
-        .join-header p {
-            font-size: 1rem;
-            padding: 0 1rem;
-        }
-
-        .roles-grid {
-            grid-template-columns: 1fr;
-            gap: 1.5rem;
-            padding: 0 1rem;
-        }
-
-        .role-card {
-            padding: 2rem;
-        }
-
-        .icon-container {
-            width: 70px;
-            height: 70px;
-        }
-
-        .icon-container svg {
-            width: 32px;
-            height: 32px;
-        }
-    }
-
-    /* Animation on load */
+    /* --- Entrance Animation --- */
     .role-card {
         opacity: 0;
-        transform: translateY(30px);
-        animation: slideUp 0.6s ease forwards;
+        transform: translateY(20px);
+        animation: cardIn 0.5s ease forwards;
     }
+    .role-card:nth-child(1) { animation-delay: 0.05s; }
+    .role-card:nth-child(2) { animation-delay: 0.12s; }
+    .role-card:nth-child(3) { animation-delay: 0.19s; }
+    .role-card:nth-child(4) { animation-delay: 0.26s; }
+    .role-card:nth-child(5) { animation-delay: 0.33s; }
 
-    .role-card:nth-child(1) { animation-delay: 0.1s; }
-    .role-card:nth-child(2) { animation-delay: 0.2s; }
-    .role-card:nth-child(3) { animation-delay: 0.3s; }
-    .role-card:nth-child(4) { animation-delay: 0.4s; }
-
-    @keyframes slideUp {
+    @keyframes cardIn {
         to {
             opacity: 1;
             transform: translateY(0);
         }
     }
-
-    /* Ensure entrepreneur card doesn't have cursor pointer on the card itself */
-    .role-card.entrepreneur {
-        cursor: default;
-    }
 </style>
 
-<div class="join-container">
-    <div class="floating-elements"></div>
-    
-    <div class="container">
-        <div class="join-header">
-            <h1>Join Morocco's Startup Ecosystem</h1>
-            <p>Connect with entrepreneurs, investors, and innovation programs across Morocco. Choose your profile type to get started and become part of the thriving startup community.</p>
-            
-        </div>
-        
+<div class="join-page">
 
-        <div class="roles-grid">
-            
-            <div>
-                <div class="role-card">
-                    <div class="icon-container blue">
-                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-4m-2 0H3m2-16v16m8-16v16m-4-8h4"/>
-                        </svg>
-                    </div>
-                    <h3>Entrepreneur / Startup</h3>
-                    <p>Submit your startup profile to connect with investors, accelerators, and potential partners in Morocco's growing ecosystem.</p>
-                </div>
-                <a href="/entrepreneur-form" class="btn btn-primary">
-                    <i class="fas fa-rocket me-2"></i>Get Started
-                </a>
-            </div>
-            
-            
-
-            <div>
-                <div class="role-card">
-                    <div class="icon-container green">
-                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/>
-                        </svg>
-                    </div>
-                    <h3>Investor / VC</h3>
-                    <p>Share your investment focus and portfolio to connect with promising startups and co-investors across Morocco.</p>
-                </div>
-                <a href="/investor-form" class="btn btn-primary">
-                    <i class="fas fa-chart-line me-2"></i>Get Started
-                </a>
-            </div>
-
-            <div>
-                <div class="role-card">
-                    <div class="icon-container purple">
-                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14l9-5-9-5-9 5 9 5z"/>
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14l9-5-9-5-9 5 9 5zm0 0l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z"/>
-                        </svg>
-                    </div>
-                    <h3>Program / Incubator</h3>
-                    <p>List your accelerator, incubator, or support program to help entrepreneurs and startups in their growth journey.</p>
-                </div>
-                <a href="/program-form" class="btn btn-primary">
-                    <i class="fas fa-building me-2"></i>Get Started
-                </a>
-            </div>
-
-            <div>
-                <div class="role-card">
-                    <div class="icon-container orange">
-                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/>
-                        </svg>
-                    </div>
-                    <h3>Talent / Professional</h3>
-                    <p>Create your professional profile to find opportunities with startups, investors, and innovation programs.</p>
-                </div>
-                <a href="/talent-form" class="btn btn-primary">
-                    <i class="fas fa-users me-2"></i>Get Started
-                </a>
-            </div>
-        </div>
-       
-
-        <div class="demo-notice">
-            <span class="badge">
-                <i class="fas fa-flask me-1"></i>Demo Version
-            </span>
-            <p>This is a demonstration version of The Pulse platform. Registration forms are not yet connected to a database, but you can explore the interface and functionality.</p>
-        </div>
+    <!-- Header -->
+    <div class="join-header">
+        <h1><span data-i18n="join_title">Join</span> <span>The Pulse</span></h1>
+        <p data-i18n="join_subtitle">Connect with entrepreneurs, investors, and innovation programs across Morocco. Choose your role to get started.</p>
     </div>
-</div>
 
-<script>
-    function showComingSoon(role) {
-        // Show notification for other roles (coming soon)
-        const notification = document.createElement('div');
-        notification.style.cssText = `
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background: var(--bg-card);
-            color: var(--text-light);
-            padding: 2rem;
-            border-radius: 15px;
-            border: 1px solid var(--primary-green);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-            z-index: 9999;
-            text-align: center;
-            min-width: 300px;
-            backdrop-filter: blur(20px);
-        `;
-        
-        notification.innerHTML = `
-            <div style="color: var(--primary-green); font-size: 2rem; margin-bottom: 1rem;">
-                <i class="fas fa-info-circle"></i>
+    <!-- Roles Grid -->
+    <div class="roles-grid">
+
+        <!-- Entrepreneur / Startup -->
+        <div class="role-card role-accent" onclick="window.location.href='/entrepreneur-form'">
+            <div class="role-icon icon-accent">
+                <i class="fas fa-rocket"></i>
             </div>
-            <h4 style="margin-bottom: 1rem; color: var(--text-light);">Demo Mode</h4>
-            <p style="color: var(--text-muted); margin-bottom: 1.5rem;">
-                Registration for <strong>${role}</strong> is coming soon! 
-                This is a demonstration of the platform interface.
-            </p>
-            <button onclick="this.parentElement.remove()" 
-                    style="background: var(--primary-green); color: white; border: none; 
-                           padding: 0.5rem 1.5rem; border-radius: 8px; cursor: pointer;">
-                Got it!
-            </button>
-        `;
+            <h3 data-i18n="entrepreneur_startup">Entrepreneur / Startup</h3>
+            <p class="role-desc" data-i18n="entrepreneur_desc">Submit your startup profile to connect with investors, accelerators, and potential partners in Morocco's growing ecosystem.</p>
+            <span class="btn-pulse-role btn-pulse-accent">
+                <i class="fas fa-arrow-right"></i>
+                <span data-i18n="get_started">Get Started</span>
+            </span>
+        </div>
 
-        document.body.appendChild(notification);
+        <!-- Investor / VC -->
+        <div class="role-card role-secondary" onclick="window.location.href='/investor-form'">
+            <div class="role-icon icon-secondary">
+                <i class="fas fa-hand-holding-dollar"></i>
+            </div>
+            <h3 data-i18n="investor_vc">Investor / VC</h3>
+            <p class="role-desc" data-i18n="investor_desc">Share your investment focus and portfolio to connect with promising startups and co-investors across Morocco.</p>
+            <span class="btn-pulse-role btn-pulse-secondary">
+                <i class="fas fa-arrow-right"></i>
+                <span data-i18n="get_started">Get Started</span>
+            </span>
+        </div>
 
-        // Auto-remove after 5 seconds
-        setTimeout(() => {
-            if (document.body.contains(notification)) {
-                notification.remove();
-            }
-        }, 5000);
-    }
-</script>
+        <!-- Programme -->
+        <div class="role-card role-tertiary" onclick="window.location.href='/program-form'">
+            <div class="role-icon icon-tertiary">
+                <i class="fas fa-chalkboard-teacher"></i>
+            </div>
+            <h3 data-i18n="program_card">Programme d'accompagnement</h3>
+            <p class="role-desc" data-i18n="program_card_desc">Inscrivez votre programme d'accompagnement, bootcamp ou initiative de formation pour entrepreneurs et startups.</p>
+            <span class="btn-pulse-role btn-pulse-tertiary">
+                <i class="fas fa-arrow-right"></i>
+                <span data-i18n="get_started">Get Started</span>
+            </span>
+        </div>
+
+        <!-- Incubateur / Accélérateur -->
+        <div class="role-card role-orange" onclick="window.location.href='/program-form?type=incubator'">
+            <div class="role-icon icon-orange">
+                <i class="fas fa-building-columns"></i>
+            </div>
+            <h3 data-i18n="incubator_accelerator">Incubator / Accelerator</h3>
+            <p class="role-desc" data-i18n="incubator_card_desc">List your incubator or accelerator to connect with startups seeking structured support and funding access.</p>
+            <span class="btn-pulse-role btn-pulse-orange">
+                <i class="fas fa-arrow-right"></i>
+                <span data-i18n="get_started">Get Started</span>
+            </span>
+        </div>
+
+        <!-- Talent / Professional -->
+        <div class="role-card role-purple" onclick="window.location.href='/talent-form'">
+            <div class="role-icon icon-purple">
+                <i class="fas fa-user-graduate"></i>
+            </div>
+            <h3 data-i18n="talent_professional">Talent / Professional</h3>
+            <p class="role-desc" data-i18n="talent_desc">Create your professional profile to find opportunities with startups, investors, and innovation programs in Morocco.</p>
+            <span class="btn-pulse-role btn-pulse-purple">
+                <i class="fas fa-arrow-right"></i>
+                <span data-i18n="get_started">Get Started</span>
+            </span>
+        </div>
+
+    </div>
+
+    <!-- Disclaimer -->
+    <div class="join-disclaimer">
+        <span class="disclaimer-badge">
+            <i class="fas fa-flask"></i>
+            <span data-i18n="demo_version">Demo Version</span>
+        </span>
+        <p data-i18n="demo_disclaimer">This is a demonstration version of The Pulse platform. Registration forms are for preview purposes and data is not yet persisted to a production database.</p>
+    </div>
+
+</div>
 {% endblock %}

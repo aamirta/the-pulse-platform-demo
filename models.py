@@ -86,6 +86,7 @@ class Startup(db.Model):
     is_financer_valid = db.Column('isFinancerValid', db.Boolean, nullable=True)
     is_jei_validated = db.Column('isJEIValidated', db.Boolean, nullable=True)
     description = db.Column('description', db.Text, nullable=True)
+    description_en = db.Column('description_en', db.Text, nullable=True)
     uuid = db.Column('uuid', db.String(50), nullable=True)
     type = db.Column('type', db.String(50), nullable=True)
     homepage_url = db.Column('homepage_url', db.String(255), nullable=True)
@@ -619,3 +620,112 @@ class Investor(db.Model):
     # Relationships
     investments = db.relationship('Investment', backref='investor', lazy=True)
     sp_investors = db.relationship('SPInvestor', backref='investor', lazy=True)
+
+
+class Talent(db.Model):
+    __tablename__ = 'talents'
+    talent_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    full_name = db.Column(db.String(100))
+    email = db.Column(db.String(255))
+    phone = db.Column(db.String(50))
+    location = db.Column(db.String(100))
+    current_title = db.Column(db.String(255))
+    years_experience = db.Column(db.String(50))
+    professional_bio = db.Column(db.Text)
+    skills = db.Column(db.Text)
+    industries_of_interest = db.Column(db.Text)
+    role_type = db.Column(db.String(50))
+    work_format = db.Column(db.String(50))
+    salary_range = db.Column(db.String(100))
+    availability = db.Column(db.String(50))
+    looking_for = db.Column(db.Text)
+    linkedin_url = db.Column(db.String(255))
+    portfolio_website = db.Column(db.String(255))
+    github_profile = db.Column(db.String(255))
+    other_profile = db.Column(db.String(255))
+    education = db.Column(db.Text)
+    achievements = db.Column(db.Text)
+    languages = db.Column(db.String(255))
+    profile_pic = db.Column(db.String(255))
+    created_at = db.Column(db.DateTime, default=db.func.now())
+
+
+class CofounderProject(db.Model):
+    __tablename__ = 'cofounder_projects'
+    project_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    project_title = db.Column(db.String(255), nullable=False)
+    description = db.Column(db.Text)
+    domain = db.Column(db.String(100))
+    skills_needed = db.Column(db.Text)  # comma-separated
+    project_stage = db.Column(db.String(50))  # Idea, MVP, Early Traction, Growth
+    author_name = db.Column(db.String(100))
+    author_email = db.Column(db.String(255))
+    author_affiliation = db.Column(db.String(255))  # UM6P, External, etc.
+    author_linkedin = db.Column(db.String(255))
+    roles_needed = db.Column(db.Text)  # e.g. CTO, CMO, CFO
+    commitment_type = db.Column(db.String(50))  # Full-time, Part-time, Flexible
+    location_preference = db.Column(db.String(50))  # Remote, On-site, Hybrid
+    equity_offered = db.Column(db.String(100))
+    contact_info = db.Column(db.String(255))
+    created_at = db.Column(db.DateTime, default=db.func.now())
+
+
+class Article(db.Model):
+    __tablename__ = 'articles'
+    article_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    title = db.Column(db.String(500), nullable=False)
+    content = db.Column(db.Text)
+    summary = db.Column(db.Text)
+    category = db.Column(db.String(50))  # Actualité, Interview, Analyse
+    source = db.Column(db.String(255))
+    source_url = db.Column(db.String(500))
+    author = db.Column(db.String(100))
+    image_url = db.Column(db.String(500))
+    tags = db.Column(db.Text)  # comma-separated
+    is_featured = db.Column(db.Boolean, default=False)
+    published_at = db.Column(db.DateTime, default=db.func.now())
+    created_at = db.Column(db.DateTime, default=db.func.now())
+
+
+class Resource(db.Model):
+    __tablename__ = 'resources'
+    resource_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    title = db.Column(db.String(500), nullable=False)
+    description = db.Column(db.Text)
+    category = db.Column(db.String(100))  # Politiques publiques, Dispositifs d'appui, Guides pratiques, Appels à projets
+    resource_type = db.Column(db.String(50))  # PDF, Lien, Guide, Vidéo
+    url = db.Column(db.String(500))
+    organization = db.Column(db.String(255))  # Organisme source
+    tags = db.Column(db.Text)  # comma-separated
+    is_featured = db.Column(db.Boolean, default=False)
+    published_at = db.Column(db.DateTime, default=db.func.now())
+    created_at = db.Column(db.DateTime, default=db.func.now())
+
+
+class Post(db.Model):
+    __tablename__ = 'posts'
+    post_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    author_name = db.Column(db.String(100))
+    author_role = db.Column(db.String(100))
+    content = db.Column(db.Text, nullable=False)
+    post_type = db.Column(db.String(50), default='post')
+    image_url = db.Column(db.String(500))
+    link_url = db.Column(db.String(500))
+    link_title = db.Column(db.String(255))
+    tags = db.Column(db.Text)
+    likes_count = db.Column(db.Integer, default=0)
+    comments_count = db.Column(db.Integer, default=0)
+    is_published = db.Column(db.Boolean, default=True)
+    created_at = db.Column(db.DateTime, default=db.func.now())
+
+
+class DirectMessage(db.Model):
+    __tablename__ = 'direct_messages'
+    id          = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    post_id     = db.Column(db.Integer, nullable=True)
+    to_name     = db.Column(db.String(100))
+    from_name   = db.Column(db.String(100))
+    from_email  = db.Column(db.String(255))
+    message     = db.Column(db.Text, nullable=False)
+    is_read     = db.Column(db.Boolean, default=False)
+    created_at  = db.Column(db.DateTime, default=db.func.now())

@@ -1,0 +1,237 @@
+{% extends "base.html" %}
+
+{% block title %}Post a Project - Co-Founders - The Pulse{% endblock %}
+
+{% block content %}
+<style>
+    .page-container {
+        max-width: 900px;
+        margin: 0 auto;
+        padding: 2rem 1rem;
+    }
+    .page-header {
+        text-align: center;
+        padding: 2.5rem 2rem;
+        background: linear-gradient(135deg, rgba(249, 115, 22, 0.15) 0%, rgba(67, 97, 238, 0.1) 100%);
+        border-radius: 16px;
+        margin-bottom: 2rem;
+        border: 1px solid var(--border-color);
+    }
+    .page-header h1 {
+        font-family: var(--font-heading);
+        font-size: 2rem;
+        font-weight: 700;
+        background: linear-gradient(135deg, #f97316, #4361ee);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        margin-bottom: 0.5rem;
+    }
+    .page-header p { color: var(--text-secondary); font-size: 1rem; }
+
+    .form-card {
+        background: var(--bg-card);
+        border: 1px solid var(--border-color);
+        border-radius: 16px;
+        padding: 2rem;
+        margin-bottom: 1.5rem;
+    }
+    .form-section-title {
+        font-family: var(--font-heading);
+        font-weight: 600;
+        font-size: 1.1rem;
+        color: var(--text-primary);
+        margin-bottom: 1.25rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+    .form-section-title i { color: #f97316; }
+    .form-group { margin-bottom: 1.25rem; }
+    .form-group label {
+        display: block;
+        font-weight: 500;
+        font-size: 0.88rem;
+        color: var(--text-primary);
+        margin-bottom: 0.4rem;
+    }
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+        width: 100%;
+        padding: 0.7rem 1rem;
+        border: 1px solid var(--border-color);
+        border-radius: 10px;
+        background: var(--bg-primary);
+        color: var(--text-primary);
+        font-family: var(--font-body);
+        font-size: 0.9rem;
+        outline: none;
+        transition: border-color 0.2s;
+    }
+    .form-group input:focus,
+    .form-group select:focus,
+    .form-group textarea:focus { border-color: #f97316; }
+    .form-group textarea { min-height: 120px; resize: vertical; }
+    .form-group .hint { font-size: 0.75rem; color: var(--text-muted); margin-top: 0.25rem; }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+
+    .submit-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+        width: 100%;
+        padding: 0.9rem;
+        background: linear-gradient(135deg, #f97316, #ea580c);
+        color: #fff;
+        border: none;
+        border-radius: 12px;
+        font-family: var(--font-heading);
+        font-size: 1rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.2s ease;
+    }
+    .submit-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(249, 115, 22, 0.3); }
+
+    @media (max-width: 768px) { .form-row { grid-template-columns: 1fr; } }
+</style>
+
+<div class="page-container">
+    <div class="page-header">
+        <h1><i class="fas fa-handshake"></i> Post a Project</h1>
+        <p>Share your project and find the perfect co-founder</p>
+    </div>
+
+    <form action="{{ url_for('cofounder_form') }}" method="POST">
+        <!-- Project Details -->
+        <div class="form-card">
+            <div class="form-section-title"><i class="fas fa-lightbulb"></i> Project Details</div>
+            <div class="form-group">
+                <label>Project Title *</label>
+                <input type="text" name="project_title" required placeholder="e.g. AI-powered AgriTech Platform">
+            </div>
+            <div class="form-group">
+                <label>Description *</label>
+                <textarea name="description" required placeholder="Describe your project vision, goals, and what problem it solves..."></textarea>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Domain / Sector</label>
+                    <select name="domain">
+                        <option value="">Select domain</option>
+                        <option value="AgriTech">AgriTech</option>
+                        <option value="FinTech">FinTech</option>
+                        <option value="HealthTech">HealthTech</option>
+                        <option value="EdTech">EdTech</option>
+                        <option value="E-commerce">E-commerce</option>
+                        <option value="CleanTech">CleanTech</option>
+                        <option value="AI / ML">AI / ML</option>
+                        <option value="SaaS">SaaS</option>
+                        <option value="IoT">IoT</option>
+                        <option value="Logistics">Logistics</option>
+                        <option value="PropTech">PropTech</option>
+                        <option value="FoodTech">FoodTech</option>
+                        <option value="Social Impact">Social Impact</option>
+                        <option value="Other">Other</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Project Stage</label>
+                    <select name="project_stage">
+                        <option value="">Select stage</option>
+                        <option value="Idea">Idea</option>
+                        <option value="MVP">MVP</option>
+                        <option value="Early Traction">Early Traction</option>
+                        <option value="Growth">Growth</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <!-- What You're Looking For -->
+        <div class="form-card">
+            <div class="form-section-title"><i class="fas fa-users"></i> What You're Looking For</div>
+            <div class="form-group">
+                <label>Skills Needed</label>
+                <input type="text" name="skills_needed" placeholder="e.g. Python, Machine Learning, Business Development">
+                <div class="hint">Comma-separated list of skills</div>
+            </div>
+            <div class="form-group">
+                <label>Roles Needed</label>
+                <input type="text" name="roles_needed" placeholder="e.g. CTO, CMO, Lead Developer">
+                <div class="hint">What co-founder roles are you seeking?</div>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Commitment Type</label>
+                    <select name="commitment_type">
+                        <option value="">Select commitment</option>
+                        <option value="Full-time">Full-time</option>
+                        <option value="Part-time">Part-time</option>
+                        <option value="Flexible">Flexible</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Location Preference</label>
+                    <select name="location_preference">
+                        <option value="">Select preference</option>
+                        <option value="Remote">Remote</option>
+                        <option value="On-site">On-site</option>
+                        <option value="Hybrid">Hybrid</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <label>Equity Offered</label>
+                <input type="text" name="equity_offered" placeholder="e.g. 10-20% equity, negotiable">
+            </div>
+        </div>
+
+        <!-- About You -->
+        <div class="form-card">
+            <div class="form-section-title"><i class="fas fa-user"></i> About You</div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Your Name *</label>
+                    <input type="text" name="author_name" required placeholder="Full name">
+                </div>
+                <div class="form-group">
+                    <label>Email *</label>
+                    <input type="email" name="author_email" required placeholder="your@email.com">
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Affiliation</label>
+                    <select name="author_affiliation">
+                        <option value="">Select affiliation</option>
+                        <option value="UM6P">UM6P</option>
+                        <option value="UM6P - 1337">UM6P - 1337</option>
+                        <option value="UM6P - EMINES">UM6P - EMINES</option>
+                        <option value="UM6P - ABS">UM6P - ABS</option>
+                        <option value="UM6P - Research">UM6P - Research</option>
+                        <option value="Other University">Other University</option>
+                        <option value="Independent">Independent</option>
+                        <option value="Corporate">Corporate</option>
+                        <option value="Other">Other</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>LinkedIn URL</label>
+                    <input type="url" name="author_linkedin" placeholder="https://linkedin.com/in/...">
+                </div>
+            </div>
+            <div class="form-group">
+                <label>Contact Info</label>
+                <input type="text" name="contact_info" placeholder="Phone, WhatsApp, or other contact method">
+            </div>
+        </div>
+
+        <button type="submit" class="submit-btn">
+            <i class="fas fa-paper-plane"></i> Publish Project
+        </button>
+    </form>
+</div>
+{% endblock %}

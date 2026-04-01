@@ -1,0 +1,598 @@
+{% extends "base.html" %}
+
+{% block title %}Tours de financement - The Pulse{% endblock %}
+
+{% block content %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/funding_rounds.css')}}">
+
+<!-- Page Header -->
+<div class="page-header">
+    <div class="container">
+        <h1 class="page-title"><i class="fas fa-coins"></i> <span data-i18n="funding_rounds_title">Tours de financement</span></h1>
+        <p class="page-subtitle" data-i18n="funding_rounds_subtitle">Suivez l'activité de financement de l'écosystème startup marocain</p>
+    </div>
+</div>
+
+<!-- Stats Bar -->
+<div class="container">
+    <div style="display:flex; align-items:center; justify-content:flex-end; margin-bottom:0.5rem;">
+        <a href="/funding-rounds/export?{{ request.query_string.decode() }}" class="btn-export" title="Export CSV">
+            <i class="fas fa-download"></i> <span data-i18n="export_csv">Exporter CSV</span>
+        </a>
+    </div>
+    <div class="stats-bar">
+        <div class="stat-item">
+            <div class="stat-number">{{ pagination.total }}</div>
+            <div class="stat-label" data-i18n="total_rounds">Total tours</div>
+        </div>
+        <div class="stat-item">
+            <div class="stat-number secondary">{{ distinct_startup_names|length }}</div>
+            <div class="stat-label" data-i18n="nav_startups">Startups</div>
+        </div>
+        <div class="stat-item">
+            <div class="stat-number tertiary">{{ distinct_countries|length }}</div>
+            <div class="stat-label" data-i18n="countries">Pays</div>
+        </div>
+        <div class="stat-item">
+            <div class="stat-number info">
+                {% set ns = namespace(total=0) %}
+                {% for fr in funding_rounds %}
+                    {% if fr.raised_amount_usd %}
+                        {% set ns.total = ns.total + fr.raised_amount_usd %}
+                    {% endif %}
+                {% endfor %}
+                {% if ns.total >= 1000000000 %}
+                    ${{ "%.1f"|format(ns.total / 1000000000) }}B
+                {% elif ns.total >= 1000000 %}
+                    ${{ "%.1f"|format(ns.total / 1000000) }}M
+                {% elif ns.total >= 1000 %}
+                    ${{ "%.0f"|format(ns.total / 1000) }}K
+                {% elif ns.total > 0 %}
+                    ${{ "%.0f"|format(ns.total) }}
+                {% else %}
+                    --
+                {% endif %}
+            </div>
+            <div class="stat-label" data-i18n="total_raised">Total Raised</div>
+        </div>
+    </div>
+
+    <!-- Mini Chart Row -->
+    <div class="mini-charts-row">
+        <div class="mini-chart-card">
+            <h4>Montants lev&eacute;s par ann&eacute;e</h4>
+            <canvas id="yearAmountChart"></canvas>
+        </div>
+    </div>
+</div>
+
+<!-- Main Content -->
+<div class="main-content-wrapper">
+    <div class="main-content-grid">
+
+        <!-- Filters Sidebar -->
+        <div class="filters-column">
+            <div class="filters-container">
+                <div class="filters-header">
+                    <h3 class="filters-title"><i class="fas fa-sliders-h"></i> <span data-i18n="filters">Filtres</span></h3>
+                    <a href="{{ url_for('funding_rounds') }}" class="clear-filters"><i class="fas fa-times"></i> <span data-i18n="clear">Effacer</span></a>
+                </div>
+
+                <form action="{{ url_for('funding_rounds') }}" method="GET" id="filterForm">
+
+                    <!-- Round Name Filter -->
+                    <div class="accordion-filter">
+                        <button type="button" class="accordion-header active" onclick="toggleAccordion(this)">
+                            <span class="accordion-title"><i class="fas fa-layer-group"></i> <span data-i18n="round_name">Round Name</span></span>
+                            <i class="fas fa-chevron-right accordion-icon"></i>
+                        </button>
+                        <div class="accordion-content active">
+                            <div class="accordion-body">
+                                {% for rn in distinct_round_names %}
+                                <div class="filter-option">
+                                    <input type="checkbox" class="filter-checkbox" name="round_names" id="rn_{{ loop.index }}" value="{{ rn }}"
+                                        {% if selected and selected.getlist and rn in selected.getlist('round_names') %}checked{% endif %}
+                                        onchange="document.getElementById('filterForm').submit()">
+                                    <label class="filter-label" for="rn_{{ loop.index }}">{{ rn }}</label>
+                                </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Startup Filter -->
+                    <div class="accordion-filter">
+                        <button type="button" class="accordion-header" onclick="toggleAccordion(this)">
+                            <span class="accordion-title"><i class="fas fa-rocket"></i> <span data-i18n="startup">Startup</span></span>
+                            <i class="fas fa-chevron-right accordion-icon"></i>
+                        </button>
+                        <div class="accordion-content">
+                            <div class="accordion-body">
+                                {% for sn in distinct_startup_names %}
+                                <div class="filter-option">
+                                    <input type="checkbox" class="filter-checkbox" name="startup_names" id="sn_{{ loop.index }}" value="{{ sn }}"
+                                        {% if selected and selected.getlist and sn in selected.getlist('startup_names') %}checked{% endif %}
+                                        onchange="document.getElementById('filterForm').submit()">
+                                    <label class="filter-label" for="sn_{{ loop.index }}">{{ sn }}</label>
+                                </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Year Filter -->
+                    <div class="accordion-filter">
+                        <button type="button" class="accordion-header" onclick="toggleAccordion(this)">
+                            <span class="accordion-title"><i class="fas fa-calendar-alt"></i> <span data-i18n="year">Year</span></span>
+                            <i class="fas fa-chevron-right accordion-icon"></i>
+                        </button>
+                        <div class="accordion-content">
+                            <div class="accordion-body">
+                                {% for yr in distinct_years %}
+                                <div class="filter-option">
+                                    <input type="checkbox" class="filter-checkbox" name="years" id="yr_{{ loop.index }}" value="{{ yr }}"
+                                        {% if selected and selected.getlist and yr|string in selected.getlist('years') %}checked{% endif %}
+                                        onchange="document.getElementById('filterForm').submit()">
+                                    <label class="filter-label" for="yr_{{ loop.index }}">{{ yr }}</label>
+                                </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Country Filter -->
+                    <div class="accordion-filter">
+                        <button type="button" class="accordion-header" onclick="toggleAccordion(this)">
+                            <span class="accordion-title"><i class="fas fa-globe-africa"></i> <span data-i18n="country">Country</span></span>
+                            <i class="fas fa-chevron-right accordion-icon"></i>
+                        </button>
+                        <div class="accordion-content">
+                            <div class="accordion-body">
+                                {% for c in distinct_countries %}
+                                <div class="filter-option">
+                                    <input type="checkbox" class="filter-checkbox" name="countries" id="c_{{ loop.index }}" value="{{ c }}"
+                                        {% if selected and selected.getlist and c in selected.getlist('countries') %}checked{% endif %}
+                                        onchange="document.getElementById('filterForm').submit()">
+                                    <label class="filter-label" for="c_{{ loop.index }}">{{ c }}</label>
+                                </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Deal Type Filter -->
+                    <div class="accordion-filter">
+                        <button type="button" class="accordion-header" onclick="toggleAccordion(this)">
+                            <span class="accordion-title"><i class="fas fa-handshake"></i> <span data-i18n="deal_type">Deal Type</span></span>
+                            <i class="fas fa-chevron-right accordion-icon"></i>
+                        </button>
+                        <div class="accordion-content">
+                            <div class="accordion-body">
+                                {% for dt in distinct_deal_types %}
+                                <div class="filter-option">
+                                    <input type="checkbox" class="filter-checkbox" name="deal_types" id="dt_{{ loop.index }}" value="{{ dt }}"
+                                        {% if selected and selected.getlist and dt in selected.getlist('deal_types') %}checked{% endif %}
+                                        onchange="document.getElementById('filterForm').submit()">
+                                    <label class="filter-label" for="dt_{{ loop.index }}">{{ dt }}</label>
+                                </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Deal Class Filter -->
+                    <div class="accordion-filter">
+                        <button type="button" class="accordion-header" onclick="toggleAccordion(this)">
+                            <span class="accordion-title"><i class="fas fa-tags"></i> <span data-i18n="deal_class">Deal Class</span></span>
+                            <i class="fas fa-chevron-right accordion-icon"></i>
+                        </button>
+                        <div class="accordion-content">
+                            <div class="accordion-body">
+                                {% for dc in distinct_deal_classes %}
+                                <div class="filter-option">
+                                    <input type="checkbox" class="filter-checkbox" name="deal_classes" id="dc_{{ loop.index }}" value="{{ dc }}"
+                                        {% if selected and selected.getlist and dc in selected.getlist('deal_classes') %}checked{% endif %}
+                                        onchange="document.getElementById('filterForm').submit()">
+                                    <label class="filter-label" for="dc_{{ loop.index }}">{{ dc }}</label>
+                                </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Region Filter -->
+                    <div class="accordion-filter">
+                        <button type="button" class="accordion-header" onclick="toggleAccordion(this)">
+                            <span class="accordion-title"><i class="fas fa-map"></i> <span data-i18n="region">Region</span></span>
+                            <i class="fas fa-chevron-right accordion-icon"></i>
+                        </button>
+                        <div class="accordion-content">
+                            <div class="accordion-body">
+                                {% for r in distinct_regions %}
+                                <div class="filter-option">
+                                    <input type="checkbox" class="filter-checkbox" name="regions" id="r_{{ loop.index }}" value="{{ r }}"
+                                        {% if selected and selected.getlist and r in selected.getlist('regions') %}checked{% endif %}
+                                        onchange="document.getElementById('filterForm').submit()">
+                                    <label class="filter-label" for="r_{{ loop.index }}">{{ r }}</label>
+                                </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- City Filter -->
+                    <div class="accordion-filter">
+                        <button type="button" class="accordion-header" onclick="toggleAccordion(this)">
+                            <span class="accordion-title"><i class="fas fa-city"></i> <span data-i18n="city">City</span></span>
+                            <i class="fas fa-chevron-right accordion-icon"></i>
+                        </button>
+                        <div class="accordion-content">
+                            <div class="accordion-body">
+                                {% for ci in distinct_cities %}
+                                <div class="filter-option">
+                                    <input type="checkbox" class="filter-checkbox" name="cities" id="ci_{{ loop.index }}" value="{{ ci }}"
+                                        {% if selected and selected.getlist and ci in selected.getlist('cities') %}checked{% endif %}
+                                        onchange="document.getElementById('filterForm').submit()">
+                                    <label class="filter-label" for="ci_{{ loop.index }}">{{ ci }}</label>
+                                </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Lead Investor Filter -->
+                    <div class="accordion-filter">
+                        <button type="button" class="accordion-header" onclick="toggleAccordion(this)">
+                            <span class="accordion-title"><i class="fas fa-user-tie"></i> <span data-i18n="lead_investor">Lead Investor</span></span>
+                            <i class="fas fa-chevron-right accordion-icon"></i>
+                        </button>
+                        <div class="accordion-content">
+                            <div class="accordion-body">
+                                {% for li in distinct_lead_investors %}
+                                <div class="filter-option">
+                                    <input type="checkbox" class="filter-checkbox" name="lead_investors" id="li_{{ loop.index }}" value="{{ li }}"
+                                        {% if selected and selected.getlist and li in selected.getlist('lead_investors') %}checked{% endif %}
+                                        onchange="document.getElementById('filterForm').submit()">
+                                    <label class="filter-label" for="li_{{ loop.index }}">{{ li }}</label>
+                                </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+
+                    <noscript>
+                        <button type="submit" class="apply-filters">
+                            <i class="fas fa-search"></i> <span data-i18n="apply_filters">Appliquer les filtres</span>
+                        </button>
+                    </noscript>
+
+                </form>
+            </div>
+        </div>
+
+        <!-- Funding Rounds Content -->
+        <div class="grid-column">
+            <!-- Search Bar -->
+            <div class="search-bar-wrapper" style="margin-bottom: 1rem;">
+                <div style="position: relative;">
+                    <i class="fas fa-search" style="position: absolute; left: 0.85rem; top: 50%; transform: translateY(-50%); color: var(--text-muted); font-size: 0.8rem;"></i>
+                    <input type="text" id="tableSearch" placeholder="Rechercher un tour, startup, investisseur..."
+                        style="width: 100%; padding: 0.6rem 0.85rem 0.6rem 2.3rem; border: 1px solid var(--border-color); border-radius: 10px; background: var(--bg-card); color: var(--text-primary); font-size: 0.82rem; font-family: var(--font-body); outline: none; transition: border-color 0.2s ease;"
+                        onfocus="this.style.borderColor='var(--accent)'" onblur="this.style.borderColor='var(--border-color)'">
+                </div>
+            </div>
+
+            <h2 class="section-heading">
+                {% if funding_rounds|length > 0 %}
+                    {{ funding_rounds|length }} <span data-i18n="funding_rounds_label">tours de financement</span>
+                {% else %}
+                    <span data-i18n="no_funding_found">Aucun tour de financement trouv\u00e9</span>
+                {% endif %}
+            </h2>
+
+            {% if funding_rounds|length > 0 %}
+
+                <!-- Desktop Table -->
+                <div class="rounds-table-wrapper">
+                    <table class="rounds-table">
+                        <thead>
+                            <tr>
+                                <th class="sortable-th" data-col="0" data-sort-type="text" data-i18n="round">Tour <i class="fas fa-sort sort-icon"></i></th>
+                                <th class="sortable-th" data-col="1" data-sort-type="text" data-i18n="startup">Startup <i class="fas fa-sort sort-icon"></i></th>
+                                <th class="sortable-th" data-col="2" data-sort-type="amount" data-i18n="amount_raised">Montant levé <i class="fas fa-sort sort-icon"></i></th>
+                                <th class="sortable-th" data-col="3" data-sort-type="text" data-i18n="deal_type">Type de deal <i class="fas fa-sort sort-icon"></i></th>
+                                <th class="sortable-th" data-col="4" data-sort-type="text" data-i18n="lead_investor">Investisseur principal <i class="fas fa-sort sort-icon"></i></th>
+                                <th class="sortable-th" data-col="5" data-sort-type="numeric" data-i18n="year">Année <i class="fas fa-sort sort-icon"></i></th>
+                                <th class="sortable-th" data-col="6" data-sort-type="text" data-i18n="city">Ville <i class="fas fa-sort sort-icon"></i></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for fr in funding_rounds %}
+                            <tr>
+                                <td>
+                                    <span class="round-name-badge">{{ fr.round_name or '--' }}</span>
+                                </td>
+                                <td class="startup-name-cell">{{ fr.startup_name or '--' }}</td>
+                                <td class="amount-cell">
+                                    {% if fr.raised_amount_usd %}
+                                        {% if fr.raised_amount_usd >= 1000000000 %}
+                                            ${{ "%.1f"|format(fr.raised_amount_usd / 1000000000) }}B
+                                        {% elif fr.raised_amount_usd >= 1000000 %}
+                                            ${{ "%.1f"|format(fr.raised_amount_usd / 1000000) }}M
+                                        {% elif fr.raised_amount_usd >= 1000 %}
+                                            ${{ "%.0f"|format(fr.raised_amount_usd / 1000) }}K
+                                        {% else %}
+                                            ${{ "%.0f"|format(fr.raised_amount_usd) }}
+                                        {% endif %}
+                                    {% else %}
+                                        <span class="meta-text">--</span>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    {% if fr.deal_type %}
+                                        <span class="deal-type-badge">{{ fr.deal_type }}</span>
+                                    {% else %}
+                                        <span class="meta-text">--</span>
+                                    {% endif %}
+                                </td>
+                                <td class="lead-investor-text">{{ fr.lead_investor or '--' }}</td>
+                                <td class="meta-text">{{ fr.founded_year|replace('.0', '') if fr.founded_year else '--' }}</td>
+                                <td class="meta-text">{{ fr.city or '--' }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Mobile Cards -->
+                <div class="round-cards-mobile">
+                    {% for fr in funding_rounds %}
+                    <div class="round-card">
+                        <div class="round-card-top">
+                            <div class="round-card-startup">{{ fr.startup_name or 'Unknown Startup' }}</div>
+                            <div class="round-card-amount">
+                                {% if fr.raised_amount_usd %}
+                                    {% if fr.raised_amount_usd >= 1000000000 %}
+                                        ${{ "%.1f"|format(fr.raised_amount_usd / 1000000000) }}B
+                                    {% elif fr.raised_amount_usd >= 1000000 %}
+                                        ${{ "%.1f"|format(fr.raised_amount_usd / 1000000) }}M
+                                    {% elif fr.raised_amount_usd >= 1000 %}
+                                        ${{ "%.0f"|format(fr.raised_amount_usd / 1000) }}K
+                                    {% else %}
+                                        ${{ "%.0f"|format(fr.raised_amount_usd) }}
+                                    {% endif %}
+                                {% else %}
+                                    --
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div class="round-card-badges">
+                            {% if fr.round_name %}
+                                <span class="round-name-badge">{{ fr.round_name }}</span>
+                            {% endif %}
+                            {% if fr.deal_type %}
+                                <span class="deal-type-badge">{{ fr.deal_type }}</span>
+                            {% endif %}
+                        </div>
+                        <div class="round-card-meta">
+                            {% if fr.lead_investor %}
+                            <div class="round-card-meta-item">
+                                <i class="fas fa-user-tie"></i>
+                                <span>{{ fr.lead_investor }}</span>
+                            </div>
+                            {% endif %}
+                            {% if fr.city or fr.country %}
+                            <div class="round-card-meta-item">
+                                <i class="fas fa-map-marker-alt"></i>
+                                <span>{{ fr.city }}{% if fr.city and fr.country %}, {% endif %}{{ fr.country }}</span>
+                            </div>
+                            {% endif %}
+                            {% if fr.founded_year %}
+                            <div class="round-card-meta-item">
+                                <i class="fas fa-calendar-alt"></i>
+                                <span>{{ fr.founded_year }}</span>
+                            </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+
+            {% else %}
+                <div class="empty-state">
+                    <i class="fas fa-search-dollar"></i>
+                    <h3 data-i18n="no_funding_found">Aucun tour de financement trouvé</h3>
+                    <p><span data-i18n="no_founders_msg">Essayez d'ajuster vos filtres ou</span> <a href="{{ url_for('funding_rounds') }}" data-i18n="clear_all_filters">réinitialiser les filtres</a>.</p>
+                </div>
+            {% endif %}
+        </div>
+
+        {% if pagination.pages > 1 %}
+        <nav class="pagination-nav" aria-label="Pagination">
+            {% if pagination.has_prev %}
+            <a href="?{% for key, value in request.args.items(multi=True) %}{% if key != 'page' %}{{ key }}={{ value }}&{% endif %}{% endfor %}page={{ pagination.prev_num }}" class="page-btn"><i class="fas fa-chevron-left"></i></a>
+            {% endif %}
+            {% for p in pagination.iter_pages(left_edge=1, right_edge=1, left_current=2, right_current=2) %}
+                {% if p %}
+                    <a href="?{% for key, value in request.args.items(multi=True) %}{% if key != 'page' %}{{ key }}={{ value }}&{% endif %}{% endfor %}page={{ p }}" class="page-btn {% if p == pagination.page %}active{% endif %}">{{ p }}</a>
+                {% else %}
+                    <span class="page-dots">...</span>
+                {% endif %}
+            {% endfor %}
+            {% if pagination.has_next %}
+            <a href="?{% for key, value in request.args.items(multi=True) %}{% if key != 'page' %}{{ key }}={{ value }}&{% endif %}{% endfor %}page={{ pagination.next_num }}" class="page-btn"><i class="fas fa-chevron-right"></i></a>
+            {% endif %}
+        </nav>
+        {% endif %}
+
+        <!-- Explore All Button -->
+        <div style="text-align: center; margin-top: 2rem;">
+            <a href="/funding-rounds" class="btn-explore-all">
+                <i class="fas fa-arrow-right"></i> <span data-i18n="btn_explore_all_funding_rounds">Explorer tous les tours de financement</span>
+            </a>
+        </div>
+
+    </div>
+</div>
+
+<script>
+    function toggleAccordion(header) {
+        const content = header.nextElementSibling;
+        header.classList.toggle('active');
+        content.classList.toggle('active');
+    }
+
+    // Search bar filtering
+    document.getElementById('tableSearch').addEventListener('input', function() {
+        var query = this.value.toLowerCase();
+        // Filter desktop table rows
+        document.querySelectorAll('.rounds-table tbody tr').forEach(function(row) {
+            row.style.display = row.textContent.toLowerCase().includes(query) ? '' : 'none';
+        });
+        // Filter mobile cards
+        document.querySelectorAll('.round-card').forEach(function(card) {
+            card.style.display = card.textContent.toLowerCase().includes(query) ? '' : 'none';
+        });
+    });
+
+    // Sortable table columns
+    (function() {
+        var table = document.querySelector('.rounds-table');
+        if (!table) return;
+
+        var thead = table.querySelector('thead');
+        var tbody = table.querySelector('tbody');
+        var headers = thead.querySelectorAll('.sortable-th');
+        var currentCol = -1;
+        var ascending = true;
+
+        function parseAmount(text) {
+            text = text.trim().replace(/[^0-9.KMBkmb]/g, '');
+            if (!text) return 0;
+            var multiplier = 1;
+            var upper = text.toUpperCase();
+            if (upper.endsWith('B')) {
+                multiplier = 1e9;
+                text = text.slice(0, -1);
+            } else if (upper.endsWith('M')) {
+                multiplier = 1e6;
+                text = text.slice(0, -1);
+            } else if (upper.endsWith('K')) {
+                multiplier = 1e3;
+                text = text.slice(0, -1);
+            }
+            var num = parseFloat(text);
+            return isNaN(num) ? 0 : num * multiplier;
+        }
+
+        headers.forEach(function(th) {
+            th.addEventListener('click', function() {
+                var col = parseInt(th.getAttribute('data-col'));
+                var sortType = th.getAttribute('data-sort-type');
+
+                // Toggle direction
+                if (currentCol === col) {
+                    ascending = !ascending;
+                } else {
+                    currentCol = col;
+                    ascending = true;
+                }
+
+                // Update icons
+                headers.forEach(function(h) {
+                    h.classList.remove('sort-active');
+                    h.querySelector('.sort-icon').className = 'fas fa-sort sort-icon';
+                });
+                th.classList.add('sort-active');
+                th.querySelector('.sort-icon').className = 'fas ' + (ascending ? 'fa-sort-up' : 'fa-sort-down') + ' sort-icon';
+
+                // Sort rows
+                var rows = Array.from(tbody.querySelectorAll('tr'));
+                rows.sort(function(a, b) {
+                    var cellA = a.cells[col] ? a.cells[col].textContent.trim() : '';
+                    var cellB = b.cells[col] ? b.cells[col].textContent.trim() : '';
+                    var valA, valB;
+
+                    if (sortType === 'amount') {
+                        valA = parseAmount(cellA);
+                        valB = parseAmount(cellB);
+                    } else if (sortType === 'numeric') {
+                        valA = parseFloat(cellA) || 0;
+                        valB = parseFloat(cellB) || 0;
+                    } else {
+                        valA = cellA.toLowerCase();
+                        valB = cellB.toLowerCase();
+                    }
+
+                    if (valA < valB) return ascending ? -1 : 1;
+                    if (valA > valB) return ascending ? 1 : -1;
+                    return 0;
+                });
+
+                rows.forEach(function(row) {
+                    tbody.appendChild(row);
+                });
+            });
+        });
+    })();
+</script>
+<script>
+(function() {
+    var yearLabels = {{ year_amounts.keys()|list|tojson }};
+    var yearData = {{ year_amounts.values()|list|tojson }};
+    var ctx = document.getElementById('yearAmountChart');
+    if (ctx && yearLabels.length) {
+        new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: yearLabels,
+                datasets: [{
+                    label: 'Montant ($)',
+                    data: yearData,
+                    backgroundColor: '#00d4aa',
+                    borderRadius: 6,
+                    borderSkipped: false
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: true,
+                plugins: {
+                    legend: { display: false },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                var val = context.parsed.y;
+                                if (val >= 1e9) return '$' + (val / 1e9).toFixed(1) + 'B';
+                                if (val >= 1e6) return '$' + (val / 1e6).toFixed(1) + 'M';
+                                if (val >= 1e3) return '$' + (val / 1e3).toFixed(0) + 'K';
+                                return '$' + val;
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            callback: function(val) {
+                                if (val >= 1e9) return '$' + (val / 1e9).toFixed(1) + 'B';
+                                if (val >= 1e6) return '$' + (val / 1e6).toFixed(0) + 'M';
+                                if (val >= 1e3) return '$' + (val / 1e3).toFixed(0) + 'K';
+                                return '$' + val;
+                            },
+                            font: { size: 11 }
+                        },
+                        grid: { color: 'rgba(128,128,128,0.1)' }
+                    },
+                    x: {
+                        ticks: { font: { size: 11 } },
+                        grid: { display: false }
+                    }
+                }
+            }
+        });
+    }
+})();
+</script>
+{% endblock %}

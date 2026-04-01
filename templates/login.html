@@ -1,370 +1,902 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login - The Pulse</title>
-    
+
     <!-- Font Awesome -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+
     <style>
+        /* -------------------------------------------------- */
+        /*  CSS Custom Properties                              */
+        /* -------------------------------------------------- */
         :root {
-            --primary-green: #10B981;
-            --dark-green: #059669;
-            --bg-dark: #0F172A;
-            --bg-card: #1E293B;
-            --text-light: #F8FAFC;
-            --text-muted: #94A3B8;
-            --border-color: #334155;
-            --error-color: #EF4444;
-            --shadow-color: rgba(0, 0, 0, 0.3);
+            --bg-primary: #0a0e1a;
+            --bg-card: #12172b;
+            --bg-card-glass: rgba(18, 23, 43, 0.65);
+            --accent: #00d4aa;
+            --accent-glow: rgba(0, 212, 170, 0.35);
+            --blue: #4361ee;
+            --amber: #f7b731;
+            --text-primary: #f0f2f8;
+            --text-secondary: #8892a8;
+            --border-color: rgba(255, 255, 255, 0.08);
+            --error-bg: rgba(239, 68, 68, 0.12);
+            --error-border: rgba(239, 68, 68, 0.35);
+            --error-text: #fca5a5;
+            --error-icon: #ef4444;
+            --input-bg: rgba(255, 255, 255, 0.04);
+            --input-bg-focus: rgba(255, 255, 255, 0.07);
+            --hero-gradient-1: #0a0e1a;
+            --hero-gradient-2: #111836;
+            --hero-gradient-3: #0d1a2e;
+            --shadow: rgba(0, 0, 0, 0.4);
         }
 
-        /* Light Mode Variables */
         [data-theme="light"] {
-            --bg-dark: #F8FAFC;
-            --bg-card: #FFFFFF;
-            --text-light: #1E293B;
-            --text-muted: #64748B;
-            --border-color: #E2E8F0;
-            --shadow-color: rgba(0, 0, 0, 0.1);
+            --bg-primary: #fafbff;
+            --bg-card: #ffffff;
+            --bg-card-glass: rgba(255, 255, 255, 0.72);
+            --text-primary: #0f1629;
+            --text-secondary: #5a6478;
+            --border-color: rgba(0, 0, 0, 0.08);
+            --error-bg: rgba(239, 68, 68, 0.08);
+            --error-border: rgba(239, 68, 68, 0.25);
+            --error-text: #b91c1c;
+            --error-icon: #dc2626;
+            --input-bg: rgba(0, 0, 0, 0.03);
+            --input-bg-focus: rgba(0, 0, 0, 0.05);
+            --hero-gradient-1: #eef1fb;
+            --hero-gradient-2: #e2e8f8;
+            --hero-gradient-3: #dfe6f6;
+            --shadow: rgba(0, 0, 0, 0.08);
         }
 
-        * {
+        /* -------------------------------------------------- */
+        /*  Reset & Base                                       */
+        /* -------------------------------------------------- */
+        *, *::before, *::after {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
 
+        html {
+            font-size: 16px;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
         body {
-            font-family: 'Inter', sans-serif;
-            background: var(--bg-dark);
-            color: var(--text-light);
+            font-family: 'DM Sans', sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* -------------------------------------------------- */
+        /*  Layout                                             */
+        /* -------------------------------------------------- */
+        .login-shell {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* -------------------------------------------------- */
+        /*  LEFT HERO PANEL                                    */
+        /* -------------------------------------------------- */
+        .hero-panel {
+            position: relative;
+            width: 60%;
+            min-height: 100vh;
+            background: linear-gradient(135deg, var(--hero-gradient-1) 0%, var(--hero-gradient-2) 50%, var(--hero-gradient-3) 100%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        /* Animated mesh / gradient overlay */
+        .hero-panel::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background:
+                radial-gradient(ellipse 80% 60% at 20% 40%, rgba(0, 212, 170, 0.12) 0%, transparent 60%),
+                radial-gradient(ellipse 60% 80% at 80% 70%, rgba(67, 97, 238, 0.10) 0%, transparent 60%),
+                radial-gradient(ellipse 50% 50% at 50% 20%, rgba(247, 183, 49, 0.06) 0%, transparent 50%);
+            animation: meshShift 12s ease-in-out infinite alternate;
+            z-index: 1;
+        }
+
+        @keyframes meshShift {
+            0% { opacity: 1; transform: scale(1) translate(0, 0); }
+            50% { opacity: 0.8; transform: scale(1.08) translate(-2%, 3%); }
+            100% { opacity: 1; transform: scale(1) translate(2%, -2%); }
+        }
+
+        /* Grid lines (subtle) */
+        .hero-panel::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background-image:
+                linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
+            background-size: 60px 60px;
+            z-index: 1;
+        }
+
+        [data-theme="light"] .hero-panel::after {
+            background-image:
+                linear-gradient(rgba(0,0,0,0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0,0,0,0.03) 1px, transparent 1px);
+        }
+
+        /* Floating data-viz circles */
+        .floating-elements {
+            position: absolute;
+            inset: 0;
+            z-index: 2;
+            pointer-events: none;
+        }
+
+        .float-circle {
+            position: absolute;
+            border-radius: 50%;
+            opacity: 0;
+            animation: floatUp linear infinite;
+        }
+
+        .float-circle:nth-child(1) {
+            width: 8px; height: 8px;
+            background: var(--accent);
+            left: 15%; bottom: -20px;
+            animation-duration: 14s;
+            animation-delay: 0s;
+        }
+        .float-circle:nth-child(2) {
+            width: 5px; height: 5px;
+            background: var(--blue);
+            left: 35%; bottom: -20px;
+            animation-duration: 18s;
+            animation-delay: 2s;
+        }
+        .float-circle:nth-child(3) {
+            width: 12px; height: 12px;
+            border: 2px solid var(--accent);
+            background: transparent;
+            left: 60%; bottom: -20px;
+            animation-duration: 16s;
+            animation-delay: 4s;
+        }
+        .float-circle:nth-child(4) {
+            width: 6px; height: 6px;
+            background: var(--amber);
+            left: 80%; bottom: -20px;
+            animation-duration: 20s;
+            animation-delay: 1s;
+        }
+        .float-circle:nth-child(5) {
+            width: 10px; height: 10px;
+            border: 2px solid var(--blue);
+            background: transparent;
+            left: 45%; bottom: -20px;
+            animation-duration: 15s;
+            animation-delay: 6s;
+        }
+        .float-circle:nth-child(6) {
+            width: 4px; height: 4px;
+            background: var(--accent);
+            left: 25%; bottom: -20px;
+            animation-duration: 22s;
+            animation-delay: 3s;
+        }
+        .float-circle:nth-child(7) {
+            width: 14px; height: 14px;
+            border: 1px solid rgba(0, 212, 170, 0.3);
+            background: transparent;
+            left: 70%; bottom: -20px;
+            animation-duration: 19s;
+            animation-delay: 8s;
+        }
+        .float-circle:nth-child(8) {
+            width: 7px; height: 7px;
+            background: var(--blue);
+            left: 50%; bottom: -20px;
+            animation-duration: 17s;
+            animation-delay: 5s;
+        }
+
+        @keyframes floatUp {
+            0% { opacity: 0; transform: translateY(0) scale(0.5); }
+            10% { opacity: 0.7; transform: translateY(-10vh) scale(1); }
+            90% { opacity: 0.4; transform: translateY(-95vh) scale(0.8); }
+            100% { opacity: 0; transform: translateY(-105vh) scale(0.5); }
+        }
+
+        /* Pulse / heartbeat line */
+        .pulse-line-container {
+            position: absolute;
+            bottom: 28%;
+            left: 0;
+            width: 100%;
+            height: 80px;
+            z-index: 2;
+            overflow: hidden;
+            opacity: 0.25;
+        }
+
+        .pulse-line {
+            position: absolute;
+            width: 200%;
+            height: 100%;
+            animation: pulseSweep 4s linear infinite;
+        }
+
+        .pulse-line svg {
+            width: 50%;
+            height: 100%;
+        }
+
+        @keyframes pulseSweep {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+
+        /* Hero content */
+        .hero-content {
+            position: relative;
+            z-index: 3;
+            text-align: center;
+            padding: 2rem;
+            max-width: 520px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .hero-logo {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 3.2rem;
+            font-weight: 700;
+            letter-spacing: -1px;
+            margin-bottom: 0;
+            line-height: 1.1;
+        }
+
+        .hero-logo .logo-the {
+            color: var(--text-secondary);
+            font-weight: 400;
+            font-size: 1.6rem;
+            display: block;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            margin-bottom: 0.15rem;
+        }
+
+        .hero-logo .logo-pulse {
+            background: linear-gradient(135deg, var(--accent) 0%, var(--blue) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* Heartbeat dot next to logo */
+        .heartbeat-dot {
+            display: inline-block;
+            width: 10px;
+            height: 10px;
+            background: var(--accent);
+            border-radius: 50%;
+            margin-left: 6px;
+            vertical-align: middle;
+            animation: heartbeat 1.6s ease-in-out infinite;
+            box-shadow: 0 0 12px var(--accent-glow);
+        }
+
+        @keyframes heartbeat {
+            0%, 100% { transform: scale(1); opacity: 1; }
+            14% { transform: scale(1.35); opacity: 1; }
+            28% { transform: scale(1); opacity: 0.9; }
+            42% { transform: scale(1.2); opacity: 1; }
+            56% { transform: scale(1); opacity: 0.85; }
+        }
+
+        .hero-tagline {
+            font-family: 'DM Sans', sans-serif;
+            font-size: 1.15rem;
+            color: var(--text-secondary);
+            margin-top: 0;
+            margin-bottom: 2.5rem;
+            line-height: 1.6;
+            font-weight: 400;
+        }
+
+        /* Stats row */
+        .hero-stats {
+            display: flex;
+            gap: 2rem;
+            justify-content: center;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-number {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: var(--accent);
+            line-height: 1;
+        }
+
+        .stat-label {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            margin-top: 0.35rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* -------------------------------------------------- */
+        /*  RIGHT FORM PANEL                                   */
+        /* -------------------------------------------------- */
+        .form-panel {
+            width: 40%;
             min-height: 100vh;
             display: flex;
             align-items: center;
             justify-content: center;
-            padding: 1rem;
+            padding: 2rem;
+            position: relative;
+            background: var(--bg-primary);
         }
 
-        .login-container {
+        .form-card {
             width: 100%;
-            max-width: 420px;
-        }
-
-        .login-card {
-            background: var(--bg-card);
-            border-radius: 20px;
-            padding: 3rem 2.5rem;
-            box-shadow: 0 20px 60px var(--shadow-color);
+            max-width: 400px;
+            background: var(--bg-card-glass);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
             border: 1px solid var(--border-color);
+            border-radius: 24px;
+            padding: 2.8rem 2.4rem;
+            box-shadow: 0 24px 64px var(--shadow);
         }
 
-        .login-header {
-            text-align: center;
-            margin-bottom: 2.5rem;
+        .form-header {
+            margin-bottom: 2rem;
         }
 
-        .login-icon {
-            width: 70px;
-            height: 70px;
-            background: linear-gradient(135deg, var(--primary-green), var(--dark-green));
-            border-radius: 16px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 0 auto 1.5rem;
-            font-size: 2rem;
-            color: white;
-            box-shadow: 0 8px 20px rgba(16, 185, 129, 0.3);
+        .form-header h2 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.65rem;
+            font-weight: 600;
+            margin-bottom: 0.45rem;
+            color: var(--text-primary);
         }
 
-        .login-title {
-            font-size: 1.8rem;
-            font-weight: 700;
-            color: var(--text-light);
-            margin-bottom: 0.5rem;
+        .form-header p {
+            font-size: 0.92rem;
+            color: var(--text-secondary);
         }
 
-        .login-subtitle {
-            font-size: 0.95rem;
-            color: var(--text-muted);
-        }
-
+        /* Error alert */
         .alert-error {
-            background: rgba(239, 68, 68, 0.1);
-            border: 1px solid rgba(239, 68, 68, 0.3);
+            background: var(--error-bg);
+            border: 1px solid var(--error-border);
             border-radius: 12px;
-            padding: 1rem 1.25rem;
+            padding: 0.85rem 1rem;
             margin-bottom: 1.5rem;
             display: flex;
             align-items: center;
-            gap: 0.75rem;
-            color: #FCA5A5;
-            font-size: 0.9rem;
-            animation: slideDown 0.3s ease;
-        }
-
-        @keyframes slideDown {
-            from {
-                opacity: 0;
-                transform: translateY(-10px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+            gap: 0.7rem;
+            color: var(--error-text);
+            font-size: 0.88rem;
+            animation: slideDown 0.4s cubic-bezier(0.22, 1, 0.36, 1);
         }
 
         .alert-error i {
-            font-size: 1.2rem;
-            color: var(--error-color);
+            font-size: 1.1rem;
+            color: var(--error-icon);
+            flex-shrink: 0;
         }
 
-        .form-group {
-            margin-bottom: 1.5rem;
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-12px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
-        .form-label {
-            display: block;
-            font-size: 0.9rem;
-            font-weight: 600;
-            color: var(--text-light);
-            margin-bottom: 0.5rem;
-        }
-
-        .input-wrapper {
+        /* Floating-label input group */
+        .input-group {
             position: relative;
+            margin-bottom: 1.4rem;
         }
 
-        .input-icon {
+        .input-group input {
+            width: 100%;
+            padding: 1rem 1rem 1rem 2.8rem;
+            background: var(--input-bg);
+            border: 1.5px solid var(--border-color);
+            border-radius: 14px;
+            color: var(--text-primary);
+            font-family: 'DM Sans', sans-serif;
+            font-size: 0.95rem;
+            outline: none;
+            transition: border-color 0.3s, background 0.3s, box-shadow 0.3s;
+        }
+
+        .input-group input::placeholder {
+            color: transparent;
+        }
+
+        .input-group .input-icon {
             position: absolute;
             left: 1rem;
             top: 50%;
             transform: translateY(-50%);
-            color: var(--text-muted);
-            font-size: 1rem;
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            transition: color 0.3s;
+            pointer-events: none;
         }
 
-        .form-input {
-            width: 100%;
-            padding: 0.875rem 1rem 0.875rem 2.75rem;
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid var(--border-color);
-            border-radius: 12px;
-            color: var(--text-light);
-            font-size: 1rem;
-            font-family: 'Inter', sans-serif;
-            transition: all 0.3s ease;
-            outline: none;
+        .input-group label {
+            position: absolute;
+            left: 2.8rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            pointer-events: none;
+            transition: all 0.25s cubic-bezier(0.22, 1, 0.36, 1);
+            background: transparent;
+            padding: 0 4px;
         }
 
-        .form-input::placeholder {
-            color: var(--text-muted);
+        /* Float label up on focus or filled */
+        .input-group input:focus ~ label,
+        .input-group input:not(:placeholder-shown) ~ label {
+            top: 0;
+            transform: translateY(-50%);
+            font-size: 0.72rem;
+            font-weight: 600;
+            color: var(--accent);
+            letter-spacing: 0.5px;
+            background: var(--bg-card);
+            border-radius: 4px;
         }
 
-        .form-input:focus {
-            background: rgba(255, 255, 255, 0.08);
-            border-color: var(--primary-green);
-            box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1);
+        [data-theme="light"] .input-group input:focus ~ label,
+        [data-theme="light"] .input-group input:not(:placeholder-shown) ~ label {
+            background: var(--bg-card);
         }
 
-        [data-theme="light"] .form-input {
-            background: #F8FAFC;
-            color: #1E293B;
+        .input-group input:focus {
+            border-color: var(--accent);
+            background: var(--input-bg-focus);
+            box-shadow: 0 0 0 3px rgba(0, 212, 170, 0.10);
         }
 
-        [data-theme="light"] .form-input:focus {
-            background: #FFFFFF;
+        .input-group input:focus ~ .input-icon {
+            color: var(--accent);
         }
 
-        .btn-submit {
+        /* Submit button */
+        .btn-login {
             width: 100%;
             padding: 1rem;
-            background: linear-gradient(135deg, var(--primary-green), var(--dark-green));
+            margin-top: 0.6rem;
+            background: linear-gradient(135deg, var(--accent) 0%, var(--blue) 100%);
             border: none;
-            border-radius: 12px;
-            color: white;
+            border-radius: 14px;
+            color: #fff;
+            font-family: 'Space Grotesk', sans-serif;
             font-size: 1rem;
             font-weight: 600;
-            font-family: 'Inter', sans-serif;
+            letter-spacing: 0.3px;
             cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3);
-            margin-top: 0.5rem;
+            transition: transform 0.25s, box-shadow 0.25s, opacity 0.25s;
+            box-shadow: 0 6px 24px rgba(0, 212, 170, 0.25);
+            position: relative;
+            overflow: hidden;
         }
 
-        .btn-submit:hover {
+        .btn-login::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, transparent 0%, rgba(255,255,255,0.12) 100%);
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .btn-login:hover {
             transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(16, 185, 129, 0.4);
+            box-shadow: 0 10px 32px rgba(0, 212, 170, 0.35);
         }
 
-        .btn-submit:active {
+        .btn-login:hover::after {
+            opacity: 1;
+        }
+
+        .btn-login:active {
             transform: translateY(0);
         }
 
-        .login-footer {
-            text-align: center;
-            margin-top: 2rem;
-            padding-top: 1.5rem;
-            border-top: 1px solid var(--border-color);
-            color: var(--text-muted);
-            font-size: 0.85rem;
+        .btn-login i {
+            margin-right: 0.5rem;
         }
 
-        /* Theme Toggle Button */
+        /* Form footer */
+        .form-footer {
+            text-align: center;
+            margin-top: 2rem;
+            font-size: 0.82rem;
+            color: var(--text-secondary);
+        }
+
+        .form-footer a {
+            color: var(--accent);
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .form-footer a:hover {
+            text-decoration: underline;
+        }
+
+        /* -------------------------------------------------- */
+        /*  Theme Toggle                                       */
+        /* -------------------------------------------------- */
         .theme-toggle {
             position: fixed;
-            top: 2rem;
-            right: 2rem;
-            width: 50px;
-            height: 50px;
-            background: var(--bg-card);
+            top: 1.5rem;
+            right: 1.5rem;
+            width: 44px;
+            height: 44px;
+            background: var(--bg-card-glass);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
             border: 1px solid var(--border-color);
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
             cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 15px var(--shadow-color);
-            z-index: 1000;
+            transition: transform 0.3s, box-shadow 0.3s;
+            box-shadow: 0 4px 16px var(--shadow);
+            z-index: 100;
         }
 
         .theme-toggle:hover {
             transform: scale(1.1);
-            box-shadow: 0 6px 20px var(--shadow-color);
         }
 
         .theme-toggle i {
-            font-size: 1.2rem;
-            color: var(--primary-green);
-            transition: all 0.3s ease;
+            font-size: 1.05rem;
+            color: var(--accent);
+            transition: opacity 0.3s, transform 0.3s;
         }
 
-        .theme-toggle .fa-moon {
-            display: block;
+        .theme-toggle .fa-moon { display: block; }
+        .theme-toggle .fa-sun  { display: none;  }
+
+        [data-theme="light"] .theme-toggle .fa-moon { display: none;  }
+        [data-theme="light"] .theme-toggle .fa-sun  { display: block; }
+
+        .logo-dark { display: none; }
+        .logo-light { display: block; }
+        [data-theme="light"] .logo-dark { display: block; }
+        [data-theme="light"] .logo-light { display: none; }
+
+        /* -------------------------------------------------- */
+        /*  Staggered Entrance Animations                      */
+        /* -------------------------------------------------- */
+        .anim-enter {
+            opacity: 0;
+            transform: translateY(18px);
+            animation: enterUp 0.6s cubic-bezier(0.22, 1, 0.36, 1) forwards;
         }
 
-        .theme-toggle .fa-sun {
-            display: none;
+        .anim-enter:nth-child(1) { animation-delay: 0.1s; }
+        .anim-enter:nth-child(2) { animation-delay: 0.2s; }
+        .anim-enter:nth-child(3) { animation-delay: 0.3s; }
+        .anim-enter:nth-child(4) { animation-delay: 0.4s; }
+        .anim-enter:nth-child(5) { animation-delay: 0.5s; }
+
+        @keyframes enterUp {
+            to { opacity: 1; transform: translateY(0); }
         }
 
-        [data-theme="light"] .theme-toggle .fa-moon {
-            display: none;
+        .hero-enter {
+            opacity: 0;
+            transform: translateY(30px) scale(0.97);
+            animation: heroIn 0.9s cubic-bezier(0.22, 1, 0.36, 1) forwards;
         }
 
-        [data-theme="light"] .theme-toggle .fa-sun {
-            display: block;
+        .hero-enter-delay-1 { animation-delay: 0.15s; }
+        .hero-enter-delay-2 { animation-delay: 0.35s; }
+        .hero-enter-delay-3 { animation-delay: 0.55s; }
+
+        @keyframes heroIn {
+            to { opacity: 1; transform: translateY(0) scale(1); }
         }
 
-        @media (max-width: 480px) {
-            .login-card {
-                padding: 2rem 1.5rem;
+        /* -------------------------------------------------- */
+        /*  Responsive - Tablet                                */
+        /* -------------------------------------------------- */
+        @media (max-width: 1024px) {
+            .hero-panel {
+                width: 50%;
+            }
+            .form-panel {
+                width: 50%;
+            }
+            .hero-logo {
+                font-size: 2.6rem;
+            }
+            .hero-logo .logo-the {
+                font-size: 1.3rem;
+            }
+        }
+
+        /* -------------------------------------------------- */
+        /*  Responsive - Mobile                                */
+        /* -------------------------------------------------- */
+        @media (max-width: 768px) {
+            .login-shell {
+                flex-direction: column;
             }
 
-            .login-title {
-                font-size: 1.5rem;
+            .hero-panel {
+                width: 100%;
+                min-height: auto;
+                padding: 3.5rem 1.5rem 2.5rem;
+            }
+
+            .hero-content {
+                max-width: 100%;
+            }
+
+            .hero-logo {
+                font-size: 2.2rem;
+            }
+
+            .hero-logo .logo-the {
+                font-size: 1.1rem;
+            }
+
+            .hero-tagline {
+                font-size: 1rem;
+                margin-bottom: 1.5rem;
+            }
+
+            .hero-stats {
+                gap: 1.5rem;
+            }
+
+            .stat-number {
+                font-size: 1.3rem;
+            }
+
+            .pulse-line-container {
+                display: none;
+            }
+
+            .form-panel {
+                width: 100%;
+                min-height: auto;
+                padding: 1.5rem 1.25rem 3rem;
+            }
+
+            .form-card {
+                max-width: 100%;
+                padding: 2rem 1.6rem;
+                border-radius: 20px;
             }
 
             .theme-toggle {
                 top: 1rem;
                 right: 1rem;
-                width: 44px;
-                height: 44px;
+                width: 40px;
+                height: 40px;
             }
 
             .theme-toggle i {
-                font-size: 1rem;
+                font-size: 0.95rem;
+            }
+        }
+
+        @media (max-width: 380px) {
+            .hero-stats {
+                flex-direction: column;
+                gap: 0.8rem;
+            }
+
+            .form-card {
+                padding: 1.6rem 1.2rem;
             }
         }
     </style>
 </head>
 <body>
-    <!-- Theme Toggle Button -->
+    <!-- Theme Toggle -->
     <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle theme">
         <i class="fas fa-moon"></i>
         <i class="fas fa-sun"></i>
     </button>
 
-    <div class="login-container">
-        <div class="login-card">
-            <div class="login-header">
-                <div class="login-icon">
-                    <i class="fas fa-chart-line"></i>
+    <div class="login-shell">
+        <!-- ============================================= -->
+        <!-- LEFT HERO PANEL                                -->
+        <!-- ============================================= -->
+        <div class="hero-panel">
+            <!-- Floating data-viz elements -->
+            <div class="floating-elements">
+                <div class="float-circle"></div>
+                <div class="float-circle"></div>
+                <div class="float-circle"></div>
+                <div class="float-circle"></div>
+                <div class="float-circle"></div>
+                <div class="float-circle"></div>
+                <div class="float-circle"></div>
+                <div class="float-circle"></div>
+            </div>
+
+            <!-- Heartbeat / pulse line -->
+            <div class="pulse-line-container">
+                <div class="pulse-line">
+                    <svg viewBox="0 0 600 80" preserveAspectRatio="none" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <polyline
+                            points="0,40 80,40 100,40 120,40 140,40 160,40 180,40 200,40 220,15 230,65 240,10 250,55 260,40 280,40 300,40 320,40 340,40 380,40 400,40 420,40 440,40 460,40 480,40 500,40 520,15 530,65 540,10 550,55 560,40 580,40 600,40"
+                            stroke="url(#pulseGrad)"
+                            stroke-width="2"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                        />
+                        <defs>
+                            <linearGradient id="pulseGrad" x1="0" y1="0" x2="600" y2="0" gradientUnits="userSpaceOnUse">
+                                <stop offset="0%" stop-color="#00d4aa" stop-opacity="0.1"/>
+                                <stop offset="30%" stop-color="#00d4aa" stop-opacity="0.7"/>
+                                <stop offset="50%" stop-color="#4361ee" stop-opacity="0.8"/>
+                                <stop offset="70%" stop-color="#00d4aa" stop-opacity="0.7"/>
+                                <stop offset="100%" stop-color="#00d4aa" stop-opacity="0.1"/>
+                            </linearGradient>
+                        </defs>
+                    </svg>
+                    <svg viewBox="0 0 600 80" preserveAspectRatio="none" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <polyline
+                            points="0,40 80,40 100,40 120,40 140,40 160,40 180,40 200,40 220,15 230,65 240,10 250,55 260,40 280,40 300,40 320,40 340,40 380,40 400,40 420,40 440,40 460,40 480,40 500,40 520,15 530,65 540,10 550,55 560,40 580,40 600,40"
+                            stroke="url(#pulseGrad2)"
+                            stroke-width="2"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                        />
+                        <defs>
+                            <linearGradient id="pulseGrad2" x1="0" y1="0" x2="600" y2="0" gradientUnits="userSpaceOnUse">
+                                <stop offset="0%" stop-color="#00d4aa" stop-opacity="0.1"/>
+                                <stop offset="30%" stop-color="#00d4aa" stop-opacity="0.7"/>
+                                <stop offset="50%" stop-color="#4361ee" stop-opacity="0.8"/>
+                                <stop offset="70%" stop-color="#00d4aa" stop-opacity="0.7"/>
+                                <stop offset="100%" stop-color="#00d4aa" stop-opacity="0.1"/>
+                            </linearGradient>
+                        </defs>
+                    </svg>
                 </div>
-                <h1 class="login-title">Welcome to The Pulse</h1>
-                <p class="login-subtitle">Enter your credentials to access the dashboard</p>
             </div>
 
-            {% if error %}
-            <div class="alert-error">
-                <i class="fas fa-exclamation-circle"></i>
-                <span>{{ error }}</span>
+            <!-- Brand content -->
+            <div class="hero-content">
+                <div class="hero-logo hero-enter hero-enter-delay-1" style="font-size:0;">
+                    <img src="{{ url_for('static', filename='images/thepulse-noir.png') }}" alt="The Pulse" class="logo-dark" style="height:400px; width:auto; margin:0 auto;">
+                    <img src="{{ url_for('static', filename='images/thepulse-blanc.png') }}" alt="The Pulse" class="logo-light" style="height:400px; width:auto; margin:0 auto;">
+                </div>
+                <p class="hero-tagline hero-enter hero-enter-delay-2">
+                    La plateforme d'intelligence de l'écosystème startup marocain.<br>
+                    Données en temps réel sur les fondateurs, investisseurs et l'écosystème d'innovation du Royaume.
+                </p>
+                <div class="hero-stats hero-enter hero-enter-delay-3">
+                    <div class="stat-item">
+                        <div class="stat-number">1098</div>
+                        <div class="stat-label">Startups</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number">23</div>
+                        <div class="stat-label">Investisseurs</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number">973</div>
+                        <div class="stat-label">Fondateurs</div>
+                    </div>
+                </div>
             </div>
-            {% endif %}
+        </div>
 
-            <form method="POST">
-                <div class="form-group">
-                    <label for="username" class="form-label">Username</label>
-                    <div class="input-wrapper">
-                        <i class="fas fa-user input-icon"></i>
-                        <input 
-                            type="text" 
-                            id="username" 
-                            name="username" 
-                            class="form-input" 
-                            placeholder="Enter your username" 
+        <!-- ============================================= -->
+        <!-- RIGHT FORM PANEL                               -->
+        <!-- ============================================= -->
+        <div class="form-panel">
+            <div class="form-card">
+                <div class="form-header anim-enter">
+                    <h2>Bienvenue</h2>
+                    <p>Connectez-vous à votre tableau de bord</p>
+                </div>
+
+                {% if error %}
+                <div class="alert-error">
+                    <i class="fas fa-exclamation-circle"></i>
+                    <span>{{ error }}</span>
+                </div>
+                {% endif %}
+
+                <form method="POST" autocomplete="on">
+                    <div class="input-group anim-enter">
+                        <input
+                            type="text"
+                            id="username"
+                            name="username"
+                            placeholder="Username"
                             required
                             autocomplete="username"
                         >
+                        <i class="fas fa-user input-icon"></i>
+                        <label for="username">Nom d'utilisateur</label>
                     </div>
-                </div>
 
-                <div class="form-group">
-                    <label for="password" class="form-label">Password</label>
-                    <div class="input-wrapper">
-                        <i class="fas fa-lock input-icon"></i>
-                        <input 
-                            type="password" 
-                            id="password" 
-                            name="password" 
-                            class="form-input" 
-                            placeholder="Enter your password" 
+                    <div class="input-group anim-enter">
+                        <input
+                            type="password"
+                            id="password"
+                            name="password"
+                            placeholder="Mot de passe"
                             required
                             autocomplete="current-password"
                         >
+                        <i class="fas fa-lock input-icon"></i>
+                        <label for="password">Mot de passe</label>
                     </div>
+
+                    <button type="submit" class="btn-login anim-enter">
+                        <i class="fas fa-arrow-right"></i> Se connecter
+                    </button>
+                </form>
+
+                <div class="form-footer anim-enter">
+                    <p>La colonne vertébrale de l'écosystème startup marocain</p>
                 </div>
-
-                <button type="submit" class="btn-submit">
-                    <i class="fas fa-sign-in-alt"></i> Sign In
-                </button>
-            </form>
-
-            
+            </div>
         </div>
     </div>
 
+    <!-- ================================================ -->
+    <!-- Scripts                                           -->
+    <!-- ================================================ -->
     <script>
-        // Theme toggle functionality
+        // --------------------------------------------------
+        // Theme toggle with localStorage persistence
+        // --------------------------------------------------
         function toggleTheme() {
             const html = document.documentElement;
-            const currentTheme = html.getAttribute('data-theme');
-            const newTheme = currentTheme === 'light' ? 'dark' : 'light';
-            
-            html.setAttribute('data-theme', newTheme);
-            localStorage.setItem('theme', newTheme);
+            const current = html.getAttribute('data-theme');
+            const next = current === 'light' ? 'dark' : 'light';
+            html.setAttribute('data-theme', next);
+            localStorage.setItem('theme', next);
         }
 
-        // Load saved theme on page load
-        document.addEventListener('DOMContentLoaded', function() {
-            const savedTheme = localStorage.getItem('theme') || 'dark';
-            document.documentElement.setAttribute('data-theme', savedTheme);
-        });
+        // Apply saved theme immediately (before paint)
+        (function () {
+            const saved = localStorage.getItem('theme') || 'dark';
+            document.documentElement.setAttribute('data-theme', saved);
+        })();
     </script>
 </body>
 </html>

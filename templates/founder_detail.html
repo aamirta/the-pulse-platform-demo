@@ -1,612 +1,566 @@
 {% extends "base.html" %}
 
-{% block title %}{{ founder.name or (founder.first_name + ' ' + founder.last_name) }} - Founder Profile{% endblock %}
+{% block title %}{{ founder.name or (founder.first_name ~ ' ' ~ founder.last_name) }} - Founder Profile{% endblock %}
 
 {% block content %}
 <style>
-    /* Base styles and CSS custom properties for theming */
-    :root {
-        --bg-primary: #0f172a;
-        --bg-card: rgba(51, 65, 85, 0.8);
-        --bg-hover: rgba(51, 65, 85, 0.6);
-        --text-primary: #f1f5f9;
-        --text-light: #cbd5e1;
-        --text-muted: #94a3b8;
-        --primary-green: #10b981;
-        --dark-green: #059669;
-        --light-green: #34d399;
-        --accent-blue: #3b82f6;
-        --accent-teal: #14b8a6;
-        --border-color: rgba(52, 211, 153, 0.2);
-        --gradient-1: linear-gradient(135deg, #10b981, #059669);
-        --gradient-2: linear-gradient(135deg, #f59e0b, #d97706);
-        --gradient-3: linear-gradient(135deg, #ef4444, #dc2626);
-        --gradient-teal: linear-gradient(135deg, #14b8a6, #0d9488);
-        --shadow-color: rgba(0, 0, 0, 0.2);
-    }
+    /* ============================================
+       FOUNDER DETAIL - REDESIGNED
+       ============================================ */
 
-    /* Light mode variables */
-    [data-theme="light"] {
-        --bg-primary: #ffffff;
-        --bg-card: #ffffff;
-        --bg-hover: #f8fafc;
-        --text-primary: #1e293b;
-        --text-light: #475569;
-        --text-muted: #64748b;
-        --border-color: rgba(0, 0, 0, 0.1);
-        --shadow-color: rgba(0, 0, 0, 0.1);
-    }
-
-    body {
-        background: var(--bg-primary);
-        color: var(--text-primary);
-        transition: all 0.3s ease;
-    }
-
-    /* Founder Detail Page Styles */
-    .founder-hero {
-        background: linear-gradient(135deg, rgba(16, 185, 129, 0.1) 0%, rgba(20, 184, 166, 0.1) 100%);
-        padding: 3rem 0;
-        margin-bottom: 2rem;
-        border-radius: 20px;
-        position: relative;
-        overflow: hidden;
-    }
-
-    /* Light mode styling for founder hero */
-    [data-theme="light"] .founder-hero {
-        background: linear-gradient(135deg, rgba(16, 185, 129, 0.05) 0%, rgba(20, 184, 166, 0.05) 100%);
-        border: 1px solid rgba(16, 185, 129, 0.1);
-    }
-
-    .founder-hero::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="25" cy="25" r="1" fill="%23ffffff" opacity="0.05"/><circle cx="75" cy="75" r="1" fill="%23ffffff" opacity="0.05"/><circle cx="25" cy="75" r="1" fill="%23ffffff" opacity="0.05"/><circle cx="75" cy="25" r="1" fill="%23ffffff" opacity="0.05"/></pattern></defs><rect width="100" height="100" fill="url(%23grain)"/></svg>');
-        opacity: 0.3;
-    }
-
-    .founder-avatar {
-        width: 150px;
-        height: 150px;
-        border-radius: 50%;
-        object-fit: cover;
-        border: 4px solid rgba(16, 185, 129, 0.3);
-        background: var(--bg-card);
-        display: flex;
+    .back-link {
+        display: inline-flex;
         align-items: center;
-        justify-content: center;
-        font-size: 3rem;
-        color: var(--primary-green);
-        margin-bottom: 1.5rem;
-        box-shadow: 0 10px 30px rgba(16, 185, 129, 0.2);
-    }
-
-    /* Light mode styling for founder avatar */
-    [data-theme="light"] .founder-avatar {
-        border: 4px solid rgba(16, 185, 129, 0.2);
-        box-shadow: 0 10px 30px rgba(16, 185, 129, 0.15);
-    }
-
-    .founder-name {
-        font-family: 'Poppins', sans-serif;
-        font-weight: 700;
-        font-size: 2.8rem;
-        margin-bottom: 0.5rem;
-        background: linear-gradient(135deg, var(--primary-green), var(--light-green));
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        background-clip: text;
-    }
-
-    .founder-title {
-        font-size: 1.3rem;
-        color: var(--accent-teal);
-        font-weight: 600;
-        margin-bottom: 1rem;
-    }
-
-    /* Light mode styling for founder title */
-    [data-theme="light"] .founder-title {
-        color: #14b8a6;
-    }
-
-    .detail-card {
-        background: linear-gradient(145deg, var(--bg-card), rgba(51, 65, 85, 0.8));
-        border-radius: 20px;
-        padding: 2rem;
+        gap: 0.5rem;
+        font-family: var(--font-body);
+        font-weight: 500;
+        font-size: 0.9rem;
+        color: var(--text-secondary);
+        text-decoration: none;
+        padding: 0.5rem 1rem;
+        border-radius: 8px;
+        transition: all 0.25s ease;
         margin-bottom: 2rem;
-        backdrop-filter: blur(20px);
-        border: 1px solid rgba(16, 185, 129, 0.1);
-        transition: all 0.3s ease;
+        border: 1px solid var(--border-primary);
+    }
+
+    .back-link:hover {
+        color: var(--accent);
+        border-color: var(--accent);
+        background: rgba(0, 212, 170, 0.05);
+    }
+
+    /* Hero Section */
+    .founder-hero {
+        background: var(--bg-card);
+        border: 1px solid var(--border-primary);
+        border-radius: 16px;
+        padding: 2.5rem;
+        margin-bottom: 2rem;
         position: relative;
         overflow: hidden;
-        box-shadow: 0 4px 20px var(--shadow-color);
     }
 
-    /* Light mode styling for detail card */
-    [data-theme="light"] .detail-card {
-        background: var(--bg-card);
-        border: 1px solid rgba(0, 0, 0, 0.08);
-        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-    }
-
-    .detail-card::before {
+    .founder-hero::after {
         content: '';
         position: absolute;
         top: 0;
         left: 0;
         right: 0;
         height: 3px;
-        background: linear-gradient(90deg, var(--primary-green), var(--accent-teal), var(--accent-blue));
-        transform: scaleX(0);
-        transition: transform 0.4s ease;
+        background: linear-gradient(90deg, var(--accent), var(--secondary), var(--tertiary));
+    }
+
+    .hero-avatar {
+        width: 110px;
+        height: 110px;
+        border-radius: 50%;
+        object-fit: cover;
+        border: 3px solid var(--border-primary);
+    }
+
+    .hero-avatar-placeholder {
+        width: 110px;
+        height: 110px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: linear-gradient(135deg, var(--accent), var(--secondary));
+        color: #fff;
+        font-family: var(--font-heading);
+        font-size: 2.5rem;
+        font-weight: 700;
+    }
+
+    .hero-name {
+        font-family: var(--font-heading);
+        font-weight: 700;
+        font-size: 2.2rem;
+        color: var(--text-primary);
+        margin: 0 0 0.35rem 0;
+        line-height: 1.2;
+    }
+
+    .hero-title {
+        font-family: var(--font-body);
+        font-size: 1.05rem;
+        color: var(--accent);
+        font-weight: 500;
+        margin-bottom: 0.25rem;
+    }
+
+    .hero-employer {
+        font-family: var(--font-body);
+        font-size: 0.95rem;
+        color: var(--text-secondary);
+    }
+
+    .hero-location {
+        font-family: var(--font-body);
+        font-size: 0.9rem;
+        color: var(--text-secondary);
+        margin-top: 0.5rem;
+    }
+
+    .hero-location i {
+        color: var(--tertiary);
+        margin-right: 0.35rem;
+    }
+
+    /* Card Styling */
+    .detail-card {
+        background: var(--bg-card);
+        border: 1px solid var(--border-primary);
+        border-radius: 14px;
+        padding: 1.75rem;
+        margin-bottom: 1.5rem;
+        transition: border-color 0.25s ease;
     }
 
     .detail-card:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 15px 30px var(--shadow-color);
+        border-color: rgba(0, 212, 170, 0.25);
     }
 
-    /* Light mode styling for detail card hover */
-    [data-theme="light"] .detail-card:hover {
-        box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
-    }
-
-    .detail-card:hover::before {
-        transform: scaleX(1);
-    }
-
-    .section-title {
-        font-family: 'Poppins', sans-serif;
+    .card-heading {
+        font-family: var(--font-heading);
         font-weight: 600;
-        font-size: 1.5rem;
-        margin-bottom: 1.5rem;
+        font-size: 1.15rem;
         color: var(--text-primary);
+        margin: 0 0 1.25rem 0;
         display: flex;
         align-items: center;
+        gap: 0.6rem;
     }
 
-    /* Light mode styling for section title */
-    [data-theme="light"] .section-title {
-        color: #1e293b;
+    .card-heading i {
+        color: var(--accent);
+        font-size: 1rem;
     }
 
-    .section-title i {
-        margin-right: 0.75rem;
-        color: var(--primary-green);
+    .card-heading .count-badge {
+        margin-left: auto;
+        background: rgba(0, 212, 170, 0.1);
+        color: var(--accent);
+        font-size: 0.75rem;
+        padding: 0.2rem 0.6rem;
+        border-radius: 20px;
+        font-weight: 600;
     }
 
+    /* Info Grid */
     .info-grid {
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-        gap: 1.5rem;
-        margin-bottom: 2rem;
+        grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+        gap: 1rem;
     }
 
     .info-item {
-        background: rgba(16, 185, 129, 0.1);
-        padding: 1.25rem;
-        border-radius: 12px;
-        border-left: 4px solid var(--primary-green);
-        transition: all 0.3s ease;
-    }
-
-    /* Light mode styling for info item */
-    [data-theme="light"] .info-item {
-        background: rgba(16, 185, 129, 0.03);
-        border: 1px solid rgba(0, 0, 0, 0.05);
-    }
-
-    .info-item:hover {
-        background: rgba(16, 185, 129, 0.15);
-        transform: translateX(5px);
-    }
-
-    /* Light mode styling for info item hover */
-    [data-theme="light"] .info-item:hover {
-        background: rgba(16, 185, 129, 0.08);
+        padding: 1rem;
+        border-radius: 10px;
+        background: var(--bg-surface);
+        border: 1px solid var(--border-primary);
     }
 
     .info-label {
+        font-family: var(--font-body);
         font-weight: 600;
-        color: var(--primary-green);
-        font-size: 0.9rem;
-        margin-bottom: 0.5rem;
+        font-size: 0.7rem;
         text-transform: uppercase;
-        letter-spacing: 0.5px;
+        letter-spacing: 0.8px;
+        color: var(--text-secondary);
+        margin-bottom: 0.4rem;
     }
 
     .info-value {
+        font-family: var(--font-body);
+        font-size: 0.95rem;
         color: var(--text-primary);
-        font-size: 1.1rem;
         word-wrap: break-word;
     }
 
-    /* Light mode styling for info value */
-    [data-theme="light"] .info-value {
-        color: #475569;
+    .info-value a {
+        color: var(--accent);
+        text-decoration: none;
     }
 
-    /* Timeline Styles for Experience */
+    .info-value a:hover {
+        text-decoration: underline;
+    }
+
+    /* Skills Tags */
+    .skills-wrap {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+    }
+
+    .skill-chip {
+        font-family: var(--font-body);
+        font-size: 0.8rem;
+        font-weight: 500;
+        padding: 0.35rem 0.85rem;
+        border-radius: 20px;
+        background: rgba(0, 212, 170, 0.1);
+        color: var(--accent);
+        border: 1px solid rgba(0, 212, 170, 0.2);
+        transition: all 0.2s ease;
+    }
+
+    .skill-chip:hover {
+        background: rgba(0, 212, 170, 0.18);
+        transform: translateY(-1px);
+    }
+
+    /* Experience Timeline */
     .timeline {
         position: relative;
-        padding-left: 2rem;
+        padding-left: 1.75rem;
     }
 
     .timeline::before {
         content: '';
         position: absolute;
-        left: 1rem;
-        top: 0;
-        bottom: 0;
+        left: 7px;
+        top: 8px;
+        bottom: 8px;
         width: 2px;
-        background: linear-gradient(to bottom, var(--primary-green), var(--accent-teal));
+        background: linear-gradient(to bottom, var(--accent), var(--secondary));
+        border-radius: 1px;
     }
 
     .timeline-item {
         position: relative;
-        margin-bottom: 2.5rem;
-        background: rgba(16, 185, 129, 0.05);
-        padding: 1.5rem;
-        border-radius: 15px;
-        border: 1px solid rgba(16, 185, 129, 0.1);
-        transition: all 0.3s ease;
+        margin-bottom: 1.5rem;
+        padding: 1.15rem;
+        background: var(--bg-surface);
+        border: 1px solid var(--border-primary);
+        border-radius: 10px;
+        transition: all 0.25s ease;
     }
 
-    /* Light mode styling for timeline item */
-    [data-theme="light"] .timeline-item {
-        background: rgba(16, 185, 129, 0.02);
-        border: 1px solid rgba(16, 185, 129, 0.08);
+    .timeline-item:last-child {
+        margin-bottom: 0;
     }
 
     .timeline-item:hover {
-        background: rgba(16, 185, 129, 0.1);
-        transform: translateX(10px);
-        box-shadow: 0 10px 25px rgba(16, 185, 129, 0.15);
-    }
-
-    /* Light mode styling for timeline item hover */
-    [data-theme="light"] .timeline-item:hover {
-        background: rgba(16, 185, 129, 0.05);
-        box-shadow: 0 10px 25px rgba(16, 185, 129, 0.1);
+        border-color: rgba(0, 212, 170, 0.3);
+        transform: translateX(4px);
     }
 
     .timeline-item::before {
         content: '';
         position: absolute;
-        left: -2.25rem;
-        top: 1.5rem;
-        width: 12px;
-        height: 12px;
+        left: -1.75rem;
+        top: 1.35rem;
+        width: 10px;
+        height: 10px;
         border-radius: 50%;
-        background: var(--primary-green);
-        border: 3px solid var(--bg-primary);
-        box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.3);
+        background: var(--accent);
+        border: 2px solid var(--bg-card);
+        box-shadow: 0 0 0 2px rgba(0, 212, 170, 0.3);
+        z-index: 1;
     }
 
     .timeline-company {
-        font-weight: 700;
-        font-size: 1.2rem;
-        color: var(--primary-green);
-        margin-bottom: 0.5rem;
-    }
-
-    .timeline-title {
+        font-family: var(--font-heading);
         font-weight: 600;
-        font-size: 1.1rem;
+        font-size: 1rem;
         color: var(--text-primary);
-        margin-bottom: 0.5rem;
+        margin-bottom: 0.2rem;
     }
 
-    /* Light mode styling for timeline title */
-    [data-theme="light"] .timeline-title {
-        color: #475569;
-    }
-
-    .timeline-duration {
+    .timeline-role {
+        font-family: var(--font-body);
         font-size: 0.9rem;
-        color: var(--accent-teal);
+        color: var(--accent);
         font-weight: 500;
-        margin-bottom: 1rem;
-        display: flex;
-        align-items: center;
-    }
-
-    /* Light mode styling for timeline duration */
-    [data-theme="light"] .timeline-duration {
-        color: #14b8a6;
-    }
-
-    .timeline-duration i {
-        margin-right: 0.5rem;
-    }
-
-    .timeline-description {
-        color: var(--text-muted);
-        line-height: 1.6;
-    }
-
-    /* Light mode styling for timeline description */
-    [data-theme="light"] .timeline-description {
-        color: #6b7280;
     }
 
     /* Education Cards */
     .education-grid {
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-        gap: 1.5rem;
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+        gap: 1rem;
     }
 
     .education-card {
-        background: linear-gradient(135deg, rgba(16, 185, 129, 0.1), rgba(20, 184, 166, 0.05));
-        padding: 2rem;
-        border-radius: 20px;
-        border: 1px solid rgba(16, 185, 129, 0.2);
-        transition: all 0.3s ease;
-        position: relative;
-        overflow: hidden;
-    }
-
-    /* Light mode styling for education card */
-    [data-theme="light"] .education-card {
-        background: linear-gradient(135deg, rgba(16, 185, 129, 0.03), rgba(20, 184, 166, 0.02));
-        border: 1px solid rgba(16, 185, 129, 0.1);
-    }
-
-    .education-card::before {
-        content: '';
-        position: absolute;
-        top: -50%;
-        right: -50%;
-        width: 100%;
-        height: 100%;
-        background: radial-gradient(circle, rgba(16, 185, 129, 0.1) 0%, transparent 70%);
-        transform: scale(0);
-        transition: transform 0.4s ease;
+        background: var(--bg-surface);
+        border: 1px solid var(--border-primary);
+        border-radius: 12px;
+        padding: 1.25rem;
+        transition: all 0.25s ease;
     }
 
     .education-card:hover {
-        transform: translateY(-10px);
-        box-shadow: 0 20px 40px rgba(16, 185, 129, 0.2);
-    }
-
-    /* Light mode styling for education card hover */
-    [data-theme="light"] .education-card:hover {
-        box-shadow: 0 20px 40px rgba(16, 185, 129, 0.15);
-    }
-
-    .education-card:hover::before {
-        transform: scale(1);
+        border-color: rgba(67, 97, 238, 0.3);
+        transform: translateY(-4px);
+        box-shadow: 0 6px 20px rgba(67, 97, 238, 0.08);
     }
 
     .education-icon {
-        width: 60px;
-        height: 60px;
-        border-radius: 15px;
-        background: var(--gradient-1);
+        width: 40px;
+        height: 40px;
+        border-radius: 10px;
+        background: linear-gradient(135deg, var(--secondary), #6b7ff7);
         display: flex;
         align-items: center;
         justify-content: center;
-        font-size: 1.5rem;
-        color: white;
-        margin-bottom: 1rem;
+        color: #fff;
+        font-size: 1rem;
+        margin-bottom: 0.75rem;
     }
 
     .education-school {
-        font-weight: 700;
-        font-size: 1.3rem;
-        color: var(--primary-green);
-        margin-bottom: 0.5rem;
+        font-family: var(--font-heading);
+        font-weight: 600;
+        font-size: 0.95rem;
+        color: var(--text-primary);
+        margin-bottom: 0.25rem;
     }
 
     .education-degree {
-        font-weight: 600;
-        color: var(--text-primary);
-        margin-bottom: 0.5rem;
-    }
-
-    /* Light mode styling for education degree */
-    [data-theme="light"] .education-degree {
-        color: #475569;
-    }
-
-    .education-field {
-        color: var(--accent-teal);
+        font-family: var(--font-body);
+        font-size: 0.88rem;
+        color: var(--accent);
         font-weight: 500;
-        margin-bottom: 0.5rem;
+        margin-bottom: 0.35rem;
     }
 
-    /* Light mode styling for education field */
-    [data-theme="light"] .education-field {
-        color: #14b8a6;
+    .education-dates {
+        font-size: 0.8rem;
+        color: var(--text-secondary);
     }
 
-    .education-year {
-        color: var(--text-muted);
-        font-size: 0.9rem;
+    .education-dates i {
+        margin-right: 0.3rem;
     }
 
-    /* Light mode styling for education year */
-    [data-theme="light"] .education-year {
-        color: #6b7280;
-    }
-
-    .skills-cloud {
+    /* Contact Card */
+    .contact-item {
         display: flex;
-        flex-wrap: wrap;
+        align-items: center;
         gap: 0.75rem;
-        margin-top: 1rem;
+        padding: 0.75rem 0;
+        border-bottom: 1px solid var(--border-primary);
     }
 
-    .skill-tag {
-        background: var(--gradient-1);
-        color: white;
-        padding: 0.5rem 1rem;
-        border-radius: 25px;
-        font-size: 0.85rem;
-        font-weight: 500;
-        transition: all 0.3s ease;
+    .contact-item:last-child {
+        border-bottom: none;
     }
 
-    .skill-tag:hover {
-        transform: scale(1.05);
-        box-shadow: 0 5px 15px rgba(16, 185, 129, 0.3);
-    }
-
-    .back-button {
-        background: var(--gradient-1);
-        color: white;
-        border: none;
-        padding: 0.75rem 1.5rem;
-        border-radius: 25px;
-        font-weight: 600;
-        text-decoration: none;
-        display: inline-flex;
-        align-items: center;
-        transition: all 0.3s ease;
-        margin-bottom: 2rem;
-    }
-
-    /* Light mode styling for back button */
-    [data-theme="light"] .back-button {
-        background: rgba(16, 185, 129, 0.08);
-        color: #10b981;
-        border: 1px solid rgba(16, 185, 129, 0.15);
-    }
-
-    .back-button:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 10px 20px rgba(16, 185, 129, 0.3);
-        color: white;
-        text-decoration: none;
-    }
-
-    /* Light mode styling for back button hover */
-    [data-theme="light"] .back-button:hover {
-        background: rgba(16, 185, 129, 0.12);
-        color: #10b981;
-        box-shadow: 0 8px 20px rgba(16, 185, 129, 0.15);
-    }
-
-    .back-button i {
-        margin-right: 0.5rem;
-    }
-
-    .startup-card {
-        background: linear-gradient(135deg, rgba(16, 185, 129, 0.1), rgba(59, 130, 246, 0.05));
-        padding: 1.5rem;
-        border-radius: 15px;
-        border: 1px solid rgba(16, 185, 129, 0.2);
-        margin-bottom: 1rem;
-        transition: all 0.3s ease;
-    }
-
-    /* Light mode styling for startup card */
-    [data-theme="light"] .startup-card {
-        background: linear-gradient(135deg, rgba(16, 185, 129, 0.03), rgba(59, 130, 246, 0.02));
-        border: 1px solid rgba(16, 185, 129, 0.1);
-    }
-
-    .startup-card:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 15px 30px rgba(16, 185, 129, 0.2);
-    }
-
-    /* Light mode styling for startup card hover */
-    [data-theme="light"] .startup-card:hover {
-        box-shadow: 0 15px 30px rgba(16, 185, 129, 0.15);
-    }
-
-    .startup-card-content {
-        display: flex;
-        align-items: center;
-        gap: 1.5rem;
-    }
-
-    .startup-logo-container {
-        flex-shrink: 0;
-    }
-
-    .startup-logo {
-        width: 60px;
-        height: 60px;
-        border-radius: 12px;
-        object-fit: cover;
-        border: 2px solid rgba(16, 185, 129, 0.3);
-        background: var(--bg-card);
-    }
-
-    .startup-logo-placeholder {
-        width: 60px;
-        height: 60px;
-        border-radius: 12px;
+    .contact-icon {
+        width: 36px;
+        height: 36px;
+        border-radius: 10px;
         display: flex;
         align-items: center;
         justify-content: center;
-        background: linear-gradient(135deg, var(--primary-green), var(--dark-green));
-        color: white;
-        font-weight: 700;
-        font-size: 1.5rem;
-        border: 2px solid rgba(16, 185, 129, 0.3);
+        flex-shrink: 0;
+        font-size: 0.85rem;
     }
 
-    .startup-details {
-        flex: 1;
-    }
+    .contact-icon-email { background: rgba(0, 212, 170, 0.12); color: var(--accent); }
+    .contact-icon-phone { background: rgba(67, 97, 238, 0.12); color: var(--secondary); }
 
-    .startup-name {
-        font-weight: 700;
-        color: var(--primary-green);
-        font-size: 1.2rem;
-        margin-bottom: 0.5rem;
-    }
-
-    .startup-info {
-        color: var(--text-muted);
+    .contact-text {
+        font-family: var(--font-body);
         font-size: 0.9rem;
+        color: var(--text-primary);
+        word-break: break-all;
     }
 
-    /* Light mode styling for startup info */
-    [data-theme="light"] .startup-info {
-        color: #6b7280;
+    .contact-text a {
+        color: var(--text-primary);
+        text-decoration: none;
     }
 
-    .no-data {
+    .contact-text a:hover {
+        color: var(--accent);
+    }
+
+    .contact-text-label {
+        font-size: 0.7rem;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        color: var(--text-secondary);
+        display: block;
+        margin-bottom: 0.1rem;
+    }
+
+    /* Social Links */
+    .social-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+        gap: 0.5rem;
+    }
+
+    .social-link-item {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.6rem 0.75rem;
+        border-radius: 8px;
+        background: var(--bg-surface);
+        border: 1px solid var(--border-primary);
+        text-decoration: none;
+        color: var(--text-primary);
+        font-family: var(--font-body);
+        font-size: 0.8rem;
+        font-weight: 500;
+        transition: all 0.2s ease;
+    }
+
+    .social-link-item:hover {
+        border-color: var(--accent);
+        color: var(--accent);
+        transform: translateY(-2px);
+    }
+
+    .social-link-item i {
+        font-size: 0.95rem;
+    }
+
+    .social-linkedin i { color: var(--secondary); }
+    .social-twitter i { color: #1DA1F2; }
+    .social-facebook i { color: #1877F2; }
+    .social-instagram i { color: #E1306C; }
+    .social-github i { color: var(--text-primary); }
+    .social-quora i { color: #B92B27; }
+    .social-stackoverflow i { color: #F48024; }
+    .social-angellist i { color: var(--text-primary); }
+    .social-aboutme i { color: var(--accent); }
+
+    /* Startup Cards */
+    .startup-mini {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        padding: 0.75rem;
+        border-radius: 10px;
+        background: var(--bg-surface);
+        border: 1px solid var(--border-primary);
+        margin-bottom: 0.75rem;
+        cursor: pointer;
+        transition: all 0.25s ease;
+        text-decoration: none;
+    }
+
+    .startup-mini:last-child {
+        margin-bottom: 0;
+    }
+
+    .startup-mini:hover {
+        border-color: var(--accent);
+        background: rgba(0, 212, 170, 0.04);
+    }
+
+    .startup-mini-logo {
+        width: 44px;
+        height: 44px;
+        border-radius: 10px;
+        object-fit: cover;
+        flex-shrink: 0;
+        border: 2px solid var(--border-primary);
+    }
+
+    .startup-mini-placeholder {
+        width: 44px;
+        height: 44px;
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: linear-gradient(135deg, var(--accent), var(--secondary));
+        color: #fff;
+        font-family: var(--font-heading);
+        font-weight: 700;
+        font-size: 1rem;
+        flex-shrink: 0;
+    }
+
+    .startup-mini-info {
+        flex: 1;
+        min-width: 0;
+    }
+
+    .startup-mini-name {
+        font-family: var(--font-heading);
+        font-weight: 600;
+        font-size: 0.9rem;
+        color: var(--text-primary);
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .startup-mini-meta {
+        font-size: 0.78rem;
+        color: var(--text-secondary);
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .startup-mini-badges {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.3rem;
+        margin-top: 0.3rem;
+    }
+
+    .startup-mini-badges .pulse-badge-accent,
+    .startup-mini-badges .pulse-badge-secondary {
+        font-size: 0.65rem;
+        padding: 0.15rem 0.5rem;
+    }
+
+    /* Empty State */
+    .empty-state {
         text-align: center;
-        color: var(--text-muted);
-        font-style: italic;
-        padding: 3rem;
-        background: rgba(16, 185, 129, 0.05);
-        border-radius: 15px;
-        border: 2px dashed rgba(16, 185, 129, 0.2);
+        padding: 3rem 2rem;
+        color: var(--text-secondary);
+        font-family: var(--font-body);
+        font-size: 0.9rem;
+        border: 1px dashed var(--border-primary);
+        border-radius: 10px;
     }
 
-    /* Light mode styling for no-data */
-    [data-theme="light"] .no-data {
-        background: rgba(16, 185, 129, 0.02);
-        border: 2px dashed rgba(16, 185, 129, 0.15);
-        color: #6b7280;
+    .empty-state i {
+        display: block;
+        font-size: 2.5rem;
+        margin-bottom: 0.5rem;
+        opacity: 0.4;
+    }
+
+    /* Responsive */
+    @media (max-width: 992px) {
+        .col-right {
+            margin-top: 1.5rem;
+        }
     }
 
     @media (max-width: 768px) {
-        .founder-name {
-            font-size: 2rem;
+        .hero-name {
+            font-size: 1.7rem;
         }
-        
+
+        .founder-hero {
+            padding: 1.5rem;
+        }
+
         .info-grid {
             grid-template-columns: 1fr;
         }
-        
+
         .education-grid {
             grid-template-columns: 1fr;
         }
-        
+
+        .social-grid {
+            grid-template-columns: repeat(2, 1fr);
+        }
+
         .timeline {
             padding-left: 1.5rem;
         }
@@ -614,384 +568,350 @@
 </style>
 
 <div class="container-fluid">
-    <!-- Back Button -->
-    <a href="{{ url_for('startups') }}" class="back-button">
-        <i class="fas fa-arrow-left"></i>
-        Back to Startups
-    </a>
 
-    <!-- Founder Hero Section -->
+    <!-- Breadcrumb -->
+    <nav class="breadcrumb-nav" aria-label="Breadcrumb">
+        <a href="/" data-i18n="nav_home">Accueil</a>
+        <i class="fas fa-chevron-right"></i>
+        <a href="/founders" data-i18n="nav_founders">Fondateurs</a>
+        <i class="fas fa-chevron-right"></i>
+        <span class="breadcrumb-current">{{ founder.name or (founder.first_name ~ ' ' ~ founder.last_name) }}</span>
+    </nav>
+
+    <!-- Hero Section -->
     <div class="founder-hero">
-        <div class="container">
-            <div class="row align-items-center">
-                <div class="col-md-3 text-center">
-                    {% if founder.profile_pic %}
-                        <img src="{{ founder.profile_pic }}" alt="{{ founder.name or (founder.first_name + ' ' + founder.last_name) }} Photo" class="founder-avatar">
-                    {% else %}
-                        <div class="founder-avatar">
-                            <i class="fas fa-user-tie"></i>
+        <div class="d-flex align-items-center gap-4 flex-wrap">
+            {% if founder.profile_pic %}
+                <img src="{{ founder.profile_pic }}" alt="{{ founder.name or (founder.first_name ~ ' ' ~ founder.last_name) }}" class="hero-avatar">
+            {% else %}
+                <div class="hero-avatar-placeholder">
+                    {% set display_name = founder.name or (founder.first_name ~ ' ' ~ founder.last_name) or 'U' %}
+                    {{ display_name[0].upper() }}{% if ' ' in display_name %}{{ display_name.split(' ')[-1][0].upper() }}{% endif %}
+                </div>
+            {% endif %}
+            <div>
+                <h1 class="hero-name">{{ founder.name or (founder.first_name ~ ' ' ~ founder.last_name) or 'Fondateur inconnu' }}
+                    <button class="btn-favorite-detail" data-type="founder" data-id="{{ founder.founder_id }}" onclick="toggleFavorite(this);" title="Ajouter aux favoris">
+                        <i class="far fa-heart"></i>
+                    </button>
+                </h1>
+                {% if founder.current_title %}
+                    <div class="hero-title">{{ founder.current_title }}</div>
+                {% endif %}
+                {% if founder.current_employer %}
+                    <div class="hero-employer"><span data-i18n="at_employer">chez</span> {{ founder.current_employer }}</div>
+                {% endif %}
+                {% if founder.location %}
+                    <div class="hero-location"><i class="fas fa-map-marker-alt"></i>{{ founder.location }}</div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <!-- Two Column Layout -->
+    <div class="row">
+
+        <!-- Left Column (8 cols) -->
+        <div class="col-lg-8">
+
+            <!-- Personal Information -->
+            <div class="detail-card">
+                <h3 class="card-heading">
+                    <i class="fas fa-user"></i> <span data-i18n="personal_information">Informations personnelles</span>
+                </h3>
+                <div class="info-grid">
+                    <div class="info-item">
+                        <div class="info-label" data-i18n="founder_id_label">ID Fondateur</div>
+                        <div class="info-value">{{ founder.founder_id }}</div>
+                    </div>
+                    {% if founder.first_name %}
+                    <div class="info-item">
+                        <div class="info-label" data-i18n="first_name">Pr&eacute;nom</div>
+                        <div class="info-value">{{ founder.first_name }}</div>
+                    </div>
+                    {% endif %}
+                    {% if founder.last_name %}
+                    <div class="info-item">
+                        <div class="info-label" data-i18n="last_name">Nom</div>
+                        <div class="info-value">{{ founder.last_name }}</div>
+                    </div>
+                    {% endif %}
+                    {% if founder.location %}
+                    <div class="info-item">
+                        <div class="info-label" data-i18n="location_filter">Localisation</div>
+                        <div class="info-value"><i class="fas fa-map-marker-alt me-1"></i>{{ founder.location }}</div>
+                    </div>
+                    {% endif %}
+                    {% if founder.company_details_name %}
+                    <div class="info-item">
+                        <div class="info-label" data-i18n="company_details">D&eacute;tails entreprise</div>
+                        <div class="info-value">{{ founder.company_details_name }}</div>
+                    </div>
+                    {% endif %}
+                    {% if founder.most_recent_ended_exp_title %}
+                    <div class="info-item">
+                        <div class="info-label" data-i18n="most_recent_title">Dernier poste</div>
+                        <div class="info-value">{{ founder.most_recent_ended_exp_title }}</div>
+                    </div>
+                    {% endif %}
+                    {% if founder.most_recent_ended_exp_employer %}
+                    <div class="info-item">
+                        <div class="info-label" data-i18n="most_recent_employer">Dernier employeur</div>
+                        <div class="info-value">{{ founder.most_recent_ended_exp_employer }}</div>
+                    </div>
+                    {% endif %}
+                    {% if founder.most_recent_ended_exp_end_date %}
+                    <div class="info-item">
+                        <div class="info-label" data-i18n="last_job_end">Date de fin du dernier poste</div>
+                        <div class="info-value">{{ founder.most_recent_ended_exp_end_date[:10] if founder.most_recent_ended_exp_end_date and founder.most_recent_ended_exp_end_date is string else (founder.most_recent_ended_exp_end_date.strftime('%Y-%m-%d') if founder.most_recent_ended_exp_end_date else '-') }}</div>
+                    </div>
+                    {% endif %}
+                    {% if founder.prev_company_name %}
+                    <div class="info-item">
+                        <div class="info-label" data-i18n="previous_company">Entreprise pr&eacute;c&eacute;dente</div>
+                        <div class="info-value">{{ founder.prev_company_name }}</div>
+                    </div>
+                    {% endif %}
+                    {% if founder.last_job_change %}
+                    <div class="info-item">
+                        <div class="info-label" data-i18n="last_job_change">Dernier changement de poste</div>
+                        <div class="info-value">{{ founder.last_job_change[:10] if founder.last_job_change and founder.last_job_change is string else (founder.last_job_change.strftime('%Y-%m-%d') if founder.last_job_change else '-') }}</div>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- Skills -->
+            {% if founder.skills %}
+            <div class="detail-card">
+                <h3 class="card-heading">
+                    <i class="fas fa-cogs"></i> <span data-i18n="skills_expertise">Comp&eacute;tences &amp; expertise</span>
+                </h3>
+                <div class="skills-wrap">
+                    {% for skill in founder.skills.split(',') %}
+                        <span class="skill-chip">{{ skill.strip() }}</span>
+                    {% endfor %}
+                </div>
+            </div>
+            {% endif %}
+
+            <!-- Professional Experience -->
+            <div class="detail-card">
+                <h3 class="card-heading">
+                    <i class="fas fa-briefcase"></i> <span data-i18n="experience">Exp&eacute;rience</span>
+                    <span class="count-badge">{{ experiences|length }}</span>
+                </h3>
+                {% if experiences %}
+                    <div class="timeline">
+                        {% for experience in experiences %}
+                        <div class="timeline-item">
+                            <div class="timeline-company">{{ experience.company or 'Entreprise inconnue' }}</div>
+                            <div class="timeline-role">{{ experience.role or 'Poste non sp&eacute;cifi&eacute;' }}</div>
                         </div>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    <div class="empty-state">
+                        <i class="fas fa-briefcase"></i>
+                        <span data-i18n="no_experience">Aucune information d'exp&eacute;rience disponible.</span>
+                    </div>
+                {% endif %}
+            </div>
+
+            <!-- Education -->
+            <div class="detail-card">
+                <h3 class="card-heading">
+                    <i class="fas fa-graduation-cap"></i> <span data-i18n="education">Formation</span>
+                    <span class="count-badge">{{ educations|length }}</span>
+                </h3>
+                {% if educations %}
+                    <div class="education-grid">
+                        {% for education in educations %}
+                        <div class="education-card">
+                            <div class="education-icon">
+                                <i class="fas fa-university"></i>
+                            </div>
+                            <div class="education-school">{{ education.institute.institute_name if education.institute else 'Institution inconnue' }}</div>
+                            {% if education.degree %}
+                            <div class="education-degree">{{ education.degree }}</div>
+                            {% endif %}
+                            <div class="education-dates">
+                                {% if education.start_date and education.end_date %}
+                                    <i class="fas fa-calendar-alt"></i>{{ education.start_date }} - {{ education.end_date }}
+                                {% elif education.start_date %}
+                                    <i class="fas fa-calendar-alt"></i>{{ education.start_date }}
+                                {% elif education.end_date %}
+                                    <i class="fas fa-calendar-alt"></i><span data-i18n="graduated">Diplom&eacute;(e) :</span> {{ education.end_date }}
+                                {% else %}
+                                    <i class="fas fa-calendar-alt"></i><span data-i18n="dates_not_specified">Dates non sp&eacute;cifi&eacute;es</span>
+                                {% endif %}
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    <div class="empty-state">
+                        <i class="fas fa-graduation-cap"></i>
+                        <span data-i18n="no_education">Aucune information de formation disponible.</span>
+                    </div>
+                {% endif %}
+            </div>
+
+        </div>
+
+        <!-- Right Column (4 cols) -->
+        <div class="col-lg-4 col-right">
+
+            <!-- Contact Card -->
+            {% if founder.teaser_emails or founder.teaser_personal_emails or founder.teaser_professional_emails or founder.teaser_phones %}
+            <div class="detail-card">
+                <h3 class="card-heading">
+                    <i class="fas fa-address-book"></i> <span data-i18n="contact">Contact</span>
+                </h3>
+                {% if founder.teaser_emails %}
+                <div class="contact-item">
+                    <div class="contact-icon contact-icon-email"><i class="fas fa-envelope"></i></div>
+                    <div class="contact-text">
+                        <span class="contact-text-label" data-i18n="email">E-mail</span>
+                        {% for email in founder.teaser_emails.split('|') %}
+                            <a href="mailto:{{ email.strip() }}" style="display:block;">{{ email.strip() }}</a>
+                        {% endfor %}
+                    </div>
+                </div>
+                {% endif %}
+                {% if founder.teaser_personal_emails %}
+                <div class="contact-item">
+                    <div class="contact-icon contact-icon-email"><i class="fas fa-envelope-open"></i></div>
+                    <div class="contact-text">
+                        <span class="contact-text-label" data-i18n="personal_email">E-mail personnel</span>
+                        {% for email in founder.teaser_personal_emails.split('|') %}
+                            <a href="mailto:{{ email.strip() }}" style="display:block;">{{ email.strip() }}</a>
+                        {% endfor %}
+                    </div>
+                </div>
+                {% endif %}
+                {% if founder.teaser_professional_emails %}
+                <div class="contact-item">
+                    <div class="contact-icon contact-icon-email"><i class="fas fa-at"></i></div>
+                    <div class="contact-text">
+                        <span class="contact-text-label" data-i18n="professional_email">E-mail professionnel</span>
+                        {% for email in founder.teaser_professional_emails.split('|') %}
+                            <a href="mailto:{{ email.strip() }}" style="display:block;">{{ email.strip() }}</a>
+                        {% endfor %}
+                    </div>
+                </div>
+                {% endif %}
+                {% if founder.teaser_phones %}
+                <div class="contact-item">
+                    <div class="contact-icon contact-icon-phone"><i class="fas fa-phone"></i></div>
+                    <div class="contact-text">
+                        <span class="contact-text-label" data-i18n="phone">T&eacute;l&eacute;phone</span>
+                        {% for phone in founder.teaser_phones.split('|') %}
+                            <span style="display:block;">{{ phone.strip() }}</span>
+                        {% endfor %}
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+            {% endif %}
+
+            <!-- Social Links Card -->
+            {% if founder.linkedin_url or founder.link_twitter or founder.link_facebook or founder.link_instagram or founder.link_github or founder.link_quora or founder.link_angellist or founder.link_stackoverflow or founder.link_aboutme %}
+            <div class="detail-card">
+                <h3 class="card-heading">
+                    <i class="fas fa-share-alt"></i> <span data-i18n="social_links">R&eacute;seaux sociaux</span>
+                </h3>
+                <div class="social-grid">
+                    {% if founder.linkedin_url %}
+                    <a href="{{ founder.linkedin_url }}" target="_blank" class="social-link-item social-linkedin">
+                        <i class="fab fa-linkedin"></i> LinkedIn
+                    </a>
+                    {% endif %}
+                    {% if founder.link_twitter %}
+                    <a href="{{ founder.link_twitter }}" target="_blank" class="social-link-item social-twitter">
+                        <i class="fab fa-twitter"></i> Twitter
+                    </a>
+                    {% endif %}
+                    {% if founder.link_facebook %}
+                    <a href="{{ founder.link_facebook }}" target="_blank" class="social-link-item social-facebook">
+                        <i class="fab fa-facebook"></i> Facebook
+                    </a>
+                    {% endif %}
+                    {% if founder.link_instagram %}
+                    <a href="{{ founder.link_instagram }}" target="_blank" class="social-link-item social-instagram">
+                        <i class="fab fa-instagram"></i> Instagram
+                    </a>
+                    {% endif %}
+                    {% if founder.link_github %}
+                    <a href="{{ founder.link_github }}" target="_blank" class="social-link-item social-github">
+                        <i class="fab fa-github"></i> GitHub
+                    </a>
+                    {% endif %}
+                    {% if founder.link_quora %}
+                    <a href="{{ founder.link_quora }}" target="_blank" class="social-link-item social-quora">
+                        <i class="fab fa-quora"></i> Quora
+                    </a>
+                    {% endif %}
+                    {% if founder.link_angellist %}
+                    <a href="{{ founder.link_angellist }}" target="_blank" class="social-link-item social-angellist">
+                        <i class="fab fa-angellist"></i> AngelList
+                    </a>
+                    {% endif %}
+                    {% if founder.link_stackoverflow %}
+                    <a href="{{ founder.link_stackoverflow }}" target="_blank" class="social-link-item social-stackoverflow">
+                        <i class="fab fa-stack-overflow"></i> Stack Overflow
+                    </a>
+                    {% endif %}
+                    {% if founder.link_aboutme %}
+                    <a href="{{ founder.link_aboutme }}" target="_blank" class="social-link-item social-aboutme">
+                        <i class="fas fa-user-circle"></i> About.me
+                    </a>
                     {% endif %}
                 </div>
-                <div class="col-md-9">
-                    <h1 class="founder-name">{{ founder.name or (founder.first_name + ' ' + founder.last_name) or 'Unknown Founder' }}</h1>
-                    {% if founder.current_title %}
-                        <div class="founder-title">{{ founder.current_title }}</div>
-                    {% endif %}
-                    {% if founder.current_employer %}
-                        <div class="founder-title">@ {{ founder.current_employer }}</div>
-                    {% endif %}
-                    
-                </div>
             </div>
-        </div>
-    </div>
+            {% endif %}
 
-    <!-- Personal Information -->
-    <div class="detail-card">
-        <h2 class="section-title">
-            <i class="fas fa-user"></i>
-            Personal Information
-        </h2>
-        <div class="info-grid">
-            <div class="info-item">
-                <div class="info-label">Founder ID</div>
-                <div class="info-value">{{ founder.founder_id }}</div>
-            </div>
-            {% if founder.first_name %}
-            <div class="info-item">
-                <div class="info-label">First Name</div>
-                <div class="info-value">{{ founder.first_name }}</div>
-            </div>
-            {% endif %}
-            {% if founder.last_name %}
-            <div class="info-item">
-                <div class="info-label">Last Name</div>
-                <div class="info-value">{{ founder.last_name }}</div>
-            </div>
-            {% endif %}
-            {% if founder.location %}
-            <div class="info-item">
-                <div class="info-label">Location</div>
-                <div class="info-value">
-                    <i class="fas fa-map-marker-alt"></i> {{ founder.location }}
-                </div>
-            </div>
-            {% endif %}
-            {% if founder.company_details_name %}
-            <div class="info-item">
-                <div class="info-label">Company Details</div>
-                <div class="info-value">{{ founder.company_details_name }}</div>
-            </div>
-            {% endif %}
-            {% if founder.most_recent_ended_exp_title %}
-            <div class="info-item">
-                <div class="info-label">Most Recent Title</div>
-                <div class="info-value">{{ founder.most_recent_ended_exp_title }}</div>
-            </div>
-            {% endif %}
-            {% if founder.most_recent_ended_exp_employer %}
-            <div class="info-item">
-                <div class="info-label">Most Recent Employer</div>
-                <div class="info-value">{{ founder.most_recent_ended_exp_employer }}</div>
-            </div>
-            {% endif %}
-            {% if founder.most_recent_ended_exp_end_date %}
-            <div class="info-item">
-                <div class="info-label">Last Job End Date</div>
-                <div class="info-value">{{ founder.most_recent_ended_exp_end_date[:10] if founder.most_recent_ended_exp_end_date and founder.most_recent_ended_exp_end_date is string else (founder.most_recent_ended_exp_end_date.strftime('%Y-%m-%d') if founder.most_recent_ended_exp_end_date else '-') }}</div>
-            </div>
-            {% endif %}
-            {% if founder.prev_company_name %}
-            <div class="info-item">
-                <div class="info-label">Previous Company</div>
-                <div class="info-value">{{ founder.prev_company_name }}</div>
-            </div>
-            {% endif %}
-            {% if founder.last_job_change %}
-            <div class="info-item">
-                <div class="info-label">Last Job Change</div>
-                <div class="info-value">{{ founder.last_job_change[:10] if founder.last_job_change and founder.last_job_change is string else (founder.last_job_change.strftime('%Y-%m-%d') if founder.last_job_change else '-') }}</div>
-            </div>
-            {% endif %}
-        </div>
-    </div>
-
-    <!-- Contact & Social Media -->
-    {% if founder.teaser_emails or founder.teaser_personal_emails or founder.teaser_professional_emails or founder.teaser_phones or founder.linkedin_url or founder.link_twitter or founder.link_facebook or founder.link_instagram or founder.link_quora or founder.link_github or founder.link_aboutme or founder.link_angellist or founder.link_stackoverflow %}
-    <div class="detail-card">
-        <h2 class="section-title">
-            <i class="fas fa-address-book"></i>
-            Contact & Social Media
-        </h2>
-        <div class="info-grid">
-            {% if founder.teaser_emails %}
-            <div class="info-item">
-                <div class="info-label">General Email</div>
-                <div class="info-value">
-                    <a href="mailto:{{ founder.teaser_emails }}" style="color: var(--primary-green);">
-                        <i class="fas fa-envelope"></i> {{ founder.teaser_emails }}
-                    </a>
-                </div>
-            </div>
-            {% endif %}
-            {% if founder.teaser_personal_emails %}
-            <div class="info-item">
-                <div class="info-label">Personal Email</div>
-                <div class="info-value">
-                    <a href="mailto:{{ founder.teaser_personal_emails }}" style="color: var(--primary-green);">
-                        <i class="fas fa-envelope"></i> {{ founder.teaser_personal_emails }}
-                    </a>
-                </div>
-            </div>
-            {% endif %}
-            {% if founder.teaser_professional_emails %}
-            <div class="info-item">
-                <div class="info-label">Professional Email</div>
-                <div class="info-value">
-                    <a href="mailto:{{ founder.teaser_professional_emails }}" style="color: var(--primary-green);">
-                        <i class="fas fa-envelope"></i> {{ founder.teaser_professional_emails }}
-                    </a>
-                </div>
-            </div>
-            {% endif %}
-            {% if founder.teaser_phones %}
-            <div class="info-item">
-                <div class="info-label">Phone</div>
-                <div class="info-value">
-                    <i class="fas fa-phone"></i> {{ founder.teaser_phones }}
-                </div>
-            </div>
-            {% endif %}
-            {% if founder.linkedin_url %}
-            <div class="info-item">
-                <div class="info-label">LinkedIn</div>
-                <div class="info-value">
-                    <a href="{{ founder.linkedin_url }}" target="_blank" style="color: var(--primary-green);">
-                        <i class="fab fa-linkedin"></i> LinkedIn Profile
-                    </a>
-                </div>
-            </div>
-            {% endif %}
-            {% if founder.link_twitter %}
-            <div class="info-item">
-                <div class="info-label">Twitter</div>
-                <div class="info-value">
-                    <a href="{{ founder.link_twitter }}" target="_blank" style="color: var(--primary-green);">
-                        <i class="fab fa-twitter"></i> Twitter Profile
-                    </a>
-                </div>
-            </div>
-            {% endif %}
-            {% if founder.link_facebook %}
-            <div class="info-item">
-                <div class="info-label">Facebook</div>
-                <div class="info-value">
-                    <a href="{{ founder.link_facebook }}" target="_blank" style="color: var(--primary-green);">
-                        <i class="fab fa-facebook"></i> Facebook Profile
-                    </a>
-                </div>
-            </div>
-            {% endif %}
-            {% if founder.link_instagram %}
-            <div class="info-item">
-                <div class="info-label">Instagram</div>
-                <div class="info-value">
-                    <a href="{{ founder.link_instagram }}" target="_blank" style="color: var(--primary-green);">
-                        <i class="fab fa-instagram"></i> Instagram Profile
-                    </a>
-                </div>
-            </div>
-            {% endif %}
-            {% if founder.link_github %}
-            <div class="info-item">
-                <div class="info-label">GitHub</div>
-                <div class="info-value">
-                    <a href="{{ founder.link_github }}" target="_blank" style="color: var(--primary-green);">
-                        <i class="fab fa-github"></i> GitHub Profile
-                    </a>
-                </div>
-            </div>
-            {% endif %}
-            {% if founder.link_quora %}
-            <div class="info-item">
-                <div class="info-label">Quora</div>
-                <div class="info-value">
-                    <a href="{{ founder.link_quora }}" target="_blank" style="color: var(--primary-green);">
-                        <i class="fab fa-quora"></i> Quora Profile
-                    </a>
-                </div>
-            </div>
-            {% endif %}
-            {% if founder.link_angellist %}
-            <div class="info-item">
-                <div class="info-label">AngelList</div>
-                <div class="info-value">
-                    <a href="{{ founder.link_angellist }}" target="_blank" style="color: var(--primary-green);">
-                        <i class="fas fa-angel"></i> AngelList Profile
-                    </a>
-                </div>
-            </div>
-            {% endif %}
-            {% if founder.link_stackoverflow %}
-            <div class="info-item">
-                <div class="info-label">Stack Overflow</div>
-                <div class="info-value">
-                    <a href="{{ founder.link_stackoverflow }}" target="_blank" style="color: var(--primary-green);">
-                        <i class="fab fa-stack-overflow"></i> Stack Overflow Profile
-                    </a>
-                </div>
-            </div>
-            {% endif %}
-            {% if founder.link_aboutme %}
-            <div class="info-item">
-                <div class="info-label">About.me</div>
-                <div class="info-value">
-                    <a href="{{ founder.link_aboutme }}" target="_blank" style="color: var(--primary-green);">
-                        <i class="fas fa-user-circle"></i> About.me Profile
-                    </a>
-                </div>
-            </div>
-            {% endif %}
-        </div>
-    </div>
-    {% endif %}
-
-    <!-- Skills -->
-    {% if founder.skills %}
-    <div class="detail-card">
-        <h2 class="section-title">
-            <i class="fas fa-cogs"></i>
-            Skills & Expertise
-        </h2>
-        <div class="skills-cloud">
-            {% for skill in founder.skills.split(',') %}
-                <span class="skill-tag">{{ skill.strip() }}</span>
-            {% endfor %}
-        </div>
-    </div>
-    {% endif %}
-
-    <!-- Professional Experience -->
-    <div class="detail-card">
-        <h2 class="section-title">
-            <i class="fas fa-briefcase"></i>
-            Professional Experience
-            <span class="badge badge-stage ms-2" style="background: var(--gradient-1);">{{ experiences|length }}</span>
-        </h2>
-        {% if experiences %}
-            <div class="timeline">
-                {% for experience in experiences %}
-                <div class="timeline-item">
-                    <div class="timeline-company">
-                        {{ experience.company or 'Unknown Company' }}
-                    </div>
-                    <div class="timeline-title">
-                        {{ experience.role or 'Position Not Specified' }}
-                    </div>
-                    <div class="timeline-duration">
-                        <i class="fas fa-id-badge"></i>
-                        Experience ID: {{ experience.experience_id }}
-                    </div>
-                </div>
-                {% endfor %}
-            </div>
-        {% else %}
-            <div class="no-data">
-                <i class="fas fa-briefcase fa-3x mb-3"></i>
-                <p>No professional experience information available.</p>
-            </div>
-        {% endif %}
-    </div>
-
-    <!-- Education -->
-    <div class="detail-card">
-        <h2 class="section-title">
-            <i class="fas fa-graduation-cap"></i>
-            Education
-            <span class="badge badge-stage ms-2" style="background: var(--gradient-1);">{{ educations|length }}</span>
-        </h2>
-        {% if educations %}
-            <div class="education-grid">
-                {% for education in educations %}
-                <div class="education-card">
-                    <div class="education-icon">
-                        <i class="fas fa-university"></i>
-                    </div>
-                    <div class="education-school">
-                        {{ education.institute.institute_name if education.institute else 'Unknown Institution' }}
-                    </div>
-                    {% if education.degree %}
-                    <div class="education-degree">
-                        {{ education.degree }}
-                    </div>
-                    {% endif %}
-                    <div class="education-year">
-                        {% if education.start_date and education.end_date %}
-                            <i class="fas fa-calendar"></i> {{ education.start_date }} - {{ education.end_date }}
-                        {% elif education.start_date %}
-                            <i class="fas fa-calendar"></i> {{ education.start_date }}
-                        {% elif education.end_date %}
-                            <i class="fas fa-calendar"></i> Graduated: {{ education.end_date }}
-                        {% else %}
-                            <i class="fas fa-calendar"></i> Year not specified
-                        {% endif %}
-                    </div>
-                    <div class="education-field" style="font-size: 0.85rem; color: var(--text-muted); margin-top: 0.5rem;">
-                        Education ID: {{ education.education_id }}
-                    </div>
-                </div>
-                {% endfor %}
-            </div>
-        {% else %}
-            <div class="no-data">
-                <i class="fas fa-graduation-cap fa-3x mb-3"></i>
-                <p>No education information available.</p>
-            </div>
-        {% endif %}
-    </div>
-
-    <!-- Associated Startups -->
-    <div class="detail-card">
-        <h2 class="section-title">
-            <i class="fas fa-rocket"></i>
-            Associated Startups
-            <span class="badge badge-stage ms-2" style="background: var(--gradient-1);">{{ startups|length }}</span>
-        </h2>
-        {% if startups %}
-            {% for startup in startups %}
-            <div class="startup-card">
-                <div class="startup-card-content">
-                    <div class="startup-logo-container">
+            <!-- Associated Startups -->
+            <div class="detail-card">
+                <h3 class="card-heading">
+                    <i class="fas fa-rocket"></i> <span data-i18n="associated_startups">Startups associ&eacute;es</span>
+                    <span class="count-badge">{{ startups|length }}</span>
+                </h3>
+                {% if startups %}
+                    {% for startup in startups %}
+                    <a href="{{ url_for('startup_detail', startup_id=startup.startup_id) }}" class="startup-mini">
                         {% if startup.logo_url %}
-                            <img src="{{ startup.logo_url }}" alt="{{ startup.startup_name }}" class="startup-logo">
+                            <img src="{{ startup.logo_url }}" alt="{{ startup.startup_name }}" class="startup-mini-logo" loading="lazy">
                         {% else %}
-                            <div class="startup-logo-placeholder">
+                            <div class="startup-mini-placeholder">
                                 {{ (startup.startup_name or 'S')[0].upper() }}
                             </div>
                         {% endif %}
-                    </div>
-                    <div class="startup-details">
-                        <div class="startup-name">
-                            <a href="{{ url_for('startup_detail', startup_id=startup.startup_id) }}" style="color: var(--primary-green); text-decoration: none;">
-                                {{ startup.startup_name or 'Unnamed Startup' }}
-                            </a>
+                        <div class="startup-mini-info">
+                            <div class="startup-mini-name">{{ startup.startup_name or 'Startup sans nom' }}</div>
+                            <div class="startup-mini-meta">
+                                {% if startup.location %}{{ startup.location }}{% endif %}
+                            </div>
+                            <div class="startup-mini-badges">
+                                {% if startup.stage %}
+                                    <span class="pulse-badge-accent">{{ startup.stage }}</span>
+                                {% endif %}
+                                {% if startup.sector %}
+                                    <span class="pulse-badge-secondary">{{ startup.sector }}</span>
+                                {% endif %}
+                            </div>
                         </div>
-                        <div class="startup-info">
-                            {% if startup.sector %}Sector: {{ startup.sector }}{% endif %}
-                            {% if startup.location %}{% if startup.sector %} | {% endif %}Location: {{ startup.location }}{% endif %}
-                            {% if startup.stage %}{% if startup.sector or startup.location %} | {% endif %}Stage: {{ startup.stage }}{% endif %}
-                        </div>
+                    </a>
+                    {% endfor %}
+                {% else %}
+                    <div class="empty-state">
+                        <i class="fas fa-rocket"></i>
+                        <span data-i18n="no_associated_startups">Aucune startup associ&eacute;e trouv&eacute;e.</span>
                     </div>
-                </div>
+                {% endif %}
             </div>
-            {% endfor %}
-        {% else %}
-            <div class="no-data">
-                <i class="fas fa-rocket fa-3x mb-3"></i>
-                <p>No associated startups found.</p>
-            </div>
-        {% endif %}
+
+        </div>
     </div>
 </div>
 {% endblock %}
@@ -999,58 +919,29 @@
 {% block scripts %}
 <script>
     document.addEventListener('DOMContentLoaded', function() {
-        // Add smooth entrance animation for timeline items
-        const timelineItems = document.querySelectorAll('.timeline-item');
-        timelineItems.forEach((item, index) => {
-            item.style.opacity = '0';
-            item.style.transform = 'translateX(-30px)';
-            item.style.transition = 'all 0.6s ease';
-            
-            setTimeout(() => {
-                item.style.opacity = '1';
-                item.style.transform = 'translateX(0)';
-            }, 200 * index);
-        });
-
-        // Add smooth entrance animation for education cards
-        const educationCards = document.querySelectorAll('.education-card');
-        educationCards.forEach((card, index) => {
+        // Fade-in animation for cards
+        var cards = document.querySelectorAll('.detail-card, .founder-hero');
+        cards.forEach(function(card, i) {
             card.style.opacity = '0';
-            card.style.transform = 'translateY(30px)';
-            card.style.transition = 'all 0.6s ease';
-            
-            setTimeout(() => {
+            card.style.transform = 'translateY(16px)';
+            card.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+            setTimeout(function() {
                 card.style.opacity = '1';
                 card.style.transform = 'translateY(0)';
-            }, 150 * index);
+            }, 80 * i);
         });
 
-        // Add hover effects to startup cards
-        const startupCards = document.querySelectorAll('.startup-card');
-        startupCards.forEach(card => {
-            card.addEventListener('mouseenter', function() {
-                this.style.borderColor = 'var(--primary-green)';
-            });
-            
-            card.addEventListener('mouseleave', function() {
-                this.style.borderColor = 'rgba(16, 185, 129, 0.2)';
-            });
+        // Stagger skill chips
+        var chips = document.querySelectorAll('.skill-chip');
+        chips.forEach(function(chip, i) {
+            chip.style.opacity = '0';
+            chip.style.transform = 'scale(0.9)';
+            chip.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
+            setTimeout(function() {
+                chip.style.opacity = '1';
+                chip.style.transform = 'scale(1)';
+            }, 300 + (30 * i));
         });
-
-        // Animate skill tags
-        const skillTags = document.querySelectorAll('.skill-tag');
-        skillTags.forEach((tag, index) => {
-            tag.style.opacity = '0';
-            tag.style.transform = 'scale(0.8)';
-            tag.style.transition = 'all 0.4s ease';
-            
-            setTimeout(() => {
-                tag.style.opacity = '1';
-                tag.style.transform = 'scale(1)';
-            }, 50 * index);
-        });
-
-        console.log('Founder detail page loaded successfully!');
     });
 </script>
 {% endblock %}

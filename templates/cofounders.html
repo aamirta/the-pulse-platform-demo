@@ -1,0 +1,494 @@
+{% extends "base.html" %}
+
+{% block title %}Co-Founders - The Pulse{% endblock %}
+
+{% block content %}
+<style>
+    .page-header {
+        background: linear-gradient(135deg, rgba(249, 115, 22, 0.12) 0%, rgba(67, 97, 238, 0.08) 100%);
+        padding: 3rem 0 2rem 0;
+        margin-bottom: 2rem;
+        border-radius: 20px;
+        position: relative;
+        overflow: hidden;
+        border: 1px solid var(--border-color);
+    }
+    .page-header::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="dots" width="20" height="20" patternUnits="userSpaceOnUse"><circle cx="10" cy="10" r="1" fill="%23ffffff" opacity="0.05"/></pattern></defs><rect width="100" height="100" fill="url(%23dots)"/></svg>');
+        pointer-events: none;
+    }
+    .page-title {
+        font-family: var(--font-heading);
+        font-weight: 700;
+        font-size: 2rem;
+        margin-bottom: 0.5rem;
+        background: linear-gradient(135deg, #f97316, #4361ee);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        position: relative;
+        z-index: 2;
+    }
+    .page-subtitle {
+        color: var(--text-secondary);
+        font-size: 1.1rem;
+        position: relative;
+        z-index: 2;
+    }
+    .header-actions {
+        display: flex;
+        gap: 1rem;
+        margin-top: 1.5rem;
+        position: relative;
+        z-index: 2;
+    }
+    .btn-post-project {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.75rem 1.5rem;
+        background: linear-gradient(135deg, #f97316, #ea580c);
+        color: #fff;
+        border: none;
+        border-radius: 12px;
+        font-family: var(--font-heading);
+        font-weight: 600;
+        font-size: 0.95rem;
+        text-decoration: none;
+        transition: all 0.2s ease;
+    }
+    .btn-post-project:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 24px rgba(249, 115, 22, 0.3);
+        color: #fff;
+    }
+
+    /* Stats Bar */
+    .stats-bar {
+        background: var(--bg-card);
+        border-radius: 16px;
+        padding: 1.5rem;
+        margin-bottom: 2rem;
+        border: 1px solid var(--border-color);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 2rem;
+        flex-wrap: wrap;
+    }
+    .stat-item { text-align: center; }
+    .stat-number {
+        font-family: var(--font-heading);
+        font-size: 2rem;
+        font-weight: 700;
+        color: #f97316;
+        line-height: 1.2;
+    }
+    .stat-number.blue { color: #4361ee; }
+    .stat-number.green { color: #10b981; }
+    .stat-label {
+        color: var(--text-secondary);
+        font-size: 0.85rem;
+        font-weight: 500;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    /* Search & Filters */
+    .search-filters-bar {
+        background: var(--bg-card);
+        border-radius: 16px;
+        padding: 1.25rem 1.5rem;
+        margin-bottom: 1.5rem;
+        border: 1px solid var(--border-color);
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        flex-wrap: wrap;
+    }
+    .search-input-wrapper {
+        flex: 1;
+        min-width: 250px;
+        position: relative;
+    }
+    .search-input-wrapper i {
+        position: absolute;
+        left: 1rem;
+        top: 50%;
+        transform: translateY(-50%);
+        color: var(--text-muted);
+    }
+    .search-input {
+        width: 100%;
+        padding: 0.7rem 1rem 0.7rem 2.5rem;
+        border: 1px solid var(--border-color);
+        border-radius: 10px;
+        background: var(--bg-card);
+        color: var(--text-primary);
+        font-family: var(--font-body);
+        font-size: 0.9rem;
+        outline: none;
+        transition: border-color 0.2s ease;
+    }
+    .search-input:focus { border-color: #f97316; }
+    .search-btn {
+        background: linear-gradient(135deg, #f97316, #ea580c);
+        color: #fff;
+        border: none;
+        padding: 0.7rem 1.5rem;
+        border-radius: 10px;
+        font-family: var(--font-heading);
+        font-size: 0.9rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.2s ease;
+    }
+    .search-btn:hover { transform: translateY(-1px); box-shadow: 0 4px 12px rgba(249, 115, 22, 0.3); }
+
+    /* Filter Tabs */
+    .filter-tabs {
+        display: flex;
+        gap: 0.5rem;
+        margin-bottom: 1.5rem;
+        flex-wrap: wrap;
+    }
+    .filter-tab {
+        padding: 0.5rem 1.1rem;
+        border-radius: 10px;
+        font-size: 0.85rem;
+        font-weight: 500;
+        color: var(--text-secondary);
+        background: var(--bg-card);
+        border: 1px solid var(--border-color);
+        text-decoration: none;
+        transition: all 0.2s ease;
+        cursor: pointer;
+    }
+    .filter-tab:hover { border-color: #f97316; color: #f97316; }
+    .filter-tab.active { background: linear-gradient(135deg, #f97316, #ea580c); color: #fff; border-color: #f97316; }
+
+    /* Projects Grid */
+    .projects-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1.5rem;
+    }
+    .project-card {
+        background: var(--bg-card);
+        border: 1px solid var(--border-color);
+        border-radius: 14px;
+        padding: 1.75rem;
+        transition: all 0.25s ease;
+        position: relative;
+        overflow: hidden;
+    }
+    .project-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 3px;
+        background: linear-gradient(135deg, #f97316, #4361ee);
+        opacity: 0;
+        transition: opacity 0.25s ease;
+    }
+    .project-card:hover {
+        transform: translateY(-4px);
+        border-color: rgba(249, 115, 22, 0.2);
+        box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
+    }
+    .project-card:hover::before { opacity: 1; }
+
+    .project-title {
+        font-family: var(--font-heading);
+        font-weight: 700;
+        font-size: 1.15rem;
+        color: var(--text-primary);
+        margin-bottom: 0.5rem;
+    }
+    .project-domain {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.3rem;
+        padding: 0.2rem 0.7rem;
+        border-radius: 6px;
+        font-size: 0.75rem;
+        font-weight: 500;
+        background: rgba(249, 115, 22, 0.1);
+        color: #f97316;
+        margin-bottom: 0.75rem;
+    }
+    .project-description {
+        color: var(--text-secondary);
+        font-size: 0.88rem;
+        line-height: 1.6;
+        margin-bottom: 1rem;
+        display: -webkit-box;
+        -webkit-line-clamp: 3;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+    }
+    .project-meta {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+        margin-bottom: 1rem;
+    }
+    .meta-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.3rem;
+        padding: 0.2rem 0.6rem;
+        border-radius: 6px;
+        font-size: 0.72rem;
+        font-weight: 500;
+    }
+    .meta-badge.stage { background: rgba(67, 97, 238, 0.1); color: #4361ee; }
+    .meta-badge.commitment { background: rgba(16, 185, 129, 0.1); color: #10b981; }
+    .meta-badge.location { background: rgba(139, 92, 246, 0.08); color: #8b5cf6; }
+    .meta-badge.equity { background: rgba(247, 183, 49, 0.1); color: #f7b731; }
+
+    .skills-tags {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.35rem;
+        margin-bottom: 1rem;
+    }
+    .skill-tag {
+        display: inline-flex;
+        align-items: center;
+        background: rgba(67, 97, 238, 0.08);
+        color: #4361ee;
+        padding: 0.2rem 0.55rem;
+        border-radius: 6px;
+        font-size: 0.72rem;
+        font-weight: 500;
+    }
+    .skill-tag.more { background: var(--bg-card-hover); color: var(--text-muted); }
+
+    .project-footer {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding-top: 0.75rem;
+        border-top: 1px solid var(--border-color);
+    }
+    .author-info {
+        display: flex;
+        align-items: center;
+        gap: 0.6rem;
+    }
+    .author-avatar {
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, #f97316, #ea580c);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-family: var(--font-heading);
+        font-weight: 700;
+        font-size: 0.75rem;
+    }
+    .author-name {
+        font-size: 0.85rem;
+        font-weight: 500;
+        color: var(--text-primary);
+    }
+    .author-affiliation {
+        font-size: 0.72rem;
+        color: var(--text-secondary);
+    }
+    .project-date {
+        font-size: 0.72rem;
+        color: var(--text-muted);
+    }
+
+    .section-heading {
+        font-family: var(--font-heading);
+        font-weight: 700;
+        color: var(--text-primary);
+        margin-bottom: 1.25rem;
+        font-size: 1.2rem;
+    }
+    .empty-state {
+        text-align: center;
+        padding: 4rem 2rem;
+        grid-column: 1 / -1;
+    }
+    .empty-state i { font-size: 3rem; color: var(--text-muted); margin-bottom: 1rem; }
+    .empty-state h3 { font-family: var(--font-heading); color: var(--text-primary); margin-bottom: 0.5rem; }
+    .empty-state p { color: var(--text-secondary); }
+
+    @media (max-width: 768px) {
+        .projects-grid { grid-template-columns: 1fr; }
+        .search-filters-bar { flex-direction: column; }
+        .search-input-wrapper { min-width: 100%; }
+    }
+</style>
+
+<!-- Page Header -->
+<div class="page-header">
+    <div class="container">
+        <h1 class="page-title"><i class="fas fa-handshake"></i> <span data-i18n="cf_title">Co-Founders</span></h1>
+        <p class="page-subtitle" data-i18n="cf_subtitle">Find your next co-founder or post a project seeking partners</p>
+        <div class="header-actions">
+            <a href="{{ url_for('cofounder_form') }}" class="btn-post-project">
+                <i class="fas fa-plus"></i> <span data-i18n="cf_post">Post a Project</span>
+            </a>
+        </div>
+    </div>
+</div>
+
+<!-- Stats Bar -->
+<div class="container">
+    <div class="stats-bar">
+        <div class="stat-item">
+            <div class="stat-number">{{ projects|length }}</div>
+            <div class="stat-label" data-i18n="cf_projects">Projects</div>
+        </div>
+        <div class="stat-item">
+            <div class="stat-number blue">
+                {% set stages = projects|map(attribute='project_stage')|select('string')|unique|list %}
+                {{ stages|length }}
+            </div>
+            <div class="stat-label" data-i18n="cf_stages">Stages</div>
+        </div>
+        <div class="stat-item">
+            <div class="stat-number green">
+                {% set domains = projects|map(attribute='domain')|select('string')|unique|list %}
+                {{ domains|length }}
+            </div>
+            <div class="stat-label" data-i18n="cf_domains">Domains</div>
+        </div>
+    </div>
+</div>
+
+<!-- Search & Filters -->
+<div class="container">
+    <form action="{{ url_for('cofounders') }}" method="GET">
+        <div class="search-filters-bar">
+            <div class="search-input-wrapper">
+                <i class="fas fa-search"></i>
+                <input type="text" class="search-input" name="search" value="{{ search }}" placeholder="Search projects, skills, domains..." data-i18n-placeholder="cf_search_ph">
+            </div>
+            <input type="hidden" name="stage" value="{{ selected_stage }}">
+            <button type="submit" class="search-btn">
+                <i class="fas fa-search"></i> <span data-i18n="cf_search">Search</span>
+            </button>
+        </div>
+    </form>
+
+    <div class="filter-tabs">
+        <a href="{{ url_for('cofounders', search=search) }}" class="filter-tab {% if not selected_stage %}active{% endif %}" data-i18n="cf_all">All</a>
+        <a href="{{ url_for('cofounders', search=search, stage='Idea') }}" class="filter-tab {% if selected_stage == 'Idea' %}active{% endif %}">💡 <span data-i18n="cf_idea">Idea</span></a>
+        <a href="{{ url_for('cofounders', search=search, stage='MVP') }}" class="filter-tab {% if selected_stage == 'MVP' %}active{% endif %}">🔧 <span data-i18n="cf_mvp">MVP</span></a>
+        <a href="{{ url_for('cofounders', search=search, stage='Early Traction') }}" class="filter-tab {% if selected_stage == 'Early Traction' %}active{% endif %}">🚀 <span data-i18n="cf_early_traction">Early Traction</span></a>
+        <a href="{{ url_for('cofounders', search=search, stage='Growth') }}" class="filter-tab {% if selected_stage == 'Growth' %}active{% endif %}">📈 <span data-i18n="cf_growth">Growth</span></a>
+    </div>
+</div>
+
+<!-- Projects Grid -->
+<div class="container">
+    <h2 class="section-heading">
+        {% if projects|length > 0 %}
+            {{ projects|length }} <span data-i18n="cf_count">projets cherchent des co-fondateurs</span>
+        {% else %}
+            <span data-i18n="cf_no_found">Aucun projet trouv\u00e9</span>
+        {% endif %}
+    </h2>
+
+    <div class="projects-grid">
+        {% if projects|length > 0 %}
+            {% for project in projects %}
+            <div class="project-card">
+                <h3 class="project-title">{{ project.project_title }}</h3>
+
+                {% if project.domain %}
+                <span class="project-domain">
+                    <i class="fas fa-layer-group"></i> {{ project.domain }}
+                </span>
+                {% endif %}
+
+                {% if project.description %}
+                <p class="project-description">{{ project.description }}</p>
+                {% endif %}
+
+                <div class="project-meta">
+                    {% if project.project_stage %}
+                    <span class="meta-badge stage">
+                        <i class="fas fa-signal"></i> {{ project.project_stage }}
+                    </span>
+                    {% endif %}
+                    {% if project.commitment_type %}
+                    <span class="meta-badge commitment">
+                        <i class="fas fa-clock"></i> {{ project.commitment_type }}
+                    </span>
+                    {% endif %}
+                    {% if project.location_preference %}
+                    <span class="meta-badge location">
+                        <i class="fas fa-map-marker-alt"></i> {{ project.location_preference }}
+                    </span>
+                    {% endif %}
+                    {% if project.equity_offered %}
+                    <span class="meta-badge equity">
+                        <i class="fas fa-chart-pie"></i> {{ project.equity_offered }}
+                    </span>
+                    {% endif %}
+                </div>
+
+                {% if project.skills_needed %}
+                <div class="skills-tags">
+                    {% set skill_list = project.skills_needed.split(',') %}
+                    {% for skill in skill_list[:5] %}
+                        <span class="skill-tag">{{ skill.strip() }}</span>
+                    {% endfor %}
+                    {% if skill_list|length > 5 %}
+                        <span class="skill-tag more">+{{ skill_list|length - 5 }}</span>
+                    {% endif %}
+                </div>
+                {% endif %}
+
+                {% if project.roles_needed %}
+                <div style="margin-bottom: 0.75rem; font-size: 0.8rem; color: var(--text-secondary);">
+                    <i class="fas fa-users" style="color: #f97316; margin-right: 0.3rem;"></i>
+                    <span data-i18n="cf_looking">Looking for:</span> <strong style="color: var(--text-primary);">{{ project.roles_needed }}</strong>
+                </div>
+                {% endif %}
+
+                <div class="project-footer">
+                    <div class="author-info">
+                        <div class="author-avatar">
+                            {{ project.author_name[0].upper() if project.author_name else 'P' }}
+                        </div>
+                        <div>
+                            <div class="author-name">{{ project.author_name or 'Anonymous' }}</div>
+                            {% if project.author_affiliation %}
+                            <div class="author-affiliation">{{ project.author_affiliation }}</div>
+                            {% endif %}
+                        </div>
+                    </div>
+                    {% if project.created_at %}
+                    <span class="project-date">{{ project.created_at.strftime('%b %d, %Y') }}</span>
+                    {% endif %}
+                </div>
+            </div>
+            {% endfor %}
+        {% else %}
+            <div class="empty-state">
+                <i class="fas fa-handshake-slash"></i>
+                <h3 data-i18n="cf_no_yet">No Projects Yet</h3>
+                <p data-i18n="cf_no_yet_msg">Be the first to post a project looking for co-founders!</p>
+                <a href="{{ url_for('cofounder_form') }}" class="btn-post-project" style="margin-top: 1rem; display: inline-flex;">
+                    <i class="fas fa-plus"></i> Post a Project
+                </a>
+            </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

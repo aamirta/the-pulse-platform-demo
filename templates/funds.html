@@ -1,0 +1,574 @@
+{% extends "base.html" %}
+
+{% block title %}Funds - The Pulse{% endblock %}
+
+{% block content %}
+<style>
+    /* ============================================
+       FUNDS PAGE STYLES
+       ============================================ */
+
+    .page-header {
+        background: linear-gradient(135deg, var(--secondary-subtle) 0%, var(--accent-subtle) 100%);
+        padding: 3rem 0 2rem 0;
+        margin-bottom: 2rem;
+        border-radius: 20px;
+        position: relative;
+        overflow: hidden;
+        border: 1px solid var(--border-color);
+    }
+
+    .page-header::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="dots" width="20" height="20" patternUnits="userSpaceOnUse"><circle cx="10" cy="10" r="1" fill="%23ffffff" opacity="0.05"/></pattern></defs><rect width="100" height="100" fill="url(%23dots)"/></svg>');
+        pointer-events: none;
+    }
+
+    .page-title {
+        font-family: var(--font-heading);
+        font-weight: 700;
+        font-size: 2.5rem;
+        margin-bottom: 0.5rem;
+        background: var(--gradient-secondary);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        position: relative;
+        z-index: 2;
+    }
+
+    .page-subtitle {
+        color: var(--text-secondary);
+        font-size: 1.1rem;
+        position: relative;
+        z-index: 2;
+    }
+
+    /* Stats Bar */
+    .stats-bar {
+        background: var(--bg-card);
+        border-radius: 16px;
+        padding: 1.5rem;
+        margin-bottom: 2rem;
+        border: 1px solid var(--border-color);
+        backdrop-filter: blur(20px);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 3rem;
+        flex-wrap: wrap;
+    }
+
+    .stat-item {
+        text-align: center;
+    }
+
+    .stat-number {
+        font-family: var(--font-heading);
+        font-size: 2rem;
+        font-weight: 700;
+        color: var(--accent);
+        line-height: 1.2;
+    }
+
+    .stat-number.secondary {
+        color: var(--secondary);
+    }
+
+    .stat-number.tertiary {
+        color: var(--tertiary);
+    }
+
+    .stat-label {
+        color: var(--text-secondary);
+        font-size: 0.85rem;
+        font-weight: 500;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    /* Search Bar */
+    .search-bar {
+        background: var(--bg-card);
+        border-radius: 16px;
+        padding: 1rem 1.5rem;
+        margin-bottom: 2rem;
+        border: 1px solid var(--border-color);
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+    }
+
+    .search-bar i {
+        color: var(--text-muted);
+        font-size: 1rem;
+    }
+
+    .search-bar input {
+        flex: 1;
+        background: transparent;
+        border: none;
+        outline: none;
+        color: var(--text-primary);
+        font-family: var(--font-body);
+        font-size: 0.95rem;
+    }
+
+    .search-bar input::placeholder {
+        color: var(--text-muted);
+    }
+
+    /* Funds Grid */
+    .funds-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 1.25rem;
+        padding: 0 1rem;
+    }
+
+    .fund-card {
+        background: var(--bg-card);
+        border: 1px solid var(--border-color);
+        border-radius: 16px;
+        padding: 1.5rem;
+        transition: all var(--transition-base);
+        position: relative;
+        overflow: hidden;
+    }
+
+    .fund-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 3px;
+        background: var(--gradient-secondary);
+        opacity: 0;
+        transition: opacity var(--transition-base);
+    }
+
+    .fund-card:hover {
+        transform: translateY(-4px);
+        border-color: rgba(67, 97, 238, 0.2);
+        box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
+        background: var(--bg-card-hover);
+    }
+
+    .fund-card:hover::before {
+        opacity: 1;
+    }
+
+    .fund-card-header {
+        display: flex;
+        align-items: flex-start;
+        gap: 0.85rem;
+        margin-bottom: 1rem;
+    }
+
+    .fund-icon {
+        width: 40px;
+        height: 40px;
+        border-radius: 10px;
+        background: var(--gradient-secondary);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-size: 1rem;
+        flex-shrink: 0;
+    }
+
+    .fund-name-block {
+        flex: 1;
+        min-width: 0;
+    }
+
+    .fund-name {
+        font-family: var(--font-heading);
+        font-weight: 600;
+        font-size: 1rem;
+        color: var(--text-primary);
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        margin: 0;
+        line-height: 1.3;
+    }
+
+    .fund-badges {
+        display: flex;
+        align-items: center;
+        gap: 0.4rem;
+        flex-wrap: wrap;
+        margin-top: 0.3rem;
+    }
+
+    .fund-badge-type {
+        display: inline-flex;
+        align-items: center;
+        padding: 0.15rem 0.5rem;
+        border-radius: 6px;
+        font-size: 0.7rem;
+        font-weight: 600;
+        background: var(--secondary-subtle);
+        color: var(--secondary);
+        text-transform: uppercase;
+        letter-spacing: 0.3px;
+    }
+
+    .fund-badge-status {
+        display: inline-flex;
+        align-items: center;
+        padding: 0.15rem 0.5rem;
+        border-radius: 6px;
+        font-size: 0.7rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.3px;
+    }
+
+    .fund-badge-status.open {
+        background: var(--accent-subtle);
+        color: var(--accent);
+    }
+
+    .fund-badge-status.closed {
+        background: rgba(247, 183, 49, 0.1);
+        color: var(--tertiary);
+    }
+
+    .fund-badge-status.default {
+        background: rgba(136, 146, 176, 0.1);
+        color: var(--text-secondary);
+    }
+
+    .fund-meta {
+        display: flex;
+        flex-direction: column;
+        gap: 0.45rem;
+        margin-bottom: 1rem;
+    }
+
+    .fund-meta-item {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        font-size: 0.8rem;
+        color: var(--text-secondary);
+    }
+
+    .fund-meta-item i {
+        color: var(--secondary);
+        width: 14px;
+        text-align: center;
+        font-size: 0.75rem;
+        flex-shrink: 0;
+    }
+
+    .fund-meta-item span {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    /* Fund Stats Row */
+    .fund-stats-row {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 0.5rem;
+        margin-bottom: 1rem;
+        padding: 0.75rem;
+        background: var(--bg-surface);
+        border-radius: 10px;
+        border: 1px solid var(--border-subtle);
+    }
+
+    .fund-stat {
+        text-align: center;
+    }
+
+    .fund-stat-value {
+        font-family: var(--font-heading);
+        font-weight: 700;
+        font-size: 1.05rem;
+        color: var(--accent);
+        line-height: 1.2;
+    }
+
+    .fund-stat-value.secondary {
+        color: var(--secondary);
+    }
+
+    .fund-stat-value.tertiary {
+        color: var(--tertiary);
+    }
+
+    .fund-stat-label {
+        font-size: 0.65rem;
+        color: var(--text-muted);
+        text-transform: uppercase;
+        letter-spacing: 0.3px;
+        font-weight: 500;
+    }
+
+    /* Section Heading */
+    .section-heading {
+        font-family: var(--font-heading);
+        font-weight: 700;
+        color: var(--text-primary);
+        margin-bottom: 1.25rem;
+        font-size: 1.2rem;
+        padding: 0 1rem;
+    }
+
+    /* Empty State */
+    .empty-state {
+        text-align: center;
+        padding: 4rem 2rem;
+        grid-column: 1 / -1;
+    }
+
+    .empty-state i {
+        font-size: 3rem;
+        color: var(--text-muted);
+        margin-bottom: 1rem;
+    }
+
+    .empty-state h3 {
+        font-family: var(--font-heading);
+        color: var(--text-primary);
+        margin-bottom: 0.5rem;
+    }
+
+    .empty-state p {
+        color: var(--text-secondary);
+    }
+
+    /* Responsive */
+    @media (max-width: 1200px) {
+        .funds-grid {
+            grid-template-columns: repeat(2, 1fr);
+        }
+    }
+
+    @media (max-width: 768px) {
+        .page-title {
+            font-size: 1.8rem;
+        }
+
+        .stats-bar {
+            gap: 1.5rem;
+        }
+
+        .funds-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+</style>
+
+<!-- Page Header -->
+<div class="page-header">
+    <div class="container">
+        <h1 class="page-title"><i class="fas fa-piggy-bank"></i> <span data-i18n="funds_title">Funds</span></h1>
+        <p class="page-subtitle" data-i18n="funds_subtitle">Explore investment funds powering Morocco's startup ecosystem</p>
+    </div>
+</div>
+
+<!-- Stats Bar -->
+<div class="container">
+    <div class="stats-bar">
+        <div class="stat-item">
+            <div class="stat-number">{{ funds|length }}</div>
+            <div class="stat-label" data-i18n="total_funds">Total Funds</div>
+        </div>
+        <div class="stat-item">
+            <div class="stat-number secondary">
+                {% set ns = namespace(count=0) %}
+                {% for fund in funds %}
+                    {% if fund.fund_status and fund.fund_status|lower == 'open' %}
+                        {% set ns.count = ns.count + 1 %}
+                    {% endif %}
+                {% endfor %}
+                {{ ns.count }}
+            </div>
+            <div class="stat-label" data-i18n="open_funds">Open Funds</div>
+        </div>
+        <div class="stat-item">
+            <div class="stat-number tertiary">
+                {% set ns = namespace(total=0) %}
+                {% for fund in funds %}
+                    {% if fund.fund_size %}
+                        {% set ns.total = ns.total + fund.fund_size|float %}
+                    {% endif %}
+                {% endfor %}
+                {% if ns.total >= 1000000000 %}
+                    ${{ "%.1f"|format(ns.total / 1000000000) }}B
+                {% elif ns.total >= 1000000 %}
+                    ${{ "%.1f"|format(ns.total / 1000000) }}M
+                {% elif ns.total >= 1000 %}
+                    ${{ "%.0f"|format(ns.total / 1000) }}K
+                {% elif ns.total > 0 %}
+                    ${{ "%.0f"|format(ns.total) }}
+                {% else %}
+                    --
+                {% endif %}
+            </div>
+            <div class="stat-label" data-i18n="total_fund_size">Total Fund Size</div>
+        </div>
+        <div class="stat-item">
+            <div class="stat-number" style="color: var(--info, #17a2b8);">
+                {% set types = [] %}
+                {% for fund in funds %}
+                    {% if fund.fund_type and fund.fund_type not in types %}
+                        {% if types.append(fund.fund_type) %}{% endif %}
+                    {% endif %}
+                {% endfor %}
+                {{ types|length }}
+            </div>
+            <div class="stat-label" data-i18n="fund_types">Fund Types</div>
+        </div>
+    </div>
+</div>
+
+<!-- Search -->
+<div class="container">
+    <div class="search-bar">
+        <i class="fas fa-search"></i>
+        <input type="text" id="fundSearch" data-i18n-placeholder="search_funds" placeholder="Search funds by name, investor, type..." oninput="filterFunds()">
+    </div>
+</div>
+
+<!-- Funds Grid -->
+<div class="container">
+    <h2 class="section-heading">
+        {% if funds|length > 0 %}
+            Showing {{ funds|length }} fund{{ 's' if funds|length != 1 else '' }}
+        {% else %}
+            No funds found
+        {% endif %}
+    </h2>
+    <div class="funds-grid" id="fundsGrid">
+        {% if funds|length > 0 %}
+            {% for fund in funds %}
+            <div class="fund-card" data-name="{{ (fund.fund_name or '')|lower }}" data-investor="{{ (fund.investor or '')|lower }}" data-type="{{ (fund.fund_type or '')|lower }}">
+
+                <div class="fund-card-header">
+                    <div class="fund-icon">
+                        <i class="fas fa-landmark"></i>
+                    </div>
+                    <div class="fund-name-block">
+                        <h3 class="fund-name">{{ fund.fund_name or 'Unnamed Fund' }}</h3>
+                        <div class="fund-badges">
+                            {% if fund.fund_type %}
+                            <span class="fund-badge-type">{{ fund.fund_type }}</span>
+                            {% endif %}
+                            {% if fund.fund_status %}
+                            <span class="fund-badge-status {% if fund.fund_status|lower == 'open' %}open{% elif fund.fund_status|lower == 'closed' %}closed{% else %}default{% endif %}">
+                                {{ fund.fund_status }}
+                            </span>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="fund-meta">
+                    {% if fund.investor %}
+                    <div class="fund-meta-item">
+                        <i class="fas fa-building"></i>
+                        <span>{{ fund.investor }}</span>
+                    </div>
+                    {% endif %}
+
+                    {% if fund.fund_category %}
+                    <div class="fund-meta-item">
+                        <i class="fas fa-layer-group"></i>
+                        <span>{{ fund.fund_category }}</span>
+                    </div>
+                    {% endif %}
+
+                    {% if fund.fund_location or fund.fund_country %}
+                    <div class="fund-meta-item">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <span>{{ fund.fund_location or fund.fund_country }}</span>
+                    </div>
+                    {% endif %}
+
+                    {% if fund.vintage %}
+                    <div class="fund-meta-item">
+                        <i class="fas fa-calendar-alt"></i>
+                        <span>Vintage {{ fund.vintage|int }}</span>
+                    </div>
+                    {% endif %}
+
+                    {% if fund.preferred_industry %}
+                    <div class="fund-meta-item">
+                        <i class="fas fa-industry"></i>
+                        <span>{{ fund.preferred_industry|truncate(60, True) }}</span>
+                    </div>
+                    {% endif %}
+                </div>
+
+                <!-- Fund Stats -->
+                <div class="fund-stats-row">
+                    <div class="fund-stat">
+                        <div class="fund-stat-value">
+                            {% if fund.fund_size %}
+                                {% if fund.fund_size|float >= 1000000000 %}
+                                    ${{ "%.1f"|format(fund.fund_size|float / 1000000000) }}B
+                                {% elif fund.fund_size|float >= 1000000 %}
+                                    ${{ "%.1f"|format(fund.fund_size|float / 1000000) }}M
+                                {% elif fund.fund_size|float >= 1000 %}
+                                    ${{ "%.0f"|format(fund.fund_size|float / 1000) }}K
+                                {% else %}
+                                    ${{ "%.0f"|format(fund.fund_size|float) }}
+                                {% endif %}
+                            {% else %}
+                                --
+                            {% endif %}
+                        </div>
+                        <div class="fund-stat-label" data-i18n="fund_size">Fund Size</div>
+                    </div>
+                    <div class="fund-stat">
+                        <div class="fund-stat-value secondary">
+                            {% if fund.total_fund_investments %}
+                                {{ fund.total_fund_investments|int }}
+                            {% else %}
+                                --
+                            {% endif %}
+                        </div>
+                        <div class="fund-stat-label" data-i18n="investments">Investissements</div>
+                    </div>
+                </div>
+
+            </div>
+            {% endfor %}
+        {% else %}
+            <div class="empty-state">
+                <i class="fas fa-piggy-bank"></i>
+                <h3 data-i18n="no_funds_found">No Funds Found</h3>
+                <p data-i18n="no_funds_msg">There are no funds to display at this time.</p>
+            </div>
+        {% endif %}
+    </div>
+</div>
+
+<script>
+    function filterFunds() {
+        const query = document.getElementById('fundSearch').value.toLowerCase().trim();
+        const cards = document.querySelectorAll('.fund-card');
+        let visible = 0;
+
+        cards.forEach(card => {
+            const name = card.dataset.name || '';
+            const investor = card.dataset.investor || '';
+            const type = card.dataset.type || '';
+            const match = !query || name.includes(query) || investor.includes(query) || type.includes(query);
+            card.style.display = match ? '' : 'none';
+            if (match) visible++;
+        });
+    }
+</script>
+{% endblock %}

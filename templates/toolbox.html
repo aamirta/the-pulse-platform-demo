@@ -1,0 +1,355 @@
+{% extends "base.html" %}
+
+{% block title %}AI Toolbox - The Pulse{% endblock %}
+
+{% block content %}
+<style>
+    .page-header {
+        background: linear-gradient(135deg, rgba(139, 92, 246, 0.12) 0%, rgba(249, 115, 22, 0.08) 50%, rgba(0, 212, 170, 0.08) 100%);
+        padding: 3rem 0 2rem 0;
+        margin-bottom: 2rem;
+        border-radius: 20px;
+        position: relative;
+        overflow: hidden;
+        border: 1px solid var(--border-color);
+    }
+    .page-header::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="dots" width="20" height="20" patternUnits="userSpaceOnUse"><circle cx="10" cy="10" r="1" fill="%23ffffff" opacity="0.05"/></pattern></defs><rect width="100" height="100" fill="url(%23dots)"/></svg>');
+        pointer-events: none;
+    }
+    .page-title {
+        font-family: var(--font-heading); font-weight: 700; font-size: 2rem; margin-bottom: 0.5rem;
+        background: linear-gradient(135deg, #8b5cf6, #f97316, #00d4aa);
+        -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+        position: relative; z-index: 2;
+    }
+    .page-subtitle { color: var(--text-secondary); font-size: 1.1rem; position: relative; z-index: 2; max-width: 600px; }
+    .ai-badge {
+        display: inline-flex; align-items: center; gap: 0.4rem;
+        padding: 0.3rem 0.8rem; border-radius: 8px; font-size: 0.75rem; font-weight: 600;
+        background: linear-gradient(135deg, rgba(139,92,246,0.15), rgba(249,115,22,0.1));
+        color: #8b5cf6; margin-bottom: 1rem; position: relative; z-index: 2;
+        text-transform: uppercase; letter-spacing: 0.5px;
+    }
+
+    /* Tools Grid */
+    .tools-section { margin-bottom: 2.5rem; }
+    .section-label {
+        font-family: var(--font-heading); font-weight: 600; font-size: 1.1rem;
+        color: var(--text-primary); margin-bottom: 1.25rem;
+        display: flex; align-items: center; gap: 0.5rem;
+    }
+    .section-label i { font-size: 0.95rem; }
+    .section-label .label-accent { color: #8b5cf6; }
+    .section-label .label-orange { color: #f97316; }
+    .section-label .label-green { color: #00d4aa; }
+    .section-label .label-blue { color: #4361ee; }
+
+    .tools-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 1.25rem;
+    }
+
+    .tool-card {
+        background: var(--bg-card);
+        border: 1px solid var(--border-color);
+        border-radius: 14px;
+        padding: 1.5rem;
+        transition: all 0.25s ease;
+        position: relative;
+        overflow: hidden;
+        cursor: default;
+        display: flex;
+        flex-direction: column;
+    }
+    .tool-card::before {
+        content: '';
+        position: absolute;
+        top: 0; left: 0; right: 0;
+        height: 3px;
+        opacity: 0;
+        transition: opacity 0.25s ease;
+    }
+    .tool-card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 12px 40px rgba(0,0,0,0.15);
+        border-color: rgba(139, 92, 246, 0.2);
+    }
+    .tool-card:hover::before { opacity: 1; }
+
+    .tool-card.purple::before { background: linear-gradient(135deg, #8b5cf6, #7c3aed); }
+    .tool-card.orange::before { background: linear-gradient(135deg, #f97316, #ea580c); }
+    .tool-card.green::before { background: linear-gradient(135deg, #00d4aa, #00b894); }
+    .tool-card.blue::before { background: linear-gradient(135deg, #4361ee, #3a56d4); }
+
+    .tool-icon {
+        width: 48px; height: 48px; border-radius: 12px;
+        display: flex; align-items: center; justify-content: center;
+        font-size: 1.2rem; margin-bottom: 1rem; flex-shrink: 0;
+    }
+    .tool-icon.purple { background: rgba(139, 92, 246, 0.1); color: #8b5cf6; }
+    .tool-icon.orange { background: rgba(249, 115, 22, 0.1); color: #f97316; }
+    .tool-icon.green { background: rgba(0, 212, 170, 0.1); color: #00d4aa; }
+    .tool-icon.blue { background: rgba(67, 97, 238, 0.1); color: #4361ee; }
+    .tool-icon.red { background: rgba(239, 68, 68, 0.1); color: #ef4444; }
+    .tool-icon.yellow { background: rgba(247, 183, 49, 0.1); color: #f7b731; }
+
+    .tool-title {
+        font-family: var(--font-heading); font-weight: 600; font-size: 1rem;
+        color: var(--text-primary); margin-bottom: 0.4rem;
+    }
+    .tool-desc {
+        color: var(--text-secondary); font-size: 0.82rem; line-height: 1.6;
+        margin-bottom: 1rem; flex: 1;
+    }
+    .tool-tags { display: flex; flex-wrap: wrap; gap: 0.3rem; margin-bottom: 0.75rem; }
+    .tool-tag {
+        padding: 0.15rem 0.5rem; border-radius: 5px; font-size: 0.68rem; font-weight: 500;
+        background: var(--bg-card-hover); color: var(--text-muted);
+    }
+    .tool-footer {
+        display: flex; align-items: center; justify-content: space-between;
+        padding-top: 0.75rem; border-top: 1px solid var(--border-color);
+    }
+    .tool-status {
+        display: inline-flex; align-items: center; gap: 0.3rem;
+        padding: 0.2rem 0.6rem; border-radius: 6px; font-size: 0.72rem; font-weight: 500;
+    }
+    .tool-status.available { background: rgba(0, 212, 170, 0.1); color: #00d4aa; }
+    .tool-status.coming { background: rgba(247, 183, 49, 0.1); color: #f7b731; }
+    .tool-status.beta { background: rgba(139, 92, 246, 0.1); color: #8b5cf6; }
+    .tool-cta {
+        display: inline-flex; align-items: center; gap: 0.3rem;
+        padding: 0.4rem 1rem; border-radius: 8px; font-size: 0.78rem; font-weight: 600;
+        text-decoration: none; transition: all 0.2s ease; cursor: pointer; border: none;
+    }
+    .tool-cta.purple { background: linear-gradient(135deg, #8b5cf6, #7c3aed); color: #fff; }
+    .tool-cta.orange { background: linear-gradient(135deg, #f97316, #ea580c); color: #fff; }
+    .tool-cta.green { background: linear-gradient(135deg, #00d4aa, #00b894); color: #fff; }
+    .tool-cta.blue { background: linear-gradient(135deg, #4361ee, #3a56d4); color: #fff; }
+    .tool-cta.disabled { background: var(--bg-card-hover); color: var(--text-muted); cursor: not-allowed; }
+    .tool-cta:hover:not(.disabled) { transform: translateY(-1px); box-shadow: 0 4px 12px rgba(0,0,0,0.2); }
+
+    @media (max-width: 1200px) { .tools-grid { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 768px) { .tools-grid { grid-template-columns: 1fr; } }
+</style>
+
+<!-- Page Header -->
+<div class="page-header">
+    <div class="container">
+        <span class="ai-badge"><i class="fas fa-wand-magic-sparkles"></i> <span data-i18n="tb_badge">Powered by AI</span></span>
+        <h1 class="page-title"><i class="fas fa-toolbox"></i> <span data-i18n="tb_title">AI Toolbox</span></h1>
+        <p class="page-subtitle" data-i18n="tb_subtitle">AI-powered tools to help entrepreneurs build, pitch, and scale their startups faster</p>
+    </div>
+</div>
+
+<div class="container">
+
+    <!-- Business Planning -->
+    <div class="tools-section">
+        <div class="section-label"><i class="label-accent fas fa-lightbulb"></i> <span data-i18n="tb_planning">Business Planning & Strategy</span></div>
+        <div class="tools-grid">
+            <div class="tool-card purple">
+                <div class="tool-icon purple"><i class="fas fa-file-invoice"></i></div>
+                <h3 class="tool-title" data-i18n="tb_bp">Business Plan Generator</h3>
+                <p class="tool-desc" data-i18n="tb_bp_desc">Generate a professional business plan in minutes. Input your idea, market, and goals - get a structured document ready for investors.</p>
+                <div class="tool-tags">
+                    <span class="tool-tag">Business Plan</span>
+                    <span class="tool-tag">Strategy</span>
+                    <span class="tool-tag">PDF Export</span>
+                </div>
+                <div class="tool-footer">
+                    <span class="tool-status available"><i class="fas fa-circle" style="font-size:0.4rem;"></i> <span data-i18n="tb_available">Available</span></span>
+                    <span class="tool-cta purple"><i class="fas fa-play"></i> <span data-i18n="tb_launch">Launch</span></span>
+                </div>
+            </div>
+
+            <div class="tool-card orange">
+                <div class="tool-icon orange"><i class="fas fa-bullseye"></i></div>
+                <h3 class="tool-title" data-i18n="tb_market">Market Sizing (TAM/SAM/SOM)</h3>
+                <p class="tool-desc" data-i18n="tb_market_desc">Estimate your Total Addressable Market, Serviceable Market, and Obtainable Market using AI-driven data analysis for the Moroccan and African context.</p>
+                <div class="tool-tags">
+                    <span class="tool-tag">Market Analysis</span>
+                    <span class="tool-tag">TAM/SAM/SOM</span>
+                </div>
+                <div class="tool-footer">
+                    <span class="tool-status available"><i class="fas fa-circle" style="font-size:0.4rem;"></i> <span data-i18n="tb_available">Available</span></span>
+                    <span class="tool-cta orange"><i class="fas fa-play"></i> <span data-i18n="tb_launch">Launch</span></span>
+                </div>
+            </div>
+
+            <div class="tool-card green">
+                <div class="tool-icon green"><i class="fas fa-chess"></i></div>
+                <h3 class="tool-title" data-i18n="tb_competitive">Competitive Analysis</h3>
+                <p class="tool-desc" data-i18n="tb_competitive_desc">Map your competitive landscape automatically. Identify competitors, analyze positioning, and discover strategic differentiation opportunities.</p>
+                <div class="tool-tags">
+                    <span class="tool-tag">Competitors</span>
+                    <span class="tool-tag">SWOT</span>
+                    <span class="tool-tag">Positioning</span>
+                </div>
+                <div class="tool-footer">
+                    <span class="tool-status beta"><i class="fas fa-circle" style="font-size:0.4rem;"></i> <span data-i18n="tb_beta">Beta</span></span>
+                    <span class="tool-cta green"><i class="fas fa-play"></i> <span data-i18n="tb_launch">Launch</span></span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Fundraising -->
+    <div class="tools-section">
+        <div class="section-label"><i class="label-orange fas fa-hand-holding-dollar"></i> <span data-i18n="tb_fundraising">Fundraising & Finance</span></div>
+        <div class="tools-grid">
+            <div class="tool-card orange">
+                <div class="tool-icon orange"><i class="fas fa-presentation-screen"></i></div>
+                <h3 class="tool-title" data-i18n="tb_pitch">Pitch Deck Builder</h3>
+                <p class="tool-desc" data-i18n="tb_pitch_desc">Create investor-ready pitch decks with AI. Follows the proven 12-slide framework used by top Moroccan startups that raised successfully.</p>
+                <div class="tool-tags">
+                    <span class="tool-tag">Pitch Deck</span>
+                    <span class="tool-tag">Investors</span>
+                    <span class="tool-tag">PPTX</span>
+                </div>
+                <div class="tool-footer">
+                    <span class="tool-status available"><i class="fas fa-circle" style="font-size:0.4rem;"></i> <span data-i18n="tb_available">Available</span></span>
+                    <span class="tool-cta orange"><i class="fas fa-play"></i> <span data-i18n="tb_launch">Launch</span></span>
+                </div>
+            </div>
+
+            <div class="tool-card blue">
+                <div class="tool-icon blue"><i class="fas fa-calculator"></i></div>
+                <h3 class="tool-title" data-i18n="tb_financial">Financial Projections</h3>
+                <p class="tool-desc" data-i18n="tb_financial_desc">Build 3-5 year financial models with revenue projections, burn rate analysis, and runway calculations. Export to Excel.</p>
+                <div class="tool-tags">
+                    <span class="tool-tag">P&L</span>
+                    <span class="tool-tag">Cash Flow</span>
+                    <span class="tool-tag">Projections</span>
+                </div>
+                <div class="tool-footer">
+                    <span class="tool-status available"><i class="fas fa-circle" style="font-size:0.4rem;"></i> <span data-i18n="tb_available">Available</span></span>
+                    <span class="tool-cta blue"><i class="fas fa-play"></i> <span data-i18n="tb_launch">Launch</span></span>
+                </div>
+            </div>
+
+            <div class="tool-card purple">
+                <div class="tool-icon purple"><i class="fas fa-scale-balanced"></i></div>
+                <h3 class="tool-title" data-i18n="tb_valuation">Startup Valuation</h3>
+                <p class="tool-desc" data-i18n="tb_valuation_desc">Estimate your startup's valuation using multiple methods (DCF, Comparables, Berkus, Scorecard). Benchmarked against Moroccan & African deals.</p>
+                <div class="tool-tags">
+                    <span class="tool-tag">Valuation</span>
+                    <span class="tool-tag">Fundraising</span>
+                </div>
+                <div class="tool-footer">
+                    <span class="tool-status beta"><i class="fas fa-circle" style="font-size:0.4rem;"></i> <span data-i18n="tb_beta">Beta</span></span>
+                    <span class="tool-cta purple"><i class="fas fa-play"></i> <span data-i18n="tb_launch">Launch</span></span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Legal & Operations -->
+    <div class="tools-section">
+        <div class="section-label"><i class="label-green fas fa-scale-balanced"></i> <span data-i18n="tb_legal">Legal & Operations</span></div>
+        <div class="tools-grid">
+            <div class="tool-card green">
+                <div class="tool-icon green"><i class="fas fa-file-contract"></i></div>
+                <h3 class="tool-title" data-i18n="tb_legal_doc">Legal Document Generator</h3>
+                <p class="tool-desc" data-i18n="tb_legal_doc_desc">Generate NDA, shareholders agreements, employment contracts, and CGU/CGV compliant with Moroccan law. Reviewed by legal experts.</p>
+                <div class="tool-tags">
+                    <span class="tool-tag">Contracts</span>
+                    <span class="tool-tag">Droit marocain</span>
+                    <span class="tool-tag">NDA</span>
+                </div>
+                <div class="tool-footer">
+                    <span class="tool-status coming"><i class="fas fa-circle" style="font-size:0.4rem;"></i> <span data-i18n="tb_coming">Coming Soon</span></span>
+                    <span class="tool-cta disabled"><i class="fas fa-lock"></i> <span data-i18n="tb_soon">Soon</span></span>
+                </div>
+            </div>
+
+            <div class="tool-card blue">
+                <div class="tool-icon blue"><i class="fas fa-building"></i></div>
+                <h3 class="tool-title" data-i18n="tb_company">Company Setup Guide</h3>
+                <p class="tool-desc" data-i18n="tb_company_desc">Step-by-step AI guide to register your company in Morocco: SARL, SA, SAS. CRI procedures, CNSS, tax obligations - all automated.</p>
+                <div class="tool-tags">
+                    <span class="tool-tag">CRI</span>
+                    <span class="tool-tag">SARL/SA</span>
+                    <span class="tool-tag">Registration</span>
+                </div>
+                <div class="tool-footer">
+                    <span class="tool-status available"><i class="fas fa-circle" style="font-size:0.4rem;"></i> <span data-i18n="tb_available">Available</span></span>
+                    <span class="tool-cta blue"><i class="fas fa-play"></i> <span data-i18n="tb_launch">Launch</span></span>
+                </div>
+            </div>
+
+            <div class="tool-card orange">
+                <div class="tool-icon yellow"><i class="fas fa-shield-halved"></i></div>
+                <h3 class="tool-title" data-i18n="tb_cndp">CNDP Compliance Checker</h3>
+                <p class="tool-desc" data-i18n="tb_cndp_desc">Check if your startup is compliant with the Moroccan data protection law (Loi 09-08). Get a compliance report and remediation steps.</p>
+                <div class="tool-tags">
+                    <span class="tool-tag">CNDP</span>
+                    <span class="tool-tag">Loi 09-08</span>
+                    <span class="tool-tag">RGPD</span>
+                </div>
+                <div class="tool-footer">
+                    <span class="tool-status coming"><i class="fas fa-circle" style="font-size:0.4rem;"></i> <span data-i18n="tb_coming">Coming Soon</span></span>
+                    <span class="tool-cta disabled"><i class="fas fa-lock"></i> <span data-i18n="tb_soon">Soon</span></span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Growth & Marketing -->
+    <div class="tools-section">
+        <div class="section-label"><i class="label-blue fas fa-chart-line"></i> <span data-i18n="tb_growth">Growth & Marketing</span></div>
+        <div class="tools-grid">
+            <div class="tool-card purple">
+                <div class="tool-icon purple"><i class="fas fa-robot"></i></div>
+                <h3 class="tool-title" data-i18n="tb_copywriter">AI Copywriter</h3>
+                <p class="tool-desc" data-i18n="tb_copywriter_desc">Generate marketing copy, social media posts, email campaigns, and product descriptions in French, Arabic, and English - optimized for the Moroccan market.</p>
+                <div class="tool-tags">
+                    <span class="tool-tag">Marketing</span>
+                    <span class="tool-tag">Copywriting</span>
+                    <span class="tool-tag">Multilingual</span>
+                </div>
+                <div class="tool-footer">
+                    <span class="tool-status available"><i class="fas fa-circle" style="font-size:0.4rem;"></i> <span data-i18n="tb_available">Available</span></span>
+                    <span class="tool-cta purple"><i class="fas fa-play"></i> <span data-i18n="tb_launch">Launch</span></span>
+                </div>
+            </div>
+
+            <div class="tool-card green">
+                <div class="tool-icon green"><i class="fas fa-magnifying-glass-chart"></i></div>
+                <h3 class="tool-title" data-i18n="tb_seo">SEO & Content Strategy</h3>
+                <p class="tool-desc" data-i18n="tb_seo_desc">Analyze your website's SEO performance, get keyword recommendations, and generate a content calendar tailored to your industry.</p>
+                <div class="tool-tags">
+                    <span class="tool-tag">SEO</span>
+                    <span class="tool-tag">Content</span>
+                    <span class="tool-tag">Keywords</span>
+                </div>
+                <div class="tool-footer">
+                    <span class="tool-status coming"><i class="fas fa-circle" style="font-size:0.4rem;"></i> <span data-i18n="tb_coming">Coming Soon</span></span>
+                    <span class="tool-cta disabled"><i class="fas fa-lock"></i> <span data-i18n="tb_soon">Soon</span></span>
+                </div>
+            </div>
+
+            <div class="tool-card blue">
+                <div class="tool-icon blue"><i class="fas fa-users-gear"></i></div>
+                <h3 class="tool-title" data-i18n="tb_persona">Customer Persona Builder</h3>
+                <p class="tool-desc" data-i18n="tb_persona_desc">Create detailed customer personas with AI. Understand your target audience's demographics, pain points, and buying behavior.</p>
+                <div class="tool-tags">
+                    <span class="tool-tag">Personas</span>
+                    <span class="tool-tag">UX Research</span>
+                    <span class="tool-tag">B2C/B2B</span>
+                </div>
+                <div class="tool-footer">
+                    <span class="tool-status available"><i class="fas fa-circle" style="font-size:0.4rem;"></i> <span data-i18n="tb_available">Available</span></span>
+                    <span class="tool-cta blue"><i class="fas fa-play"></i> <span data-i18n="tb_launch">Launch</span></span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+{% endblock %}

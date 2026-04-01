@@ -43,7 +43,7 @@
 
     body {
         background: var(--bg-dark);
-        color: var(--text-light);
+        color: var(--text-primary);
     }
 
     .page-container {
@@ -99,7 +99,7 @@
     .form-section h2 {
         font-size: 1.5rem;
         font-weight: 600;
-        color: var(--text-light);
+        color: var(--text-primary);
         margin-bottom: 1.5rem;
         display: flex;
         align-items: center;
@@ -135,7 +135,7 @@
 
     .form-group label {
         font-weight: 600;
-        color: var(--text-light);
+        color: var(--text-primary);
         font-size: 0.875rem;
     }
 
@@ -147,7 +147,7 @@
         border: 1px solid var(--border-color);
         border-radius: 10px;
         font-size: 1rem;
-        color: var(--text-light);
+        color: var(--text-primary);
         transition: all 0.2s ease;
     }
 
@@ -155,7 +155,7 @@
     .form-group textarea:focus,
     .form-group select:focus {
         outline: none;
-        border-color: var(--primary-green);
+        border-color: var(--accent);
         box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1);
     }
 
@@ -254,7 +254,7 @@
     }
 
     .warning {
-        color: var(--accent-orange);
+        color: var(--tertiary);
         font-weight: 600;
     }
 
@@ -277,22 +277,22 @@
 
 <div class="page-container">
     <div class="page-header">
-        <h1>💼 Investor Registration</h1>
-        <p>Share your investment focus and connect with promising startups</p>
+        <h1>💼 <span data-i18n="investor_registration">Investor Registration</span></h1>
+        <p data-i18n="investor_reg_subtitle">Share your investment focus and connect with promising startups</p>
     </div>
 
     <div class="form-container">
         <form>
                 <!-- Organization Information -->
                 <div class="form-section">
-                    <h2>Organization Information</h2>
+                    <h2 data-i18n="organization_information">Organization Information</h2>
                     <div class="form-grid two-col">
                         <div class="form-group">
-                            <label for="organizationName">Organization Name *</label>
+                            <label for="organizationName"><span data-i18n="organization_name">Organization Name</span> *</label>
                             <input type="text" id="organizationName" placeholder="VC Fund or Investment Company" required>
                         </div>
                         <div class="form-group">
-                            <label for="investorType">Investor Type *</label>
+                            <label for="investorType"><span data-i18n="investor_type_label">Investor Type</span> *</label>
                             <select id="investorType" required>
                                 <option value="">Select type</option>
                                 <option value="vc">Venture Capital</option>
@@ -322,9 +322,9 @@
 
                 <!-- Investment Focus -->
                 <div class="form-section">
-                    <h2>Investment Focus</h2>
+                    <h2 data-i18n="investment_focus">Investment Focus</h2>
                     <div class="form-group">
-                        <label>Focus Sectors</label>
+                        <label data-i18n="focus_sectors">Focus Sectors</label>
                         <div class="tags-container" id="sectorsContainer"></div>
                         <div class="tag-input-container">
                             <input type="text" id="sectorInput" placeholder="Add sector (e.g., FinTech, HealthTech, AgriTech)">
@@ -333,7 +333,7 @@
                     </div>
 
                     <div class="form-group">
-                        <label>Investment Stages</label>
+                        <label data-i18n="investment_stages">Investment Stages</label>
                         <div class="tags-container" id="stagesContainer"></div>
                         <div class="tag-input-container">
                             <input type="text" id="stageInput" placeholder="Add stage (e.g., Pre-Seed, Seed, Series A)">
@@ -343,76 +343,76 @@
 
                     <div class="form-grid two-col">
                         <div class="form-group">
-                            <label for="ticketSizeMin">Minimum Ticket Size</label>
+                            <label for="ticketSizeMin" data-i18n="min_ticket">Minimum Ticket Size</label>
                             <input type="text" id="ticketSizeMin" placeholder="e.g., $25K">
                         </div>
                         <div class="form-group">
-                            <label for="ticketSizeMax">Maximum Ticket Size</label>
+                            <label for="ticketSizeMax" data-i18n="max_ticket">Maximum Ticket Size</label>
                             <input type="text" id="ticketSizeMax" placeholder="e.g., $500K">
                         </div>
                     </div>
 
                     <div class="form-group">
-                        <label for="geographicFocus">Geographic Focus</label>
+                        <label for="geographicFocus" data-i18n="geographic_focus">Geographic Focus</label>
                         <input type="text" id="geographicFocus" placeholder="e.g., Morocco, MENA, Africa, Global">
                     </div>
                 </div>
 
                 <!-- Portfolio & Performance -->
                 <div class="form-section">
-                    <h2>Portfolio & Track Record</h2>
+                    <h2 data-i18n="portfolio_track">Portfolio & Track Record</h2>
                     <div class="form-grid three-col">
                         <div class="form-group">
-                            <label for="portfolioSize">Portfolio Size</label>
+                            <label for="portfolioSize" data-i18n="portfolio_size">Portfolio Size</label>
                             <input type="number" id="portfolioSize" placeholder="Number of companies">
                         </div>
                         <div class="form-group">
-                            <label for="activeDeals">Active Deals (2024)</label>
+                            <label for="activeDeals" data-i18n="active_deals">Active Deals (2024)</label>
                             <input type="number" id="activeDeals" placeholder="Number of deals">
                         </div>
                         <div class="form-group">
-                            <label for="totalFunded">Total Funded to Date</label>
+                            <label for="totalFunded" data-i18n="total_funded">Total Funded to Date</label>
                             <input type="text" id="totalFunded" placeholder="e.g., $10M">
                         </div>
                     </div>
 
                     <div class="form-group">
-                        <label for="notableInvestments">Notable Investments</label>
+                        <label for="notableInvestments" data-i18n="notable_investments">Notable Investments</label>
                         <textarea id="notableInvestments" placeholder="List some of your successful portfolio companies or exits"></textarea>
                     </div>
 
                     <div class="form-group">
-                        <label for="investmentCriteria">Investment Criteria</label>
+                        <label for="investmentCriteria" data-i18n="investment_criteria">Investment Criteria</label>
                         <textarea id="investmentCriteria" placeholder="What do you look for in startups? Revenue thresholds, team size, traction metrics, etc."></textarea>
                     </div>
                 </div>
 
                 <!-- Contact Information -->
                 <div class="form-section">
-                    <h2>Contact Information</h2>
+                    <h2 data-i18n="contact_information">Contact Information</h2>
                     <div class="form-grid two-col">
                         <div class="form-group">
-                            <label for="contactName">Primary Contact Name *</label>
+                            <label for="contactName"><span data-i18n="primary_contact">Primary Contact Name</span> *</label>
                             <input type="text" id="contactName" placeholder="Full name" required>
                         </div>
                         <div class="form-group">
-                            <label for="contactTitle">Title/Role *</label>
+                            <label for="contactTitle"><span data-i18n="role_title">Title/Role</span> *</label>
                             <input type="text" id="contactTitle" placeholder="e.g., Managing Partner, Investment Manager" required>
                         </div>
                     </div>
                     <div class="form-grid two-col">
                         <div class="form-group">
-                            <label for="contactEmail">Contact Email *</label>
+                            <label for="contactEmail"><span data-i18n="contact_email">Contact Email</span> *</label>
                             <input type="email" id="contactEmail" placeholder="invest@fund.com" required>
                         </div>
                         <div class="form-group">
-                            <label for="contactPhone">Phone Number</label>
+                            <label for="contactPhone" data-i18n="phone_number">Phone Number</label>
                             <input type="tel" id="contactPhone" placeholder="+212 XXX XXX XXX">
                         </div>
                     </div>
                     <div class="form-grid two-col">
                         <div class="form-group">
-                            <label for="linkedinProfile">LinkedIn Profile</label>
+                            <label for="linkedinProfile" data-i18n="linkedin_profile">LinkedIn Profile</label>
                             <input type="url" id="linkedinProfile" placeholder="https://linkedin.com/in/...">
                         </div>
                         <div class="form-group">
@@ -422,11 +422,11 @@
                     </div>
                 </div>
 
-                <button type="submit" class="btn-submit">Submit Profile</button>
+                <button type="submit" class="btn-submit" data-i18n="submit_profile">Submit Profile</button>
 
                 <div class="form-footer">
-                    <p>By submitting, you agree to our Terms of Service and Privacy Policy.</p>
-                    <p class="warning">⚠️ This is a demo form - submissions are not processed</p>
+                    <p data-i18n="terms_notice">By submitting, you agree to our Terms of Service and Privacy Policy.</p>
+                    <p class="warning" data-i18n="demo_warning">⚠️ This is a demo form - submissions are not processed</p>
                 </div>
             </form>
         </div>

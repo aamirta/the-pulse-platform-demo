@@ -1,0 +1,321 @@
+{% extends "base.html" %}
+
+{% block title %}Actualités - The Pulse{% endblock %}
+
+{% block content %}
+<style>
+    .page-header {
+        background: linear-gradient(135deg, rgba(67, 97, 238, 0.12) 0%, rgba(0, 212, 170, 0.08) 100%);
+        padding: 3rem 0 2rem 0;
+        margin-bottom: 2rem;
+        border-radius: 20px;
+        position: relative;
+        overflow: hidden;
+        border: 1px solid var(--border-color);
+    }
+    .page-header::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="dots" width="20" height="20" patternUnits="userSpaceOnUse"><circle cx="10" cy="10" r="1" fill="%23ffffff" opacity="0.05"/></pattern></defs><rect width="100" height="100" fill="url(%23dots)"/></svg>');
+        pointer-events: none;
+    }
+    .page-title {
+        font-family: var(--font-heading);
+        font-weight: 700;
+        font-size: 2rem;
+        margin-bottom: 0.5rem;
+        background: linear-gradient(135deg, #4361ee, #00d4aa);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        position: relative;
+        z-index: 2;
+    }
+    .page-subtitle { color: var(--text-secondary); font-size: 1.1rem; position: relative; z-index: 2; }
+    .header-actions {
+        display: flex; gap: 1rem; margin-top: 1.5rem; position: relative; z-index: 2;
+    }
+    .btn-publish {
+        display: inline-flex; align-items: center; gap: 0.5rem;
+        padding: 0.75rem 1.5rem;
+        background: linear-gradient(135deg, #4361ee, #3a56d4);
+        color: #fff; border: none; border-radius: 12px;
+        font-family: var(--font-heading); font-weight: 600; font-size: 0.95rem;
+        text-decoration: none; transition: all 0.2s ease;
+    }
+    .btn-publish:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(67, 97, 238, 0.3); color: #fff; }
+
+    /* Stats */
+    .stats-bar {
+        background: var(--bg-card); border-radius: 16px; padding: 1.5rem;
+        margin-bottom: 2rem; border: 1px solid var(--border-color);
+        display: flex; align-items: center; justify-content: center; gap: 2rem; flex-wrap: wrap;
+    }
+    .stat-item { text-align: center; }
+    .stat-number { font-family: var(--font-heading); font-size: 2rem; font-weight: 700; color: #4361ee; line-height: 1.2; }
+    .stat-number.green { color: #00d4aa; }
+    .stat-number.orange { color: #f97316; }
+    .stat-label { color: var(--text-secondary); font-size: 0.85rem; font-weight: 500; text-transform: uppercase; letter-spacing: 0.5px; }
+
+    /* Search */
+    .search-filters-bar {
+        background: var(--bg-card); border-radius: 16px; padding: 1.25rem 1.5rem;
+        margin-bottom: 1.5rem; border: 1px solid var(--border-color);
+        display: flex; align-items: center; gap: 1rem; flex-wrap: wrap;
+    }
+    .search-input-wrapper { flex: 1; min-width: 250px; position: relative; }
+    .search-input-wrapper i { position: absolute; left: 1rem; top: 50%; transform: translateY(-50%); color: var(--text-muted); }
+    .search-input {
+        width: 100%; padding: 0.7rem 1rem 0.7rem 2.5rem;
+        border: 1px solid var(--border-color); border-radius: 10px;
+        background: var(--bg-card); color: var(--text-primary);
+        font-family: var(--font-body); font-size: 0.9rem; outline: none;
+    }
+    .search-input:focus { border-color: #4361ee; }
+    .search-btn {
+        background: linear-gradient(135deg, #4361ee, #3a56d4); color: #fff;
+        border: none; padding: 0.7rem 1.5rem; border-radius: 10px;
+        font-family: var(--font-heading); font-size: 0.9rem; font-weight: 600; cursor: pointer;
+    }
+
+    /* Tabs */
+    .filter-tabs { display: flex; gap: 0.5rem; margin-bottom: 1.5rem; flex-wrap: wrap; }
+    .filter-tab {
+        padding: 0.5rem 1.1rem; border-radius: 10px; font-size: 0.85rem; font-weight: 500;
+        color: var(--text-secondary); background: var(--bg-card); border: 1px solid var(--border-color);
+        text-decoration: none; transition: all 0.2s ease; cursor: pointer;
+    }
+    .filter-tab:hover { border-color: #4361ee; color: #4361ee; }
+    .filter-tab.active { background: linear-gradient(135deg, #4361ee, #3a56d4); color: #fff; border-color: #4361ee; }
+
+    /* Featured Article */
+    .featured-card {
+        background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 16px;
+        padding: 2rem; margin-bottom: 2rem; position: relative; overflow: hidden;
+    }
+    .featured-card::before {
+        content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px;
+        background: linear-gradient(135deg, #4361ee, #00d4aa);
+    }
+    .featured-label {
+        display: inline-flex; align-items: center; gap: 0.3rem;
+        padding: 0.25rem 0.75rem; border-radius: 6px; font-size: 0.72rem; font-weight: 600;
+        background: rgba(67, 97, 238, 0.1); color: #4361ee; margin-bottom: 0.75rem;
+        text-transform: uppercase; letter-spacing: 0.5px;
+    }
+    .featured-title {
+        font-family: var(--font-heading); font-weight: 700; font-size: 1.5rem;
+        color: var(--text-primary); margin-bottom: 0.75rem; line-height: 1.3;
+    }
+    .featured-summary { color: var(--text-secondary); font-size: 0.95rem; line-height: 1.7; margin-bottom: 1rem; }
+    .featured-meta {
+        display: flex; align-items: center; gap: 1rem; flex-wrap: wrap;
+        font-size: 0.8rem; color: var(--text-muted);
+    }
+    .featured-meta span { display: flex; align-items: center; gap: 0.3rem; }
+    .featured-meta i { color: #4361ee; }
+
+    /* Articles Grid */
+    .articles-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; }
+    .article-card {
+        background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 14px;
+        padding: 1.5rem; transition: all 0.25s ease; position: relative; overflow: hidden;
+        display: flex; flex-direction: column;
+    }
+    .article-card::before {
+        content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+        background: linear-gradient(135deg, #4361ee, #00d4aa); opacity: 0; transition: opacity 0.25s ease;
+    }
+    .article-card:hover { transform: translateY(-4px); box-shadow: 0 12px 40px rgba(0,0,0,0.15); }
+    .article-card:hover::before { opacity: 1; }
+
+    .article-category {
+        display: inline-flex; align-items: center; gap: 0.3rem;
+        padding: 0.2rem 0.6rem; border-radius: 6px; font-size: 0.72rem; font-weight: 500;
+        margin-bottom: 0.75rem; width: fit-content;
+    }
+    .article-category.actualite { background: rgba(67, 97, 238, 0.1); color: #4361ee; }
+    .article-category.interview { background: rgba(0, 212, 170, 0.1); color: #00d4aa; }
+    .article-category.analyse { background: rgba(249, 115, 22, 0.1); color: #f97316; }
+
+    .article-title {
+        font-family: var(--font-heading); font-weight: 600; font-size: 1rem;
+        color: var(--text-primary); margin-bottom: 0.5rem; line-height: 1.4;
+        display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+    }
+    .article-summary {
+        color: var(--text-secondary); font-size: 0.82rem; line-height: 1.6; margin-bottom: 1rem;
+        flex: 1;
+        display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;
+    }
+    .article-footer {
+        display: flex; align-items: center; justify-content: space-between;
+        padding-top: 0.75rem; border-top: 1px solid var(--border-color);
+        font-size: 0.75rem; color: var(--text-muted);
+    }
+    .article-footer span { display: flex; align-items: center; gap: 0.3rem; }
+    .article-source-link {
+        color: #4361ee; text-decoration: none; font-weight: 500; font-size: 0.78rem;
+        display: flex; align-items: center; gap: 0.3rem;
+    }
+    .article-source-link:hover { color: #00d4aa; }
+
+    .article-tags { display: flex; flex-wrap: wrap; gap: 0.25rem; margin-bottom: 0.75rem; }
+    .article-tag {
+        padding: 0.15rem 0.45rem; border-radius: 4px; font-size: 0.68rem; font-weight: 500;
+        background: var(--bg-card-hover); color: var(--text-muted);
+    }
+
+    .section-heading { font-family: var(--font-heading); font-weight: 700; color: var(--text-primary); margin-bottom: 1.25rem; font-size: 1.2rem; }
+    .empty-state { text-align: center; padding: 4rem 2rem; grid-column: 1 / -1; }
+    .empty-state i { font-size: 3rem; color: var(--text-muted); margin-bottom: 1rem; }
+    .empty-state h3 { font-family: var(--font-heading); color: var(--text-primary); margin-bottom: 0.5rem; }
+    .empty-state p { color: var(--text-secondary); }
+
+    @media (max-width: 1200px) { .articles-grid { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 768px) {
+        .articles-grid { grid-template-columns: 1fr; }
+        .search-filters-bar { flex-direction: column; }
+        .search-input-wrapper { min-width: 100%; }
+    }
+</style>
+
+<!-- Page Header -->
+<div class="page-header">
+    <div class="container">
+        <h1 class="page-title"><i class="fas fa-newspaper"></i> <span data-i18n="act_title">Actualités</span></h1>
+        <p class="page-subtitle" data-i18n="act_subtitle">News, interviews, and insights from Morocco's entrepreneurial ecosystem</p>
+        <div class="header-actions">
+            <a href="{{ url_for('article_form') }}" class="btn-publish">
+                <i class="fas fa-pen-to-square"></i> <span data-i18n="act_publish">Publish Article</span>
+            </a>
+        </div>
+    </div>
+</div>
+
+<!-- Stats -->
+<div class="container">
+    <div class="stats-bar">
+        <div class="stat-item">
+            <div class="stat-number">{{ articles|length }}</div>
+            <div class="stat-label" data-i18n="act_articles">Articles</div>
+        </div>
+        <div class="stat-item">
+            <div class="stat-number green">{{ articles|selectattr('category', 'equalto', 'Interview')|list|length }}</div>
+            <div class="stat-label" data-i18n="act_interviews">Interviews</div>
+        </div>
+        <div class="stat-item">
+            <div class="stat-number orange">{{ featured|length }}</div>
+            <div class="stat-label" data-i18n="act_featured">Featured</div>
+        </div>
+    </div>
+</div>
+
+<!-- Search & Filters -->
+<div class="container">
+    <form action="{{ url_for('actualites') }}" method="GET">
+        <div class="search-filters-bar">
+            <div class="search-input-wrapper">
+                <i class="fas fa-search"></i>
+                <input type="text" class="search-input" name="search" value="{{ search }}" placeholder="Search articles, topics, tags..." data-i18n-placeholder="act_search_ph">
+            </div>
+            <input type="hidden" name="category" value="{{ selected_category }}">
+            <button type="submit" class="search-btn"><i class="fas fa-search"></i> <span data-i18n="act_search">Search</span></button>
+        </div>
+    </form>
+
+    <div class="filter-tabs">
+        <a href="{{ url_for('actualites', search=search) }}" class="filter-tab {% if not selected_category %}active{% endif %}" data-i18n="act_all">All</a>
+        <a href="{{ url_for('actualites', search=search, category='Actualité') }}" class="filter-tab {% if selected_category == 'Actualité' %}active{% endif %}" data-i18n="act_actualites">Actualités</a>
+        <a href="{{ url_for('actualites', search=search, category='Interview') }}" class="filter-tab {% if selected_category == 'Interview' %}active{% endif %}" data-i18n="act_interviews_tab">Interviews</a>
+        <a href="{{ url_for('actualites', search=search, category='Analyse') }}" class="filter-tab {% if selected_category == 'Analyse' %}active{% endif %}" data-i18n="act_analyses">Analyses</a>
+    </div>
+</div>
+
+<!-- Featured -->
+{% if featured and not selected_category and not search %}
+<div class="container">
+    {% set ft = featured[0] %}
+    <div class="featured-card">
+        <span class="featured-label"><i class="fas fa-star"></i> <span data-i18n="act_featured_label">Featured</span></span>
+        <h2 class="featured-title">{{ ft.title }}</h2>
+        {% if ft.summary %}
+        <p class="featured-summary">{{ ft.summary }}</p>
+        {% endif %}
+        <div class="featured-meta">
+            {% if ft.category %}
+            <span><i class="fas fa-tag"></i> {{ ft.category }}</span>
+            {% endif %}
+            {% if ft.author %}
+            <span><i class="fas fa-user"></i> {{ ft.author }}</span>
+            {% endif %}
+            {% if ft.source %}
+            <span><i class="fas fa-link"></i> {{ ft.source }}</span>
+            {% endif %}
+            {% if ft.published_at %}
+            <span><i class="fas fa-calendar"></i> {{ ft.published_at.strftime('%b %d, %Y') }}</span>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endif %}
+
+<!-- Articles Grid -->
+<div class="container">
+    <h2 class="section-heading">
+        {% if articles|length > 0 %}
+            {{ articles|length }} <span data-i18n="act_articles">articles</span>
+        {% else %}
+            <span data-i18n="act_no_found">Aucun article trouv\u00e9</span>
+        {% endif %}
+    </h2>
+
+    <div class="articles-grid">
+        {% if articles|length > 0 %}
+            {% for article in articles %}
+            <div class="article-card">
+                {% if article.category %}
+                <span class="article-category {% if article.category == 'Actualité' %}actualite{% elif article.category == 'Interview' %}interview{% else %}analyse{% endif %}">
+                    {% if article.category == 'Interview' %}<i class="fas fa-microphone"></i>{% elif article.category == 'Analyse' %}<i class="fas fa-chart-bar"></i>{% else %}<i class="fas fa-newspaper"></i>{% endif %}
+                    {{ article.category }}
+                </span>
+                {% endif %}
+
+                <h3 class="article-title">{{ article.title }}</h3>
+
+                {% if article.summary %}
+                <p class="article-summary">{{ article.summary }}</p>
+                {% endif %}
+
+                {% if article.tags %}
+                <div class="article-tags">
+                    {% for tag in article.tags.split(',')[:3] %}
+                    <span class="article-tag">{{ tag.strip() }}</span>
+                    {% endfor %}
+                </div>
+                {% endif %}
+
+                <div class="article-footer">
+                    <span>
+                        {% if article.author %}<i class="fas fa-user"></i> {{ article.author }}{% endif %}
+                        {% if article.published_at %} &middot; {{ article.published_at.strftime('%b %d, %Y') }}{% endif %}
+                    </span>
+                    {% if article.source_url %}
+                    <a href="{{ article.source_url }}" target="_blank" class="article-source-link">
+                        <span data-i18n="act_read">Read</span> <i class="fas fa-external-link-alt"></i>
+                    </a>
+                    {% endif %}
+                </div>
+            </div>
+            {% endfor %}
+        {% else %}
+            <div class="empty-state">
+                <i class="fas fa-newspaper"></i>
+                <h3 data-i18n="act_no_yet">No Articles Yet</h3>
+                <p data-i18n="act_no_yet_msg">Stay tuned for the latest news from Morocco's ecosystem.</p>
+            </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

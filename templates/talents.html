@@ -1,0 +1,684 @@
+{% extends "base.html" %}
+
+{% block title %}Talent Marketplace - The Pulse{% endblock %}
+
+{% block content %}
+<style>
+    /* ============================================
+       TALENTS PAGE STYLES
+       ============================================ */
+
+    .page-header {
+        background: linear-gradient(135deg, rgba(139, 92, 246, 0.12) 0%, var(--secondary-subtle) 100%);
+        padding: 3rem 0 2rem 0;
+        margin-bottom: 2rem;
+        border-radius: 20px;
+        position: relative;
+        overflow: hidden;
+        border: 1px solid var(--border-color);
+    }
+
+    .page-header::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="dots" width="20" height="20" patternUnits="userSpaceOnUse"><circle cx="10" cy="10" r="1" fill="%23ffffff" opacity="0.05"/></pattern></defs><rect width="100" height="100" fill="url(%23dots)"/></svg>');
+        pointer-events: none;
+    }
+
+    .page-title {
+        font-family: var(--font-heading);
+        font-weight: 700;
+        font-size: 2rem;
+        margin-bottom: 0.5rem;
+        background: linear-gradient(135deg, #8b5cf6, var(--secondary));
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        position: relative;
+        z-index: 2;
+    }
+
+    .page-subtitle {
+        color: var(--text-secondary);
+        font-size: 1.1rem;
+        position: relative;
+        z-index: 2;
+    }
+
+    /* Stats Bar */
+    .stats-bar {
+        background: var(--bg-card);
+        border-radius: 16px;
+        padding: 1.5rem;
+        margin-bottom: 2rem;
+        border: 1px solid var(--border-color);
+        backdrop-filter: blur(20px);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 2rem;
+        flex-wrap: wrap;
+    }
+
+    .stat-item {
+        text-align: center;
+    }
+
+    .stat-number {
+        font-family: var(--font-heading);
+        font-size: 2rem;
+        font-weight: 700;
+        color: #8b5cf6;
+        line-height: 1.2;
+    }
+
+    .stat-number.secondary {
+        color: var(--secondary);
+    }
+
+    .stat-number.accent {
+        color: var(--accent);
+    }
+
+    .stat-label {
+        color: var(--text-secondary);
+        font-size: 0.85rem;
+        font-weight: 500;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    /* Search & Filters */
+    .search-filters-bar {
+        background: var(--bg-card);
+        border-radius: 16px;
+        padding: 1.25rem 1.5rem;
+        margin-bottom: 1.5rem;
+        border: 1px solid var(--border-color);
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        flex-wrap: wrap;
+    }
+
+    .search-input-wrapper {
+        flex: 1;
+        min-width: 250px;
+        position: relative;
+    }
+
+    .search-input-wrapper i {
+        position: absolute;
+        left: 1rem;
+        top: 50%;
+        transform: translateY(-50%);
+        color: var(--text-muted);
+        font-size: 0.85rem;
+    }
+
+    .search-input {
+        width: 100%;
+        padding: 0.7rem 1rem 0.7rem 2.5rem;
+        border: 1px solid var(--border-color);
+        border-radius: 10px;
+        background: var(--bg-card);
+        color: var(--text-primary);
+        font-family: var(--font-body);
+        font-size: 0.9rem;
+        outline: none;
+        transition: border-color 0.2s ease;
+    }
+
+    .search-input:focus {
+        border-color: #8b5cf6;
+    }
+
+    .search-input::placeholder {
+        color: var(--text-muted);
+    }
+
+    .search-btn {
+        background: linear-gradient(135deg, #8b5cf6, #7c3aed);
+        color: #fff;
+        border: none;
+        padding: 0.7rem 1.5rem;
+        border-radius: 10px;
+        font-family: var(--font-heading);
+        font-size: 0.9rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        display: flex;
+        align-items: center;
+        gap: 0.4rem;
+    }
+
+    .search-btn:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 4px 12px rgba(139, 92, 246, 0.3);
+    }
+
+    /* Filter Tabs */
+    .filter-tabs {
+        display: flex;
+        gap: 0.5rem;
+        margin-bottom: 1.5rem;
+        flex-wrap: wrap;
+    }
+
+    .filter-tab {
+        padding: 0.5rem 1.1rem;
+        border-radius: 10px;
+        font-size: 0.85rem;
+        font-weight: 500;
+        font-family: var(--font-body);
+        color: var(--text-secondary);
+        background: var(--bg-card);
+        border: 1px solid var(--border-color);
+        text-decoration: none;
+        transition: all 0.2s ease;
+        cursor: pointer;
+    }
+
+    .filter-tab:hover {
+        border-color: #8b5cf6;
+        color: #8b5cf6;
+    }
+
+    .filter-tab.active {
+        background: linear-gradient(135deg, #8b5cf6, #7c3aed);
+        color: #fff;
+        border-color: #8b5cf6;
+    }
+
+    /* Talents Grid */
+    .talents-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 1.5rem;
+    }
+
+    .talent-card {
+        background: var(--bg-card);
+        border: 1px solid var(--border-color);
+        border-radius: 14px;
+        padding: 1.5rem;
+        cursor: pointer;
+        transition: all var(--transition-base);
+        position: relative;
+        overflow: hidden;
+    }
+
+    .talent-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 3px;
+        background: linear-gradient(135deg, #8b5cf6, var(--secondary));
+        opacity: 0;
+        transition: opacity var(--transition-base);
+    }
+
+    .talent-card:hover {
+        transform: translateY(-4px);
+        border-color: rgba(139, 92, 246, 0.2);
+        box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
+        background: var(--bg-card-hover);
+    }
+
+    .talent-card:hover::before {
+        opacity: 1;
+    }
+
+    .talent-card-header {
+        display: flex;
+        align-items: center;
+        gap: 0.85rem;
+        margin-bottom: 1rem;
+    }
+
+    .talent-avatar {
+        width: 44px;
+        height: 44px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, #8b5cf6, #7c3aed);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-family: var(--font-heading);
+        font-weight: 700;
+        font-size: 0.95rem;
+        flex-shrink: 0;
+        letter-spacing: 0.5px;
+    }
+
+    .talent-name-block {
+        flex: 1;
+        min-width: 0;
+    }
+
+    .talent-name {
+        font-family: var(--font-heading);
+        font-weight: 600;
+        font-size: 1rem;
+        color: var(--text-primary);
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        margin: 0;
+        line-height: 1.3;
+    }
+
+    .talent-title {
+        font-size: 0.8rem;
+        color: var(--text-secondary);
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        line-height: 1.3;
+    }
+
+    .talent-meta {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+        margin-bottom: 1rem;
+    }
+
+    .talent-meta-item {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        font-size: 0.8rem;
+        color: var(--text-secondary);
+    }
+
+    .talent-meta-item i {
+        color: #8b5cf6;
+        width: 14px;
+        text-align: center;
+        font-size: 0.75rem;
+        flex-shrink: 0;
+    }
+
+    .talent-meta-item span {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    /* Skills Tags */
+    .talent-skills {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.35rem;
+        margin-bottom: 1rem;
+    }
+
+    .skill-tag {
+        display: inline-flex;
+        align-items: center;
+        background: rgba(139, 92, 246, 0.08);
+        color: #8b5cf6;
+        padding: 0.2rem 0.55rem;
+        border-radius: 6px;
+        font-size: 0.72rem;
+        font-weight: 500;
+        white-space: nowrap;
+    }
+
+    .skill-tag.more {
+        background: var(--bg-card-hover);
+        color: var(--text-muted);
+    }
+
+    /* Badges */
+    .talent-badges {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.4rem;
+        margin-bottom: 0.75rem;
+    }
+
+    .talent-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.3rem;
+        padding: 0.2rem 0.6rem;
+        border-radius: 6px;
+        font-size: 0.72rem;
+        font-weight: 500;
+    }
+
+    .talent-badge.experience {
+        background: var(--secondary-subtle);
+        color: var(--secondary);
+    }
+
+    .talent-badge.role {
+        background: rgba(139, 92, 246, 0.08);
+        color: #8b5cf6;
+    }
+
+    .talent-badge.availability-immediate {
+        background: rgba(16, 185, 129, 0.1);
+        color: #10b981;
+    }
+
+    .talent-badge.availability-2weeks {
+        background: rgba(245, 158, 11, 0.1);
+        color: #f59e0b;
+    }
+
+    .talent-badge.availability-later {
+        background: rgba(107, 114, 128, 0.1);
+        color: #6b7280;
+    }
+
+    .talent-card-footer {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding-top: 0.75rem;
+        border-top: 1px solid var(--border-color);
+    }
+
+    .talent-social-links {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .social-link {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 30px;
+        height: 30px;
+        border-radius: 8px;
+        background: rgba(139, 92, 246, 0.08);
+        color: #8b5cf6;
+        font-size: 0.8rem;
+        transition: all 0.15s ease;
+        text-decoration: none;
+    }
+
+    .social-link:hover {
+        background: #8b5cf6;
+        color: white;
+        transform: translateY(-1px);
+    }
+
+    .social-link.github {
+        background: var(--bg-card-hover);
+        color: var(--text-secondary);
+    }
+
+    .social-link.github:hover {
+        background: #333;
+        color: white;
+    }
+
+    .social-link.portfolio {
+        background: var(--accent-subtle);
+        color: var(--accent);
+    }
+
+    .social-link.portfolio:hover {
+        background: var(--accent);
+        color: white;
+    }
+
+    .talent-arrow {
+        color: var(--text-muted);
+        font-size: 0.85rem;
+        transition: all var(--transition-base);
+    }
+
+    .talent-card:hover .talent-arrow {
+        color: #8b5cf6;
+        transform: translateX(3px);
+    }
+
+    /* Empty State */
+    .empty-state {
+        text-align: center;
+        padding: 4rem 2rem;
+        grid-column: 1 / -1;
+    }
+
+    .empty-state i {
+        font-size: 3rem;
+        color: var(--text-muted);
+        margin-bottom: 1rem;
+    }
+
+    .empty-state h3 {
+        font-family: var(--font-heading);
+        color: var(--text-primary);
+        margin-bottom: 0.5rem;
+    }
+
+    .empty-state p {
+        color: var(--text-secondary);
+    }
+
+    /* Section Heading */
+    .section-heading {
+        font-family: var(--font-heading);
+        font-weight: 700;
+        color: var(--text-primary);
+        margin-bottom: 1.25rem;
+        font-size: 1.2rem;
+    }
+
+    /* Responsive */
+    @media (max-width: 1200px) {
+        .talents-grid {
+            grid-template-columns: repeat(2, 1fr);
+        }
+    }
+
+    @media (max-width: 768px) {
+        .page-title {
+            font-size: 1.8rem;
+        }
+
+        .stats-bar {
+            gap: 1.5rem;
+        }
+
+        .talents-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .search-filters-bar {
+            flex-direction: column;
+        }
+
+        .search-input-wrapper {
+            min-width: 100%;
+        }
+    }
+</style>
+
+<!-- Page Header -->
+<div class="page-header">
+    <div class="container">
+        <h1 class="page-title"><i class="fas fa-user-tie"></i> <span data-i18n="talents_title">Talent Marketplace</span></h1>
+        <p class="page-subtitle" data-i18n="talents_subtitle">Find professionals and talent across Morocco's startup ecosystem</p>
+        <div style="margin-top: 1.5rem; position: relative; z-index: 2;">
+            <a href="{{ url_for('talent_form') }}" style="
+                display: inline-flex; align-items: center; gap: 0.5rem;
+                padding: 0.75rem 1.5rem;
+                background: linear-gradient(135deg, #8b5cf6, #7c3aed);
+                color: #fff; border: none; border-radius: 12px;
+                font-family: var(--font-heading); font-weight: 600; font-size: 0.95rem;
+                text-decoration: none; transition: all 0.2s ease;
+            " onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 8px 24px rgba(139,92,246,0.3)'" onmouseout="this.style.transform=''; this.style.boxShadow=''">
+                <i class="fas fa-plus"></i> <span data-i18n="talent_cta">Rejoindre le Talent Pool</span>
+            </a>
+        </div>
+    </div>
+</div>
+
+<!-- Stats Bar -->
+<div class="container">
+    <div class="stats-bar">
+        <div class="stat-item">
+            <div class="stat-number">{{ talents|length }}</div>
+            <div class="stat-label" data-i18n="total_talents">Total Talents</div>
+        </div>
+        <div class="stat-item">
+            <div class="stat-number accent">{{ talents|selectattr('availability', 'equalto', 'Immediate')|list|length }}</div>
+            <div class="stat-label" data-i18n="available_now">Available Now</div>
+        </div>
+        <div class="stat-item">
+            <div class="stat-number secondary">
+                {% set role_types = talents|map(attribute='role_type')|select('string')|unique|list %}
+                {{ role_types|length }}
+            </div>
+            <div class="stat-label" data-i18n="role_type">Roles</div>
+        </div>
+    </div>
+</div>
+
+<!-- Search & Filters -->
+<div class="container">
+    <form action="{{ url_for('talents') }}" method="GET">
+        <div class="search-filters-bar">
+            <div class="search-input-wrapper">
+                <i class="fas fa-search"></i>
+                <input type="text" class="search-input" name="search" value="{{ search }}" placeholder="Search by skill, name, title..." data-i18n-placeholder="search_talents">
+            </div>
+            <input type="hidden" name="role_type" value="{{ selected_role }}">
+            <input type="hidden" name="availability" value="{{ selected_availability }}">
+            <button type="submit" class="search-btn">
+                <i class="fas fa-search"></i> <span data-i18n="search">Search</span>
+            </button>
+        </div>
+    </form>
+
+    <!-- Filter Tabs -->
+    <div class="filter-tabs">
+        <a href="{{ url_for('talents', search=search, availability=selected_availability) }}" class="filter-tab {% if not selected_role %}active{% endif %}">All</a>
+        <a href="{{ url_for('talents', search=search, role_type='Full-time', availability=selected_availability) }}" class="filter-tab {% if selected_role == 'Full-time' %}active{% endif %}">Full-time</a>
+        <a href="{{ url_for('talents', search=search, role_type='Contract', availability=selected_availability) }}" class="filter-tab {% if selected_role == 'Contract' %}active{% endif %}">Contract</a>
+        <a href="{{ url_for('talents', search=search, role_type='Part-time', availability=selected_availability) }}" class="filter-tab {% if selected_role == 'Part-time' %}active{% endif %}">Part-time</a>
+        <a href="{{ url_for('talents', search=search, role_type='Co-founder', availability=selected_availability) }}" class="filter-tab {% if selected_role == 'Co-founder' %}active{% endif %}">Co-founder</a>
+    </div>
+</div>
+
+<!-- Talents Grid -->
+<div class="container">
+    <h2 class="section-heading">
+        {% if talents|length > 0 %}
+            {{ talents|length }} <span data-i18n="talents_label">talent{{ 's' if talents|length != 1 else '' }}</span>
+        {% else %}
+            <span data-i18n="no_talents_found">No Talents Found</span>
+        {% endif %}
+    </h2>
+
+    <div class="talents-grid">
+        {% if talents|length > 0 %}
+            {% for talent in talents %}
+            <div class="talent-card">
+
+                <div class="talent-card-header">
+                    <div class="talent-avatar">
+                        {% if talent.full_name %}
+                            {{ talent.full_name[0].upper() }}
+                        {% else %}
+                            T
+                        {% endif %}
+                    </div>
+                    <div class="talent-name-block">
+                        <h3 class="talent-name">{{ talent.full_name or 'Unknown' }}</h3>
+                        {% if talent.current_title %}
+                        <div class="talent-title">{{ talent.current_title }}</div>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <div class="talent-meta">
+                    {% if talent.location %}
+                    <div class="talent-meta-item">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <span>{{ talent.location }}</span>
+                    </div>
+                    {% endif %}
+                    {% if talent.years_experience %}
+                    <div class="talent-meta-item">
+                        <i class="fas fa-briefcase"></i>
+                        <span>{{ talent.years_experience }} experience</span>
+                    </div>
+                    {% endif %}
+                </div>
+
+                {% if talent.skills %}
+                <div class="talent-skills">
+                    {% set skill_list = talent.skills.split(',') %}
+                    {% for skill in skill_list[:4] %}
+                        <span class="skill-tag">{{ skill.strip() }}</span>
+                    {% endfor %}
+                    {% if skill_list|length > 4 %}
+                        <span class="skill-tag more">+{{ skill_list|length - 4 }}</span>
+                    {% endif %}
+                </div>
+                {% endif %}
+
+                <div class="talent-badges">
+                    {% if talent.years_experience %}
+                    <span class="talent-badge experience">
+                        <i class="fas fa-clock"></i> {{ talent.years_experience }}
+                    </span>
+                    {% endif %}
+                    {% if talent.role_type %}
+                    <span class="talent-badge role">
+                        <i class="fas fa-user"></i> {{ talent.role_type }}
+                    </span>
+                    {% endif %}
+                    {% if talent.availability %}
+                    <span class="talent-badge {% if talent.availability == 'Immediate' %}availability-immediate{% elif talent.availability == '2 Weeks' %}availability-2weeks{% else %}availability-later{% endif %}">
+                        <i class="fas fa-calendar-check"></i> {{ talent.availability }}
+                    </span>
+                    {% endif %}
+                </div>
+
+                <div class="talent-card-footer">
+                    <div class="talent-social-links">
+                        {% if talent.linkedin_url %}
+                        <a href="{{ talent.linkedin_url }}" target="_blank" rel="noopener" class="social-link" onclick="event.stopPropagation();" title="LinkedIn">
+                            <i class="fab fa-linkedin-in"></i>
+                        </a>
+                        {% endif %}
+                        {% if talent.github_profile %}
+                        <a href="{{ talent.github_profile }}" target="_blank" rel="noopener" class="social-link github" onclick="event.stopPropagation();" title="GitHub">
+                            <i class="fab fa-github"></i>
+                        </a>
+                        {% endif %}
+                        {% if talent.portfolio_website %}
+                        <a href="{{ talent.portfolio_website }}" target="_blank" rel="noopener" class="social-link portfolio" onclick="event.stopPropagation();" title="Portfolio">
+                            <i class="fas fa-globe"></i>
+                        </a>
+                        {% endif %}
+                    </div>
+                    <i class="fas fa-arrow-right talent-arrow"></i>
+                </div>
+
+            </div>
+            {% endfor %}
+        {% else %}
+            <div class="empty-state">
+                <i class="fas fa-user-slash"></i>
+                <h3 data-i18n="no_talents_found">No Talents Found</h3>
+                <p data-i18n="no_talents_msg">No talent profiles are available at this time.</p>
+            </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
