@@ -94,7 +94,7 @@ def home():
 
     # Featured appels à projets for home page
     appels_a_projets = Resource.query.filter(
-        Resource.category == 'Appel à projet',
+        Resource.category == 'Appels à projets',
         Resource.is_featured == True
     ).order_by(Resource.published_at.desc()).limit(3).all()
 
@@ -116,7 +116,7 @@ def home():
     _feed.sort(key=lambda x: x['date'] if x['date'] else _dt.min, reverse=True)
     # Build balanced feed: 2 articles + 2 posts + 2 opportunities
     _articles = [x for x in _feed if x['type'] == 'article'][:2]
-    _posts = [x for x in _feed if x['type'] == 'post' and x['obj'].post_type in ('post', 'question', 'announcement')][:2]
+    _posts = [x for x in _feed if x['type'] == 'post' and x['obj'].post_type in ('post', 'question', 'announcement') and x['obj'].author_founder_id][:2]
     _opps = [x for x in _feed if x['type'] == 'post' and x['obj'].post_type == 'opportunity'][:2]
     home_feed_items = _articles + _posts + _opps
     home_feed_items.sort(key=lambda x: x['date'] if x['date'] else _dt.min, reverse=True)
@@ -132,7 +132,7 @@ def home():
     ).order_by(FundingRound.date.desc()).limit(4).all()
 
     home_appels_sidebar = Resource.query.filter(
-        Resource.category == 'Appel à projet',
+        Resource.category == 'Appels à projets',
         Resource.is_featured == True
     ).order_by(Resource.published_at.desc()).limit(3).all()
 
@@ -443,6 +443,8 @@ def startup_detail(startup_id):
             else:
                 fr_unmatched_names.add(name)
 
+    fr_unmatched_names = {name for name in fr_unmatched_names if "verod-kepple" not in name.lower()}
+
     return render_template("startup_detail.html", startup=startup, founders=founders, fundingRounds=fundingRounds, incubators=incubators, investors=investors, total_raised=total_raised, fr_investor_names=fr_unmatched_names, fr_matched_investors=fr_matched_investors)
 
 
@@ -476,6 +478,8 @@ def investors():
             Investor.investment_count > 0,
             Investor.investments.any()
         )
+    ).filter(
+        Investor.investor_id != 55
     )
     search_query = request.args.get("q", "").strip()
     if search_query:
@@ -580,7 +584,9 @@ def investor_details(investor_id):
     ).all()
     
     startups = StartupsInvestedByInvestor(investor)
-    
+    # Sort by funding (most funded first)
+    startups.sort(key=lambda s: float(s.total_funding_usd or 0), reverse=True)
+
     # Get all unique funding rounds that are actually loaded
     fundingRounds = []
     seen_round_ids = set()
@@ -940,6 +946,11 @@ def actualites():
     featured = [a for a in all_articles if a.is_featured]
     return render_template("actualites.html", articles=all_articles, featured=featured,
                          search=search, selected_category=selected_category)
+
+@app.route("/article/<int:article_id>")
+def article_detail(article_id):
+    article = Article.query.get_or_404(article_id)
+    return render_template("article_detail.html", article=article)
 
 @app.route("/article-form", methods=["GET", "POST"])
 def article_form():
@@ -1457,7 +1468,7 @@ def newsfeed():
 
     # Sidebar: featured resources (appels à projets)
     appels_projets = Resource.query.filter(
-        Resource.category == 'Appel à projet',
+        Resource.category == 'Appels à projets',
         Resource.is_featured == True
     ).order_by(Resource.published_at.desc()).limit(2).all()
 

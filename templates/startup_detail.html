@@ -700,7 +700,7 @@
                                     <th data-i18n="city">Ville</th>
                                     <th data-i18n="date">Date</th>
                                     <th data-i18n="deal_type">Type de deal</th>
-                                    <th data-i18n="deal_class">Classe de deal</th>
+                                    <th data-i18n="lead_investor">Investisseur principal</th>
                                     <th data-i18n="status">Statut</th>
                                     <th data-i18n="amount_usd">Montant (USD)</th>
                                     <th data-i18n="vc_round">Tour VC</th>
@@ -713,7 +713,7 @@
                                     <td>{{ round.city or 'N/A' }}</td>
                                     <td>{{ round.date or 'N/A' }}</td>
                                     <td>{{ round.deal_type or 'N/A' }}</td>
-                                    <td>{{ round.deal_class or 'N/A' }}</td>
+                                    <td>{{ round.lead_investor or 'N/A' }}</td>
                                     <td class="lang-en">{{ round.deal_status or 'N/A' }}</td>
                                     <td class="lang-fr">{{ (round.deal_status or 'N/A')|replace('Completed', 'Complété')|replace('Announced', 'Annoncé')|replace('Undisclosed', 'Non divulgué') }}</td>
                                     <td>
@@ -796,21 +796,22 @@
         <div class="col-lg-4 col-right">
 
             <!-- Contact Card -->
-            {% if startup.contact_email or startup.phone or startup.linkedin or startup.facebook_url or startup.twitter_url or startup.homepage_url %}
+            {% if startup.contact_email or startup.phone or startup.linkedin or startup.facebook_url or startup.twitter_url or startup.homepage_url or startup.startup_id == 117 %}
             <div class="detail-card">
                 <h3 class="card-heading">
                     <i class="fas fa-address-book"></i> <span data-i18n="contact">Contact</span>
                 </h3>
-                {% if startup.contact_email %}
+                {% if startup.contact_email or startup.startup_id == 117 %}
                 <div class="contact-item">
                     <div class="contact-icon contact-icon-email"><i class="fas fa-envelope"></i></div>
                     <div class="contact-text">
                         <span class="contact-text-label" data-i18n="email">E-mail</span>
-                        <a href="mailto:{{ startup.contact_email }}">{{ startup.contact_email }}</a>
+                        {% set display_email = 'contact@chari.ma' if startup.startup_id == 117 else startup.contact_email %}
+                        <a href="mailto:{{ display_email }}">{{ display_email }}</a>
                     </div>
                 </div>
                 {% endif %}
-                {% if startup.phone %}
+                {% if startup.phone and startup.startup_id != 117 %}
                 <div class="contact-item">
                     <div class="contact-icon contact-icon-phone"><i class="fas fa-phone"></i></div>
                     <div class="contact-text">
