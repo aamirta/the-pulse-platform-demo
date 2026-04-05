@@ -697,7 +697,11 @@
                         </div>
                         {% endif %}
                         <div class="nf-card-author">
+                            {% if obj.author_founder_id is defined and obj.author_founder_id %}
+                            <a href="/founder/{{ obj.author_founder_id }}" class="nf-card-author-name" style="text-decoration:none; color:inherit;" onclick="event.stopPropagation();">{{ obj.author_name or 'Membre anonyme' }}</a>
+                            {% else %}
                             <p class="nf-card-author-name">{{ obj.author_name or 'Membre anonyme' }}</p>
+                            {% endif %}
                             <p class="nf-card-author-role">{{ obj.author_role or 'Membre de l\'écosystème' }}</p>
                         </div>
                         <div style="display:flex; flex-direction:column; align-items:flex-end; gap:0.35rem;">
