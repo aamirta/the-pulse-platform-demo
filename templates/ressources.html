@@ -185,7 +185,7 @@
                 {% set categories = resources|map(attribute='category')|select('string')|unique|list %}
                 {{ categories|length }}
             </div>
-            <div class="stat-label" data-i18n="res_categories">Categories</div>
+            <div class="stat-label" data-i18n="res_categories">Catégories</div>
         </div>
         <div class="stat-item">
             <div class="stat-number blue">
@@ -211,11 +211,11 @@
     </form>
 
     <div class="filter-tabs">
-        <a href="{{ url_for('ressources', search=search) }}" class="filter-tab {% if not selected_category %}active{% endif %}" data-i18n="res_all">All</a>
-        <a href="{{ url_for('ressources', search=search, category='Politiques publiques') }}" class="filter-tab {% if selected_category == 'Politiques publiques' %}active{% endif %}" data-i18n="res_politique">Politiques publiques</a>
-        <a href="{{ url_for('ressources', search=search, category='Dispositifs d appui') }}" class="filter-tab {% if selected_category == 'Dispositifs d appui' %}active{% endif %}" data-i18n="res_dispositif">Dispositifs d'appui</a>
-        <a href="{{ url_for('ressources', search=search, category='Guides pratiques') }}" class="filter-tab {% if selected_category == 'Guides pratiques' %}active{% endif %}" data-i18n="res_guide">Guides pratiques</a>
+        <a href="{{ url_for('ressources', search=search) }}" class="filter-tab {% if not selected_category %}active{% endif %}" data-i18n="res_all">Tout</a>
         <a href="{{ url_for('ressources', search=search, category='Appels à projets') }}" class="filter-tab {% if selected_category == 'Appels à projets' %}active{% endif %}" data-i18n="res_appel">Appels à projets</a>
+        <a href="{{ url_for('ressources', search=search, category='Dispositifs d\'appui') }}" class="filter-tab {% if selected_category == 'Dispositifs d\'appui' %}active{% endif %}" data-i18n="res_dispositif">Dispositifs d'appui</a>
+        <a href="{{ url_for('ressources', search=search, category='Politiques publiques') }}" class="filter-tab {% if selected_category == 'Politiques publiques' %}active{% endif %}" data-i18n="res_politique">Politiques publiques</a>
+        <a href="{{ url_for('ressources', search=search, category='Guides pratiques') }}" class="filter-tab {% if selected_category == 'Guides pratiques' %}active{% endif %}" data-i18n="res_guide">Guides pratiques</a>
     </div>
 </div>
 

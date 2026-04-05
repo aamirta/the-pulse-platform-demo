@@ -89,6 +89,43 @@
         gap: 0.5rem;
         margin-bottom: 1rem;
     }
+    .hero-badges .pulse-badge-accent,
+    .hero-badges .pulse-badge-secondary,
+    .hero-badges .pulse-badge-tertiary {
+        background: var(--bg-surface);
+        border: 1px solid var(--border-color);
+        border-radius: 20px;
+        padding: 0.35rem 0.85rem;
+        font-size: 0.78rem;
+        font-weight: 600;
+        font-family: var(--font-body);
+        letter-spacing: 0.02em;
+        backdrop-filter: blur(8px);
+        -webkit-backdrop-filter: blur(8px);
+    }
+    .hero-badges .pulse-badge-accent {
+        color: var(--accent);
+        border-color: rgba(0, 214, 143, 0.25);
+    }
+    .hero-badges .pulse-badge-secondary {
+        color: var(--secondary);
+        border-color: rgba(99, 102, 241, 0.25);
+    }
+    .hero-badges .pulse-badge-tertiary {
+        color: var(--tertiary);
+        border-color: rgba(245, 158, 11, 0.25);
+    }
+    .hero-badges .badge-funding {
+        background: linear-gradient(135deg, var(--accent), #00b87a);
+        color: #fff;
+        border: none;
+        border-radius: 20px;
+        padding: 0.35rem 0.85rem;
+        font-size: 0.78rem;
+        font-weight: 700;
+        font-family: var(--font-body);
+        box-shadow: 0 2px 12px rgba(0, 214, 143, 0.25);
+    }
 
     .hero-description {
         font-family: var(--font-body);
@@ -554,7 +591,7 @@
                         <span class="pulse-badge-tertiary"><i class="fas fa-map-marker-alt me-1"></i>{{ startup.location }}</span>
                     {% endif %}
                     {% if total_raised > 0 %}
-                        <span class="pulse-badge-accent" style="background: linear-gradient(135deg, #f7b731, #e6a520); color: #fff; font-weight: 700; font-size: 0.85rem; padding: 0.3rem 0.8rem;">
+                        <span class="badge-funding">
                             <i class="fas fa-coins me-1"></i>
                             {% if total_raised >= 1000000000 %}${{ "%.1f"|format(total_raised / 1000000000) }}B
                             {% elif total_raised >= 1000000 %}${{ "%.1f"|format(total_raised / 1000000) }}M
@@ -677,7 +714,8 @@
                                     <td>{{ round.date or 'N/A' }}</td>
                                     <td>{{ round.deal_type or 'N/A' }}</td>
                                     <td>{{ round.deal_class or 'N/A' }}</td>
-                                    <td>{{ round.deal_status or 'N/A' }}</td>
+                                    <td class="lang-en">{{ round.deal_status or 'N/A' }}</td>
+                                    <td class="lang-fr">{{ (round.deal_status or 'N/A')|replace('Completed', 'Complété')|replace('Announced', 'Annoncé')|replace('Undisclosed', 'Non divulgué') }}</td>
                                     <td>
                                         {% if round.raised_amount_usd %}
                                             <span class="amount-chip">${{ "{:,.0f}".format(round.raised_amount_usd) }}</span>
@@ -703,9 +741,9 @@
             <div class="detail-card">
                 <h3 class="card-heading">
                     <i class="fas fa-hand-holding-usd"></i> <span data-i18n="investors_title">Investisseurs</span>
-                    <span class="count-badge">{{ investors|length + fr_investor_names|length }}</span>
+                    <span class="count-badge">{{ investors|length + fr_matched_investors|length + fr_investor_names|length }}</span>
                 </h3>
-                {% if investors or fr_investor_names %}
+                {% if investors or fr_matched_investors or fr_investor_names %}
                     <div class="investors-grid">
                         {% for investor in investors %}
                         <div class="investor-card" onclick="window.location.href='/investor/{{ investor.investor_id }}'">
@@ -722,14 +760,26 @@
                             {% endif %}
                         </div>
                         {% endfor %}
-                        {% set shown_names = investors|map(attribute='investor_name')|list %}
-                        {% for name in fr_investor_names %}
-                            {% if name not in shown_names %}
-                            <div class="investor-card">
-                                <div class="investor-card-logo-placeholder">{{ name[0].upper() }}</div>
-                                <div class="investor-card-name">{{ name }}</div>
-                            </div>
+                        {% for investor in fr_matched_investors %}
+                        <div class="investor-card" onclick="window.location.href='/investor/{{ investor.investor_id }}'">
+                            {% if investor.logo_url %}
+                                <img src="{{ investor.logo_url }}" alt="{{ investor.investor_name }}" class="investor-card-logo" loading="lazy">
+                            {% else %}
+                                <div class="investor-card-logo-placeholder">
+                                    {{ (investor.investor_name or 'I')[0].upper() }}
+                                </div>
                             {% endif %}
+                            <div class="investor-card-name">{{ investor.investor_name }}</div>
+                            {% if investor.primary_investor_type %}
+                                <div class="investor-card-type">{{ investor.primary_investor_type }}</div>
+                            {% endif %}
+                        </div>
+                        {% endfor %}
+                        {% for name in fr_investor_names %}
+                        <div class="investor-card">
+                            <div class="investor-card-logo-placeholder">{{ name[0].upper() }}</div>
+                            <div class="investor-card-name">{{ name }}</div>
+                        </div>
                         {% endfor %}
                     </div>
                 {% else %}
@@ -808,6 +858,36 @@
             </div>
             {% endif %}
 
+            <!-- Founders Card -->
+            <div class="detail-card">
+                <h3 class="card-heading">
+                    <i class="fas fa-users"></i> <span data-i18n="founders">Fondateurs</span>
+                    <span class="count-badge">{{ founders|length }}</span>
+                </h3>
+                {% if founders %}
+                    {% for founder in founders %}
+                    <a href="{{ url_for('founder_detail', founder_id=founder.founder_id) }}" class="founder-mini">
+                        {% if founder.profile_pic %}
+                            <img src="{{ founder.profile_pic }}" alt="{{ founder.name or (founder.first_name ~ ' ' ~ founder.last_name) }}" class="founder-mini-avatar" loading="lazy">
+                        {% else %}
+                            <div class="founder-mini-initials">
+                                {{ (founder.name or (founder.first_name ~ ' ' ~ founder.last_name) or 'U')[0].upper() }}
+                            </div>
+                        {% endif %}
+                        <div class="founder-mini-info">
+                            <div class="founder-mini-name">{{ founder.name or (founder.first_name ~ ' ' ~ founder.last_name) or 'Unknown' }}</div>
+                            <div class="founder-mini-title">{{ founder.current_title or 'Pas de titre' }}{% if founder.current_employer %} <span data-i18n="at_employer">chez</span> {{ founder.current_employer }}{% endif %}</div>
+                        </div>
+                    </a>
+                    {% endfor %}
+                {% else %}
+                    <div class="empty-state">
+                        <i class="fas fa-users"></i>
+                        <span data-i18n="no_founders_assoc">Aucun fondateur trouv&eacute;.</span>
+                    </div>
+                {% endif %}
+            </div>
+
             <!-- Incubators Card -->
             <div class="detail-card">
                 <h3 class="card-heading">
@@ -850,36 +930,6 @@
                     <div class="empty-state">
                         <i class="fas fa-building"></i>
                         <span data-i18n="no_incubators_assoc">Aucun incubateur associ&eacute;.</span>
-                    </div>
-                {% endif %}
-            </div>
-
-            <!-- Founders Card -->
-            <div class="detail-card">
-                <h3 class="card-heading">
-                    <i class="fas fa-users"></i> <span data-i18n="founders">Fondateurs</span>
-                    <span class="count-badge">{{ founders|length }}</span>
-                </h3>
-                {% if founders %}
-                    {% for founder in founders %}
-                    <a href="{{ url_for('founder_detail', founder_id=founder.founder_id) }}" class="founder-mini">
-                        {% if founder.profile_pic %}
-                            <img src="{{ founder.profile_pic }}" alt="{{ founder.name or (founder.first_name ~ ' ' ~ founder.last_name) }}" class="founder-mini-avatar" loading="lazy">
-                        {% else %}
-                            <div class="founder-mini-initials">
-                                {{ (founder.name or (founder.first_name ~ ' ' ~ founder.last_name) or 'U')[0].upper() }}
-                            </div>
-                        {% endif %}
-                        <div class="founder-mini-info">
-                            <div class="founder-mini-name">{{ founder.name or (founder.first_name ~ ' ' ~ founder.last_name) or 'Unknown' }}</div>
-                            <div class="founder-mini-title">{{ founder.current_title or 'Pas de titre' }}{% if founder.current_employer %} <span data-i18n="at_employer">chez</span> {{ founder.current_employer }}{% endif %}</div>
-                        </div>
-                    </a>
-                    {% endfor %}
-                {% else %}
-                    <div class="empty-state">
-                        <i class="fas fa-users"></i>
-                        <span data-i18n="no_founders_assoc">Aucun fondateur trouv&eacute;.</span>
                     </div>
                 {% endif %}
             </div>

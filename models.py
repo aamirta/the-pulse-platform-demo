@@ -717,6 +717,7 @@ class Post(db.Model):
     comments_count = db.Column(db.Integer, default=0)
     is_published = db.Column(db.Boolean, default=True)
     created_at = db.Column(db.DateTime, default=db.func.now())
+    author_pic = db.Column(db.String(500))
 
 
 class DirectMessage(db.Model):

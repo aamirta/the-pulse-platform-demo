@@ -755,40 +755,7 @@
                 </div>
             </div>
 
-            <!-- Associated Founders Card -->
-            <div class="pulse-card">
-                <div class="pulse-card-title">
-                    <i class="fas fa-users"></i>
-                    <span data-i18n="associated_founders">Fondateurs associ&eacute;s</span> ({{ founders|length }})
-                </div>
-
-                {% if founders %}
-                <div class="founders-grid">
-                    {% for founder in founders %}
-                    <div class="founder-card" onclick="window.location.href='{{ url_for('founder_detail', founder_id=founder.founder_id) }}'">
-                        {% if founder.profile_pic %}
-                            <img src="{{ founder.profile_pic }}" alt="{{ founder.name or (founder.first_name ~ ' ' ~ founder.last_name) }}" class="founder-avatar" loading="lazy">
-                        {% else %}
-                            <div class="founder-avatar-ph">
-                                {{ (founder.name or founder.first_name or '?')[0] }}
-                            </div>
-                        {% endif %}
-                        <h4>{{ founder.name or (founder.first_name ~ ' ' ~ founder.last_name) or 'Unknown' }}</h4>
-                        <p>{{ founder.current_title or 'Pas de titre' }}</p>
-                        {% if founder.linkedin_url %}
-                            <i class="fab fa-linkedin linkedin-icon"></i>
-                        {% endif %}
-                    </div>
-                    {% endfor %}
-                </div>
-                {% else %}
-                <div class="empty-state">
-                    <i class="fas fa-users"></i>
-                    <h4 data-i18n="no_founders_yet">Aucun fondateur pour le moment</h4>
-                    <p data-i18n="no_founders_incubator">Aucun fondateur n'est actuellement associ&eacute; &agrave; cet incubateur.</p>
-                </div>
-                {% endif %}
-            </div>
+            <!-- Founders section removed - not relevant for incubators -->
 
         </div>
 

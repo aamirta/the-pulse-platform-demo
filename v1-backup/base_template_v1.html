@@ -1,0 +1,2009 @@
+<!DOCTYPE html>
+<html lang="fr" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="The Pulse - Moroccan Startup Ecosystem Data Platform">
+    <title>{% block title %}The Pulse - Moroccan Startup Ecosystem{% endblock %}</title>
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <!-- Google Fonts: Space Grotesk + DM Sans -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}">
+</head>
+<body>
+    <a href="#main-content" class="skip-to-content">Aller au contenu principal</a>
+    <!-- ============================================
+         NAVBAR
+         ============================================ -->
+    <nav class="navbar-pulse" id="navbar" role="navigation" aria-label="Main navigation">
+        <!-- Left: hamburger + logo -->
+        <div class="nav-left">
+            <button class="hamburger-btn" id="sidebarToggle" type="button"
+                    aria-label="Open navigation menu" aria-expanded="false" aria-controls="sidebar">
+                <i class="fas fa-bars" aria-hidden="true"></i>
+            </button>
+            <a href="/" class="logo-link" aria-label="The Pulse - Home">
+                <img src="{{ url_for('static', filename='images/thepulse-noir.png') }}" alt="The Pulse" class="logo-img logo-dark">
+                <img src="{{ url_for('static', filename='images/thepulse-blanc.png') }}" alt="The Pulse" class="logo-img logo-light">
+            </a>
+        </div>
+
+        <!-- Center: desktop nav links -->
+        <div class="nav-center" role="menubar">
+            <a href="/newsfeed" class="nav-link-item" role="menuitem" style="position:relative;">
+                <i class="fas fa-newspaper" style="margin-right:0.3rem;" aria-hidden="true"></i> Newsfeed
+                <span style="
+                    position: absolute;
+                    top: 2px;
+                    right: -4px;
+                    width: 7px;
+                    height: 7px;
+                    background: #8B5CF6;
+                    border-radius: 50%;
+                    border: 2px solid var(--bg-dark, #111);
+                    display: inline-block;
+                " aria-hidden="true"></span>
+            </a>
+            <a href="/startups" class="nav-link-item" role="menuitem" data-i18n="nav_startups">Startups</a>
+            <a href="/founders" class="nav-link-item" role="menuitem" data-i18n="nav_founders">Fondateurs</a>
+            <a href="/investors" class="nav-link-item" role="menuitem" data-i18n="nav_investors">Investisseurs</a>
+            <a href="/incubators" class="nav-link-item" role="menuitem" data-i18n="nav_incubators">Incubateurs</a>
+            <a href="/ressources?category=Appel+à+projet" class="nav-link-item" role="menuitem"><i class="fas fa-bullhorn" style="margin-right:0.3rem;"></i>Appels à projets</a>
+
+            <!-- Talents dropdown -->
+            <div class="nav-dropdown">
+                <button class="nav-dropdown-toggle" aria-expanded="false" aria-haspopup="true">
+                    <span data-i18n="sidebar_talents">Capital Humain</span>
+                    <i class="fas fa-chevron-down" aria-hidden="true"></i>
+                </button>
+                <div class="nav-dropdown-menu" role="menu">
+                    <a href="/talents" role="menuitem">
+                        <i class="fas fa-user-tie" aria-hidden="true"></i>
+                        <span data-i18n="nav_talents">Talents</span>
+                    </a>
+                    <a href="/cofounders" role="menuitem">
+                        <i class="fas fa-handshake" aria-hidden="true"></i>
+                        <span data-i18n="nav_cofounders">Co-Fondateurs</span>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Ecosystem dropdown -->
+            <div class="nav-dropdown">
+                <button class="nav-dropdown-toggle" aria-expanded="false" aria-haspopup="true">
+                    <span data-i18n="sidebar_ecosystem">Écosystème</span>
+                    <i class="fas fa-chevron-down" aria-hidden="true"></i>
+                </button>
+                <div class="nav-dropdown-menu" role="menu">
+                    <a href="/actualites" role="menuitem">
+                        <i class="fas fa-newspaper" aria-hidden="true"></i>
+                        <span data-i18n="nav_actualites">Actualités</span>
+                    </a>
+                    <a href="/ressources" role="menuitem">
+                        <i class="fas fa-book-open" aria-hidden="true"></i>
+                        <span data-i18n="nav_ressources">Ressources</span>
+                    </a>
+                </div>
+            </div>
+
+            <a href="/toolbox" class="nav-link-item" role="menuitem" data-i18n="nav_toolbox">Toolbox IA</a>
+        </div>
+
+        <!-- Right: theme toggle + join CTA -->
+        <div class="nav-right">
+            <a href="/favorites" class="nav-fav-link" title="Mes favoris">
+                <i class="fas fa-heart"></i>
+                <span class="fav-count-badge" id="favCountBadge" style="display:none;">0</span>
+            </a>
+            <div class="global-search-wrapper">
+                <div class="global-search-input-wrap">
+                    <i class="fas fa-search"></i>
+                    <input type="text" id="globalSearch" placeholder="Rechercher..." autocomplete="off">
+                </div>
+                <div class="global-search-results" id="globalSearchResults"></div>
+            </div>
+            <button class="lang-toggle" id="langToggle" type="button"
+                    aria-label="Toggle language" title="Switch language">
+                <span id="langLabel">FR</span>
+            </button>
+            <button class="theme-toggle" id="themeToggle" type="button"
+                    aria-label="Toggle dark and light mode" title="Toggle theme">
+                <i class="fas fa-moon" id="themeIcon" aria-hidden="true"></i>
+            </button>
+            <a href="/join" class="btn-join">
+                <i class="fas fa-bolt" aria-hidden="true"></i>
+                <span>Join</span>
+            </a>
+        </div>
+    </nav>
+
+    <!-- ============================================
+         SIDEBAR
+         ============================================ -->
+    <aside class="sidebar" id="sidebar" role="navigation" aria-label="Sidebar navigation">
+        <div class="sidebar-header">
+            <div class="sidebar-brand">
+                <img src="{{ url_for('static', filename='images/thepulse-noir.png') }}" alt="The Pulse" class="logo-img logo-dark" style="height:48px;">
+                <img src="{{ url_for('static', filename='images/thepulse-blanc.png') }}" alt="The Pulse" class="logo-img logo-light" style="height:48px;">
+            </div>
+            <button class="sidebar-close" id="sidebarClose" type="button" aria-label="Close navigation menu">
+                <i class="fas fa-xmark" aria-hidden="true"></i>
+            </button>
+        </div>
+
+        <nav class="sidebar-nav">
+            <div class="sidebar-label" data-i18n="sidebar_platform">Plateforme</div>
+            <a href="/" class="sidebar-link">
+                <i class="fas fa-house" aria-hidden="true"></i>
+                <span data-i18n="sidebar_home">Accueil</span>
+            </a>
+            <a href="/newsfeed" class="sidebar-link" style="position:relative;">
+                <i class="fas fa-newspaper" aria-hidden="true"></i>
+                <span>Newsfeed</span>
+                <span style="
+                    position: absolute;
+                    left: 26px;
+                    top: 8px;
+                    width: 7px;
+                    height: 7px;
+                    background: #8B5CF6;
+                    border-radius: 50%;
+                    border: 2px solid var(--bg-dark, #111);
+                " aria-hidden="true"></span>
+            </a>
+            <a href="/startups" class="sidebar-link">
+                <i class="fas fa-rocket" aria-hidden="true"></i>
+                <span data-i18n="sidebar_startups">Startups</span>
+            </a>
+            <a href="/founders" class="sidebar-link">
+                <i class="fas fa-user-tie" aria-hidden="true"></i>
+                <span data-i18n="sidebar_founders">Fondateurs</span>
+            </a>
+            <a href="/investors" class="sidebar-link">
+                <i class="fas fa-hand-holding-dollar" aria-hidden="true"></i>
+                <span data-i18n="sidebar_investors">Investisseurs</span>
+            </a>
+            <a href="/incubators" class="sidebar-link">
+                <i class="fas fa-building-columns" aria-hidden="true"></i>
+                <span data-i18n="sidebar_incubators">Incubateurs</span>
+            </a>
+
+            <div class="sidebar-label" data-i18n="sidebar_finance">Finance</div>
+            <a href="/ressources?category=Appel+%C3%A0+projet" class="sidebar-link">
+                <i class="fas fa-bullhorn" aria-hidden="true"></i>
+                <span>Appels à projets</span>
+            </a>
+
+            <div class="sidebar-label" data-i18n="sidebar_talents">Talents</div>
+            <a href="/talents" class="sidebar-link">
+                <i class="fas fa-user-tie" aria-hidden="true"></i>
+                <span data-i18n="nav_talents">Talents</span>
+            </a>
+            <a href="/cofounders" class="sidebar-link">
+                <i class="fas fa-handshake" aria-hidden="true"></i>
+                <span data-i18n="nav_cofounders">Co-Fondateurs</span>
+            </a>
+
+            <div class="sidebar-label" data-i18n="sidebar_ecosystem">Écosystème</div>
+            <a href="/actualites" class="sidebar-link">
+                <i class="fas fa-newspaper" aria-hidden="true"></i>
+                <span data-i18n="nav_actualites">Actualités</span>
+            </a>
+            <a href="/ressources" class="sidebar-link">
+                <i class="fas fa-book-open" aria-hidden="true"></i>
+                <span data-i18n="nav_ressources">Ressources</span>
+            </a>
+
+            <div class="sidebar-label" data-i18n="sidebar_tools">Outils</div>
+            <a href="/toolbox" class="sidebar-link">
+                <i class="fas fa-wand-magic-sparkles" aria-hidden="true"></i>
+                <span data-i18n="nav_toolbox">Toolbox IA</span>
+            </a>
+
+            <div class="sidebar-label" data-i18n="sidebar_more">Plus</div>
+            <a href="/about-us" class="sidebar-link">
+                <i class="fas fa-circle-info" aria-hidden="true"></i>
+                <span data-i18n="sidebar_about">À propos</span>
+            </a>
+            <a href="/join" class="sidebar-link">
+                <i class="fas fa-bolt" aria-hidden="true"></i>
+                <span data-i18n="sidebar_join">Rejoindre The Pulse</span>
+            </a>
+        </nav>
+
+        <div class="sidebar-footer">
+            <p class="sidebar-footer-text">The Pulse &mdash; Plateforme de données de l'écosystème startup marocain</p>
+        </div>
+    </aside>
+
+    <!-- Overlay -->
+    <div class="overlay" id="overlay" aria-hidden="true"></div>
+
+    <!-- ============================================
+         COOKIE CONSENT BANNER
+         ============================================ -->
+    <div id="cookieConsent" style="display:none; position:fixed; bottom:0; left:0; right:0; z-index:9999; padding:0; margin:0;">
+        <div style="
+            max-width: 620px;
+            margin: 0 auto 1.25rem auto;
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 1.5rem 1.75rem;
+            box-shadow: 0 -4px 30px rgba(0,0,0,0.25);
+            backdrop-filter: blur(20px);
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        ">
+            <div style="display:flex; align-items:flex-start; gap:0.75rem;">
+                <i class="fas fa-cookie-bite" style="color:#f7b731; font-size:1.4rem; margin-top:2px; flex-shrink:0;"></i>
+                <div>
+                    <h4 style="font-family:var(--font-heading); font-weight:600; font-size:0.95rem; color:var(--text-primary); margin:0 0 0.35rem 0;" data-i18n="cookie_title">We value your privacy</h4>
+                    <p style="font-size:0.82rem; color:var(--text-secondary); line-height:1.6; margin:0;" data-i18n="cookie_message">We use cookies to enhance your browsing experience and analyze site traffic. In accordance with Law 09-08 and the CNDP (Commission Nationale de contrôle de la protection des Données à caractère Personnel), your data is processed with respect for your privacy. By clicking "Accept", you consent to our use of cookies.</p>
+                </div>
+            </div>
+            <div style="display:flex; gap:0.75rem; justify-content:flex-end; flex-wrap:wrap;">
+                <button onclick="declineCookies()" style="
+                    padding: 0.55rem 1.25rem;
+                    border-radius: 10px;
+                    border: 1px solid var(--border-color);
+                    background: transparent;
+                    color: var(--text-secondary);
+                    font-family: var(--font-heading);
+                    font-size: 0.82rem;
+                    font-weight: 500;
+                    cursor: pointer;
+                    transition: all 0.2s ease;
+                " data-i18n="cookie_decline">Decline</button>
+                <button onclick="acceptCookies()" style="
+                    padding: 0.55rem 1.25rem;
+                    border-radius: 10px;
+                    border: none;
+                    background: linear-gradient(135deg, #00d4aa, #00b894);
+                    color: #fff;
+                    font-family: var(--font-heading);
+                    font-size: 0.82rem;
+                    font-weight: 600;
+                    cursor: pointer;
+                    transition: all 0.2s ease;
+                    box-shadow: 0 2px 8px rgba(0,212,170,0.25);
+                " data-i18n="cookie_accept">Accept</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ============================================
+         MAIN CONTENT
+         ============================================ -->
+    <main class="main-content" id="main-content">
+        {% block content %}
+        <div class="container">
+            <h1 class="display-4 text-center mb-4">Bienvenue sur The Pulse</h1>
+            <p class="lead text-center" style="color: var(--text-secondary);">Votre portail vers l'écosystème startup marocain</p>
+        </div>
+        {% endblock %}
+    </main>
+
+    <!-- ============================================
+         FOOTER
+         ============================================ -->
+    <footer class="pulse-footer">
+        <div class="footer-inner">
+            <div class="footer-grid">
+
+                <!-- Col 1: Brand -->
+                <div>
+                    <img src="{{ url_for('static', filename='images/thepulse-noir.png') }}" alt="The Pulse" class="footer-brand-logo logo-dark">
+                    <img src="{{ url_for('static', filename='images/thepulse-blanc.png') }}" alt="The Pulse" class="footer-brand-logo logo-light">
+                    <p class="footer-brand-text" data-i18n="footer_desc">
+                        La plateforme d'intelligence de l'écosystème startup marocain.
+                    </p>
+                    <p class="footer-brand-text" style="font-weight: 600; color: var(--text-primary); font-size: 0.74rem;">
+                        UM6P Africa Business School<br>
+                        Center of Entrepreneurship
+                    </p>
+                    <div class="footer-location">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <span>UM6P, Ben Guerir, Morocco</span>
+                    </div>
+                </div>
+
+                <!-- Col 2: Navigation -->
+                <div>
+                    <h4 class="footer-heading" data-i18n="footer_platform">Plateforme</h4>
+                    <ul class="footer-nav">
+                        <li><a href="/startups"><i class="fas fa-rocket"></i> Startups</a></li>
+                        <li><a href="/founders" data-i18n="nav_founders"><i class="fas fa-user-tie"></i> Fondateurs</a></li>
+                        <li><a href="/investors" data-i18n="nav_investors"><i class="fas fa-hand-holding-dollar"></i> Investisseurs</a></li>
+                        <li><a href="/incubators" data-i18n="nav_incubators"><i class="fas fa-building-columns"></i> Incubateurs</a></li>
+                        <li><a href="/ressources?category=Appel+%C3%A0+projet"><i class="fas fa-bullhorn"></i> Appels à projets</a></li>
+                        <li><a href="/talents"><i class="fas fa-users"></i> Talents</a></li>
+                        <li><a href="/toolbox" data-i18n="nav_toolbox"><i class="fas fa-wand-magic-sparkles"></i> Toolbox IA</a></li>
+                    </ul>
+                </div>
+
+                <!-- Col 3: Meet the Team -->
+                <div>
+                    <h4 class="footer-heading" data-i18n="footer_team">L'équipe</h4>
+
+                    <div class="footer-team-member">
+                        <div class="footer-team-name">
+                            <a href="https://ma.linkedin.com/in/hamidbouchikhi" target="_blank" rel="noopener">
+                                Hamid Bouchikhi <i class="fab fa-linkedin"></i>
+                            </a>
+                        </div>
+                        <div class="footer-team-role" data-i18n="footer_role_director">Directeur The Pulse</div>
+                        <div class="footer-team-bio" data-i18n="footer_bio_hamid">
+                            Professeur de Management & Entrepreneuriat, UM6P Africa Business School. Directeur du Center of Entrepreneurship. Ancien professeur à l'ESSEC.
+                        </div>
+                    </div>
+
+                    <div class="footer-team-member">
+                        <div class="footer-team-name">
+                            <a href="https://www.linkedin.com/in/simohammed-damiri-589aa94/" target="_blank" rel="noopener">
+                                Simohammed Damiri <i class="fab fa-linkedin"></i>
+                            </a>
+                        </div>
+                        <div class="footer-team-role" data-i18n="footer_role_assoc">Directeur Adjoint The Pulse</div>
+                        <div class="footer-team-bio" data-i18n="footer_bio_simo">
+                            Directeur Associé au Center of Entrepreneurship, UM6P. Entrepreneur & Startup Advisor. Passionné de venture building.
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Col 4: Resources & Legal -->
+                <div>
+                    <h4 class="footer-heading" data-i18n="footer_resources">Ressources</h4>
+                    <ul class="footer-nav">
+                        <li><a href="/actualites"><i class="fas fa-newspaper"></i> Actualités</a></li>
+                        <li><a href="/ressources"><i class="fas fa-book-open"></i> Ressources</a></li>
+                        <li><a href="/about-us" data-i18n="sidebar_about"><i class="fas fa-circle-info"></i> À propos</a></li>
+                        <li><a href="/join" data-i18n="sidebar_join"><i class="fas fa-bolt"></i> Rejoindre The Pulse</a></li>
+                    </ul>
+                </div>
+
+            </div>
+
+            <!-- Bottom bar -->
+            <div class="footer-bottom">
+                <span class="footer-copy">
+                    &copy; <script>document.write(new Date().getFullYear())</script> The Pulse &middot;
+                    <a href="/about-us">À propos</a> &middot;
+                    <a href="mailto:contact@thepulse.ma">Contact</a>
+                </span>
+                <span class="footer-badge">
+                    <i class="fas fa-graduation-cap"></i>
+                    Propulsé par UM6P ABS Center of Entrepreneurship
+                </span>
+            </div>
+        </div>
+    </footer>
+
+    <!-- ============================================
+         SCRIPTS
+         ============================================ -->
+    <!-- Bootstrap JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Chart.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"
+            integrity="sha512-ElRFoEQdI5Ht6kZvyzXhYG9NqjtkmlkfYk0wr6wHxU9JEHakS7UJZNeml5ALk+8IKlU6jDgMabC3vkumRokgJA=="
+            crossorigin="anonymous"
+            referrerpolicy="no-referrer"></script>
+
+    <script>
+        (function() {
+            'use strict';
+
+            /* ---- DOM References ---- */
+            const sidebar       = document.getElementById('sidebar');
+            const overlay        = document.getElementById('overlay');
+            const sidebarToggle  = document.getElementById('sidebarToggle');
+            const sidebarClose   = document.getElementById('sidebarClose');
+            const navbar         = document.getElementById('navbar');
+            const themeToggle    = document.getElementById('themeToggle');
+            const themeIcon      = document.getElementById('themeIcon');
+
+            /* ============================================
+               THEME MANAGEMENT
+               ============================================ */
+            function getPreferredTheme() {
+                const saved = localStorage.getItem('theme');
+                if (saved) return saved;
+                return window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
+            }
+
+            function applyTheme(theme) {
+                document.documentElement.setAttribute('data-theme', theme);
+                localStorage.setItem('theme', theme);
+                if (theme === 'light') {
+                    themeIcon.classList.replace('fa-moon', 'fa-sun');
+                } else {
+                    themeIcon.classList.replace('fa-sun', 'fa-moon');
+                }
+            }
+
+            // Apply theme immediately (before paint)
+            applyTheme(getPreferredTheme());
+
+            themeToggle.addEventListener('click', function() {
+                var current = document.documentElement.getAttribute('data-theme');
+                applyTheme(current === 'dark' ? 'light' : 'dark');
+            });
+
+            // Listen for OS theme changes
+            window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', function(e) {
+                if (!localStorage.getItem('theme')) {
+                    applyTheme(e.matches ? 'dark' : 'light');
+                }
+            });
+
+            /* ============================================
+               SIDEBAR TOGGLE
+               ============================================ */
+            function openSidebar() {
+                sidebar.classList.add('active');
+                overlay.classList.add('active');
+                sidebarToggle.setAttribute('aria-expanded', 'true');
+                document.body.style.overflow = 'hidden';
+                // Focus the close button for accessibility
+                setTimeout(function() { sidebarClose.focus(); }, 100);
+            }
+
+            function closeSidebar() {
+                sidebar.classList.remove('active');
+                overlay.classList.remove('active');
+                sidebarToggle.setAttribute('aria-expanded', 'false');
+                document.body.style.overflow = '';
+                sidebarToggle.focus();
+            }
+
+            sidebarToggle.addEventListener('click', openSidebar);
+            sidebarClose.addEventListener('click', closeSidebar);
+            overlay.addEventListener('click', closeSidebar);
+
+            // Close on Escape
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape' && sidebar.classList.contains('active')) {
+                    closeSidebar();
+                }
+            });
+
+            // Trap focus inside sidebar when open
+            sidebar.addEventListener('keydown', function(e) {
+                if (e.key !== 'Tab') return;
+                var focusable = sidebar.querySelectorAll('a[href], button, [tabindex]:not([tabindex="-1"])');
+                if (focusable.length === 0) return;
+                var first = focusable[0];
+                var last = focusable[focusable.length - 1];
+                if (e.shiftKey) {
+                    if (document.activeElement === first) {
+                        e.preventDefault();
+                        last.focus();
+                    }
+                } else {
+                    if (document.activeElement === last) {
+                        e.preventDefault();
+                        first.focus();
+                    }
+                }
+            });
+
+            /* ============================================
+               GLOBAL SEARCH
+               ============================================ */
+            (function() {
+                var searchInput = document.getElementById('globalSearch');
+                var searchResults = document.getElementById('globalSearchResults');
+                var debounceTimer = null;
+
+                if (!searchInput || !searchResults) return;
+
+                searchInput.addEventListener('input', function() {
+                    clearTimeout(debounceTimer);
+                    var query = searchInput.value.trim();
+                    if (query.length < 2) {
+                        searchResults.classList.remove('active');
+                        searchResults.innerHTML = '';
+                        return;
+                    }
+                    debounceTimer = setTimeout(function() {
+                        fetch('/api/search?q=' + encodeURIComponent(query))
+                            .then(function(res) { return res.json(); })
+                            .then(function(data) {
+                                renderSearchResults(data);
+                            })
+                            .catch(function() {
+                                searchResults.classList.remove('active');
+                            });
+                    }, 300);
+                });
+
+                function renderSearchResults(data) {
+                    var html = '';
+                    var groupLabels = {
+                        startups: 'Startups',
+                        founders: 'Founders',
+                        investors: 'Investors',
+                        incubators: 'Incubators'
+                    };
+                    var groupIcons = {
+                        startups: 'fa-rocket',
+                        founders: 'fa-user',
+                        investors: 'fa-hand-holding-dollar',
+                        incubators: 'fa-building'
+                    };
+                    var totalResults = 0;
+                    var groupIndex = 0;
+
+                    ['startups', 'founders', 'investors', 'incubators'].forEach(function(key) {
+                        var items = data[key];
+                        if (!items || items.length === 0) return;
+                        totalResults += items.length;
+                        if (groupIndex > 0) {
+                            html += '<div class="search-divider"></div>';
+                        }
+                        html += '<div class="search-group-header"><i class="fas ' + groupIcons[key] + '"></i> ' + groupLabels[key] + '</div>';
+                        items.forEach(function(item) {
+                            html += '<a href="' + item.url + '" class="search-result-item">';
+                            html += '<span class="result-name">' + escapeHtml(item.name) + '</span>';
+                            if (item.subtitle) {
+                                html += '<span class="result-subtitle">' + escapeHtml(item.subtitle) + '</span>';
+                            }
+                            html += '</a>';
+                        });
+                        groupIndex++;
+                    });
+
+                    if (totalResults === 0) {
+                        html = '<div class="search-no-results">Aucun r&eacute;sultat trouv&eacute;</div>';
+                    }
+
+                    searchResults.innerHTML = html;
+                    searchResults.classList.add('active');
+                }
+
+                function escapeHtml(text) {
+                    var div = document.createElement('div');
+                    div.appendChild(document.createTextNode(text));
+                    return div.innerHTML;
+                }
+
+                // Close dropdown on click outside
+                document.addEventListener('click', function(e) {
+                    if (!e.target.closest('.global-search-wrapper')) {
+                        searchResults.classList.remove('active');
+                    }
+                });
+
+                // Close on Escape
+                searchInput.addEventListener('keydown', function(e) {
+                    if (e.key === 'Escape') {
+                        searchResults.classList.remove('active');
+                        searchInput.blur();
+                    }
+                });
+            })();
+
+            /* ============================================
+               NAV DROPDOWNS (touch/click + accessibility)
+               ============================================ */
+            document.querySelectorAll('.nav-dropdown').forEach(function(dropdown) {
+                var toggle = dropdown.querySelector('.nav-dropdown-toggle');
+                toggle.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    var isOpen = dropdown.classList.contains('active');
+                    // Close all dropdowns first
+                    document.querySelectorAll('.nav-dropdown.active').forEach(function(d) {
+                        d.classList.remove('active');
+                        d.querySelector('.nav-dropdown-toggle').setAttribute('aria-expanded', 'false');
+                    });
+                    if (!isOpen) {
+                        dropdown.classList.add('active');
+                        toggle.setAttribute('aria-expanded', 'true');
+                    }
+                });
+            });
+            // Close dropdowns when clicking outside
+            document.addEventListener('click', function() {
+                document.querySelectorAll('.nav-dropdown.active').forEach(function(d) {
+                    d.classList.remove('active');
+                    d.querySelector('.nav-dropdown-toggle').setAttribute('aria-expanded', 'false');
+                });
+            });
+
+            /* ============================================
+               NAVBAR SCROLL EFFECT
+               ============================================ */
+            var scrollTicking = false;
+            window.addEventListener('scroll', function() {
+                if (!scrollTicking) {
+                    window.requestAnimationFrame(function() {
+                        if (window.scrollY > 30) {
+                            navbar.classList.add('scrolled');
+                        } else {
+                            navbar.classList.remove('scrolled');
+                        }
+                        scrollTicking = false;
+                    });
+                    scrollTicking = true;
+                }
+            }, { passive: true });
+
+            /* ============================================
+               ACTIVE SIDEBAR LINK HIGHLIGHT
+               ============================================ */
+            var currentPath = window.location.pathname;
+            var sidebarLinks = sidebar.querySelectorAll('.sidebar-link');
+            sidebarLinks.forEach(function(link) {
+                var href = link.getAttribute('href');
+                if (href === currentPath || (currentPath !== '/' && href !== '/' && currentPath.startsWith(href))) {
+                    link.classList.add('active');
+                }
+            });
+
+        })();
+    </script>
+
+    <!-- i18n Translation System -->
+    <script>
+    (function() {
+        var translations = {
+            fr: {
+                // Navigation & Sidebar
+                nav_home: 'Accueil', nav_startups: 'Startups', nav_founders: 'Fondateurs',
+                nav_investors: 'Investisseurs', nav_incubators: 'Incubateurs',
+                nav_funding: 'Tours de financement', nav_funds: 'Fonds', nav_about: '\u00c0 propos',
+                nav_talents: 'Talents', nav_cofounders: 'Co-Fondateurs',
+                nav_actualites: 'Actualit\u00e9s', nav_ressources: 'Ressources',
+                join_btn: 'Rejoindre',
+                sidebar_platform: 'Plateforme', sidebar_finance: 'Finance', sidebar_more: 'Plus',
+                sidebar_talents: 'Capital Humain', sidebar_ecosystem: '\u00c9cosyst\u00e8me',
+                sidebar_cofounders: 'Co-Fondateurs',
+                nav_toolbox: 'Toolbox IA', sidebar_tools: 'Outils',
+                cookie_title: 'Nous respectons votre vie priv\u00e9e',
+                cookie_message: 'Nous utilisons des cookies pour am\u00e9liorer votre exp\u00e9rience de navigation et analyser le trafic du site. Conform\u00e9ment \u00e0 la loi 09-08 et aux directives de la CNDP (Commission Nationale de contr\u00f4le de la protection des Donn\u00e9es \u00e0 caract\u00e8re Personnel), vos donn\u00e9es sont trait\u00e9es dans le respect de votre vie priv\u00e9e. En cliquant sur \u00ab Accepter \u00bb, vous consentez \u00e0 l\u2019utilisation de cookies.',
+                cookie_accept: 'Accepter', cookie_decline: 'Refuser',
+                // Co-Founders
+                cf_title: 'Co-Fondateurs', cf_subtitle: 'Trouvez votre prochain co-fondateur ou publiez un projet',
+                cf_post: 'Publier un projet', cf_projects: 'Projets', cf_stages: 'Stades', cf_domains: 'Domaines',
+                cf_search_ph: 'Rechercher projets, comp\u00e9tences, domaines...', cf_search: 'Rechercher',
+                cf_all: 'Tous', cf_idea: 'Id\u00e9e', cf_mvp: 'MVP', cf_early: 'Early Traction', cf_early_traction: 'Early Traction', cf_growth: 'Croissance',
+                cf_count: 'projets cherchent des co-fondateurs', cf_no_found: 'Aucun projet trouv\u00e9',
+                cf_no_yet: 'Pas encore de projets', cf_no_yet_msg: 'Soyez le premier \u00e0 publier un projet !',
+                cf_looking: 'Recherche', cf_anonymous: 'Anonyme',
+                // Co-Founder Form
+                cff_title: 'Publier un projet', cff_subtitle: 'Partagez votre projet et trouvez le co-fondateur id\u00e9al',
+                cff_details: 'D\u00e9tails du projet', cff_looking: 'Ce que vous recherchez', cff_about: '\u00c0 propos de vous',
+                cff_project_title: 'Titre du projet *', cff_desc: 'Description *', cff_domain: 'Domaine / Secteur',
+                cff_stage: 'Stade du projet', cff_skills: 'Comp\u00e9tences recherch\u00e9es', cff_roles: 'R\u00f4les recherch\u00e9s',
+                cff_commit: 'Type d\u2019engagement', cff_location: 'Pr\u00e9f\u00e9rence de lieu', cff_equity: '\u00c9quit\u00e9 offerte',
+                cff_name: 'Votre nom *', cff_email: 'Email *', cff_affiliation: 'Affiliation', cff_linkedin: 'URL LinkedIn',
+                cff_contact: 'Informations de contact', cff_submit: 'Publier le projet',
+                // Actualit\u00e9s
+                act_title: 'Actualit\u00e9s', act_subtitle: 'Actualit\u00e9s, interviews et analyses de l\u2019\u00e9cosyst\u00e8me entrepreneurial marocain',
+                act_publish: 'Publier un article', act_articles: 'Articles', act_interviews: 'Interviews', act_featured: 'En vedette',
+                act_search_ph: 'Rechercher articles, sujets, tags...', act_search: 'Rechercher',
+                act_all: 'Tous', act_actualites: 'Actualit\u00e9s', act_interviews_tab: 'Interviews', act_analyses: 'Analyses',
+                act_featured_label: 'En vedette', act_no_found: 'Aucun article trouv\u00e9',
+                act_no_yet: 'Pas encore d\u2019articles', act_no_yet_msg: 'Restez \u00e0 l\u2019\u00e9coute des derni\u00e8res nouvelles.',
+                act_read: 'Lire',
+                // Ressources
+                res_title: 'Ressources', res_subtitle: 'Politiques, programmes d\u2019appui, guides et ressources pour les entrepreneurs',
+                res_add: 'Ajouter une ressource', res_resources: 'Ressources', res_categories: 'Cat\u00e9gories', res_orgs: 'Organismes',
+                res_search_ph: 'Rechercher ressources, organismes, sujets...', res_search: 'Rechercher',
+                res_all: 'Tous', res_politique: 'Politiques publiques', res_dispositif: 'Dispositifs d\u2019appui',
+                res_guide: 'Guides pratiques', res_appel: 'Appels \u00e0 projets',
+                res_no_found: 'Aucune ressource trouv\u00e9e',
+                res_no_yet: 'Pas encore de ressources', res_no_yet_msg: 'Les ressources sur les politiques et dispositifs appara\u00eetront ici.',
+                res_access: 'Acc\u00e9der',
+                // Toolbox
+                tb_badge: 'PROPULS\u00c9 PAR L\u2019IA', tb_title: 'Toolbox IA',
+                tb_subtitle: 'Outils IA pour aider les entrepreneurs \u00e0 construire, pitcher et scaler leurs startups',
+                tb_planning: 'Planification & Strat\u00e9gie', tb_fundraising: 'Lev\u00e9e de fonds & Finance',
+                tb_legal: 'Juridique & Op\u00e9rations', tb_growth: 'Croissance & Marketing',
+                tb_available: 'Disponible', tb_beta: 'B\u00eata', tb_coming: 'Bient\u00f4t', tb_launch: 'Lancer', tb_soon: 'Bient\u00f4t',
+                tb_bp: 'G\u00e9n\u00e9rateur de Business Plan', tb_bp_desc: 'G\u00e9n\u00e9rez un business plan professionnel en quelques minutes.',
+                tb_tam: 'Dimensionnement march\u00e9 (TAM/SAM/SOM)', tb_tam_desc: 'Estimez votre march\u00e9 total, adressable et obtenable avec l\u2019IA.',
+                tb_market: 'Dimensionnement march\u00e9 (TAM/SAM/SOM)', tb_market_desc: 'Estimez votre march\u00e9 total, adressable et obtenable avec l\u2019IA.',
+                tb_comp: 'Analyse concurrentielle', tb_comp_desc: 'Cartographiez automatiquement votre paysage concurrentiel.',
+                tb_competitive: 'Analyse concurrentielle', tb_competitive_desc: 'Cartographiez automatiquement votre paysage concurrentiel.',
+                tb_pitch: 'Cr\u00e9ateur de Pitch Deck', tb_pitch_desc: 'Cr\u00e9ez des pitch decks pour investisseurs avec l\u2019IA.',
+                tb_fin: 'Projections financi\u00e8res', tb_fin_desc: 'Construisez des mod\u00e8les financiers sur 3-5 ans.',
+                tb_financial: 'Projections financi\u00e8res', tb_financial_desc: 'Construisez des mod\u00e8les financiers sur 3-5 ans.',
+                tb_val: 'Valorisation startup', tb_val_desc: 'Estimez la valorisation de votre startup (DCF, Comparables, Berkus).',
+                tb_valuation: 'Valorisation startup', tb_valuation_desc: 'Estimez la valorisation de votre startup (DCF, Comparables, Berkus).',
+                tb_legal_gen: 'G\u00e9n\u00e9rateur de documents juridiques', tb_legal_desc: 'G\u00e9n\u00e9rez NDA, pactes d\u2019actionnaires, contrats conformes au droit marocain.',
+                tb_legal_doc: 'G\u00e9n\u00e9rateur de documents juridiques', tb_legal_doc_desc: 'G\u00e9n\u00e9rez NDA, pactes d\u2019actionnaires, contrats conformes au droit marocain.',
+                tb_setup: 'Guide cr\u00e9ation entreprise', tb_setup_desc: 'Guide IA pour cr\u00e9er votre entreprise au Maroc : CRI, CNSS, obligations fiscales.',
+                tb_company: 'Guide cr\u00e9ation entreprise', tb_company_desc: 'Guide IA pour cr\u00e9er votre entreprise au Maroc : CRI, CNSS, obligations fiscales.',
+                tb_cndp: 'V\u00e9rificateur conformit\u00e9 CNDP', tb_cndp_desc: 'V\u00e9rifiez la conformit\u00e9 de votre startup \u00e0 la loi 09-08.',
+                tb_copy: 'R\u00e9dacteur IA', tb_copy_desc: 'G\u00e9n\u00e9rez du contenu marketing en fran\u00e7ais, arabe et anglais.',
+                tb_copywriter: 'R\u00e9dacteur IA', tb_copywriter_desc: 'G\u00e9n\u00e9rez du contenu marketing en fran\u00e7ais, arabe et anglais.',
+                tb_seo: 'Strat\u00e9gie SEO & Contenu', tb_seo_desc: 'Analysez vos performances SEO et g\u00e9n\u00e9rez un calendrier de contenu.',
+                tb_persona: 'Cr\u00e9ateur de Personas', tb_persona_desc: 'Cr\u00e9ez des personas clients d\u00e9taill\u00e9s avec l\u2019IA.',
+                // Investors
+                inv_institutional: 'Institutionnel', inv_non_institutional: 'Non-institutionnel',
+                inv_institutional_tab: 'Institutionnels', inv_non_institutional_tab: 'Non-institutionnels',
+                sidebar_home: 'Accueil', sidebar_startups: 'Startups', sidebar_founders: 'Fondateurs',
+                sidebar_investors: 'Investisseurs', sidebar_incubators: 'Incubateurs',
+                sidebar_funding: 'Tours de financement', sidebar_funds: 'Fonds',
+                sidebar_about: '\u00c0 propos', sidebar_join: 'Rejoindre The Pulse',
+                // Home
+                disclaimer_banner: 'Ceci est une version de d\u00e9monstration de The Pulse. Les donn\u00e9es affich\u00e9es sont pr\u00e9sent\u00e9es \u00e0 titre indicatif.',
+                hero_subtitle: 'Donn\u00e9es en temps r\u00e9el sur les startups, fondateurs, investisseurs et financements au Maroc',
+                btn_join_pulse: 'Rejoindre The Pulse', btn_explore: 'Explorer les startups', btn_explore_all: 'Explorer toutes les startups',
+                stat_startups: 'Total startups', stat_founders: 'Fondateurs actifs',
+                stat_investors: 'Investisseurs', stat_funding: 'Financement total',
+                ticker_startups: 'Startups', ticker_founders: 'Fondateurs', ticker_investors: 'Investisseurs',
+                ticker_funding: 'Financement total', ticker_incubators: 'Incubateurs',
+                our_partners: 'Nos Partenaires',
+                section_analytics: 'Analytique de l\u2019\u00e9cosyst\u00e8me',
+                section_top: 'Top startups financ\u00e9es', btn_explore_all: 'Explorer toutes les startups',
+                chart_sector: 'Startups par secteur', chart_city: 'Startups par ville',
+                chart_funding_evo: '\u00c9volution du financement', chart_funding_sector: 'Financement par secteur',
+                loading_chart: 'Chargement\u2026',
+                // Founders
+                founders_title: 'Fondateurs',
+                founders_subtitle: 'D\u00e9couvrez les acteurs de l\u2019\u00e9cosyst\u00e8me startup au Maroc',
+                total_founders: 'Total fondateurs', locations: 'Localisations',
+                showing_founders: 'fondateur(s) affich\u00e9(s)',
+                no_founders_found: 'Aucun fondateur trouv\u00e9',
+                no_founders_msg: 'Modifiez vos filtres ou',
+                clear_all_filters: 'r\u00e9initialisez tous les filtres',
+                // Investors
+                investors_title: 'Investisseurs',
+                investors_subtitle: 'Explorez les investisseurs de l\u2019\u00e9cosyst\u00e8me d\u2019innovation au Maroc',
+                investors_funds_title: 'Investisseurs & Fonds',
+                investors_funds_subtitle: 'Explorez les investisseurs et fonds de l\u2019\u00e9cosyst\u00e8me d\u2019innovation au Maroc',
+                view_all: 'Tous',
+                total_investors: 'Total investisseurs',
+                total_investments: 'Total investi',
+                showing_investors: 'investisseur(s) affich\u00e9(s)',
+                no_investors_found: 'Aucun investisseur trouv\u00e9',
+                // Startups
+                startups_title: 'Startups',
+                startups_page_title: 'R\u00e9pertoire des Startups',
+                startups_page_subtitle: 'Explorez les startups de l\u2019\u00e9cosyst\u00e8me d\u2019innovation au Maroc',
+                search_startups_ph: 'Rechercher des startups...',
+                read_more: 'Lire plus', read_less: 'R\u00e9duire',
+                showing: 'Affichage', of_total: 'sur',
+                founders_label: 'fondateurs', no_founders_found: 'Aucun fondateur trouv\u00e9',
+                investors_label: 'investisseurs', no_investors_found: 'Aucun investisseur trouv\u00e9',
+                funds_label: 'fonds', no_funds_found: 'Aucun fonds trouv\u00e9',
+                funding_rounds_label: 'tours de financement', no_funding_found: 'Aucun tour de financement trouv\u00e9',
+                talents_label: 'talents',
+                talent_cta: 'Rejoindre le Talent Pool',
+                total_startups_label: 'Total startups',
+                active_startups: 'Startups actives', total_sectors: 'Secteurs',
+                total_raised: 'Total lev\u00e9',
+                showing_startups: 'startup(s) affich\u00e9e(s)',
+                no_startups_found: 'Aucune startup trouv\u00e9e',
+                // Startup detail
+                back_to_startups: 'Retour aux startups',
+                general_information: 'Informations g\u00e9n\u00e9rales',
+                business_status: 'Statut d\u2019activit\u00e9',
+                rc_number: 'Num\u00e9ro RC', ice_number: 'Num\u00e9ro ICE',
+                registration_date: 'Date d\u2019immatriculation',
+                no_funding_rounds: 'Aucun tour de financement enregistr\u00e9.',
+                no_investors_msg: 'Aucun investisseur trouv\u00e9.',
+                no_incubators_assoc: 'Aucun incubateur associ\u00e9.',
+                no_founders_assoc: 'Aucun fondateur trouv\u00e9.',
+                // Founder detail
+                back_to_founders: 'Retour aux fondateurs',
+                personal_information: 'Informations personnelles',
+                founder_id_label: 'Identifiant', first_name: 'Pr\u00e9nom', last_name: 'Nom',
+                company_details: 'Entreprise actuelle',
+                most_recent_title: 'Dernier poste', most_recent_employer: 'Dernier employeur',
+                last_job_end: 'Fin du dernier poste', previous_company: 'Entreprise pr\u00e9c\u00e9dente',
+                last_job_change: 'Dernier changement de poste',
+                skills_expertise: 'Comp\u00e9tences',
+                no_experience: 'Aucune exp\u00e9rience renseign\u00e9e.',
+                position_not_specified: 'Poste non pr\u00e9cis\u00e9',
+                no_education: 'Aucune formation renseign\u00e9e.',
+                graduated: 'Dipl\u00f4m\u00e9(e)',
+                dates_not_specified: 'Dates non pr\u00e9cis\u00e9es',
+                personal_email: 'E-mail personnel',
+                professional_email: 'E-mail professionnel',
+                social_links: 'R\u00e9seaux sociaux',
+                associated_startups: 'Startups associ\u00e9es',
+                no_associated_startups: 'Aucune startup associ\u00e9e.',
+                // Investor detail
+                back_to_investors: 'Retour aux investisseurs',
+                active_portfolio: 'Portefeuille actif',
+                investor_type_label: 'Type d\u2019investisseur',
+                preferred_industry: 'Secteur privil\u00e9gi\u00e9',
+                preferred_geography: 'Zone g\u00e9ographique',
+                last_investment: 'Dernier investissement',
+                last_investment_date: 'Date du dernier investissement',
+                portfolio_startups: 'Startups en portefeuille',
+                no_portfolio: 'Aucune startup en portefeuille.',
+                view_profile: 'Voir le profil',
+                associated_founders: 'Fondateurs associ\u00e9s',
+                no_associated_founders: 'Aucun fondateur associ\u00e9.',
+                // Incubators
+                incubators_title: 'Incubateurs et acc\u00e9l\u00e9rateurs',
+                incubators_subtitle: 'Explorez les programmes d\u2019accompagnement au Maroc',
+                total_incubators: 'Total incubateurs',
+                no_incubators_found: 'Aucun incubateur trouv\u00e9',
+                no_incubators_msg: 'Aucun incubateur \u00e0 afficher.',
+                // Incubator detail
+                back_to_incubators: 'Retour aux incubateurs',
+                investment_phases: 'Phases d\u2019investissement',
+                partners_sponsors: 'Partenaires / sponsors',
+                incubated_startups: 'Startups incub\u00e9es',
+                no_startups_yet: 'Aucune startup',
+                no_startups_incubator: 'Aucune startup associ\u00e9e \u00e0 cet incubateur.',
+                no_contact_info: 'Aucune information de contact disponible.',
+                no_founders_yet: 'Aucun fondateur',
+                no_founders_incubator: 'Aucun fondateur associ\u00e9 \u00e0 cet incubateur.',
+                // Funding rounds
+                funding_rounds_title: 'Tours de financement',
+                funding_rounds_subtitle: 'Suivez l\u2019activit\u00e9 de financement de l\u2019\u00e9cosyst\u00e8me startup marocain',
+                total_rounds: 'Total tours',
+                round_name: 'Nom du tour', lead_investor: 'Investisseur principal',
+                amount_raised: 'Montant lev\u00e9',
+                deal_type: 'Type d\u2019op\u00e9ration', deal_class: 'Classe d\u2019op\u00e9ration',
+                showing_funding: 'tour(s) de financement affich\u00e9(s)',
+                no_funding_found: 'Aucun tour de financement trouv\u00e9',
+                // Funds
+                funds_title: 'Fonds',
+                funds_subtitle: 'Explorez les fonds d\u2019investissement de l\u2019\u00e9cosyst\u00e8me startup marocain',
+                total_funds: 'Total fonds', open_funds: 'Fonds ouverts',
+                total_fund_size: 'Taille totale des fonds', fund_types: 'Types de fonds',
+                search_funds: 'Rechercher par nom, investisseur, type\u2026',
+                showing_funds: 'fonds affich\u00e9(s)',
+                no_funds_found: 'Aucun fonds trouv\u00e9',
+                no_funds_msg: 'Aucun fonds \u00e0 afficher.',
+                fund_size: 'Taille du fonds',
+                // About
+                about_hero: '\u00c0 propos de The Pulse',
+                about_subtitle: 'La colonne vert\u00e9brale de donn\u00e9es de l\u2019\u00e9cosyst\u00e8me startup marocain, reliant entrepreneurs, investisseurs et d\u00e9cideurs.',
+                what_is_pulse: 'Qu\u2019est-ce que The Pulse\u202f?',
+                what_is_pulse_p1: 'The Pulse est la plateforme d\u2019analytique de r\u00e9f\u00e9rence de l\u2019\u00e9cosyst\u00e8me startup au Maroc. Elle fournit des tableaux de bord et des donn\u00e9es en temps r\u00e9el sur les tendances de financement, l\u2019analyse sectorielle et les dynamiques de croissance.',
+                what_is_pulse_p2: 'Con\u00e7ue pour les investisseurs, entrepreneurs, chercheurs et d\u00e9cideurs, la plateforme agr\u00e8ge et structure les donn\u00e9es de centaines de sources pour dresser un portrait clair de l\u2019innovation, des flux de capitaux et des secteurs \u00e9mergents.',
+                our_mission: 'Notre mission',
+                our_mission_p: 'D\u00e9mocratiser l\u2019acc\u00e8s aux donn\u00e9es startup et favoriser une prise de d\u00e9cision \u00e9clair\u00e9e qui acc\u00e9l\u00e8re la transformation \u00e9conomique du Maroc par l\u2019innovation.',
+                who_we_are: 'Qui sommes-nous',
+                who_we_are_p1: 'The Pulse est d\u00e9velopp\u00e9 par le <strong>Centre of Entrepreneurship d\u2019Africa Business School \u2014 UM6P</strong>, institution acad\u00e9mique de r\u00e9f\u00e9rence portant l\u2019innovation en Afrique.',
+                who_we_are_p2: 'Notre \u00e9quipe pluridisciplinaire allie recherche acad\u00e9mique et exp\u00e9rience terrain, r\u00e9unissant data scientists, experts en entrepreneuriat et analystes \u00e9conomiques.',
+                platform_features: 'Fonctionnalit\u00e9s',
+                comprehensive_data: 'Donn\u00e9es compl\u00e8tes',
+                comprehensive_data_p: 'Suivi en temps r\u00e9el des startups, tours de financement, investisseurs et tendances du march\u00e9.',
+                advanced_analytics: 'Analytique avanc\u00e9e',
+                advanced_analytics_p: 'Outils de visualisation et d\u2019analytique pr\u00e9dictive pour identifier tendances et opportunit\u00e9s.',
+                ecosystem_mapping: 'Cartographie de l\u2019\u00e9cosyst\u00e8me',
+                ecosystem_mapping_p: 'Analyse interactive des r\u00e9seaux entre startups, investisseurs, incubateurs et organismes d\u2019accompagnement.',
+                partners: 'Partenaires',
+                explore_ecosystem: 'Explorer l\u2019\u00e9cosyst\u00e8me',
+                explore_ecosystem_p: 'D\u00e9couvrez les startups, investisseurs et programmes d\u2019accompagnement du Maroc.',
+                explore_startups_btn: 'Explorer les startups',
+                // Join
+                join_title: 'Rejoindre',
+                join_subtitle: 'Connectez-vous avec les entrepreneurs, investisseurs et programmes d\u2019innovation au Maroc. Choisissez votre profil.',
+                entrepreneur_startup: 'Entrepreneur / Startup',
+                entrepreneur_desc: 'Soumettez votre profil startup pour vous connecter avec des investisseurs, acc\u00e9l\u00e9rateurs et partenaires potentiels.',
+                investor_vc: 'Investisseur / VC',
+                investor_desc: 'Partagez votre focus d\u2019investissement et votre portefeuille pour vous connecter avec des startups et co-investisseurs.',
+                program_incubator: 'Programme / Incubateur',
+                program_desc: 'R\u00e9f\u00e9rencez votre acc\u00e9l\u00e9rateur, incubateur ou programme d\u2019accompagnement.',
+                program_card: 'Programme d\'accompagnement',
+                program_card_desc: 'Inscrivez votre programme d\'accompagnement, bootcamp ou initiative de formation pour entrepreneurs et startups.',
+                incubator_accelerator: 'Incubateur / Acc\u00e9l\u00e9rateur',
+                incubator_card_desc: 'R\u00e9f\u00e9rencez votre incubateur ou acc\u00e9l\u00e9rateur pour connecter les startups en qu\u00eate d\'accompagnement structur\u00e9.',
+                talent_professional: 'Talent / Professionnel',
+                talent_desc: 'Cr\u00e9ez votre profil professionnel pour trouver des opportunit\u00e9s dans l\u2019\u00e9cosyst\u00e8me.',
+                get_started: 'Commencer',
+                demo_version: 'Version d\u00e9mo',
+                demo_disclaimer: 'Ceci est une version de d\u00e9monstration de The Pulse. Les formulaires sont pr\u00e9sent\u00e9s \u00e0 titre indicatif.',
+                // Login
+                welcome_back: 'Bienvenue',
+                sign_in_dashboard: 'Connectez-vous \u00e0 votre tableau de bord',
+                username: 'Nom d\u2019utilisateur', password: 'Mot de passe',
+                sign_in: 'Se connecter',
+                powering_ecosystem: 'Au service de l\u2019\u00e9cosyst\u00e8me startup marocain',
+                login_tagline: 'Plateforme d\u2019intelligence startup au Maroc. Donn\u00e9es en temps r\u00e9el sur les fondateurs, investisseurs et l\u2019\u00e9cosyst\u00e8me d\u2019innovation.',
+                // Forms shared
+                company_name: 'Nom de l\u2019entreprise', company_description: 'Description de l\u2019entreprise',
+                founded_year: 'Ann\u00e9e de cr\u00e9ation', employee_count: 'Nombre d\u2019employ\u00e9s',
+                select_range: 'S\u00e9lectionnez une fourchette',
+                company_information: 'Informations sur l\u2019entreprise',
+                business_details: 'D\u00e9tails de l\u2019activit\u00e9',
+                sectors_label: 'Secteurs (jusqu\u2019\u00e0 5)',
+                technologies: 'Technologies (jusqu\u2019\u00e0 8)',
+                funding_stage: 'Stade de financement',
+                latest_funding: 'Dernier montant lev\u00e9',
+                founders_information: 'Informations sur les fondateurs',
+                add_founder: '+ Ajouter un fondateur',
+                full_name: 'Nom complet', role_title: 'R\u00f4le / titre',
+                phone_number: 'Num\u00e9ro de t\u00e9l\u00e9phone',
+                previous_experience: 'Exp\u00e9rience pr\u00e9c\u00e9dente',
+                ecosystem_connections: 'Connexions \u00e9cosyst\u00e8me',
+                programs_participated: 'Programmes / incubateurs',
+                current_investors: 'Investisseurs actuels / pr\u00e9c\u00e9dents',
+                looking_for: 'Que recherchez-vous\u202f?',
+                submit_application: 'Soumettre la candidature',
+                submit_profile: 'Soumettre le profil',
+                submit_program: 'Soumettre le programme',
+                terms_notice: 'En soumettant, vous acceptez nos conditions d\u2019utilisation et notre politique de confidentialit\u00e9.',
+                demo_warning: 'Formulaire de d\u00e9monstration \u2014 les soumissions ne sont pas trait\u00e9es.',
+                remove: 'Supprimer',
+                // Investor form
+                organization_information: 'Informations sur l\u2019organisation',
+                organization_name: 'Nom de l\u2019organisation',
+                investment_focus: 'Focus d\u2019investissement',
+                focus_sectors: 'Secteurs cibles',
+                investment_stages: 'Stades d\u2019investissement',
+                min_ticket: 'Ticket minimum', max_ticket: 'Ticket maximum',
+                geographic_focus: 'Zone g\u00e9ographique cible',
+                portfolio_track: 'Portefeuille et historique',
+                portfolio_size: 'Taille du portefeuille',
+                active_deals: 'Op\u00e9rations en cours',
+                total_funded: 'Total financ\u00e9',
+                notable_investments: 'Investissements notables',
+                investment_criteria: 'Crit\u00e8res d\u2019investissement',
+                contact_information: 'Coordonn\u00e9es',
+                primary_contact: 'Contact principal',
+                contact_email: 'E-mail de contact',
+                // Program form
+                program_information: 'Informations sur le programme',
+                program_name: 'Nom du programme', program_type: 'Type de programme',
+                program_description: 'Description du programme',
+                duration: 'Dur\u00e9e', format_label: 'Format',
+                program_details: 'D\u00e9tails du programme',
+                target_stages: 'Stades cibles', cohort_size: 'Taille de cohorte',
+                application_fee: 'Frais de candidature',
+                program_benefits: 'Avantages du programme',
+                investment_support: 'Investissement et accompagnement',
+                investment_offered: 'Investissement propos\u00e9',
+                equity_taken: 'Participation prise',
+                support_services: 'Services d\u2019accompagnement',
+                mentors_partners: 'Mentors et partenaires',
+                application_process: 'Processus de candidature',
+                next_deadline: 'Prochaine date limite',
+                next_cohort: 'Prochaine cohorte',
+                eligibility: 'Crit\u00e8res d\u2019\u00e9ligibilit\u00e9',
+                manager_info: 'Responsable / fondateur',
+                program_contact: 'Coordonn\u00e9es du programme',
+                // Talent form
+                talent_title: 'Inscription talent',
+                talent_subtitle: 'Cr\u00e9ez votre profil professionnel pour trouver des opportunit\u00e9s avec les startups',
+                personal_info: 'Informations personnelles',
+                email_address: 'Adresse e-mail',
+                professional_background: 'Parcours professionnel',
+                current_title_role: 'Poste actuel',
+                years_experience: 'Ann\u00e9es d\u2019exp\u00e9rience',
+                professional_bio: 'Biographie professionnelle',
+                skills_label: 'Comp\u00e9tences (jusqu\u2019\u00e0 10)',
+                industries_interest: 'Secteurs d\u2019int\u00e9r\u00eat',
+                work_preferences: 'Pr\u00e9f\u00e9rences de travail',
+                role_type: 'Type de poste', work_format: 'Format de travail',
+                salary_range: 'Fourchette salariale (optionnel)',
+                availability: 'Disponibilit\u00e9',
+                professional_links: 'Liens professionnels',
+                portfolio_website: 'Portfolio / site web',
+                other_profile: 'Autre profil',
+                additional_info: 'Informations compl\u00e9mentaires',
+                education_optional: 'Formation (optionnel)',
+                achievements: 'R\u00e9alisations notables (optionnel)',
+                languages: 'Langues',
+                // Talent marketplace
+                talents_title: 'Marketplace Talents',
+                talents_subtitle: 'Trouvez les professionnels et talents de l\'écosystème startup marocain',
+                total_talents: 'Total talents',
+                available_now: 'Disponibles',
+                search_talents: 'Rechercher par compétence, nom, titre...',
+                find_talent: 'Trouver des talents',
+                find_talent_desc: 'Parcourez les professionnels et talents prêts à rejoindre des startups de l\'écosystème marocain.',
+                browse_talents: 'Parcourir les talents',
+                no_talents_found: 'Aucun talent trouvé',
+                no_talents_msg: 'Aucun profil talent n\'est disponible pour le moment.',
+                immediate: 'Immédiat',
+                // Common
+                filters: 'Filtres', clear: 'R\u00e9initialiser',
+                city: 'Ville', startup: 'Startup',
+                apply_filters: 'Appliquer les filtres',
+                location_filter: 'Localisation', investor_type: 'Type d\u2019investisseur',
+                types: 'Types', countries: 'Pays',
+                sector: 'Secteur', stage: 'Stade', status: 'Statut',
+                legal_form: 'Forme juridique', year: 'Ann\u00e9e',
+                region: 'R\u00e9gion', country: 'Pays',
+                round: 'Tour', date: 'Date',
+                investments: 'Investissements', portfolio: 'Portefeuille', exits: 'Sorties',
+                founded: 'Fond\u00e9 en', website: 'Site web',
+                contact: 'Contact', email: 'E-mail', phone: 'T\u00e9l\u00e9phone',
+                name: 'Nom', type: 'Type', description: 'Description', sectors: 'Secteurs',
+                about: '\u00c0 propos',
+                employees: 'Employ\u00e9s', capital: 'Capital',
+                education: 'Formation', experience: 'Exp\u00e9rience',
+                founders: 'Fondateurs', incubators: 'Incubateurs',
+                funding_rounds: 'Tours de financement',
+                linkedin_profile: 'Profil LinkedIn',
+                facebook_page: 'Page Facebook',
+                twitter_profile: 'Profil Twitter',
+                no_title: 'Sans titre',
+                back: 'Retour', search: 'Rechercher',
+                n_a: 'N/D', showing: 'Affichage de',
+                no_data: 'Aucune donn\u00e9e disponible',
+                active: 'Actif', inactive: 'Inactif',
+                unknown: 'Inconnu',
+                organization: 'Organisation',
+                vintage: 'Mill\u00e9sime',
+                startup_registration: 'Inscription startup',
+                startup_reg_subtitle: 'Pr\u00e9sentez votre startup et connectez-vous \u00e0 l\u2019\u00e9cosyst\u00e8me',
+                investor_registration: 'Inscription investisseur',
+                investor_reg_subtitle: 'Partagez votre focus d\u2019investissement et connectez-vous avec des startups',
+                program_registration: 'Inscription programme',
+                program_reg_subtitle: 'R\u00e9f\u00e9rencez votre programme d\u2019accompagnement',
+                capability_stage: 'Stade de maturit\u00e9',
+                capability_maturity: 'Maturit\u00e9',
+                // Footer
+                footer_desc: 'La plateforme d\'intelligence de l\'\u00e9cosyst\u00e8me startup marocain.',
+                footer_platform: 'Plateforme',
+                footer_team: 'L\'\u00e9quipe',
+                footer_resources: 'Ressources',
+                footer_role_director: 'Directeur The Pulse',
+                footer_bio_hamid: 'Professeur de Management & Entrepreneuriat, UM6P Africa Business School. Directeur du Center of Entrepreneurship. Ancien professeur \u00e0 l\'ESSEC.',
+                footer_role_assoc: 'Directeur Adjoint The Pulse',
+                footer_bio_simo: 'Directeur au Center of Entrepreneurship, UM6P. Entrepreneur & Startup Advisor. Passionn\u00e9 de venture building.',
+                total_raised_badge: 'levés'
+            },
+            en: {
+                // Navigation & Sidebar
+                nav_home: 'Home', nav_startups: 'Startups', nav_founders: 'Founders',
+                nav_investors: 'Investors', nav_incubators: 'Incubators',
+                nav_funding: 'Funding Rounds', nav_funds: 'Funds', nav_about: 'About Us',
+                nav_talents: 'Talents', nav_cofounders: 'Co-Founders',
+                nav_actualites: 'News', nav_ressources: 'Resources',
+                join_btn: 'Join',
+                sidebar_platform: 'Platform', sidebar_finance: 'Finance', sidebar_more: 'More',
+                sidebar_talents: 'Human Capital', sidebar_ecosystem: 'Ecosystem',
+                sidebar_cofounders: 'Co-Founders',
+                nav_toolbox: 'AI Toolbox', sidebar_tools: 'Tools',
+                // Co-Founders
+                cf_title: 'Co-Founders', cf_subtitle: 'Find your next co-founder or post a project seeking partners',
+                cf_post: 'Post a Project', cf_projects: 'Projects', cf_stages: 'Stages', cf_domains: 'Domains',
+                cf_search_ph: 'Search projects, skills, domains...', cf_search: 'Search',
+                cf_all: 'All', cf_idea: 'Idea', cf_mvp: 'MVP', cf_early: 'Early Traction', cf_early_traction: 'Early Traction', cf_growth: 'Growth',
+                cf_count: 'projects looking for co-founders', cf_no_found: 'No Projects Found',
+                cf_no_yet: 'No Projects Yet', cf_no_yet_msg: 'Be the first to post a project!',
+                cf_looking: 'Looking for', cf_anonymous: 'Anonymous',
+                // Co-Founder Form
+                cff_title: 'Post a Project', cff_subtitle: 'Share your project and find the perfect co-founder',
+                cff_details: 'Project Details', cff_looking: 'What You\'re Looking For', cff_about: 'About You',
+                cff_project_title: 'Project Title *', cff_desc: 'Description *', cff_domain: 'Domain / Sector',
+                cff_stage: 'Project Stage', cff_skills: 'Skills Needed', cff_roles: 'Roles Needed',
+                cff_commit: 'Commitment Type', cff_location: 'Location Preference', cff_equity: 'Equity Offered',
+                cff_name: 'Your Name *', cff_email: 'Email *', cff_affiliation: 'Affiliation', cff_linkedin: 'LinkedIn URL',
+                cff_contact: 'Contact Info', cff_submit: 'Publish Project',
+                // News
+                act_title: 'News', act_subtitle: 'News, interviews, and insights from Morocco\'s entrepreneurial ecosystem',
+                act_publish: 'Publish Article', act_articles: 'Articles', act_interviews: 'Interviews', act_featured: 'Featured',
+                act_search_ph: 'Search articles, topics, tags...', act_search: 'Search',
+                act_all: 'All', act_actualites: 'News', act_interviews_tab: 'Interviews', act_analyses: 'Analyses',
+                act_featured_label: 'Featured', act_no_found: 'No Articles Found',
+                act_no_yet: 'No Articles Yet', act_no_yet_msg: 'Stay tuned for the latest news.',
+                act_read: 'Read',
+                // Resources
+                res_title: 'Resources', res_subtitle: 'Policies, support programs, guides, and resources for entrepreneurs',
+                res_add: 'Add Resource', res_resources: 'Resources', res_categories: 'Categories', res_orgs: 'Organizations',
+                res_search_ph: 'Search resources, organizations, topics...', res_search: 'Search',
+                res_all: 'All', res_politique: 'Public Policies', res_dispositif: 'Support Programs',
+                res_guide: 'Practical Guides', res_appel: 'Calls for Projects',
+                res_no_found: 'No Resources Found',
+                res_no_yet: 'No Resources Yet', res_no_yet_msg: 'Resources about policies and support programs will appear here.',
+                res_access: 'Access',
+                // Toolbox
+                tb_badge: 'POWERED BY AI', tb_title: 'AI Toolbox',
+                tb_subtitle: 'AI-powered tools to help entrepreneurs build, pitch, and scale their startups faster',
+                tb_planning: 'Business Planning & Strategy', tb_fundraising: 'Fundraising & Finance',
+                tb_legal: 'Legal & Operations', tb_growth: 'Growth & Marketing',
+                tb_available: 'Available', tb_beta: 'Beta', tb_coming: 'Coming Soon', tb_launch: 'Launch', tb_soon: 'Soon',
+                tb_bp: 'Business Plan Generator', tb_bp_desc: 'Generate a professional business plan in minutes.',
+                tb_tam: 'Market Sizing (TAM/SAM/SOM)', tb_tam_desc: 'Estimate your market using AI-driven data analysis.',
+                tb_market: 'Market Sizing (TAM/SAM/SOM)', tb_market_desc: 'Estimate your market using AI-driven data analysis.',
+                tb_comp: 'Competitive Analysis', tb_comp_desc: 'Map your competitive landscape automatically.',
+                tb_competitive: 'Competitive Analysis', tb_competitive_desc: 'Map your competitive landscape automatically.',
+                tb_pitch: 'Pitch Deck Builder', tb_pitch_desc: 'Create investor-ready pitch decks with AI.',
+                tb_fin: 'Financial Projections', tb_fin_desc: 'Build 3-5 year financial models.',
+                tb_financial: 'Financial Projections', tb_financial_desc: 'Build 3-5 year financial models.',
+                tb_val: 'Startup Valuation', tb_val_desc: 'Estimate your startup\'s valuation (DCF, Comparables, Berkus).',
+                tb_valuation: 'Startup Valuation', tb_valuation_desc: 'Estimate your startup\'s valuation (DCF, Comparables, Berkus).',
+                tb_legal_gen: 'Legal Document Generator', tb_legal_desc: 'Generate NDA, shareholders agreements compliant with Moroccan law.',
+                tb_legal_doc: 'Legal Document Generator', tb_legal_doc_desc: 'Generate NDA, shareholders agreements compliant with Moroccan law.',
+                tb_setup: 'Company Setup Guide', tb_setup_desc: 'Step-by-step AI guide to register your company in Morocco.',
+                tb_company: 'Company Setup Guide', tb_company_desc: 'Step-by-step AI guide to register your company in Morocco.',
+                tb_cndp: 'CNDP Compliance Checker', tb_cndp_desc: 'Check your startup\'s compliance with Law 09-08.',
+                tb_copy: 'AI Copywriter', tb_copy_desc: 'Generate marketing copy in French, Arabic, and English.',
+                tb_copywriter: 'AI Copywriter', tb_copywriter_desc: 'Generate marketing copy in French, Arabic, and English.',
+                tb_seo: 'SEO & Content Strategy', tb_seo_desc: 'Analyze SEO performance and generate a content calendar.',
+                tb_persona: 'Customer Persona Builder', tb_persona_desc: 'Create detailed customer personas with AI.',
+                // Investors
+                inv_institutional: 'Institutional', inv_non_institutional: 'Non-Institutional',
+                inv_institutional_tab: 'Institutional', inv_non_institutional_tab: 'Non-Institutional',
+                cookie_title: 'We value your privacy',
+                cookie_message: 'We use cookies to enhance your browsing experience and analyze site traffic. In accordance with Law 09-08 and the CNDP (Commission Nationale de contr\u00f4le de la protection des Donn\u00e9es \u00e0 caract\u00e8re Personnel), your data is processed with respect for your privacy. By clicking "Accept", you consent to our use of cookies.',
+                cookie_accept: 'Accept', cookie_decline: 'Decline',
+                sidebar_home: 'Home', sidebar_startups: 'Startups', sidebar_founders: 'Founders',
+                sidebar_investors: 'Investors', sidebar_incubators: 'Incubators',
+                sidebar_funding: 'Funding Rounds', sidebar_funds: 'Funds',
+                sidebar_about: 'About Us', sidebar_join: 'Join The Pulse',
+                // Home
+                disclaimer_banner: 'This is a demo version of The Pulse platform. Data shown is for preview purposes only.',
+                hero_subtitle: 'Real-time data on startups, founders, investors & funding across Morocco',
+                btn_join_pulse: 'Join the Pulse', btn_explore: 'Explore Startups', btn_explore_all: 'Explore All Startups',
+                stat_startups: 'Total Startups', stat_founders: 'Active Founders',
+                stat_investors: 'Investors', stat_funding: 'Total Funding',
+                ticker_startups: 'Startups', ticker_founders: 'Founders', ticker_investors: 'Investors',
+                ticker_funding: 'Total Funding', ticker_incubators: 'Incubators',
+                our_partners: 'Our Trusted Partners',
+                section_analytics: 'Ecosystem Analytics',
+                section_top: 'Top Funded Startups', btn_explore_all: 'Explore All Startups',
+                chart_sector: 'Startups by Sector', chart_city: 'Startups by City',
+                chart_funding_evo: 'Funding Evolution', chart_funding_sector: 'Funding by Sector',
+                loading_chart: 'Loading chart...',
+                // Founders
+                founders_title: 'Founders',
+                founders_subtitle: 'Discover the people driving Morocco\'s startup ecosystem',
+                total_founders: 'Total Founders', locations: 'Locations',
+                showing_founders: 'founder(s)',
+                no_founders_found: 'No Founders Found',
+                no_founders_msg: 'Try adjusting your filters or',
+                clear_all_filters: 'clear all filters',
+                // Investors
+                investors_title: 'Investors',
+                investors_subtitle: 'Explore the investors fueling Morocco\'s innovation ecosystem',
+                investors_funds_title: 'Investors & Funds',
+                investors_funds_subtitle: 'Explore the investors and funds fueling Morocco\'s innovation ecosystem',
+                view_all: 'All',
+                total_investors: 'Total Investors',
+                total_investments: 'Total Investments',
+                showing_investors: 'investor(s)',
+                no_investors_found: 'No Investors Found',
+                // Startups
+                startups_title: 'Startups',
+                startups_page_title: 'Startups Directory',
+                startups_page_subtitle: 'Explore the startups of Morocco\u2019s innovation ecosystem',
+                search_startups_ph: 'Search startups by name...',
+                showing: 'Showing', of_total: 'of',
+                founders_label: 'founders', no_founders_found: 'No founders found',
+                investors_label: 'investors', no_investors_found: 'No investors found',
+                funds_label: 'funds', no_funds_found: 'No funds found',
+                funding_rounds_label: 'funding rounds', no_funding_found: 'No funding rounds found',
+                talents_label: 'talents',
+                talent_cta: 'Join the Talent Pool',
+                total_startups_label: 'Total Startups',
+                active_startups: 'Active Startups', total_sectors: 'Sectors',
+                total_raised: 'Total Raised',
+                showing_startups: 'startup(s)',
+                no_startups_found: 'No Startups Found',
+                // Startup detail
+                back_to_startups: 'Back to Startups',
+                general_information: 'General Information',
+                business_status: 'Business Status',
+                rc_number: 'RC Number', ice_number: 'ICE Number',
+                registration_date: 'Registration Date',
+                no_funding_rounds: 'No funding rounds recorded.',
+                no_investors_msg: 'No investors found.',
+                no_incubators_assoc: 'No incubators associated.',
+                no_founders_assoc: 'No founders found.',
+                // Founder detail
+                back_to_founders: 'Back to Founders',
+                personal_information: 'Personal Information',
+                founder_id_label: 'Founder ID', first_name: 'First Name', last_name: 'Last Name',
+                company_details: 'Company Details',
+                most_recent_title: 'Most Recent Title', most_recent_employer: 'Most Recent Employer',
+                last_job_end: 'Last Job End Date', previous_company: 'Previous Company',
+                last_job_change: 'Last Job Change',
+                skills_expertise: 'Skills & Expertise',
+                no_experience: 'No experience information available.',
+                position_not_specified: 'Position not specified',
+                no_education: 'No education information available.',
+                graduated: 'Graduated',
+                dates_not_specified: 'Dates not specified',
+                personal_email: 'Personal Email',
+                professional_email: 'Professional Email',
+                social_links: 'Social Links',
+                associated_startups: 'Associated Startups',
+                no_associated_startups: 'No associated startups found.',
+                // Investor detail
+                back_to_investors: 'Back to Investors',
+                active_portfolio: 'Active Portfolio',
+                investor_type_label: 'Investor Type',
+                preferred_industry: 'Preferred Industry',
+                preferred_geography: 'Preferred Geography',
+                last_investment: 'Last Investment',
+                last_investment_date: 'Last Investment Date',
+                portfolio_startups: 'Portfolio Startups',
+                no_portfolio: 'No portfolio startups found',
+                view_profile: 'View Profile',
+                associated_founders: 'Associated Founders',
+                no_associated_founders: 'No associated founders found',
+                // Incubators
+                incubators_title: 'Incubators & Accelerators',
+                incubators_subtitle: 'Explore Morocco\'s support programs powering startup growth',
+                total_incubators: 'Total Incubators',
+                no_incubators_found: 'No Incubators Found',
+                no_incubators_msg: 'There are currently no incubators to display.',
+                // Incubator detail
+                back_to_incubators: 'Back to Incubators',
+                investment_phases: 'Investment Phases',
+                partners_sponsors: 'Partners / Sponsors',
+                incubated_startups: 'Incubated Startups',
+                no_startups_yet: 'No Startups Yet',
+                no_startups_incubator: 'No startups are currently associated with this incubator.',
+                no_contact_info: 'No contact information available.',
+                no_founders_yet: 'No Founders Yet',
+                no_founders_incubator: 'No founders are currently associated with this incubator.',
+                // Funding rounds
+                funding_rounds_title: 'Funding Rounds',
+                funding_rounds_subtitle: 'Track funding activity across the Moroccan startup ecosystem',
+                total_rounds: 'Total Rounds',
+                round_name: 'Round Name', lead_investor: 'Lead Investor',
+                amount_raised: 'Amount Raised',
+                deal_type: 'Deal Type', deal_class: 'Deal Class',
+                showing_funding: 'funding round(s)',
+                no_funding_found: 'No Funding Rounds Found',
+                // Funds
+                funds_title: 'Funds',
+                funds_subtitle: 'Explore investment funds powering Morocco\'s startup ecosystem',
+                total_funds: 'Total Funds', open_funds: 'Open Funds',
+                total_fund_size: 'Total Fund Size', fund_types: 'Fund Types',
+                search_funds: 'Search funds by name, investor, type...',
+                showing_funds: 'fund(s)',
+                no_funds_found: 'No Funds Found',
+                no_funds_msg: 'There are no funds to display at this time.',
+                fund_size: 'Fund Size',
+                // About
+                about_hero: 'About The Pulse',
+                about_subtitle: 'The data backbone of Morocco\'s startup ecosystem, connecting entrepreneurs, investors, and policymakers through actionable insights.',
+                what_is_pulse: 'What is The Pulse?',
+                what_is_pulse_p1: 'The Pulse is Morocco\'s premier startup ecosystem analytics platform. It provides comprehensive dashboards and real-time data on funding trends, sector analysis, and growth patterns across the Moroccan entrepreneurial landscape.',
+                what_is_pulse_p2: 'Designed for investors, entrepreneurs, researchers, and policymakers, the platform aggregates and structures data from hundreds of sources to paint a clear picture of where innovation is happening, how capital flows, and which sectors are emerging.',
+                our_mission: 'Our Mission',
+                our_mission_p: 'To democratize access to startup data and foster informed decision-making that accelerates Morocco\'s economic transformation through innovation.',
+                who_we_are: 'Who We Are',
+                who_we_are_p1: 'The Pulse is developed by the <strong>Centre of Entrepreneurship at Africa Business School &mdash; UM6P</strong>, Morocco\'s leading academic institution driving innovation across Africa.',
+                who_we_are_p2: 'Our multidisciplinary team combines academic research with industry experience, bringing together data scientists, entrepreneurship experts, and economic analysts to build the most comprehensive view of the Moroccan startup ecosystem.',
+                platform_features: 'Platform Features',
+                comprehensive_data: 'Comprehensive Data',
+                comprehensive_data_p: 'Real-time tracking of startups, funding rounds, investors, and market trends across all sectors and regions of Morocco.',
+                advanced_analytics: 'Advanced Analytics',
+                advanced_analytics_p: 'Sophisticated visualization tools and predictive analytics to identify patterns and opportunities in the ecosystem.',
+                ecosystem_mapping: 'Ecosystem Mapping',
+                ecosystem_mapping_p: 'Interactive network analysis showing connections between startups, investors, incubators, and support organizations.',
+                partners: 'Partners',
+                explore_ecosystem: 'Explore the Ecosystem',
+                explore_ecosystem_p: 'Discover Morocco\'s most innovative startups, investors, and support programs.',
+                explore_startups_btn: 'Explore Startups',
+                // Join
+                join_title: 'Join',
+                join_subtitle: 'Connect with entrepreneurs, investors, and innovation programs across Morocco. Choose your role to get started.',
+                entrepreneur_startup: 'Entrepreneur / Startup',
+                entrepreneur_desc: 'Submit your startup profile to connect with investors, accelerators, and potential partners in Morocco\'s growing ecosystem.',
+                investor_vc: 'Investor / VC',
+                investor_desc: 'Share your investment focus and portfolio to connect with promising startups and co-investors across Morocco.',
+                program_incubator: 'Program / Incubator',
+                program_desc: 'List your accelerator, incubator, or support program to help entrepreneurs and startups in their growth journey.',
+                program_card: 'Support Program',
+                program_card_desc: 'Register your support program, bootcamp, or training initiative dedicated to entrepreneurs and startups.',
+                incubator_accelerator: 'Incubator / Accelerator',
+                incubator_card_desc: 'List your incubator or accelerator to connect with startups seeking structured support and funding access.',
+                talent_professional: 'Talent / Professional',
+                talent_desc: 'Create your professional profile to find opportunities with startups, investors, and innovation programs in Morocco.',
+                get_started: 'Get Started',
+                demo_version: 'Demo Version',
+                demo_disclaimer: 'This is a demonstration version of The Pulse platform. Registration forms are for preview purposes and data is not yet persisted to a production database.',
+                // Login
+                welcome_back: 'Welcome back',
+                sign_in_dashboard: 'Sign in to your dashboard',
+                username: 'Username', password: 'Password',
+                sign_in: 'Sign In',
+                powering_ecosystem: 'Powering Morocco\'s startup ecosystem',
+                login_tagline: 'Morocco\'s Startup Intelligence Platform. Real-time data on founders, investors, and the ecosystem driving innovation across the Kingdom.',
+                // Forms shared
+                company_name: 'Company Name', company_description: 'Company Description',
+                founded_year: 'Founded Year', employee_count: 'Employee Count',
+                select_range: 'Select range',
+                company_information: 'Company Information',
+                business_details: 'Business Details',
+                sectors_label: 'Sectors (Add up to 5)',
+                technologies: 'Technologies (Add up to 8)',
+                funding_stage: 'Funding Stage',
+                latest_funding: 'Latest Funding Amount',
+                founders_information: 'Founders Information',
+                add_founder: '+ Add Founder',
+                full_name: 'Full Name', role_title: 'Role/Title',
+                phone_number: 'Phone Number',
+                previous_experience: 'Previous Experience',
+                ecosystem_connections: 'Ecosystem Connections',
+                programs_participated: 'Programs/Incubators Participated',
+                current_investors: 'Current/Previous Investors',
+                looking_for: 'What are you looking for?',
+                submit_application: 'Submit Application',
+                submit_profile: 'Submit Profile',
+                submit_program: 'Submit Program',
+                terms_notice: 'By submitting, you agree to our Terms of Service and Privacy Policy.',
+                demo_warning: 'This is a demo form - submissions are not processed',
+                remove: 'Remove',
+                // Investor form
+                organization_information: 'Organization Information',
+                organization_name: 'Organization Name',
+                investment_focus: 'Investment Focus',
+                focus_sectors: 'Focus Sectors',
+                investment_stages: 'Investment Stages',
+                min_ticket: 'Minimum Ticket Size', max_ticket: 'Maximum Ticket Size',
+                geographic_focus: 'Geographic Focus',
+                portfolio_track: 'Portfolio & Track Record',
+                portfolio_size: 'Portfolio Size',
+                active_deals: 'Active Deals',
+                total_funded: 'Total Funded to Date',
+                notable_investments: 'Notable Investments',
+                investment_criteria: 'Investment Criteria',
+                contact_information: 'Contact Information',
+                primary_contact: 'Primary Contact Name',
+                contact_email: 'Contact Email',
+                // Program form
+                program_information: 'Program Information',
+                program_name: 'Program Name', program_type: 'Program Type',
+                program_description: 'Program Description',
+                duration: 'Duration', format_label: 'Format',
+                program_details: 'Program Details',
+                target_stages: 'Target Stages', cohort_size: 'Cohort Size',
+                application_fee: 'Application Fee',
+                program_benefits: 'Program Benefits',
+                investment_support: 'Investment & Support',
+                investment_offered: 'Investment Offered',
+                equity_taken: 'Equity Taken',
+                support_services: 'Support Services',
+                mentors_partners: 'Notable Mentors & Partners',
+                application_process: 'Application Process',
+                next_deadline: 'Next Application Deadline',
+                next_cohort: 'Next Cohort Start Date',
+                eligibility: 'Eligibility Criteria',
+                manager_info: 'Manager / Founder / Lead Information',
+                program_contact: 'Program Contact Information',
+                // Talent form
+                talent_title: 'Talent Registration',
+                talent_subtitle: 'Create your professional profile to find opportunities in startups',
+                personal_info: 'Personal Information',
+                email_address: 'Email Address',
+                professional_background: 'Professional Background',
+                current_title_role: 'Current Title/Role',
+                years_experience: 'Years of Experience',
+                professional_bio: 'Professional Bio',
+                skills_label: 'Skills & Expertise (Add up to 10)',
+                industries_interest: 'Industries of Interest',
+                work_preferences: 'Work Preferences',
+                role_type: 'Preferred Role Type', work_format: 'Work Format',
+                salary_range: 'Expected Salary Range (Optional)',
+                availability: 'Availability',
+                professional_links: 'Professional Links',
+                portfolio_website: 'Portfolio/Website',
+                other_profile: 'Other Profile',
+                additional_info: 'Additional Information',
+                education_optional: 'Education (Optional)',
+                achievements: 'Notable Achievements (Optional)',
+                languages: 'Languages',
+                // Talent marketplace
+                talents_title: 'Talent Marketplace',
+                talents_subtitle: 'Find professionals and talent across Morocco\'s startup ecosystem',
+                total_talents: 'Total Talents',
+                available_now: 'Available Now',
+                search_talents: 'Search by skill, name, title...',
+                find_talent: 'Find Talent',
+                find_talent_desc: 'Browse professionals and talents ready to join startups in Morocco\'s ecosystem.',
+                browse_talents: 'Browse Talents',
+                no_talents_found: 'No Talents Found',
+                no_talents_msg: 'No talent profiles are available at this time.',
+                immediate: 'Immediate',
+                // Common
+                filters: 'Filters', clear: 'Clear',
+                city: 'City', startup: 'Startup',
+                apply_filters: 'Apply Filters',
+                location_filter: 'Location', investor_type: 'Investor Type',
+                types: 'Types', countries: 'Countries',
+                sector: 'Sector', stage: 'Stage', status: 'Status',
+                legal_form: 'Legal Form', year: 'Year',
+                region: 'Region', country: 'Country',
+                round: 'Round', date: 'Date',
+                investments: 'Investments', portfolio: 'Portfolio', exits: 'Exits',
+                founded: 'Founded', website: 'Website',
+                contact: 'Contact', email: 'Email', phone: 'Phone',
+                name: 'Name', type: 'Type', description: 'Description', sectors: 'Sectors',
+                about: 'About',
+                employees: 'Employees', capital: 'Capital',
+                education: 'Education', experience: 'Experience',
+                founders: 'Founders', incubators: 'Incubators',
+                funding_rounds: 'Funding Rounds',
+                linkedin_profile: 'LinkedIn Profile',
+                facebook_page: 'Facebook Page',
+                twitter_profile: 'Twitter Profile',
+                no_title: 'No title',
+                back: 'Back', search: 'Search',
+                n_a: 'N/A', showing: 'Showing',
+                no_data: 'No data available',
+                active: 'Active', inactive: 'Inactive',
+                unknown: 'Unknown',
+                organization: 'Organization',
+                vintage: 'Vintage',
+                startup_registration: 'Startup Registration',
+                startup_reg_subtitle: 'Tell us about your startup and connect with the ecosystem',
+                investor_registration: 'Investor Registration',
+                investor_reg_subtitle: 'Share your investment focus and connect with promising startups',
+                program_registration: 'Program Registration',
+                program_reg_subtitle: 'List your accelerator or incubator program for entrepreneurs',
+                capability_stage: 'Capability Stage',
+                capability_maturity: 'Capability Maturity',
+                // Footer
+                footer_desc: 'The intelligence platform for the Moroccan startup ecosystem.',
+                footer_platform: 'Platform',
+                footer_team: 'The Team',
+                footer_resources: 'Resources',
+                footer_role_director: 'The Pulse Director',
+                footer_bio_hamid: 'Professor of Management & Entrepreneurship, UM6P Africa Business School. Director of the Center of Entrepreneurship. Former ESSEC professor.',
+                footer_role_assoc: 'The Pulse Associate Director',
+                footer_bio_simo: 'Director at the Center of Entrepreneurship, UM6P. Entrepreneur & Startup Advisor. Passionate about venture building.',
+                total_raised_badge: 'raised'
+            }
+        };
+
+        var lang = localStorage.getItem('lang') || 'fr';
+        // French to English mapping for database content
+        var frToEn = {
+            // Status
+            'EN ACTIVITE': 'ACTIVE', 'EN ACTIVITÉ': 'ACTIVE', 'ACTIVE': 'ACTIVE',
+            'INACTIVE': 'INACTIVE', 'CESSÉE': 'CEASED', 'CESSATION': 'CEASED',
+            'EN COURS': 'IN PROGRESS', 'FERMÉ': 'CLOSED', 'FERMÉE': 'CLOSED',
+            // Stage
+            'AMORCAGE': 'SEED', 'AMORÇAGE': 'SEED', 'PRE-SEED': 'PRE-SEED',
+            'SCALING': 'SCALING', 'CROISSANCE': 'GROWTH', 'MATURE': 'MATURE',
+            'EARLY STAGE': 'EARLY STAGE', 'LATE STAGE': 'LATE STAGE',
+            'SÉRIE A': 'SERIES A', 'SÉRIE B': 'SERIES B', 'SÉRIE C': 'SERIES C',
+            // Employees
+            'employés': 'employees', 'employé': 'employee',
+            // Legal form
+            'SARL': 'LLC', 'SA': 'SA', 'SAS': 'SAS', 'AUTO-ENTREPRENEUR': 'SOLE PROPRIETOR',
+            // Misc labels
+            'Fondé en': 'Founded in', 'Employés': 'Employees', 'Capital': 'Capital',
+            'Secteur': 'Sector', 'Ville': 'City', 'Statut': 'Status',
+            'Étape': 'Stage', 'Forme juridique': 'Legal Form',
+            'Description': 'Description', 'Investisseurs': 'Investors',
+            'Fondateurs': 'Founders', 'Incubateurs': 'Incubators',
+            'Tours de financement': 'Funding Rounds', 'Montant levé': 'Amount Raised',
+            'Informations générales': 'General Information',
+            'Contact': 'Contact', 'Compétences': 'Skills',
+            'Expérience': 'Experience', 'Formation': 'Education',
+            'Startups associées': 'Associated Startups',
+            'Fondateurs associés': 'Associated Founders',
+            'Investisseurs associés': 'Associated Investors',
+            'Portfolio': 'Portfolio', 'Sorties': 'Exits',
+            'Type': 'Type', 'Localisation': 'Location',
+            'Date de fondation': 'Founded', 'Site web': 'Website',
+            'Téléphone': 'Phone', 'Réseaux sociaux': 'Social Links',
+            'Startups incubées': 'Incubated Startups',
+            'Phases d\'investissement': 'Investment Phases',
+            'Partenaires': 'Partners', 'Secteurs': 'Sectors',
+            'Aucune donnée disponible': 'No data available',
+            'Aucun résultat': 'No results', 'Filtres': 'Filters',
+            'Rechercher': 'Search', 'Réinitialiser': 'Reset',
+            'Appliquer': 'Apply', 'Voir tout': 'See all',
+            'Retour': 'Back', 'actif': 'active', 'actifs': 'active'
+        };
+
+        // Reverse mapping (EN to FR) for when switching back
+        var enToFr = {};
+        Object.keys(frToEn).forEach(function(k) { enToFr[frToEn[k]] = k; });
+
+        // Store original text for reverting
+        var originalTexts = new Map();
+
+        function translateDataContent(toLang) {
+            var map = toLang === 'en' ? frToEn : enToFr;
+            // Translate badges, labels, and other text elements
+            var selectors = '.badge-sector, .badge-stage, .badge-status, .pulse-badge-accent, .pulse-badge-secondary, .pulse-badge-tertiary, .pulse-badge-danger, .pulse-badge-outline, [class*="badge"], .stat-label, .info-label, .detail-label, .card-label, .section-heading, h3, h4, .sidebar-label';
+            document.querySelectorAll(selectors).forEach(function(el) {
+                var text = el.textContent.trim();
+                if (!originalTexts.has(el)) originalTexts.set(el, text);
+                var source = toLang === 'fr' ? originalTexts.get(el) : text;
+                if (map[source]) {
+                    el.textContent = map[source];
+                } else if (map[source.toUpperCase()]) {
+                    el.textContent = map[source.toUpperCase()];
+                }
+            });
+            // Also translate text containing "employés"
+            document.querySelectorAll('.startup-meta-item span, .startup-card-footer span, .founder-meta span, .info-value').forEach(function(el) {
+                var t = el.textContent;
+                if (toLang === 'en') {
+                    el.textContent = t.replace(/employés/gi, 'employees').replace(/employé/gi, 'employee');
+                } else {
+                    el.textContent = t.replace(/employees/gi, 'employés').replace(/employee/gi, 'employé');
+                }
+            });
+        }
+
+        function applyLang(l) {
+            lang = l;
+            localStorage.setItem('lang', l);
+            var label = document.getElementById('langLabel');
+            if (label) label.textContent = l === 'en' ? 'FR' : 'EN';
+            // Toggle lang via data attribute on html element
+            document.documentElement.setAttribute('data-lang', l);
+            document.querySelectorAll('[data-i18n]').forEach(function(el) {
+                var key = el.getAttribute('data-i18n');
+                if (translations[l] && translations[l][key]) {
+                    el.textContent = translations[l][key];
+                }
+            });
+            // Translate placeholders
+            document.querySelectorAll('[data-i18n-placeholder]').forEach(function(el) {
+                var key = el.getAttribute('data-i18n-placeholder');
+                if (translations[l] && translations[l][key]) {
+                    el.setAttribute('placeholder', translations[l][key]);
+                }
+            });
+            translateDataContent(l);
+        }
+
+        // Apply on load
+        document.addEventListener('DOMContentLoaded', function() {
+            applyLang(lang);
+            var btn = document.getElementById('langToggle');
+            if (btn) btn.addEventListener('click', function() {
+                applyLang(lang === 'en' ? 'fr' : 'en');
+            });
+        });
+
+        window.applyLang = applyLang;
+        window.currentLang = function() { return lang; };
+    })();
+    </script>
+
+    <!-- ============================================
+         FAVORITES / WATCHLIST JS
+         ============================================ -->
+    <script>
+    function getFavorites() {
+        return JSON.parse(localStorage.getItem('pulse_favorites') || '{}');
+    }
+
+    function toggleFavorite(btn) {
+        var type = btn.dataset.type;
+        var id = btn.dataset.id;
+        var key = type + '_' + id;
+        var favs = getFavorites();
+
+        if (favs[key]) {
+            delete favs[key];
+            btn.classList.remove('active');
+            btn.querySelector('i').className = 'far fa-heart';
+        } else {
+            favs[key] = { type: type, id: id, timestamp: Date.now() };
+            btn.classList.add('active');
+            btn.querySelector('i').className = 'fas fa-heart';
+        }
+        localStorage.setItem('pulse_favorites', JSON.stringify(favs));
+        updateFavoriteCount();
+    }
+
+    function initFavorites() {
+        var favs = getFavorites();
+        document.querySelectorAll('.btn-favorite, .btn-favorite-detail').forEach(function(btn) {
+            var key = btn.dataset.type + '_' + btn.dataset.id;
+            if (favs[key]) {
+                btn.classList.add('active');
+                btn.querySelector('i').className = 'fas fa-heart';
+            }
+        });
+        updateFavoriteCount();
+    }
+
+    function updateFavoriteCount() {
+        var favs = getFavorites();
+        var count = Object.keys(favs).length;
+        var badge = document.getElementById('favCountBadge');
+        if (badge) {
+            badge.textContent = count;
+            badge.style.display = count > 0 ? 'inline-flex' : 'none';
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded', initFavorites);
+    </script>
+
+    {% block scripts %}
+    {% endblock %}
+
+    <!-- ============================================
+         DATA DISCLAIMER POP-IN MODAL
+         ============================================ -->
+    <div id="disclaimerOverlay" class="disclaimer-overlay" style="display:none;">
+        <div class="disclaimer-modal">
+            <div class="disclaimer-modal-icon">
+                <div class="disclaimer-icon-circle">
+                    <i class="fas fa-database"></i>
+                </div>
+            </div>
+            <h3 class="disclaimer-modal-title disclaimer-text-en">Data disclaimer</h3>
+            <h3 class="disclaimer-modal-title disclaimer-text-fr" style="display:none;">Avertissement sur les donn&eacute;es</h3>
+            <div class="disclaimer-modal-body">
+                <p class="disclaimer-text-en">The data presented on this platform is collected from <strong>publicly available sources</strong>. Despite our best efforts to ensure accuracy, errors or omissions may occur.</p>
+                <p class="disclaimer-text-fr" style="display:none;">Les donn&eacute;es pr&eacute;sent&eacute;es sur cette plateforme sont issues de <strong>sources publiques</strong>. Malgr&eacute; nos efforts pour garantir leur exactitude, des erreurs ou omissions peuvent survenir.</p>
+                <p class="disclaimer-text-en" style="margin-top: 0.75rem;">If you notice any inaccuracy concerning your organization or personal information, please <a href="/join">contact us</a> so we can promptly correct it.</p>
+                <p class="disclaimer-text-fr" style="display:none; margin-top: 0.75rem;">Si vous constatez une inexactitude concernant votre organisation ou vos informations personnelles, merci de <a href="/join">nous le signaler</a> afin que nous puissions la corriger rapidement.</p>
+            </div>
+            <button class="disclaimer-modal-btn" onclick="closeDisclaimer()">
+                <i class="fas fa-check"></i>
+                <span class="disclaimer-text-en">Understood</span>
+                <span class="disclaimer-text-fr" style="display:none;">Compris</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- ============================================
+         COOKIE CONSENT BANNER (CNDP MAROC)
+         ============================================ -->
+    <div id="cookieConsent" class="cookie-consent" style="display:none;">
+        <div class="cookie-consent-inner">
+            <div class="cookie-icon-wrapper">
+                <div class="cookie-icon-anim">
+                    <i class="fas fa-cookie-bite"></i>
+                </div>
+            </div>
+            <div class="cookie-content">
+                <h4 class="cookie-title cookie-title-en">Cookies &amp; confidentialit&eacute;</h4>
+                <h4 class="cookie-title cookie-title-fr" style="display:none;">Cookies &amp; confidentialit&eacute;</h4>
+                <p class="cookie-text cookie-text-en">This site uses strictly necessary cookies to ensure its proper functioning (language preference, theme). No personal data is collected for advertising purposes, in accordance with <strong>Law 09-08</strong> on personal data protection (CNDP, Morocco).</p>
+                <p class="cookie-text cookie-text-fr" style="display:none;">Ce site utilise uniquement des cookies strictement n&eacute;cessaires &agrave; son bon fonctionnement (pr&eacute;f&eacute;rence de langue, th&egrave;me). Aucune donn&eacute;e personnelle n&rsquo;est collect&eacute;e &agrave; des fins publicitaires, conform&eacute;ment &agrave; la <strong>loi 09-08</strong> relative &agrave; la protection des donn&eacute;es personnelles (CNDP, Maroc).</p>
+            </div>
+            <div class="cookie-actions">
+                <button class="cookie-btn-accept" onclick="acceptCookies()">
+                    <i class="fas fa-check"></i>
+                    <span class="cookie-btn-en">Accept</span>
+                    <span class="cookie-btn-fr" style="display:none;">Accepter</span>
+                </button>
+                <button class="cookie-btn-decline" onclick="declineCookies()">
+                    <span class="cookie-btn-en">Decline</span>
+                    <span class="cookie-btn-fr" style="display:none;">Refuser</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <style>
+        /* ========== DATA DISCLAIMER POP-IN ========== */
+        .disclaimer-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 1200;
+            background: rgba(0, 0, 0, 0.55);
+            backdrop-filter: blur(6px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+            animation: fadeOverlayIn 0.3s ease forwards;
+        }
+        @keyframes fadeOverlayIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        .disclaimer-modal {
+            background: var(--bg-card);
+            border: 1px solid rgba(0, 212, 170, 0.15);
+            border-radius: 24px;
+            padding: 2.5rem 2rem 2rem;
+            max-width: 480px;
+            width: 100%;
+            text-align: center;
+            box-shadow: 0 24px 64px rgba(0, 0, 0, 0.4);
+            animation: modalPopIn 0.5s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+        }
+        @keyframes modalPopIn {
+            from { opacity: 0; transform: scale(0.9) translateY(20px); }
+            to { opacity: 1; transform: scale(1) translateY(0); }
+        }
+        .disclaimer-modal-icon {
+            margin-bottom: 1.25rem;
+        }
+        .disclaimer-icon-circle {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 64px;
+            height: 64px;
+            border-radius: 18px;
+            background: linear-gradient(135deg, rgba(0, 212, 170, 0.15), rgba(67, 97, 238, 0.1));
+            font-size: 1.6rem;
+            color: var(--accent);
+            animation: iconPulse 2s ease-in-out infinite;
+        }
+        @keyframes iconPulse {
+            0%, 100% { box-shadow: 0 0 0 0 rgba(0, 212, 170, 0.2); }
+            50% { box-shadow: 0 0 0 12px rgba(0, 212, 170, 0); }
+        }
+        .disclaimer-modal-title {
+            font-family: var(--font-heading);
+            font-weight: 700;
+            font-size: 1.25rem;
+            color: var(--text-primary);
+            margin: 0 0 1rem;
+        }
+        .disclaimer-modal-body {
+            margin-bottom: 1.5rem;
+        }
+        .disclaimer-modal-body p {
+            font-family: var(--font-body);
+            font-size: 0.88rem;
+            color: var(--text-secondary);
+            line-height: 1.65;
+            margin: 0;
+        }
+        .disclaimer-modal-body strong {
+            color: var(--accent);
+        }
+        .disclaimer-modal-body a {
+            color: var(--accent);
+            text-decoration: none;
+            font-weight: 500;
+        }
+        .disclaimer-modal-body a:hover {
+            text-decoration: underline;
+        }
+        .disclaimer-modal-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: var(--gradient-accent);
+            color: #0a0e1a;
+            border: none;
+            padding: 0.75rem 2rem;
+            border-radius: 12px;
+            font-family: var(--font-heading);
+            font-weight: 600;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: all 0.25s ease;
+        }
+        @media (hover: hover) {
+            .disclaimer-modal-btn:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 8px 24px rgba(0, 212, 170, 0.3);
+            }
+        }
+
+        /* ========== COOKIE CONSENT BANNER ========== */
+        .cookie-consent {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            z-index: 1100;
+            padding: 0 1rem;
+            pointer-events: none;
+        }
+        .cookie-consent-inner {
+            max-width: 680px;
+            margin: 0 auto 1.5rem;
+            background: var(--bg-card);
+            border: 1px solid rgba(0, 212, 170, 0.15);
+            border-radius: 20px;
+            padding: 1.5rem 1.75rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            box-shadow: 0 16px 48px rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(20px);
+            pointer-events: auto;
+            animation: cookieSlideUp 0.6s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+        }
+        .cookie-icon-wrapper {
+            text-align: center;
+        }
+        .cookie-icon-anim {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 56px;
+            height: 56px;
+            border-radius: 16px;
+            background: linear-gradient(135deg, rgba(247, 183, 49, 0.15), rgba(0, 212, 170, 0.1));
+            font-size: 1.6rem;
+            color: var(--tertiary);
+            animation: cookieWobble 2s ease-in-out infinite;
+        }
+        @keyframes cookieWobble {
+            0%, 100% { transform: rotate(0deg) scale(1); }
+            15% { transform: rotate(-8deg) scale(1.05); }
+            30% { transform: rotate(6deg) scale(1.02); }
+            45% { transform: rotate(-4deg) scale(1); }
+            60% { transform: rotate(2deg); }
+        }
+        .cookie-title {
+            font-family: var(--font-heading);
+            font-weight: 600;
+            font-size: 1.05rem;
+            color: var(--text-primary);
+            text-align: center;
+            margin: 0;
+        }
+        .cookie-text {
+            font-family: var(--font-body);
+            font-size: 0.82rem;
+            color: var(--text-secondary);
+            line-height: 1.6;
+            text-align: center;
+            margin: 0;
+        }
+        .cookie-text strong {
+            color: var(--accent);
+        }
+        .cookie-actions {
+            display: flex;
+            gap: 0.75rem;
+            justify-content: center;
+        }
+        .cookie-btn-accept {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            background: var(--gradient-accent);
+            color: #0a0e1a;
+            border: none;
+            padding: 0.65rem 1.5rem;
+            border-radius: 10px;
+            font-family: var(--font-heading);
+            font-weight: 600;
+            font-size: 0.88rem;
+            cursor: pointer;
+            transition: all 0.25s ease;
+        }
+        @media (hover: hover) {
+            .cookie-btn-accept:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 6px 20px rgba(0, 212, 170, 0.3);
+            }
+        }
+        .cookie-btn-decline {
+            background: transparent;
+            color: var(--text-muted);
+            border: 1px solid var(--border-color);
+            padding: 0.65rem 1.5rem;
+            border-radius: 10px;
+            font-family: var(--font-heading);
+            font-weight: 500;
+            font-size: 0.88rem;
+            cursor: pointer;
+            transition: all 0.25s ease;
+        }
+        .cookie-btn-decline:hover {
+            color: var(--text-primary);
+            border-color: var(--text-muted);
+        }
+        @keyframes slideUpIn {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes cookieSlideUp {
+            from { opacity: 0; transform: translateY(40px) scale(0.95); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+        @media (max-width: 640px) {
+            .cookie-consent-inner {
+                padding: 1.25rem;
+                border-radius: 16px;
+                margin-bottom: 0.75rem;
+            }
+            .disclaimer-inner {
+                flex-direction: column;
+                text-align: center;
+                gap: 0.75rem;
+            }
+        }
+
+        /* Language-aware display for cookie/disclaimer */
+        html[data-lang="fr"] .cookie-title-en,
+        html[data-lang="fr"] .cookie-text-en,
+        html[data-lang="fr"] .cookie-btn-en,
+        html[data-lang="fr"] .disclaimer-text-en { display: none !important; }
+        html[data-lang="fr"] .cookie-title-fr,
+        html[data-lang="fr"] .cookie-text-fr,
+        html[data-lang="fr"] .cookie-btn-fr,
+        html[data-lang="fr"] .disclaimer-text-fr { display: block !important; }
+        html[data-lang="en"] .cookie-title-fr,
+        html[data-lang="en"] .cookie-text-fr,
+        html[data-lang="en"] .cookie-btn-fr,
+        html[data-lang="en"] .disclaimer-text-fr { display: none !important; }
+    </style>
+
+    <script>
+    (function() {
+        // Cookie consent
+        if (!localStorage.getItem('cookieConsent')) {
+            setTimeout(function() {
+                document.getElementById('cookieConsent').style.display = 'block';
+            }, 1500);
+        }
+        // Data disclaimer pop-in
+        if (!sessionStorage.getItem('disclaimerClosed')) {
+            setTimeout(function() {
+                var d = document.getElementById('disclaimerOverlay');
+                if (d) d.style.display = 'flex';
+            }, 800);
+        }
+    })();
+
+    function acceptCookies() {
+        localStorage.setItem('cookieConsent', 'accepted');
+        var el = document.getElementById('cookieConsent');
+        el.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
+        el.style.opacity = '0';
+        el.style.transform = 'translateY(20px)';
+        setTimeout(function() { el.style.display = 'none'; }, 300);
+    }
+
+    function declineCookies() {
+        localStorage.setItem('cookieConsent', 'declined');
+        var el = document.getElementById('cookieConsent');
+        el.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
+        el.style.opacity = '0';
+        el.style.transform = 'translateY(20px)';
+        setTimeout(function() { el.style.display = 'none'; }, 300);
+    }
+
+    function closeDisclaimer() {
+        sessionStorage.setItem('disclaimerClosed', 'true');
+        var el = document.getElementById('disclaimerOverlay');
+        el.style.transition = 'opacity 0.3s ease';
+        el.style.opacity = '0';
+        setTimeout(function() { el.style.display = 'none'; }, 300);
+    }
+
+    /* ============================================
+       COOKIE CONSENT
+       ============================================ */
+    (function() {
+        var consent = localStorage.getItem('cookieConsent');
+        if (!consent) {
+            setTimeout(function() {
+                var el = document.getElementById('cookieConsent');
+                if (el) {
+                    el.style.display = 'block';
+                    el.style.opacity = '0';
+                    el.style.transition = 'opacity 0.4s ease';
+                    setTimeout(function() { el.style.opacity = '1'; }, 50);
+                }
+            }, 1000);
+        }
+    })();
+
+    function acceptCookies() {
+        localStorage.setItem('cookieConsent', 'accepted');
+        hideCookieBanner();
+    }
+
+    function declineCookies() {
+        localStorage.setItem('cookieConsent', 'declined');
+        hideCookieBanner();
+    }
+
+    function hideCookieBanner() {
+        var el = document.getElementById('cookieConsent');
+        if (el) {
+            el.style.transition = 'opacity 0.3s ease';
+            el.style.opacity = '0';
+            setTimeout(function() { el.style.display = 'none'; }, 300);
+        }
+    }
+    </script>
+</body>
+</html>

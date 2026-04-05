@@ -689,9 +689,13 @@
                      aria-label="Post de {{ obj.author_name }}">
 
                     <div class="nf-card-header">
+                        {% if obj.author_pic %}
+                        <img src="{{ obj.author_pic }}" alt="{{ obj.author_name }}" class="nf-avatar sm" style="object-fit: cover; border-radius: 50%;">
+                        {% else %}
                         <div class="nf-avatar sm" aria-hidden="true">
                             {{ (obj.author_name or 'M')[:2] | upper }}
                         </div>
+                        {% endif %}
                         <div class="nf-card-author">
                             <p class="nf-card-author-name">{{ obj.author_name or 'Membre anonyme' }}</p>
                             <p class="nf-card-author-role">{{ obj.author_role or 'Membre de l\'écosystème' }}</p>
@@ -761,9 +765,21 @@
                      aria-label="Article: {{ obj.title }}">
 
                     <div class="nf-card-header">
+                        {% if obj.source == 'The Pulse' %}
+                        <img src="{{ url_for('static', filename='images/thepulse-noir2.png') }}" alt="The Pulse" class="nf-avatar sm" style="object-fit: contain; border-radius: 50%; background: #fff; padding: 4px; border: 1.5px solid var(--border-color); width: 42px; height: 42px;">
+                        {% elif obj.source == 'Medias24' or obj.source == 'Médias24' %}
+                        <img src="{{ url_for('static', filename='images/Media24.png') }}" alt="Medias24" class="nf-avatar sm" style="object-fit: contain; border-radius: 50%; background: #fff; padding: 4px; border: 1.5px solid var(--border-color); width: 42px; height: 42px;">
+                        {% elif obj.source == 'MAP' %}
+                        <img src="{{ url_for('static', filename='images/MAP news.jpeg') }}" alt="MAP" class="nf-avatar sm" style="object-fit: contain; border-radius: 50%; background: #fff; padding: 4px; border: 1.5px solid var(--border-color); width: 42px; height: 42px;">
+                        {% elif obj.source == "L'Économiste" %}
+                        <img src="{{ url_for('static', filename='images/leconomiste.png') }}" alt="L'Économiste" class="nf-avatar sm" style="object-fit: contain; border-radius: 50%; background: #fff; padding: 4px; border: 1.5px solid var(--border-color); width: 42px; height: 42px;">
+                        {% elif obj.source == "Le Desk" %}
+                        <img src="{{ url_for('static', filename='images/ledesk.png') }}" alt="Le Desk" class="nf-avatar sm" style="object-fit: contain; border-radius: 50%; background: #fff; padding: 4px; border: 1.5px solid var(--border-color); width: 42px; height: 42px;">
+                        {% else %}
                         <div class="nf-avatar sm" style="background: linear-gradient(135deg, #00d4aa, #0099cc);" aria-hidden="true">
                             <i class="fas fa-newspaper" style="font-size:0.75rem;"></i>
                         </div>
+                        {% endif %}
                         <div class="nf-card-author">
                             <p class="nf-card-author-name">{{ obj.author or obj.source or 'The Pulse' }}</p>
                             <p class="nf-card-author-role">{{ obj.source or 'Actualités curatées' }}</p>

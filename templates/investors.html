@@ -67,18 +67,36 @@
             <div class="filters-container">
                 <div class="filters-header">
                     <h3 class="filters-title"><i class="fas fa-sliders-h"></i> <span data-i18n="filters">Filtres</span></h3>
+                    {% if selected and (selected.getlist('locations') or selected.getlist('investor_types') or selected.getlist('startups')) %}
                     <a href="{{ url_for('investors') }}" class="clear-filters"><i class="fas fa-times"></i> <span data-i18n="clear">Effacer</span></a>
+                    {% endif %}
+                </div>
+
+                <!-- View Tabs -->
+                <div style="display: flex; flex-direction: column; gap: 0.4rem; margin-bottom: 1rem;">
+                    <a href="{{ url_for('investors') }}?view=all" style="display: flex; align-items: center; gap: 0.5rem; padding: 0.5rem 0.75rem; border-radius: 8px; text-decoration: none; font-size: 0.82rem; font-weight: 600; {% if view_filter == 'all' %}background: var(--accent-subtle); color: var(--accent); border: 1px solid rgba(0,214,143,0.2);{% else %}background: var(--bg-surface); color: var(--text-secondary); border: 1px solid var(--border-subtle);{% endif %}">
+                        <i class="fas fa-th-large"></i> Tous <span style="margin-left: auto; font-size: 0.72rem; opacity: 0.7;">{{ investors|length }}</span>
+                    </a>
+                    <a href="{{ url_for('investors') }}?view=societes" style="display: flex; align-items: center; gap: 0.5rem; padding: 0.5rem 0.75rem; border-radius: 8px; text-decoration: none; font-size: 0.82rem; font-weight: 600; {% if view_filter == 'societes' %}background: var(--accent-subtle); color: var(--accent); border: 1px solid rgba(0,214,143,0.2);{% else %}background: var(--bg-surface); color: var(--text-secondary); border: 1px solid var(--border-subtle);{% endif %}">
+                        <i class="fas fa-building"></i> Sociétés de gestion
+                    </a>
+                    <a href="{{ url_for('investors') }}?view=fonds" style="display: flex; align-items: center; gap: 0.5rem; padding: 0.5rem 0.75rem; border-radius: 8px; text-decoration: none; font-size: 0.82rem; font-weight: 600; {% if view_filter == 'fonds' %}background: var(--accent-subtle); color: var(--accent); border: 1px solid rgba(0,214,143,0.2);{% else %}background: var(--bg-surface); color: var(--text-secondary); border: 1px solid var(--border-subtle);{% endif %}">
+                        <i class="fas fa-coins"></i> Fonds
+                    </a>
+                    <a href="{{ url_for('investors') }}?view=autres" style="display: flex; align-items: center; gap: 0.5rem; padding: 0.5rem 0.75rem; border-radius: 8px; text-decoration: none; font-size: 0.82rem; font-weight: 600; {% if view_filter == 'autres' %}background: var(--accent-subtle); color: var(--accent); border: 1px solid rgba(0,214,143,0.2);{% else %}background: var(--bg-surface); color: var(--text-secondary); border: 1px solid var(--border-subtle);{% endif %}">
+                        <i class="fas fa-user-group"></i> Autres
+                    </a>
                 </div>
 
                 <form action="{{ url_for('investors') }}" method="GET" id="filterForm">
 
                     <!-- Location Filter -->
                     <div class="accordion-filter">
-                        <button type="button" class="accordion-header active" onclick="toggleAccordion(this)">
+                        <button type="button" class="accordion-header" onclick="toggleAccordion(this)">
                             <span class="accordion-title"><i class="fas fa-map-marker-alt"></i> <span data-i18n="location_filter">Location</span></span>
                             <i class="fas fa-chevron-right accordion-icon"></i>
                         </button>
-                        <div class="accordion-content active">
+                        <div class="accordion-content">
                             <div class="accordion-body">
                                 {% for location in distinct_locations %}
                                 <div class="filter-option">
@@ -148,31 +166,15 @@
             <div class="search-bar-wrapper" style="margin-bottom: 1rem;">
                 <div style="position: relative;">
                     <i class="fas fa-search" style="position: absolute; left: 0.85rem; top: 50%; transform: translateY(-50%); color: var(--text-muted); font-size: 0.8rem;"></i>
-                    <input type="text" id="investorSearch" placeholder="Rechercher un investisseur..."
+                    <form action="{{ url_for('investors') }}" method="GET" style="display:contents;">
+                    <input type="text" id="investorSearch" name="q" value="{{ request.args.get('q', '') }}" placeholder="Rechercher un investisseur..."
                         style="width: 100%; padding: 0.6rem 0.85rem 0.6rem 2.3rem; border: 1px solid var(--border-color); border-radius: 10px; background: var(--bg-card); color: var(--text-primary); font-size: 0.82rem; font-family: var(--font-body); outline: none; transition: border-color 0.2s ease;"
                         onfocus="this.style.borderColor='var(--accent)'" onblur="this.style.borderColor='var(--border-color)'">
+                    </form>
                 </div>
             </div>
 
-            <!-- View Toggle Tabs -->
-            <div class="view-tabs">
-                <a href="{{ url_for('investors') }}?view=all" class="view-tab {% if view_filter == 'all' %}active{% endif %}">
-                    <i class="fas fa-th-large"></i> Tous
-                    <span class="tab-count">{{ investors|length }}</span>
-                </a>
-                <a href="{{ url_for('investors') }}?view=societes" class="view-tab {% if view_filter == 'societes' %}active{% endif %}">
-                    <i class="fas fa-building"></i> Sociétés de gestion
-                    <span class="tab-count">{{ investors|selectattr('primary_investor_type', 'in', ['Capital-risque', "Capital-risque d'entreprise", 'Capital-investissement'])|list|length }}</span>
-                </a>
-                <a href="{{ url_for('investors') }}?view=fonds" class="view-tab {% if view_filter == 'fonds' %}active{% endif %}">
-                    <i class="fas fa-coins"></i> Fonds
-                    <span class="tab-count">{{ funds|length }}</span>
-                </a>
-                <a href="{{ url_for('investors') }}?view=autres" class="view-tab {% if view_filter == 'autres' %}active{% endif %}">
-                    <i class="fas fa-user-group"></i> Autres
-                    <span class="tab-count">{{ investors|rejectattr('primary_investor_type', 'in', ['Capital-risque', "Capital-risque d'entreprise", 'Capital-investissement'])|list|length }}</span>
-                </a>
-            </div>
+            <!-- View Toggle Tabs moved to sidebar -->
 
             <!-- Investors Section -->
             {% set institutional_types = ['Capital-risque', "Capital-risque d'entreprise", 'Capital-investissement'] %}
@@ -184,19 +186,15 @@
             {% else %}
                 {% set filtered_investors = investors %}
             {% endif %}
+            {% if filtered_investors|length == 0 %}
             <h2 class="section-heading" style="margin-top: 0.5rem;">
-                <i class="fas fa-{% if view_filter == 'societes' %}building{% elif view_filter == 'autres' %}user-group{% else %}hand-holding-dollar{% endif %}" style="color: var(--secondary); margin-right: 0.3rem;"></i>
-                {% if filtered_investors|length > 0 %}
-                    {{ filtered_investors|length }}
-                    {% if view_filter == 'societes' %}Société{{ 's' if filtered_investors|length != 1 }} de gestion{% elif view_filter == 'autres' %}Autre{{ 's' if filtered_investors|length != 1 }} investisseur{{ 's' if filtered_investors|length != 1 }}{% else %}Investisseur{{ 's' if filtered_investors|length != 1 }}{% endif %}
-                {% else %}
-                    Aucun investisseur trouvé
-                {% endif %}
+                Aucun investisseur trouvé
             </h2>
+            {% endif %}
             <div class="investors-grid">
                 {% if filtered_investors|length > 0 %}
                     {% for investor in filtered_investors %}
-                    <a href="/investor/{{ investor.investor_id }}" class="investor-card" style="text-decoration:none; color:inherit;">
+                    <div class="investor-card" onclick="window.location.href='/investor/{{ investor.investor_id }}'" style="cursor:pointer;">
                         <button class="btn-favorite" data-type="investor" data-id="{{ investor.investor_id }}" onclick="event.stopPropagation(); toggleFavorite(this);" title="Ajouter aux favoris">
                             <i class="far fa-heart"></i>
                         </button>
@@ -219,16 +217,6 @@
                                     {% if investor.primary_investor_type %}
                                     <span class="pulse-badge-type">{{ investor.primary_investor_type }}</span>
                                     {% endif %}
-                                    {% if investor.primary_investor_type in ['Capital-risque', "Capital-risque d'entreprise", 'Capital-investissement'] %}
-                                    <span class="pulse-badge-accent" style="font-size: 0.65rem; padding: 0.15rem 0.4rem;" data-i18n="inv_institutional">Institutionnel</span>
-                                    {% else %}
-                                    <span class="pulse-badge-secondary" style="font-size: 0.65rem; padding: 0.15rem 0.4rem;" data-i18n="inv_non_institutional">Non-institutionnel</span>
-                                    {% endif %}
-                                    {% if investor.investor_status %}
-                                    <span class="pulse-badge-status {% if investor.investor_status|lower == 'active' %}active{% else %}inactive{% endif %}">
-                                        {{ investor.investor_status }}
-                                    </span>
-                                    {% endif %}
                                 </div>
                             </div>
                         </div>
@@ -241,58 +229,54 @@
                             </div>
                             {% endif %}
 
-                            {% if investor.founding_date %}
-                            <div class="investor-meta-item">
-                                <i class="fas fa-calendar-alt"></i>
-                                <span data-i18n="founded">Fond&eacute; en</span> {{ investor.founding_date }}
-                            </div>
-                            {% endif %}
-
                             {% if investor.preferred_industry %}
                             <div class="investor-meta-item">
                                 <i class="fas fa-industry"></i>
                                 <span>{{ investor.preferred_industry }}</span>
                             </div>
                             {% endif %}
-
-                            {% if investor.last_investment_company %}
-                            <div class="investor-meta-item">
-                                <i class="fas fa-arrow-right"></i>
-                                <span><span data-i18n="last_label">Dernier :</span> {{ investor.last_investment_company }}{% if investor.last_investment_date %} ({{ investor.last_investment_date }}){% endif %}</span>
-                            </div>
-                            {% endif %}
                         </div>
 
-                        <!-- Portfolio Startups -->
-                        {% set portfolio = [] %}
+                        <!-- Portfolio Startups (clickable) -->
+                        {% set portfolio_startups = [] %}
                         {% for inv in investor.investments %}
-                            {% if inv.funding_round and inv.funding_round.startup and inv.funding_round.startup.startup_name not in portfolio %}
-                                {% if portfolio.append(inv.funding_round.startup.startup_name) %}{% endif %}
+                            {% if inv.funding_round and inv.funding_round.startup %}
+                                {% set s = inv.funding_round.startup %}
+                                {% set key = s.startup_name %}
+                                {% if key not in portfolio_startups|map(attribute='name')|list %}
+                                    {% if portfolio_startups.append({'name': s.startup_name, 'id': s.startup_id}) %}{% endif %}
+                                {% endif %}
                             {% endif %}
                         {% endfor %}
-                        {% if portfolio|length > 0 %}
+                        {% if portfolio_startups|length > 0 %}
                         <div class="investor-portfolio">
                             <div class="investor-portfolio-label"><i class="fas fa-briefcase"></i> <span data-i18n="portfolio">Portefeuille</span></div>
                             <div class="investor-portfolio-tags">
-                                {% for name in portfolio[:4] %}
-                                <span class="portfolio-tag">{{ name }}</span>
+                                {% for s in portfolio_startups[:4] %}
+                                <a href="/startup/{{ s.id }}" class="portfolio-tag" onclick="event.stopPropagation();" style="text-decoration: none; cursor: pointer;">{{ s.name }}</a>
                                 {% endfor %}
-                                {% if portfolio|length > 4 %}
-                                <span class="portfolio-tag more">+{{ portfolio|length - 4 }}</span>
+                                {% if portfolio_startups|length > 4 %}
+                                <span class="portfolio-tag more">+{{ portfolio_startups|length - 4 }}</span>
                                 {% endif %}
                             </div>
                         </div>
                         {% endif %}
 
                         <!-- Investment Stats -->
+                        {% set real_inv = investor.investments|length %}
+                        {% set db_inv = investor.investment_count|int if investor.investment_count else 0 %}
+                        {% set best_inv = [real_inv, db_inv]|max %}
+                        {% set real_port = portfolio_startups|length %}
+                        {% set db_port = investor.num_portfolio_organizations|int if investor.num_portfolio_organizations else 0 %}
+                        {% set best_port = [real_port, db_port]|max %}
                         <div class="investor-stats-row">
                             <div class="investor-stat">
-                                <div class="investor-stat-value">{{ investor.investment_count|int if investor.investment_count else 0 }}</div>
+                                <div class="investor-stat-value">{{ best_inv }}</div>
                                 <div class="investor-stat-label" data-i18n="investments">Investissements</div>
                             </div>
                             <div class="investor-stat">
-                                <div class="investor-stat-value tertiary">{{ investor.exits_count|int if investor.exits_count else 0 }}</div>
-                                <div class="investor-stat-label" data-i18n="exits">Sorties</div>
+                                <div class="investor-stat-value" style="color: var(--accent);">{{ best_port }}</div>
+                                <div class="investor-stat-label" data-i18n="portfolio">Portefeuille</div>
                             </div>
                         </div>
 
@@ -300,7 +284,7 @@
                             <i class="fas fa-arrow-right investor-arrow"></i>
                         </div>
 
-                    </a>
+                    </div>
                     {% endfor %}
                 {% else %}
                     <div class="empty-state">
@@ -399,11 +383,27 @@
     }
 
     // Search bar filtering
+    var searchTimer;
     document.getElementById('investorSearch').addEventListener('input', function() {
-        var query = this.value.toLowerCase();
-        document.querySelectorAll('.investor-card').forEach(function(card) {
-            card.style.display = card.textContent.toLowerCase().includes(query) ? '' : 'none';
-        });
+        var input = this;
+        clearTimeout(searchTimer);
+        searchTimer = setTimeout(function() {
+            var q = input.value.trim();
+            var url = '{{ url_for("investors") }}?q=' + encodeURIComponent(q);
+            fetch(url, { headers: { 'X-Requested-With': 'XMLHttpRequest' } })
+                .then(function(r) { return r.text(); })
+                .then(function(html) {
+                    var parser = new DOMParser();
+                    var doc = parser.parseFromString(html, 'text/html');
+                    var newGrid = doc.querySelector('.investors-grid');
+                    if (newGrid) document.querySelector('.investors-grid').innerHTML = newGrid.innerHTML;
+                    var oldPag = document.querySelector('.pagination-nav');
+                    var newPag = doc.querySelector('.pagination-nav');
+                    if (oldPag && newPag) oldPag.innerHTML = newPag.innerHTML;
+                    else if (oldPag) oldPag.style.display = 'none';
+                    history.replaceState(null, '', q ? '?q=' + encodeURIComponent(q) : window.location.pathname);
+                });
+        }, 350);
     });
 </script>
 {% endblock %}

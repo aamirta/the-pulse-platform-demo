@@ -189,6 +189,31 @@
         text-align: center;
         overflow: hidden;
     }
+
+    /* ========== HERO LOGO ANIMATION ========== */
+    .hero-logo-img {
+        animation: logoEntrance 1.2s cubic-bezier(0.16, 1, 0.3, 1) both;
+        filter: drop-shadow(0 0 0px transparent);
+    }
+    @keyframes logoEntrance {
+        0% { opacity: 0; transform: scale(0.7) translateY(20px); filter: drop-shadow(0 0 0px transparent); }
+        60% { opacity: 1; transform: scale(1.04) translateY(-4px); filter: drop-shadow(0 0 30px rgba(0, 212, 170, 0.3)); }
+        100% { opacity: 1; transform: scale(1) translateY(0); filter: drop-shadow(0 0 8px rgba(0, 212, 170, 0.15)); }
+    }
+    .hero-logo-img.pulsing {
+        animation: logoBreath 2.5s ease-in-out infinite;
+    }
+    @keyframes logoBreath {
+        0%, 100% { filter: drop-shadow(0 0 10px rgba(0, 212, 170, 0.2)) drop-shadow(0 0 30px rgba(0, 212, 170, 0.05)); transform: scale(1); }
+        50% { filter: drop-shadow(0 0 35px rgba(0, 212, 170, 0.6)) drop-shadow(0 0 70px rgba(0, 212, 170, 0.2)); transform: scale(1.04); }
+    }
+    [data-theme="light"] .hero-logo-img.pulsing {
+        animation: logoBreathLight 2.5s ease-in-out infinite;
+    }
+    @keyframes logoBreathLight {
+        0%, 100% { filter: drop-shadow(0 0 20px rgba(0, 180, 170, 0.5)) drop-shadow(0 0 50px rgba(0, 180, 170, 0.25)) drop-shadow(0 0 80px rgba(0, 180, 170, 0.1)); transform: scale(1); }
+        50% { filter: drop-shadow(0 0 50px rgba(0, 180, 170, 1)) drop-shadow(0 0 100px rgba(0, 180, 170, 0.6)) drop-shadow(0 0 140px rgba(0, 180, 170, 0.3)); transform: scale(1.04); }
+    }
     .hero-section::before {
         content: '';
         position: absolute;
@@ -1514,7 +1539,7 @@
             </div>
         </div>
         <img src="{{ url_for('static', filename='images/thepulse-noir.png') }}" alt="The Pulse" class="hero-logo-img logo-dark" style="width: 100%; max-width: 420px; height: auto; margin: 0 auto; position: relative; z-index: 2;">
-        <img src="{{ url_for('static', filename='images/thepulse-blanc.png') }}" alt="The Pulse" class="hero-logo-img logo-light" style="width: 100%; max-width: 420px; height: auto; margin: 0 auto; position: relative; z-index: 2;">
+        <img src="{{ url_for('static', filename='images/thepulse-noir2.png') }}" alt="The Pulse" class="hero-logo-img logo-light" style="width: 100%; max-width: 420px; height: auto; margin: 0 auto; position: relative; z-index: 2;">
 
         <!-- Pulsating dot -->
         <div class="hero-pulse-dot" style="position: relative; z-index: 2;">
@@ -1622,7 +1647,11 @@
                     {% if item.type == 'post' %}
                     <div class="nf-card" data-filter-type="{{ obj.post_type }}" data-item-type="post">
                         <div class="nf-card-header">
+                            {% if obj.author_pic %}
+                            <img src="{{ obj.author_pic }}" alt="{{ obj.author_name }}" class="nf-avatar sm" style="object-fit: cover; border-radius: 50%;">
+                            {% else %}
                             <div class="nf-avatar sm">{{ (obj.author_name or 'M')[:2] | upper }}</div>
+                            {% endif %}
                             <div class="nf-card-author">
                                 <p class="nf-card-author-name">{{ obj.author_name or 'Membre anonyme' }}</p>
                                 <p class="nf-card-author-role">{{ obj.author_role or 'Membre de l\'écosystème' }}</p>
@@ -1658,7 +1687,19 @@
                     {% else %}
                     <div class="nf-card" data-filter-type="article" data-item-type="article">
                         <div class="nf-card-header">
+                            {% if obj.source == 'The Pulse' %}
+                            <img src="{{ url_for('static', filename='images/thepulse-noir2.png') }}" alt="The Pulse" class="nf-avatar sm" style="object-fit: contain; border-radius: 50%; background: #fff; padding: 4px; border: 1.5px solid var(--border-color); width: 42px; height: 42px;">
+                            {% elif obj.source == 'Medias24' or obj.source == 'Médias24' %}
+                            <img src="{{ url_for('static', filename='images/Media24.png') }}" alt="Medias24" class="nf-avatar sm" style="object-fit: contain; border-radius: 50%; background: #fff; padding: 4px; border: 1.5px solid var(--border-color); width: 42px; height: 42px;">
+                            {% elif obj.source == 'MAP' %}
+                            <img src="{{ url_for('static', filename='images/MAP news.jpeg') }}" alt="MAP" class="nf-avatar sm" style="object-fit: contain; border-radius: 50%; background: #fff; padding: 4px; border: 1.5px solid var(--border-color); width: 42px; height: 42px;">
+                            {% elif obj.source == "L'Économiste" %}
+                            <img src="{{ url_for('static', filename='images/leconomiste.png') }}" alt="L'Économiste" class="nf-avatar sm" style="object-fit: contain; border-radius: 50%; background: #fff; padding: 4px; border: 1.5px solid var(--border-color); width: 42px; height: 42px;">
+                            {% elif obj.source == "Le Desk" %}
+                            <img src="{{ url_for('static', filename='images/ledesk.png') }}" alt="Le Desk" class="nf-avatar sm" style="object-fit: contain; border-radius: 50%; background: #fff; padding: 4px; border: 1.5px solid var(--border-color); width: 42px; height: 42px;">
+                            {% else %}
                             <div class="nf-avatar sm" style="background:linear-gradient(135deg,#00d4aa,#0099cc);"><i class="fas fa-newspaper" style="font-size:0.75rem;"></i></div>
+                            {% endif %}
                             <div class="nf-card-author">
                                 <p class="nf-card-author-name">{{ obj.author or obj.source or 'The Pulse' }}</p>
                                 <p class="nf-card-author-role">{{ obj.source or 'Actualités curatées' }}</p>
@@ -2579,6 +2620,13 @@
         observeStartupCards();
         watchThemeChanges();
         initScrollReveal();
+
+        // Start logo pulsing after entrance animation ends
+        document.querySelectorAll('.hero-logo-img').forEach(function(img) {
+            img.addEventListener('animationend', function() {
+                img.classList.add('pulsing');
+            }, { once: true });
+        });
     });
 
 })();

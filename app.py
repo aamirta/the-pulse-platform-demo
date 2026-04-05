@@ -5,7 +5,7 @@ from models import *
 from Functions import *
 import urllib.parse
 from collections import Counter
-from sqlalchemy import func, or_, event
+from sqlalchemy import func, or_, event, case, literal
 from werkzeug.security import generate_password_hash, check_password_hash
 import urllib.parse
 import uuid
@@ -114,7 +114,12 @@ def home():
     for a in _nf_articles:
         _feed.append({'type': 'article', 'obj': a, 'date': a.published_at})
     _feed.sort(key=lambda x: x['date'] if x['date'] else _dt.min, reverse=True)
-    home_feed_items = _feed[:4]          # show 4 items on home
+    # Build balanced feed: 2 articles + 2 posts + 2 opportunities
+    _articles = [x for x in _feed if x['type'] == 'article'][:2]
+    _posts = [x for x in _feed if x['type'] == 'post' and x['obj'].post_type in ('post', 'question', 'announcement')][:2]
+    _opps = [x for x in _feed if x['type'] == 'post' and x['obj'].post_type == 'opportunity'][:2]
+    home_feed_items = _articles + _posts + _opps
+    home_feed_items.sort(key=lambda x: x['date'] if x['date'] else _dt.min, reverse=True)
 
     _all_tags = []
     for p in _nf_posts:
@@ -160,7 +165,16 @@ def home():
 def startups():
     # Base query
     query = Startup.query
-    
+
+    # Search
+    search_query = request.args.get("q", "").strip()
+    if search_query:
+        query = query.filter(or_(
+            Startup.startup_name.ilike(f"%{search_query}%"),
+            Startup.sector.ilike(f"%{search_query}%"),
+            Startup.location.ilike(f"%{search_query}%")
+        ))
+
     # Multi-select filters
     selected_cities = request.args.getlist("city")
     selected_sectors = request.args.getlist("sector")
@@ -196,11 +210,19 @@ def startups():
     if selected_forms:
         query = query.filter(Startup.forme_juridique.in_(selected_forms))
     
-    # Fetch filtered results, sorted by funding (top funded first)
+    # Sort
+    sort_by = request.args.get('sort', 'funding')
+    if sort_by == 'name':
+        order = Startup.startup_name.asc()
+    elif sort_by == 'funding_asc':
+        order = Startup.total_funding_usd.asc()
+    else:  # default: funding desc
+        order = Startup.total_funding_usd.desc()
+
     page = request.args.get('page', 1, type=int)
     pagination = query.order_by(
         db.case((Startup.total_funding_usd.isnot(None), 0), else_=1),
-        Startup.total_funding_usd.desc()
+        order
     ).paginate(page=page, per_page=20, error_out=False)
     all_startups = pagination.items
 
@@ -292,7 +314,14 @@ def startups():
 @app.route("/incubators")
 def incubators():
     query = Incubator.query
-    
+
+    search_query = request.args.get("q", "").strip()
+    if search_query:
+        query = query.filter(or_(
+            Incubator.incubator.ilike(f"%{search_query}%"),
+            Incubator.ville_organisme.ilike(f"%{search_query}%")
+        ))
+
     # Multi-select filters
     selected_cities = request.args.getlist("city")
     selected_investementphase = request.args.getlist("phases_investissement")
@@ -309,6 +338,37 @@ def incubators():
             for invphase in selected_investementphase:
                 conditions.append(Incubator.phases_investissement.ilike(f"%{invphase}%"))
             query = query.filter(or_(*conditions))
+
+    # Priority sorting: well-known incubators first, then those with images, then alphabetical
+    priority_score = case(
+        (Incubator.incubator.ilike('%212 Founders%'), 1),
+        (Incubator.incubator.ilike('%Flat6Labs%'), 2),
+        (Incubator.incubator.ilike('%Technopark%'), 3),
+        (Incubator.incubator.ilike('%Endeavor%'), 4),
+        (Incubator.incubator.ilike('%StartGate%'), 5),
+        (Incubator.incubator.ilike('%LaStartupFactory%'), 6),
+        (Incubator.incubator.ilike('%La Startup Factory%'), 6),
+        (Incubator.incubator.ilike('%Plug%Play%'), 7),
+        (Incubator.incubator.ilike('%Orange Corners%'), 8),
+        (Incubator.incubator.ilike('%Hseven%'), 9),
+        (Incubator.incubator.ilike('%UM6P%'), 10),
+        (Incubator.incubator.ilike('%Emerging Business Factory%'), 11),
+        (Incubator.incubator.ilike('%Bidaya%'), 12),
+        (Incubator.incubator.ilike('%Accelab%'), 13),
+        (Incubator.incubator.ilike('%New Work Lab%'), 14),
+        (Incubator.incubator.ilike('%Enactus%'), 15),
+        (Incubator.incubator.ilike('%Impact Lab%'), 16),
+        (Incubator.incubator.ilike('%StartUp Maroc%'), 17),
+        (Incubator.incubator.ilike('%Climate Launchpad%'), 18),
+        (Incubator.incubator.ilike('%CEED%'), 19),
+        (Incubator.incubator.ilike('%Open Startup%'), 20),
+        else_=50
+    )
+    has_image = case(
+        (Incubator.image_url.isnot(None), 0),
+        else_=1
+    )
+    query = query.order_by(priority_score, has_image, Incubator.incubator)
 
     page = request.args.get('page', 1, type=int)
     pagination = query.paginate(page=page, per_page=20, error_out=False)
@@ -370,7 +430,20 @@ def startup_detail(startup_id):
                 if name and name.lower() not in ('undisclosed', 'private investors', 'n/a', ''):
                     fr_investor_names.add(name)
 
-    return render_template("startup_detail.html", startup=startup, founders=founders, fundingRounds=fundingRounds, incubators=incubators, investors=investors, total_raised=total_raised, fr_investor_names=fr_investor_names)
+    # Match fr_investor_names to real Investor objects (for logos)
+    existing_investor_names = {inv.investor_name for inv in investors}
+    fr_matched_investors = []
+    fr_unmatched_names = set()
+    for name in fr_investor_names:
+        if name not in existing_investor_names:
+            matched = Investor.query.filter(Investor.investor_name.ilike(f"%{name}%")).first()
+            if matched and matched.investor_name not in existing_investor_names:
+                fr_matched_investors.append(matched)
+                existing_investor_names.add(matched.investor_name)
+            else:
+                fr_unmatched_names.add(name)
+
+    return render_template("startup_detail.html", startup=startup, founders=founders, fundingRounds=fundingRounds, incubators=incubators, investors=investors, total_raised=total_raised, fr_investor_names=fr_unmatched_names, fr_matched_investors=fr_matched_investors)
 
 
 @app.route("/founder/<string:founder_id>")
@@ -398,11 +471,24 @@ def investors():
         subqueryload(Investor.investments)
         .subqueryload(Investment.funding_round)
         .subqueryload(FundingRound.startup)
+    ).filter(
+        db.or_(
+            Investor.investment_count > 0,
+            Investor.investments.any()
+        )
     )
+    search_query = request.args.get("q", "").strip()
+    if search_query:
+        query = query.filter(or_(
+            Investor.investor_name.ilike(f"%{search_query}%"),
+            Investor.primary_investor_type.ilike(f"%{search_query}%"),
+            Investor.city.ilike(f"%{search_query}%")
+        ))
+
     selected_locations = request.args.getlist("locations")
     selected_investor_types = request.args.getlist("investor_types")
     selected_startups = request.args.getlist("startups")
-    
+
     if selected_startups:
         startupsSelected = Startup.query.filter(Startup.startup_id.in_(selected_startups)).all()
         investorsFiltered = FilterInvestorsByStartups(startupsSelected)
@@ -412,8 +498,34 @@ def investors():
         query = query.filter(Investor.city.in_(selected_locations))
     if selected_investor_types:
         query = query.filter(Investor.primary_investor_type.in_(selected_investor_types))
+
+    # Compute completeness score: count of key non-null fields, with UM6P Ventures (id=25) featured first
+    completeness_score = (
+        case((Investor.investor_name.isnot(None), 1), else_=0) +
+        case((Investor.logo_url.isnot(None), 1), else_=0) +
+        case((Investor.description.isnot(None), 1), else_=0) +
+        case((Investor.primary_investor_type.isnot(None), 1), else_=0) +
+        case((Investor.city.isnot(None), 1), else_=0) +
+        case((Investor.hq_location.isnot(None), 1), else_=0) +
+        case((Investor.founding_date.isnot(None), 1), else_=0) +
+        case((Investor.preferred_industry.isnot(None), 1), else_=0) +
+        case((Investor.last_investment_company.isnot(None), 1), else_=0) +
+        case((Investor.linkedin_url.isnot(None), 1), else_=0) +
+        case((Investor.domain.isnot(None), 1), else_=0) +
+        case((Investor.investment_count.isnot(None), 1), else_=0) +
+        case((Investor.preferred_investment_types.isnot(None), 1), else_=0) +
+        case((Investor.preferred_verticals.isnot(None), 1), else_=0) +
+        case((Investor.preferred_geography.isnot(None), 1), else_=0) +
+        case((Investor.investor_status.isnot(None), 1), else_=0) +
+        case((Investor.facebook_url.isnot(None), 1), else_=0) +
+        case((Investor.twitter_url.isnot(None), 1), else_=0)
+    )
+    # Featured flag: UM6P Ventures always first
+    featured = case((Investor.investor_id == 25, 1), else_=0)
+    query = query.order_by(featured.desc(), completeness_score.desc(), Investor.investor_name)
+
     page = request.args.get('page', 1, type=int)
-    pagination = query.paginate(page=page, per_page=20, error_out=False)
+    pagination = query.paginate(page=page, per_page=9, error_out=False)
     all_investors = pagination.items
     distinct_locations = db.session.query(Investor.city)\
         .filter(Investor.city.isnot(None))\
@@ -495,15 +607,41 @@ def founders():
             Founder.linkedin_url.isnot(None)
         )
     )
+    search_query = request.args.get("q", "").strip()
     selected_cities = request.args.getlist("city")
     selected_startups = request.args.getlist("startup")
 
+    if search_query:
+        query = query.filter(
+            db.or_(
+                Founder.name.ilike(f"%{search_query}%"),
+                Founder.first_name.ilike(f"%{search_query}%"),
+                Founder.last_name.ilike(f"%{search_query}%"),
+                Founder.current_title.ilike(f"%{search_query}%"),
+                Founder.current_employer.ilike(f"%{search_query}%"),
+                Founder.company_details_name.ilike(f"%{search_query}%"),
+                Founder.location.ilike(f"%{search_query}%")
+            )
+        )
     if selected_cities:
         query = query.filter(Founder.location.in_(selected_cities))
     if selected_startups:
         query = query.filter(Founder.startups.any(Startup.startup_id.in_(selected_startups)))
+    # Sort founders by their startup's funding amount (highest first)
+    max_funding = db.session.query(
+        StartupFounder.founder_id,
+        db.func.max(Startup.total_funding_usd).label('max_funding')
+    ).join(Startup, StartupFounder.startup_id == Startup.startup_id)\
+     .group_by(StartupFounder.founder_id).subquery()
+
+    query = query.outerjoin(max_funding, Founder.founder_id == max_funding.c.founder_id)
+
     page = request.args.get('page', 1, type=int)
-    pagination = query.paginate(page=page, per_page=20, error_out=False)
+    pagination = query.order_by(
+        db.case((max_funding.c.max_funding.isnot(None), 0), else_=1),
+        max_funding.c.max_funding.desc(),
+        Founder.name.asc()
+    ).paginate(page=page, per_page=20, error_out=False)
     all_founders = pagination.items
     distinct_cities = db.session.query(Founder.location)\
         .filter(Founder.location.isnot(None))\
@@ -536,6 +674,14 @@ def funds():
 @app.route("/funding-rounds", methods=["GET"])
 def funding_rounds():
     query = FundingRound.query
+
+    search_query = request.args.get("q", "").strip()
+    if search_query:
+        query = query.filter(or_(
+            FundingRound.startup_name.ilike(f"%{search_query}%"),
+            FundingRound.round_name.ilike(f"%{search_query}%"),
+            FundingRound.lead_investor.ilike(f"%{search_query}%")
+        ))
 
     # Filters from request (plural names to match template checkboxes)
     round_names = request.args.getlist("round_names")

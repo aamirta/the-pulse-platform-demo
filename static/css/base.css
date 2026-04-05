@@ -132,7 +132,7 @@
             --tertiary-subtle: rgba(245, 158, 11, 0.1);
 
             --border-color: #E1E8F0;
-            --dot-color: #C0CDD9;
+            --dot-color: rgba(180, 195, 210, 0.3);
             --border-primary: #E1E8F0;
             --border-hover: #A8C0D6;
             --border-subtle: #EDF1F7;

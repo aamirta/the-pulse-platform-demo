@@ -21,11 +21,7 @@
         border: 1px solid var(--border-color);
     }
     .page-header::before {
-        content: '';
-        position: absolute;
-        inset: 0;
-        background: url('data:image/svg+xml,<svg width="20" height="20" xmlns="http://www.w3.org/2000/svg"><circle cx="1" cy="1" r="1" fill="rgba(128,128,128,0.1)"/></svg>');
-        pointer-events: none;
+        display: none;
     }
     .page-title {
         font-family: var(--font-heading);
@@ -154,10 +150,14 @@
         width: 52px;
         height: 52px;
         border-radius: 12px;
-        object-fit: cover;
-        border: 2px solid var(--border-color);
+        object-fit: contain;
+        border: 1px solid var(--border-color);
         flex-shrink: 0;
-        background: var(--bg-surface);
+        background: #fff;
+        padding: 4px;
+    }
+    [data-theme="dark"] .card-avatar {
+        background: rgba(255,255,255,0.08);
     }
 
     .card-avatar-placeholder {

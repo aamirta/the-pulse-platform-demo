@@ -686,7 +686,9 @@
     <!-- Investment Stats -->
     <div class="investment-stats-grid">
         <div class="investment-stat-card">
-            <div class="stat-number">{{ investor.investment_count|int if investor.investment_count else 0 }}</div>
+            {% set real_inv = investements|length %}
+            {% set db_inv = investor.investment_count|int if investor.investment_count else 0 %}
+            <div class="stat-number">{{ [real_inv, db_inv]|max }}</div>
             <div class="stat-label" data-i18n="investments">Investissements</div>
         </div>
         <div class="investment-stat-card">
@@ -894,65 +896,7 @@
             </div>
             {% endif %}
 
-            <!-- Associated Founders -->
-            <div class="pulse-card">
-                <div class="pulse-card-header">
-                    <h2 class="pulse-card-title"><i class="fas fa-users"></i> <span data-i18n="associated_founders">Fondateurs associ&eacute;s</span></h2>
-                    {% if founders %}
-                    <span class="pulse-card-count">{{ founders|length }}</span>
-                    {% endif %}
-                </div>
-                {% if founders and founders|length > 0 %}
-                <div class="founders-list">
-                    {% for founder in founders %}
-                    <div class="founder-mini-card" onclick="window.location.href='/founder/{{ founder.founder_id }}'">
-                        {% if founder.profile_pic %}
-                            <img src="{{ founder.profile_pic }}" alt="{{ founder.name }}" class="founder-mini-avatar" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
-                            <div class="founder-mini-initials" style="display:none;">
-                                {% if founder.first_name and founder.last_name %}
-                                    {{ founder.first_name[0] }}{{ founder.last_name[0] }}
-                                {% elif founder.name %}
-                                    {{ founder.name[0] }}
-                                {% else %}
-                                    F
-                                {% endif %}
-                            </div>
-                        {% else %}
-                            <div class="founder-mini-initials">
-                                {% if founder.first_name and founder.last_name %}
-                                    {{ founder.first_name[0] }}{{ founder.last_name[0] }}
-                                {% elif founder.name %}
-                                    {{ founder.name[0] }}
-                                {% else %}
-                                    F
-                                {% endif %}
-                            </div>
-                        {% endif %}
-                        <div class="founder-mini-info">
-                            <h4 class="founder-mini-name">
-                                {% if founder.first_name or founder.last_name %}
-                                    {% if founder.first_name %}{{ founder.first_name }}{% endif %} {% if founder.last_name %}{{ founder.last_name }}{% endif %}
-                                {% else %}
-                                    {{ founder.name or 'Fondateur inconnu' }}
-                                {% endif %}
-                            </h4>
-                            {% if founder.current_title or founder.current_employer %}
-                            <div class="founder-mini-title">
-                                {% if founder.current_title %}{{ founder.current_title }}{% endif %}{% if founder.current_title and founder.current_employer %} at {% endif %}{% if founder.current_employer %}{{ founder.current_employer }}{% endif %}
-                            </div>
-                            {% endif %}
-                        </div>
-                        <i class="fas fa-chevron-right founder-mini-arrow"></i>
-                    </div>
-                    {% endfor %}
-                </div>
-                {% else %}
-                <div class="empty-sub">
-                    <i class="fas fa-user-slash"></i>
-                    <p data-i18n="no_associated_founders">Aucun fondateur associ&eacute; trouv&eacute;</p>
-                </div>
-                {% endif %}
-            </div>
+            <!-- Associated Founders removed - not relevant for investment funds -->
 
         </div>
 

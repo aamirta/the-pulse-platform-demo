@@ -491,4 +491,27 @@
         {% endif %}
     </div>
 </div>
+<script>
+    var searchTimer;
+    var cfInput = document.querySelector('.search-input[name="search"]');
+    if (cfInput) {
+        cfInput.addEventListener('input', function() {
+            var input = this;
+            clearTimeout(searchTimer);
+            searchTimer = setTimeout(function() {
+                var q = input.value.trim();
+                var url = '{{ url_for("cofounders") }}?search=' + encodeURIComponent(q);
+                fetch(url, { headers: { 'X-Requested-With': 'XMLHttpRequest' } })
+                    .then(function(r) { return r.text(); })
+                    .then(function(html) {
+                        var parser = new DOMParser();
+                        var doc = parser.parseFromString(html, 'text/html');
+                        var newGrid = doc.querySelector('.projects-grid');
+                        if (newGrid) document.querySelector('.projects-grid').innerHTML = newGrid.innerHTML;
+                        history.replaceState(null, '', q ? '?search=' + encodeURIComponent(q) : window.location.pathname);
+                    });
+            }, 350);
+        });
+    }
+</script>
 {% endblock %}

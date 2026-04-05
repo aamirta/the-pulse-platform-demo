@@ -91,6 +91,10 @@
         display: flex; align-items: center; justify-content: center;
         font-size: 1.2rem; margin-bottom: 1rem; flex-shrink: 0;
     }
+    .tool-icon img.tool-logo {
+        width: 32px; height: 32px; border-radius: 6px;
+        object-fit: contain;
+    }
     .tool-icon.purple { background: rgba(139, 92, 246, 0.1); color: #8b5cf6; }
     .tool-icon.orange { background: rgba(249, 115, 22, 0.1); color: #f97316; }
     .tool-icon.green { background: rgba(0, 212, 170, 0.1); color: #00d4aa; }
@@ -149,203 +153,212 @@
 
 <div class="container">
 
-    <!-- Business Planning -->
+    <!-- Outils IA Essentiels - Chatbots & Assistants -->
     <div class="tools-section">
-        <div class="section-label"><i class="label-accent fas fa-lightbulb"></i> <span data-i18n="tb_planning">Business Planning & Strategy</span></div>
+        <div class="section-label"><i class="label-accent fas fa-comments"></i> Chatbots & Assistants IA</div>
         <div class="tools-grid">
             <div class="tool-card purple">
-                <div class="tool-icon purple"><i class="fas fa-file-invoice"></i></div>
-                <h3 class="tool-title" data-i18n="tb_bp">Business Plan Generator</h3>
-                <p class="tool-desc" data-i18n="tb_bp_desc">Generate a professional business plan in minutes. Input your idea, market, and goals - get a structured document ready for investors.</p>
+                <div class="tool-icon purple"><img class="tool-logo" src="https://www.google.com/s2/favicons?domain=chatgpt.com&sz=64" alt="ChatGPT"></div>
+                <h3 class="tool-title">ChatGPT (OpenAI)</h3>
+                <p class="tool-desc">L'assistant IA le plus populaire au monde. Ideal pour la redaction, le brainstorming, l'analyse de donnees et la generation de code. Modele GPT-4o disponible.</p>
                 <div class="tool-tags">
-                    <span class="tool-tag">Business Plan</span>
-                    <span class="tool-tag">Strategy</span>
-                    <span class="tool-tag">PDF Export</span>
+                    <span class="tool-tag">Chatbot</span>
+                    <span class="tool-tag">Redaction</span>
+                    <span class="tool-tag">Code</span>
+                    <span class="tool-tag">Gratuit + Pro</span>
                 </div>
                 <div class="tool-footer">
-                    <span class="tool-status available"><i class="fas fa-circle" style="font-size:0.4rem;"></i> <span data-i18n="tb_available">Available</span></span>
-                    <span class="tool-cta purple"><i class="fas fa-play"></i> <span data-i18n="tb_launch">Launch</span></span>
+                    <span class="tool-status available"><i class="fas fa-circle" style="font-size:0.4rem;"></i> Disponible</span>
+                    <a href="https://chatgpt.com" target="_blank" rel="noopener" class="tool-cta purple"><i class="fas fa-external-link-alt"></i> Ouvrir</a>
                 </div>
             </div>
 
             <div class="tool-card orange">
-                <div class="tool-icon orange"><i class="fas fa-bullseye"></i></div>
-                <h3 class="tool-title" data-i18n="tb_market">Market Sizing (TAM/SAM/SOM)</h3>
-                <p class="tool-desc" data-i18n="tb_market_desc">Estimate your Total Addressable Market, Serviceable Market, and Obtainable Market using AI-driven data analysis for the Moroccan and African context.</p>
+                <div class="tool-icon orange"><img class="tool-logo" src="https://www.google.com/s2/favicons?domain=claude.ai&sz=64" alt="Claude"></div>
+                <h3 class="tool-title">Claude (Anthropic)</h3>
+                <p class="tool-desc">Assistant IA avance, excellent pour l'analyse de documents longs, la redaction structuree et le raisonnement complexe. Contexte de 200K tokens.</p>
                 <div class="tool-tags">
-                    <span class="tool-tag">Market Analysis</span>
-                    <span class="tool-tag">TAM/SAM/SOM</span>
+                    <span class="tool-tag">Chatbot</span>
+                    <span class="tool-tag">Analyse</span>
+                    <span class="tool-tag">Documents</span>
+                    <span class="tool-tag">Gratuit + Pro</span>
                 </div>
                 <div class="tool-footer">
-                    <span class="tool-status available"><i class="fas fa-circle" style="font-size:0.4rem;"></i> <span data-i18n="tb_available">Available</span></span>
-                    <span class="tool-cta orange"><i class="fas fa-play"></i> <span data-i18n="tb_launch">Launch</span></span>
+                    <span class="tool-status available"><i class="fas fa-circle" style="font-size:0.4rem;"></i> Disponible</span>
+                    <a href="https://claude.ai" target="_blank" rel="noopener" class="tool-cta orange"><i class="fas fa-external-link-alt"></i> Ouvrir</a>
                 </div>
             </div>
 
-            <div class="tool-card green">
-                <div class="tool-icon green"><i class="fas fa-chess"></i></div>
-                <h3 class="tool-title" data-i18n="tb_competitive">Competitive Analysis</h3>
-                <p class="tool-desc" data-i18n="tb_competitive_desc">Map your competitive landscape automatically. Identify competitors, analyze positioning, and discover strategic differentiation opportunities.</p>
+            <div class="tool-card blue">
+                <div class="tool-icon blue"><img class="tool-logo" src="https://www.google.com/s2/favicons?domain=perplexity.ai&sz=64" alt="Perplexity"></div>
+                <h3 class="tool-title">Perplexity AI</h3>
+                <p class="tool-desc">Moteur de recherche augmente par l'IA. Obtenez des reponses sourcees et actualisees en temps reel. Parfait pour la veille et la recherche de marche.</p>
                 <div class="tool-tags">
-                    <span class="tool-tag">Competitors</span>
-                    <span class="tool-tag">SWOT</span>
-                    <span class="tool-tag">Positioning</span>
+                    <span class="tool-tag">Recherche</span>
+                    <span class="tool-tag">Veille</span>
+                    <span class="tool-tag">Sources</span>
+                    <span class="tool-tag">Gratuit + Pro</span>
                 </div>
                 <div class="tool-footer">
-                    <span class="tool-status beta"><i class="fas fa-circle" style="font-size:0.4rem;"></i> <span data-i18n="tb_beta">Beta</span></span>
-                    <span class="tool-cta green"><i class="fas fa-play"></i> <span data-i18n="tb_launch">Launch</span></span>
+                    <span class="tool-status available"><i class="fas fa-circle" style="font-size:0.4rem;"></i> Disponible</span>
+                    <a href="https://perplexity.ai" target="_blank" rel="noopener" class="tool-cta blue"><i class="fas fa-external-link-alt"></i> Ouvrir</a>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Fundraising -->
+    <!-- Outils IA - Creation & Design -->
     <div class="tools-section">
-        <div class="section-label"><i class="label-orange fas fa-hand-holding-dollar"></i> <span data-i18n="tb_fundraising">Fundraising & Finance</span></div>
+        <div class="section-label"><i class="label-orange fas fa-palette"></i> Creation & Design IA</div>
         <div class="tools-grid">
-            <div class="tool-card orange">
-                <div class="tool-icon orange"><i class="fas fa-presentation-screen"></i></div>
-                <h3 class="tool-title" data-i18n="tb_pitch">Pitch Deck Builder</h3>
-                <p class="tool-desc" data-i18n="tb_pitch_desc">Create investor-ready pitch decks with AI. Follows the proven 12-slide framework used by top Moroccan startups that raised successfully.</p>
+            <div class="tool-card purple">
+                <div class="tool-icon purple"><img class="tool-logo" src="https://www.google.com/s2/favicons?domain=midjourney.com&sz=64" alt="Midjourney"></div>
+                <h3 class="tool-title">Midjourney</h3>
+                <p class="tool-desc">Generateur d'images IA de qualite professionnelle. Creez des visuels, logos, maquettes et illustrations pour votre startup en quelques secondes.</p>
                 <div class="tool-tags">
+                    <span class="tool-tag">Images</span>
+                    <span class="tool-tag">Design</span>
+                    <span class="tool-tag">Logos</span>
+                    <span class="tool-tag">Payant</span>
+                </div>
+                <div class="tool-footer">
+                    <span class="tool-status available"><i class="fas fa-circle" style="font-size:0.4rem;"></i> Disponible</span>
+                    <a href="https://midjourney.com" target="_blank" rel="noopener" class="tool-cta purple"><i class="fas fa-external-link-alt"></i> Ouvrir</a>
+                </div>
+            </div>
+
+            <div class="tool-card green">
+                <div class="tool-icon green"><img class="tool-logo" src="https://www.google.com/s2/favicons?domain=canva.com&sz=64" alt="Canva"></div>
+                <h3 class="tool-title">Canva AI</h3>
+                <p class="tool-desc">Plateforme de design avec outils IA integres. Creez des presentations, posts reseaux sociaux, logos et supports marketing sans competences en design.</p>
+                <div class="tool-tags">
+                    <span class="tool-tag">Design</span>
+                    <span class="tool-tag">Presentations</span>
+                    <span class="tool-tag">Social Media</span>
+                    <span class="tool-tag">Freemium</span>
+                </div>
+                <div class="tool-footer">
+                    <span class="tool-status available"><i class="fas fa-circle" style="font-size:0.4rem;"></i> Disponible</span>
+                    <a href="https://canva.com" target="_blank" rel="noopener" class="tool-cta green"><i class="fas fa-external-link-alt"></i> Ouvrir</a>
+                </div>
+            </div>
+
+            <div class="tool-card orange">
+                <div class="tool-icon orange"><img class="tool-logo" src="https://www.google.com/s2/favicons?domain=runwayml.com&sz=64" alt="Runway ML"></div>
+                <h3 class="tool-title">Runway ML</h3>
+                <p class="tool-desc">Outil de creation video par IA. Generez des videos a partir de texte ou d'images, editez avec l'IA et creez du contenu video professionnel pour votre marketing.</p>
+                <div class="tool-tags">
+                    <span class="tool-tag">Video</span>
+                    <span class="tool-tag">Text-to-Video</span>
+                    <span class="tool-tag">Editing</span>
+                    <span class="tool-tag">Freemium</span>
+                </div>
+                <div class="tool-footer">
+                    <span class="tool-status available"><i class="fas fa-circle" style="font-size:0.4rem;"></i> Disponible</span>
+                    <a href="https://runway.ml" target="_blank" rel="noopener" class="tool-cta orange"><i class="fas fa-external-link-alt"></i> Ouvrir</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Outils IA - Productivite & Presentations -->
+    <div class="tools-section">
+        <div class="section-label"><i class="label-green fas fa-bolt"></i> Productivite & Presentations</div>
+        <div class="tools-grid">
+            <div class="tool-card blue">
+                <div class="tool-icon blue"><img class="tool-logo" src="https://www.google.com/s2/favicons?domain=notion.so&sz=64" alt="Notion AI"></div>
+                <h3 class="tool-title">Notion AI</h3>
+                <p class="tool-desc">Espace de travail tout-en-un avec IA integree. Organisez vos projets, redigez des documents, gerez vos taches et collaborez avec votre equipe efficacement.</p>
+                <div class="tool-tags">
+                    <span class="tool-tag">Productivite</span>
+                    <span class="tool-tag">Notes</span>
+                    <span class="tool-tag">Gestion de projet</span>
+                    <span class="tool-tag">Freemium</span>
+                </div>
+                <div class="tool-footer">
+                    <span class="tool-status available"><i class="fas fa-circle" style="font-size:0.4rem;"></i> Disponible</span>
+                    <a href="https://notion.so" target="_blank" rel="noopener" class="tool-cta blue"><i class="fas fa-external-link-alt"></i> Ouvrir</a>
+                </div>
+            </div>
+
+            <div class="tool-card purple">
+                <div class="tool-icon purple"><img class="tool-logo" src="https://www.google.com/s2/favicons?domain=gamma.app&sz=64" alt="Gamma"></div>
+                <h3 class="tool-title">Gamma</h3>
+                <p class="tool-desc">Creez des presentations, documents et sites web visuels en quelques minutes avec l'IA. Ideal pour les pitch decks et rapports professionnels.</p>
+                <div class="tool-tags">
+                    <span class="tool-tag">Presentations</span>
                     <span class="tool-tag">Pitch Deck</span>
-                    <span class="tool-tag">Investors</span>
-                    <span class="tool-tag">PPTX</span>
+                    <span class="tool-tag">Documents</span>
+                    <span class="tool-tag">Freemium</span>
                 </div>
                 <div class="tool-footer">
-                    <span class="tool-status available"><i class="fas fa-circle" style="font-size:0.4rem;"></i> <span data-i18n="tb_available">Available</span></span>
-                    <span class="tool-cta orange"><i class="fas fa-play"></i> <span data-i18n="tb_launch">Launch</span></span>
+                    <span class="tool-status available"><i class="fas fa-circle" style="font-size:0.4rem;"></i> Disponible</span>
+                    <a href="https://gamma.app" target="_blank" rel="noopener" class="tool-cta purple"><i class="fas fa-external-link-alt"></i> Ouvrir</a>
                 </div>
             </div>
 
-            <div class="tool-card blue">
-                <div class="tool-icon blue"><i class="fas fa-calculator"></i></div>
-                <h3 class="tool-title" data-i18n="tb_financial">Financial Projections</h3>
-                <p class="tool-desc" data-i18n="tb_financial_desc">Build 3-5 year financial models with revenue projections, burn rate analysis, and runway calculations. Export to Excel.</p>
-                <div class="tool-tags">
-                    <span class="tool-tag">P&L</span>
-                    <span class="tool-tag">Cash Flow</span>
-                    <span class="tool-tag">Projections</span>
-                </div>
-                <div class="tool-footer">
-                    <span class="tool-status available"><i class="fas fa-circle" style="font-size:0.4rem;"></i> <span data-i18n="tb_available">Available</span></span>
-                    <span class="tool-cta blue"><i class="fas fa-play"></i> <span data-i18n="tb_launch">Launch</span></span>
-                </div>
-            </div>
-
-            <div class="tool-card purple">
-                <div class="tool-icon purple"><i class="fas fa-scale-balanced"></i></div>
-                <h3 class="tool-title" data-i18n="tb_valuation">Startup Valuation</h3>
-                <p class="tool-desc" data-i18n="tb_valuation_desc">Estimate your startup's valuation using multiple methods (DCF, Comparables, Berkus, Scorecard). Benchmarked against Moroccan & African deals.</p>
-                <div class="tool-tags">
-                    <span class="tool-tag">Valuation</span>
-                    <span class="tool-tag">Fundraising</span>
-                </div>
-                <div class="tool-footer">
-                    <span class="tool-status beta"><i class="fas fa-circle" style="font-size:0.4rem;"></i> <span data-i18n="tb_beta">Beta</span></span>
-                    <span class="tool-cta purple"><i class="fas fa-play"></i> <span data-i18n="tb_launch">Launch</span></span>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Legal & Operations -->
-    <div class="tools-section">
-        <div class="section-label"><i class="label-green fas fa-scale-balanced"></i> <span data-i18n="tb_legal">Legal & Operations</span></div>
-        <div class="tools-grid">
             <div class="tool-card green">
-                <div class="tool-icon green"><i class="fas fa-file-contract"></i></div>
-                <h3 class="tool-title" data-i18n="tb_legal_doc">Legal Document Generator</h3>
-                <p class="tool-desc" data-i18n="tb_legal_doc_desc">Generate NDA, shareholders agreements, employment contracts, and CGU/CGV compliant with Moroccan law. Reviewed by legal experts.</p>
+                <div class="tool-icon green"><img class="tool-logo" src="https://www.google.com/s2/favicons?domain=jasper.ai&sz=64" alt="Jasper AI"></div>
+                <h3 class="tool-title">Jasper AI</h3>
+                <p class="tool-desc">Plateforme de copywriting IA pour les entreprises. Generez du contenu marketing, articles de blog, emails et textes publicitaires optimises pour la conversion.</p>
                 <div class="tool-tags">
-                    <span class="tool-tag">Contracts</span>
-                    <span class="tool-tag">Droit marocain</span>
-                    <span class="tool-tag">NDA</span>
-                </div>
-                <div class="tool-footer">
-                    <span class="tool-status coming"><i class="fas fa-circle" style="font-size:0.4rem;"></i> <span data-i18n="tb_coming">Coming Soon</span></span>
-                    <span class="tool-cta disabled"><i class="fas fa-lock"></i> <span data-i18n="tb_soon">Soon</span></span>
-                </div>
-            </div>
-
-            <div class="tool-card blue">
-                <div class="tool-icon blue"><i class="fas fa-building"></i></div>
-                <h3 class="tool-title" data-i18n="tb_company">Company Setup Guide</h3>
-                <p class="tool-desc" data-i18n="tb_company_desc">Step-by-step AI guide to register your company in Morocco: SARL, SA, SAS. CRI procedures, CNSS, tax obligations - all automated.</p>
-                <div class="tool-tags">
-                    <span class="tool-tag">CRI</span>
-                    <span class="tool-tag">SARL/SA</span>
-                    <span class="tool-tag">Registration</span>
-                </div>
-                <div class="tool-footer">
-                    <span class="tool-status available"><i class="fas fa-circle" style="font-size:0.4rem;"></i> <span data-i18n="tb_available">Available</span></span>
-                    <span class="tool-cta blue"><i class="fas fa-play"></i> <span data-i18n="tb_launch">Launch</span></span>
-                </div>
-            </div>
-
-            <div class="tool-card orange">
-                <div class="tool-icon yellow"><i class="fas fa-shield-halved"></i></div>
-                <h3 class="tool-title" data-i18n="tb_cndp">CNDP Compliance Checker</h3>
-                <p class="tool-desc" data-i18n="tb_cndp_desc">Check if your startup is compliant with the Moroccan data protection law (Loi 09-08). Get a compliance report and remediation steps.</p>
-                <div class="tool-tags">
-                    <span class="tool-tag">CNDP</span>
-                    <span class="tool-tag">Loi 09-08</span>
-                    <span class="tool-tag">RGPD</span>
-                </div>
-                <div class="tool-footer">
-                    <span class="tool-status coming"><i class="fas fa-circle" style="font-size:0.4rem;"></i> <span data-i18n="tb_coming">Coming Soon</span></span>
-                    <span class="tool-cta disabled"><i class="fas fa-lock"></i> <span data-i18n="tb_soon">Soon</span></span>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Growth & Marketing -->
-    <div class="tools-section">
-        <div class="section-label"><i class="label-blue fas fa-chart-line"></i> <span data-i18n="tb_growth">Growth & Marketing</span></div>
-        <div class="tools-grid">
-            <div class="tool-card purple">
-                <div class="tool-icon purple"><i class="fas fa-robot"></i></div>
-                <h3 class="tool-title" data-i18n="tb_copywriter">AI Copywriter</h3>
-                <p class="tool-desc" data-i18n="tb_copywriter_desc">Generate marketing copy, social media posts, email campaigns, and product descriptions in French, Arabic, and English - optimized for the Moroccan market.</p>
-                <div class="tool-tags">
-                    <span class="tool-tag">Marketing</span>
                     <span class="tool-tag">Copywriting</span>
-                    <span class="tool-tag">Multilingual</span>
+                    <span class="tool-tag">Marketing</span>
+                    <span class="tool-tag">Blog</span>
+                    <span class="tool-tag">Payant</span>
                 </div>
                 <div class="tool-footer">
-                    <span class="tool-status available"><i class="fas fa-circle" style="font-size:0.4rem;"></i> <span data-i18n="tb_available">Available</span></span>
-                    <span class="tool-cta purple"><i class="fas fa-play"></i> <span data-i18n="tb_launch">Launch</span></span>
+                    <span class="tool-status available"><i class="fas fa-circle" style="font-size:0.4rem;"></i> Disponible</span>
+                    <a href="https://jasper.ai" target="_blank" rel="noopener" class="tool-cta green"><i class="fas fa-external-link-alt"></i> Ouvrir</a>
                 </div>
             </div>
+        </div>
+    </div>
 
-            <div class="tool-card green">
-                <div class="tool-icon green"><i class="fas fa-magnifying-glass-chart"></i></div>
-                <h3 class="tool-title" data-i18n="tb_seo">SEO & Content Strategy</h3>
-                <p class="tool-desc" data-i18n="tb_seo_desc">Analyze your website's SEO performance, get keyword recommendations, and generate a content calendar tailored to your industry.</p>
-                <div class="tool-tags">
-                    <span class="tool-tag">SEO</span>
-                    <span class="tool-tag">Content</span>
-                    <span class="tool-tag">Keywords</span>
-                </div>
-                <div class="tool-footer">
-                    <span class="tool-status coming"><i class="fas fa-circle" style="font-size:0.4rem;"></i> <span data-i18n="tb_coming">Coming Soon</span></span>
-                    <span class="tool-cta disabled"><i class="fas fa-lock"></i> <span data-i18n="tb_soon">Soon</span></span>
-                </div>
-            </div>
-
+    <!-- Outils IA - Developpement -->
+    <div class="tools-section">
+        <div class="section-label"><i class="label-blue fas fa-code"></i> Développement & Code</div>
+        <div class="tools-grid">
             <div class="tool-card blue">
-                <div class="tool-icon blue"><i class="fas fa-users-gear"></i></div>
-                <h3 class="tool-title" data-i18n="tb_persona">Customer Persona Builder</h3>
-                <p class="tool-desc" data-i18n="tb_persona_desc">Create detailed customer personas with AI. Understand your target audience's demographics, pain points, and buying behavior.</p>
+                <div class="tool-icon blue"><img class="tool-logo" src="https://www.google.com/s2/favicons?domain=github.com&sz=64" alt="GitHub Copilot"></div>
+                <h3 class="tool-title">GitHub Copilot</h3>
+                <p class="tool-desc">Assistant de programmation IA de GitHub. Autocomplétion intelligente, génération de code et suggestions en temps réel dans votre éditeur.</p>
                 <div class="tool-tags">
-                    <span class="tool-tag">Personas</span>
-                    <span class="tool-tag">UX Research</span>
-                    <span class="tool-tag">B2C/B2B</span>
+                    <span class="tool-tag">Code</span>
+                    <span class="tool-tag">Autocomplétion</span>
+                    <span class="tool-tag">Payant</span>
                 </div>
                 <div class="tool-footer">
-                    <span class="tool-status available"><i class="fas fa-circle" style="font-size:0.4rem;"></i> <span data-i18n="tb_available">Available</span></span>
-                    <span class="tool-cta blue"><i class="fas fa-play"></i> <span data-i18n="tb_launch">Launch</span></span>
+                    <span class="tool-status available"><i class="fas fa-circle" style="font-size:0.4rem;"></i> Disponible</span>
+                    <a href="https://github.com/copilot" target="_blank" rel="noopener" class="tool-cta blue"><i class="fas fa-external-link-alt"></i> Ouvrir</a>
+                </div>
+            </div>
+            <div class="tool-card blue">
+                <div class="tool-icon blue"><img class="tool-logo" src="https://www.google.com/s2/favicons?domain=claude.ai&sz=64" alt="Claude Code"></div>
+                <h3 class="tool-title">Claude Code</h3>
+                <p class="tool-desc">Agent de développement IA d'Anthropic. Édite des fichiers, exécute des commandes, et construit des projets complets en autonomie depuis le terminal.</p>
+                <div class="tool-tags">
+                    <span class="tool-tag">Agent IA</span>
+                    <span class="tool-tag">Terminal</span>
+                    <span class="tool-tag">Full-Stack</span>
+                </div>
+                <div class="tool-footer">
+                    <span class="tool-status available"><i class="fas fa-circle" style="font-size:0.4rem;"></i> Disponible</span>
+                    <a href="https://claude.ai/code" target="_blank" rel="noopener" class="tool-cta blue"><i class="fas fa-external-link-alt"></i> Ouvrir</a>
+                </div>
+            </div>
+            <div class="tool-card blue">
+                <div class="tool-icon blue"><img class="tool-logo" src="https://www.google.com/s2/favicons?domain=openai.com&sz=64" alt="Codex / ChatGPT Code"></div>
+                <h3 class="tool-title">OpenAI Codex</h3>
+                <p class="tool-desc">Modèle d'IA d'OpenAI spécialisé dans la génération de code. Traduit le langage naturel en code, supporte des dizaines de langages de programmation.</p>
+                <div class="tool-tags">
+                    <span class="tool-tag">Code</span>
+                    <span class="tool-tag">API</span>
+                    <span class="tool-tag">Multi-langages</span>
+                </div>
+                <div class="tool-footer">
+                    <span class="tool-status available"><i class="fas fa-circle" style="font-size:0.4rem;"></i> Disponible</span>
+                    <a href="https://platform.openai.com/docs/guides/code" target="_blank" rel="noopener" class="tool-cta blue"><i class="fas fa-external-link-alt"></i> Ouvrir</a>
                 </div>
             </div>
         </div>

@@ -41,18 +41,20 @@
             <div class="filters-container">
                 <div class="filters-header">
                     <h3 class="filters-title"><i class="fas fa-sliders-h"></i> <span data-i18n="filters">Filtres</span></h3>
+                    {% if selected and (selected.getlist('city') or selected.getlist('startup')) %}
                     <a href="{{ url_for('founders') }}" class="clear-filters"><i class="fas fa-times"></i> <span data-i18n="clear">Effacer</span></a>
+                    {% endif %}
                 </div>
 
                 <form action="{{ url_for('founders') }}" method="GET" id="filterForm">
 
                     <!-- City Filter -->
                     <div class="accordion-filter">
-                        <button type="button" class="accordion-header active" onclick="toggleAccordion(this)">
+                        <button type="button" class="accordion-header" onclick="toggleAccordion(this)">
                             <span class="accordion-title"><i class="fas fa-map-marker-alt"></i> <span data-i18n="city">Ville</span></span>
                             <i class="fas fa-chevron-right accordion-icon"></i>
                         </button>
-                        <div class="accordion-content active">
+                        <div class="accordion-content">
                             <div class="accordion-body">
                                 {% for city in distinct_cities %}
                                 <div class="filter-option">
@@ -102,19 +104,19 @@
             <div class="search-bar-wrapper" style="margin-bottom: 1rem;">
                 <div style="position: relative;">
                     <i class="fas fa-search" style="position: absolute; left: 0.85rem; top: 50%; transform: translateY(-50%); color: var(--text-muted); font-size: 0.8rem;"></i>
-                    <input type="text" id="founderSearch" placeholder="Rechercher un fondateur..."
-                        style="width: 100%; padding: 0.6rem 0.85rem 0.6rem 2.3rem; border: 1px solid var(--border-color); border-radius: 10px; background: var(--bg-card); color: var(--text-primary); font-size: 0.82rem; font-family: var(--font-body); outline: none; transition: border-color 0.2s ease;"
-                        onfocus="this.style.borderColor='var(--accent)'" onblur="this.style.borderColor='var(--border-color)'">
+                    <form action="{{ url_for('founders') }}" method="GET" style="display:contents;">
+                        <input type="text" id="founderSearch" name="q" value="{{ request.args.get('q', '') }}" placeholder="Rechercher un fondateur..."
+                            style="width: 100%; padding: 0.6rem 0.85rem 0.6rem 2.3rem; border: 1px solid var(--border-color); border-radius: 10px; background: var(--bg-card); color: var(--text-primary); font-size: 0.82rem; font-family: var(--font-body); outline: none; transition: border-color 0.2s ease;"
+                            onfocus="this.style.borderColor='var(--accent)'" onblur="this.style.borderColor='var(--border-color)'">
+                    </form>
                 </div>
             </div>
 
+            {% if founders|length == 0 %}
             <h2 class="section-heading">
-                {% if founders|length > 0 %}
-                    {{ founders|length }} <span data-i18n="founders_label">fondateur{{ 's' if founders|length != 1 else '' }}</span>
-                {% else %}
-                    <span data-i18n="no_founders_found">Aucun fondateur trouv\u00e9</span>
-                {% endif %}
+                <span data-i18n="no_founders_found">Aucun fondateur trouv\u00e9</span>
             </h2>
+            {% endif %}
             <div class="founders-grid">
                 {% if founders|length > 0 %}
                     {% for founder in founders %}
@@ -271,12 +273,42 @@
         content.classList.toggle('active');
     }
 
-    // Search bar filtering
+    // AJAX search — no page reload
+    var searchTimer;
     document.getElementById('founderSearch').addEventListener('input', function() {
-        var query = this.value.toLowerCase();
-        document.querySelectorAll('.founder-card').forEach(function(card) {
-            card.style.display = card.textContent.toLowerCase().includes(query) ? '' : 'none';
-        });
+        var input = this;
+        clearTimeout(searchTimer);
+        searchTimer = setTimeout(function() {
+            var q = input.value.trim();
+            var url = '{{ url_for("founders") }}?q=' + encodeURIComponent(q);
+            fetch(url, { headers: { 'X-Requested-With': 'XMLHttpRequest' } })
+                .then(function(r) { return r.text(); })
+                .then(function(html) {
+                    var parser = new DOMParser();
+                    var doc = parser.parseFromString(html, 'text/html');
+                    var newGrid = doc.querySelector('.founders-grid');
+                    var newPagination = doc.querySelector('.pagination-nav');
+                    var newHeading = doc.querySelector('.section-heading');
+                    if (newGrid) {
+                        document.querySelector('.founders-grid').innerHTML = newGrid.innerHTML;
+                    }
+                    var oldPag = document.querySelector('.pagination-nav');
+                    if (oldPag && newPagination) {
+                        oldPag.innerHTML = newPagination.innerHTML;
+                    } else if (oldPag && !newPagination) {
+                        oldPag.style.display = 'none';
+                    }
+                    var oldHeading = document.querySelector('.section-heading');
+                    if (oldHeading && newHeading) {
+                        oldHeading.innerHTML = newHeading.innerHTML;
+                    } else if (oldHeading && !newHeading) {
+                        oldHeading.style.display = 'none';
+                    }
+                    // Update URL without reload
+                    var newUrl = q ? '?q=' + encodeURIComponent(q) : window.location.pathname;
+                    history.replaceState(null, '', newUrl);
+                });
+        }, 350);
     });
 </script>
 {% endblock %}

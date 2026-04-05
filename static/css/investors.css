@@ -13,11 +13,7 @@
     }
 
     .page-header::before {
-        content: '';
-        position: absolute;
-        inset: 0;
-        background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="dots" width="20" height="20" patternUnits="userSpaceOnUse"><circle cx="10" cy="10" r="1" fill="%23ffffff" opacity="0.05"/></pattern></defs><rect width="100" height="100" fill="url(%23dots)"/></svg>');
-        pointer-events: none;
+        display: none;
     }
 
     .page-title {
@@ -346,18 +342,23 @@
     }
 
     .investor-logo {
-        width: 40px;
-        height: 40px;
-        border-radius: 10px;
-        object-fit: cover;
-        border: 2px solid var(--border-color);
+        width: 56px;
+        height: 56px;
+        border-radius: 12px;
+        object-fit: contain;
+        border: 1px solid var(--border-color);
         flex-shrink: 0;
-        background: var(--bg-card-hover);
+        background: #fff;
+        padding: 6px;
+        overflow: hidden;
+    }
+    [data-theme="dark"] .investor-logo {
+        background: rgba(255,255,255,0.08);
     }
 
     .investor-logo-placeholder {
-        width: 40px;
-        height: 40px;
+        width: 56px;
+        height: 56px;
         border-radius: 10px;
         background: var(--gradient-secondary);
         display: flex;

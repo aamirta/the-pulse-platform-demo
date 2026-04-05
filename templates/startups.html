@@ -79,7 +79,7 @@
 
                 <div class="filter-sidebar-header">
                     <h3><i class="fas fa-filter"></i> <span data-i18n="filters">Filtres</span></h3>
-                    <span class="filter-count-badge" id="activeFilterCount">0 active</span>
+                    <span class="filter-count-badge" id="activeFilterCount" style="display:none;"></span>
                 </div>
 
                 <div class="filter-search-box">
@@ -92,7 +92,7 @@
                 <div class="filter-body">
 
                     <!-- City Filter -->
-                    <div class="filter-section" data-filter-section>
+                    <div class="filter-section collapsed" data-filter-section>
                         <button type="button" class="filter-section-toggle" data-toggle-section>
                             <span><i class="fas fa-city" style="margin-right: 0.4rem; color: var(--accent); font-size: 0.78rem;"></i> <span data-i18n="city">City</span></span>
                             <i class="fas fa-chevron-down chevron"></i>
@@ -112,7 +112,7 @@
                     </div>
 
                     <!-- Sector Filter -->
-                    <div class="filter-section" data-filter-section>
+                    <div class="filter-section collapsed" data-filter-section>
                         <button type="button" class="filter-section-toggle" data-toggle-section>
                             <span><i class="fas fa-briefcase" style="margin-right: 0.4rem; color: var(--secondary); font-size: 0.78rem;"></i> <span data-i18n="sector">Sector</span></span>
                             <i class="fas fa-chevron-down chevron"></i>
@@ -238,9 +238,11 @@
                     <button type="submit" class="btn-apply">
                         <i class="fas fa-check" style="margin-right: 0.3rem;"></i> <span data-i18n="apply_filters">Appliquer</span>
                     </button>
+                    {% if selected and (selected.getlist('city') or selected.getlist('sector') or selected.getlist('status') or selected.getlist('stage') or selected.getlist('forme') or selected.getlist('investor') or selected.getlist('incubator')) %}
                     <button type="button" class="btn-reset" id="resetFilters">
                         <i class="fas fa-undo" style="margin-right: 0.3rem;"></i> <span data-i18n="clear">Réinitialiser</span>
                     </button>
+                    {% endif %}
                 </div>
 
             </aside>
@@ -253,10 +255,22 @@
             <div class="startups-toolbar fade-in">
                 <div class="startup-search-box">
                     <i class="fas fa-search"></i>
-                    <input type="text" id="startupSearchInput" placeholder="Rechercher des startups..." data-i18n-placeholder="search_startups_ph">
+                    <form action="{{ url_for('startups') }}" method="GET" style="display:contents;">
+                        <input type="text" id="startupSearchInput" name="q" value="{{ request.args.get('q', '') }}" placeholder="Rechercher des startups..." data-i18n-placeholder="search_startups_ph">
+                    </form>
                 </div>
-                <div class="results-count">
-                    <span data-i18n="showing">Affichage</span> <strong id="visibleCount">{{ startups|length }}</strong> <span data-i18n="of_total">sur</span> <strong>{{ startups|length }}</strong> startups
+                <div class="sort-controls" style="display: flex; align-items: center; gap: 0.5rem; font-size: 0.78rem; color: var(--text-secondary);">
+                    <span data-i18n="sort_by">Trier par :</span>
+                    <a href="?sort=funding{% if request.args.get('q') %}&q={{ request.args.get('q') }}{% endif %}"
+                       class="sort-btn{% if not request.args.get('sort') or request.args.get('sort') == 'funding' %} active{% endif %}"
+                       style="padding: 0.3rem 0.7rem; border-radius: 6px; text-decoration: none; font-weight: 600; font-size: 0.75rem; transition: all 0.2s; {% if not request.args.get('sort') or request.args.get('sort') == 'funding' %}background: var(--accent-subtle); color: var(--accent);{% else %}background: var(--bg-surface); color: var(--text-secondary);{% endif %}">
+                        <i class="fas fa-arrow-down"></i> Montant levé
+                    </a>
+                    <a href="?sort=name{% if request.args.get('q') %}&q={{ request.args.get('q') }}{% endif %}"
+                       class="sort-btn{% if request.args.get('sort') == 'name' %} active{% endif %}"
+                       style="padding: 0.3rem 0.7rem; border-radius: 6px; text-decoration: none; font-weight: 600; font-size: 0.75rem; transition: all 0.2s; {% if request.args.get('sort') == 'name' %}background: var(--accent-subtle); color: var(--accent);{% else %}background: var(--bg-surface); color: var(--text-secondary);{% endif %}">
+                        <i class="fas fa-sort-alpha-down"></i> Nom
+                    </a>
                 </div>
             </div>
 
@@ -493,7 +507,12 @@ document.addEventListener('DOMContentLoaded', function () {
         var checked = document.querySelectorAll('#filterForm input[type="checkbox"]:checked').length;
         var badge = document.getElementById('activeFilterCount');
         if (badge) {
-            badge.textContent = checked + ' active';
+            if (checked > 0) {
+                badge.textContent = checked + ' active';
+                badge.style.display = '';
+            } else {
+                badge.style.display = 'none';
+            }
         }
     }
     updateActiveFilterCount();
@@ -506,31 +525,31 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     /* ============================================
-       CLIENT-SIDE STARTUP SEARCH
+       AJAX STARTUP SEARCH
        ============================================ */
     var startupSearchInput = document.getElementById('startupSearchInput');
-    var startupsGrid = document.getElementById('startupsGrid');
-    var visibleCountEl = document.getElementById('visibleCount');
-
     if (startupSearchInput) {
-        startupSearchInput.addEventListener('input', function () {
-            var query = this.value.toLowerCase().trim();
-            var cards = startupsGrid.querySelectorAll('.startup-card');
-            var visible = 0;
-
-            cards.forEach(function (card) {
-                var name = card.getAttribute('data-startup-name') || '';
-                if (!query || name.indexOf(query) !== -1) {
-                    card.style.display = '';
-                    visible++;
-                } else {
-                    card.style.display = 'none';
-                }
-            });
-
-            if (visibleCountEl) {
-                visibleCountEl.textContent = visible;
-            }
+        var searchTimer;
+        startupSearchInput.addEventListener('input', function() {
+            var input = this;
+            clearTimeout(searchTimer);
+            searchTimer = setTimeout(function() {
+                var q = input.value.trim();
+                var url = '{{ url_for("startups") }}?q=' + encodeURIComponent(q);
+                fetch(url, { headers: { 'X-Requested-With': 'XMLHttpRequest' } })
+                    .then(function(r) { return r.text(); })
+                    .then(function(html) {
+                        var parser = new DOMParser();
+                        var doc = parser.parseFromString(html, 'text/html');
+                        var newGrid = doc.querySelector('#startupsGrid');
+                        if (newGrid) document.querySelector('#startupsGrid').innerHTML = newGrid.innerHTML;
+                        var oldPag = document.querySelector('.pagination-nav');
+                        var newPag = doc.querySelector('.pagination-nav');
+                        if (oldPag && newPag) oldPag.innerHTML = newPag.innerHTML;
+                        else if (oldPag) oldPag.style.display = 'none';
+                        history.replaceState(null, '', q ? '?q=' + encodeURIComponent(q) : window.location.pathname);
+                    });
+            }, 350);
         });
     }
 

@@ -1,0 +1,2621 @@
+{% extends "base.html" %}
+
+{% block title %}The Pulse - Morocco's Startup Ecosystem Dashboard{% endblock %}
+
+{% block content %}
+<style>
+    /* ========================================
+       HOME PAGE STYLES — V2 FUTURISTIC
+       ======================================== */
+
+    /* ========== PHASE 1: FLOATING ORBS ========== */
+    .home-floating-orbs {
+        position: fixed;
+        inset: 0;
+        z-index: 0;
+        pointer-events: none;
+        overflow: hidden;
+    }
+    .orb {
+        position: absolute;
+        border-radius: 50%;
+        filter: blur(100px);
+        opacity: 0.12;
+        will-change: transform;
+    }
+    .orb-1 {
+        width: 500px; height: 500px;
+        background: #00d4aa;
+        top: -10%; left: -5%;
+        animation: orbDrift1 35s ease-in-out infinite alternate;
+    }
+    .orb-2 {
+        width: 400px; height: 400px;
+        background: #4361ee;
+        top: 40%; right: -8%;
+        animation: orbDrift2 42s ease-in-out infinite alternate;
+    }
+    .orb-3 {
+        width: 350px; height: 350px;
+        background: #8B5CF6;
+        bottom: -5%; left: 30%;
+        animation: orbDrift3 38s ease-in-out infinite alternate;
+    }
+    [data-theme="light"] .orb { opacity: 0.06; }
+    @keyframes orbDrift1 {
+        0% { transform: translate(0, 0) scale(1); }
+        50% { transform: translate(120px, 80px) scale(1.1); }
+        100% { transform: translate(-60px, 160px) scale(0.95); }
+    }
+    @keyframes orbDrift2 {
+        0% { transform: translate(0, 0) scale(1); }
+        50% { transform: translate(-100px, -60px) scale(1.15); }
+        100% { transform: translate(80px, -120px) scale(0.9); }
+    }
+    @keyframes orbDrift3 {
+        0% { transform: translate(0, 0) scale(1); }
+        50% { transform: translate(80px, -80px) scale(1.08); }
+        100% { transform: translate(-120px, 40px) scale(1.05); }
+    }
+
+    /* ========== PHASE 2: HERO V2 ========== */
+    /* 2A: Animated gradient bottom line */
+    .hero-section::after {
+        content: '';
+        position: absolute;
+        bottom: 0; left: 0; right: 0;
+        height: 2px;
+        background: linear-gradient(90deg, transparent, #00d4aa, #4361ee, #8B5CF6, #00d4aa, transparent);
+        background-size: 200% 100%;
+        animation: heroLineSwipe 4s linear infinite;
+        z-index: 5;
+    }
+    @keyframes heroLineSwipe {
+        0% { background-position: 200% 0; }
+        100% { background-position: -200% 0; }
+    }
+
+    /* 2B: Dot grid overlay (uses existing .hero-grid-overlay) */
+    .hero-grid-overlay {
+        background-image: radial-gradient(circle, rgba(255,255,255,0.04) 1px, transparent 1px) !important;
+        background-size: 28px 28px !important;
+    }
+    [data-theme="light"] .hero-grid-overlay {
+        background-image: radial-gradient(circle, rgba(0,0,0,0.03) 1px, transparent 1px) !important;
+    }
+
+    /* 2C: Subtitle fade-in blur */
+    .hero-subtitle {
+        animation: heroSubtitleFade 1s ease-out 0.3s both;
+    }
+    @keyframes heroSubtitleFade {
+        from { opacity: 0; filter: blur(6px); transform: translateY(10px); }
+        to { opacity: 1; filter: blur(0); transform: translateY(0); }
+    }
+
+    /* 2D: CTA glow pulse */
+    .btn-hero-primary {
+        animation: ctaPulseGlow 2.5s ease-in-out infinite;
+    }
+    @keyframes ctaPulseGlow {
+        0%, 100% { box-shadow: 0 0 15px rgba(0, 212, 170, 0.3), 0 0 40px rgba(0, 212, 170, 0.1); }
+        50% { box-shadow: 0 0 25px rgba(0, 212, 170, 0.5), 0 0 60px rgba(0, 212, 170, 0.2); }
+    }
+
+    /* ========== PHASE 3: TICKER GLOW ========== */
+    .ticker-item strong {
+        text-shadow: 0 0 12px rgba(255,255,255,0.4);
+    }
+    .ticker-dot {
+        animation: tickerDotPulse 2s ease-in-out infinite;
+        box-shadow: 0 0 4px rgba(255,255,255,0.3);
+    }
+    @keyframes tickerDotPulse {
+        0%, 100% { opacity: 0.5; box-shadow: 0 0 4px rgba(255,255,255,0.2); }
+        50% { opacity: 1; box-shadow: 0 0 8px rgba(255,255,255,0.5); }
+    }
+
+    /* ========== PHASE 4: SECTION HEADERS V2 ========== */
+    .section-header {
+        position: relative;
+        padding-left: 14px;
+    }
+    .section-header::before {
+        content: '';
+        position: absolute;
+        left: 0; top: 4px; bottom: 4px;
+        width: 3px;
+        background: linear-gradient(180deg, #00d4aa, #4361ee);
+        border-radius: 2px;
+        box-shadow: 0 0 8px rgba(0, 212, 170, 0.4), 0 0 16px rgba(0, 212, 170, 0.15);
+    }
+    .section-header h2 {
+        background: linear-gradient(135deg, var(--text-primary) 30%, #00d4aa 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+    }
+    [data-theme="light"] .section-header h2 {
+        background: linear-gradient(135deg, #0f1629 30%, #00967a 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+    }
+
+    /* ========== PHASE 5: CARD GLOW BORDERS ========== */
+    .nf-card,
+    .chart-card,
+    .appel-card,
+    .actu-card {
+        position: relative;
+        overflow: hidden;
+    }
+    .nf-card::after,
+    .chart-card::after,
+    .appel-card::after,
+    .actu-card::after {
+        content: '';
+        position: absolute;
+        inset: 0;
+        border-radius: inherit;
+        box-shadow: inset 0 0 0 1px rgba(0, 212, 170, 0), inset 0 0 30px rgba(0, 212, 170, 0);
+        transition: box-shadow 0.4s ease;
+        pointer-events: none;
+        z-index: 1;
+    }
+    .nf-card:hover::after,
+    .chart-card:hover::after,
+    .appel-card:hover::after,
+    .actu-card:hover::after {
+        box-shadow: inset 0 0 0 1px rgba(0, 212, 170, 0.15), inset 0 0 30px rgba(0, 212, 170, 0.04);
+    }
+    /* Startup card: enhance existing glow */
+    .startup-card:hover .startup-card-glow {
+        opacity: 0.25 !important;
+    }
+    .startup-card:hover {
+        border-color: rgba(0, 212, 170, 0.2);
+    }
+
+    /* ========== PHASE 6: SECTION DIVIDERS ========== */
+    .section-divider {
+        border: none;
+        height: 1px;
+        background: linear-gradient(90deg, transparent 0%, rgba(0,212,170,0.25) 25%, rgba(67,97,238,0.3) 50%, rgba(0,212,170,0.25) 75%, transparent 100%);
+        margin: 2.5rem 0;
+    }
+
+    /* ========== PHASE 7: SCROLL REVEAL ========== */
+    [data-scroll-reveal] {
+        opacity: 0;
+        transform: translateY(28px);
+        transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+    [data-scroll-reveal].revealed {
+        opacity: 1;
+        transform: translateY(0);
+    }
+    [data-scroll-reveal-stagger] > * {
+        opacity: 0;
+        transform: translateY(24px);
+        transition: opacity 0.5s ease, transform 0.5s ease;
+    }
+    [data-scroll-reveal-stagger].revealed > *:nth-child(1) { transition-delay: 0ms; }
+    [data-scroll-reveal-stagger].revealed > *:nth-child(2) { transition-delay: 80ms; }
+    [data-scroll-reveal-stagger].revealed > *:nth-child(3) { transition-delay: 160ms; }
+    [data-scroll-reveal-stagger].revealed > *:nth-child(4) { transition-delay: 240ms; }
+    [data-scroll-reveal-stagger].revealed > *:nth-child(5) { transition-delay: 320ms; }
+    [data-scroll-reveal-stagger].revealed > *:nth-child(6) { transition-delay: 400ms; }
+    [data-scroll-reveal-stagger].revealed > * {
+        opacity: 0;
+        transform: translateY(24px);
+    }
+    [data-scroll-reveal-stagger].revealed > * {
+        opacity: 1;
+        transform: translateY(0);
+    }
+    @media (prefers-reduced-motion: reduce) {
+        [data-scroll-reveal],
+        [data-scroll-reveal-stagger] > * {
+            opacity: 1 !important;
+            transform: none !important;
+            transition: none !important;
+        }
+    }
+
+    /* ========== PHASE 8: GLASSMORPHISM ENHANCED ========== */
+    .nf-card,
+    .chart-card,
+    .appel-card {
+        backdrop-filter: blur(12px) saturate(1.4);
+        -webkit-backdrop-filter: blur(12px) saturate(1.4);
+        background: rgba(18, 23, 43, 0.75);
+    }
+    [data-theme="light"] .nf-card,
+    [data-theme="light"] .chart-card,
+    [data-theme="light"] .appel-card {
+        background: rgba(255, 255, 255, 0.78);
+        backdrop-filter: blur(12px) saturate(1.4);
+    }
+
+    /* Typography overrides */
+    .home-heading {
+        font-family: 'Space Grotesk', 'Poppins', sans-serif;
+        font-weight: 700;
+    }
+    .home-body {
+        font-family: 'DM Sans', 'Inter', sans-serif;
+    }
+
+    /* ---------- HERO SECTION ---------- */
+    .hero-section {
+        position: relative;
+        padding: 0.5rem 0 0.75rem;
+        text-align: center;
+        overflow: hidden;
+    }
+    .hero-section::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background: radial-gradient(ellipse at 50% 0%, rgba(0, 212, 170, 0.1) 0%, transparent 50%),
+                    radial-gradient(ellipse at 80% 80%, rgba(67, 97, 238, 0.06) 0%, transparent 50%),
+                    radial-gradient(ellipse at 20% 60%, rgba(247, 183, 49, 0.05) 0%, transparent 50%);
+        pointer-events: none;
+        animation: meshShift 20s ease-in-out infinite alternate;
+    }
+    @keyframes meshShift {
+        0% { background-position: 0% 0%, 100% 100%, 0% 50%; }
+        100% { background-position: 50% 50%, 50% 0%, 100% 50%; }
+    }
+
+    /* Floating circles */
+    .hero-float-elements {
+        position: absolute;
+        inset: 0;
+        pointer-events: none;
+        z-index: 1;
+    }
+    .hero-float {
+        position: absolute;
+        border-radius: 50%;
+        opacity: 0;
+        animation: heroFloat linear infinite;
+    }
+    .hero-float:nth-child(1) { width: 8px; height: 8px; background: var(--accent); left: 10%; bottom: -10px; animation-duration: 12s; animation-delay: 0s; }
+    .hero-float:nth-child(2) { width: 5px; height: 5px; background: var(--secondary); left: 30%; bottom: -10px; animation-duration: 16s; animation-delay: 2s; }
+    .hero-float:nth-child(3) { width: 12px; height: 12px; border: 2px solid var(--accent); background: transparent; left: 55%; bottom: -10px; animation-duration: 14s; animation-delay: 4s; }
+    .hero-float:nth-child(4) { width: 6px; height: 6px; background: var(--tertiary); left: 75%; bottom: -10px; animation-duration: 18s; animation-delay: 1s; }
+    .hero-float:nth-child(5) { width: 10px; height: 10px; border: 2px solid var(--secondary); background: transparent; left: 45%; bottom: -10px; animation-duration: 13s; animation-delay: 6s; }
+    .hero-float:nth-child(6) { width: 4px; height: 4px; background: var(--accent); left: 20%; bottom: -10px; animation-duration: 20s; animation-delay: 3s; }
+    .hero-float:nth-child(7) { width: 14px; height: 14px; border: 1px solid rgba(0, 212, 170, 0.3); background: transparent; left: 65%; bottom: -10px; animation-duration: 17s; animation-delay: 8s; }
+    .hero-float:nth-child(8) { width: 7px; height: 7px; background: var(--secondary); left: 85%; bottom: -10px; animation-duration: 15s; animation-delay: 5s; }
+    .hero-float:nth-child(9) { width: 9px; height: 9px; border: 2px solid var(--tertiary); background: transparent; left: 5%; bottom: -10px; animation-duration: 19s; animation-delay: 7s; }
+    .hero-float:nth-child(10) { width: 6px; height: 6px; background: var(--accent); left: 90%; bottom: -10px; animation-duration: 14s; animation-delay: 9s; }
+
+    @keyframes heroFloat {
+        0% { opacity: 0; transform: translateY(0) scale(0.5); }
+        10% { opacity: 0.6; transform: translateY(-30px) scale(1); }
+        90% { opacity: 0.3; transform: translateY(-280px) scale(0.8); }
+        100% { opacity: 0; transform: translateY(-320px) scale(0.3); }
+    }
+
+    /* Grid overlay */
+    .hero-grid-overlay {
+        position: absolute;
+        inset: 0;
+        pointer-events: none;
+        z-index: 0;
+    }
+
+    /* Subtle pulse glow effect */
+    .hero-pulse-line {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        height: 1px;
+        z-index: 1;
+        pointer-events: none;
+        background: linear-gradient(90deg, transparent 0%, var(--accent) 50%, transparent 100%);
+        opacity: 0;
+        animation: pulseGlow 3s ease-in-out infinite;
+    }
+    .hero-pulse-line::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        height: 40px;
+        background: linear-gradient(to top, rgba(0, 212, 170, 0.04), transparent);
+        pointer-events: none;
+    }
+    @keyframes pulseGlow {
+        0%, 100% { opacity: 0; }
+        50% { opacity: 0.6; }
+    }
+
+    /* Subtle top glow */
+    .hero-pulse-line-top {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 1px;
+        z-index: 1;
+        pointer-events: none;
+        background: linear-gradient(90deg, transparent 0%, var(--secondary) 50%, transparent 100%);
+        opacity: 0;
+        animation: pulseGlowTop 4s ease-in-out infinite 1.5s;
+    }
+    .hero-pulse-line-top::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 30px;
+        background: linear-gradient(to bottom, rgba(67, 97, 238, 0.03), transparent);
+        pointer-events: none;
+    }
+    @keyframes pulseGlowTop {
+        0%, 100% { opacity: 0; }
+        50% { opacity: 0.4; }
+    }
+    @keyframes pulseSweep {
+        0% { transform: translateX(0); }
+        100% { transform: translateX(-50%); }
+    }
+
+    /* Pulsating dot between logo and subtitle */
+    .hero-pulse-dot {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin: 0.25rem auto 0.25rem;
+        position: relative;
+        width: 36px;
+        height: 36px;
+    }
+    .pulse-dot-core {
+        width: 16px;
+        height: 16px;
+        background: var(--accent);
+        border-radius: 50%;
+        position: absolute;
+        z-index: 3;
+        box-shadow: 0 0 20px rgba(0, 212, 170, 0.7), 0 0 60px rgba(0, 212, 170, 0.3);
+        animation: pulseDotCore 2s ease-in-out infinite;
+    }
+    .pulse-dot-ring {
+        position: absolute;
+        width: 16px;
+        height: 16px;
+        border: 2px solid var(--accent);
+        border-radius: 50%;
+        opacity: 0;
+        animation: pulseDotRing 2s ease-out infinite;
+    }
+    .pulse-dot-ring-2 {
+        animation-delay: 0.7s;
+    }
+    @keyframes pulseDotCore {
+        0%, 100% { transform: scale(1); opacity: 0.8; box-shadow: 0 0 20px rgba(0, 212, 170, 0.7), 0 0 60px rgba(0, 212, 170, 0.3); }
+        50% { transform: scale(1.4); opacity: 1; box-shadow: 0 0 30px rgba(0, 212, 170, 0.9), 0 0 80px rgba(0, 212, 170, 0.4); }
+    }
+    @keyframes pulseDotRing {
+        0% { width: 16px; height: 16px; opacity: 0.8; }
+        100% { width: 90px; height: 90px; opacity: 0; }
+    }
+
+    .hero-headline {
+        font-size: clamp(1.8rem, 4vw, 2.8rem);
+        font-weight: 800;
+        line-height: 1.1;
+        margin-bottom: 0.35rem;
+        background: linear-gradient(135deg, var(--accent), var(--secondary), #8B5CF6);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+    }
+    .hero-subtitle {
+        color: var(--text-muted);
+        font-size: 0.92rem;
+        margin-bottom: 0.75rem;
+        font-weight: 400;
+    }
+    .hero-actions {
+        display: flex;
+        justify-content: center;
+        gap: 0.75rem;
+        flex-wrap: wrap;
+        margin-bottom: 1rem;
+    }
+    .btn-hero-primary {
+        background: linear-gradient(135deg, var(--accent), #009e7e);
+        color: #fff;
+        border: none;
+        padding: 0.6rem 1.5rem;
+        border-radius: 10px;
+        font-weight: 600;
+        font-size: 0.9rem;
+        text-decoration: none;
+        transition: all 0.3s ease;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+    .btn-hero-primary:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 24px rgba(16, 185, 129, 0.35);
+        color: #fff;
+    }
+    .btn-hero-secondary {
+        background: transparent;
+        color: var(--text-primary);
+        border: 1px solid var(--border-color);
+        padding: 0.6rem 1.5rem;
+        border-radius: 10px;
+        font-weight: 600;
+        font-size: 0.9rem;
+        text-decoration: none;
+        transition: all 0.3s ease;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+    .btn-hero-secondary:hover {
+        border-color: var(--accent);
+        color: var(--accent);
+        transform: translateY(-2px);
+        box-shadow: 0 8px 24px rgba(16, 185, 129, 0.15);
+    }
+
+    /* ---------- STATS ROW ---------- */
+    /* ========== SCROLLING STATS TICKER ========== */
+    .stats-ticker {
+        background: linear-gradient(135deg, #00d4aa 0%, #00b894 40%, #4361ee 100%);
+        padding: 1.1rem 0;
+        overflow: hidden;
+        margin-bottom: 0;
+        position: relative;
+    }
+    .stats-ticker-track {
+        display: flex;
+        width: max-content;
+        animation: tickerScroll 25s linear infinite;
+    }
+    .stats-ticker-track:hover { animation-play-state: paused; }
+    .stats-ticker-content {
+        display: flex;
+        align-items: center;
+        gap: 0;
+        flex-shrink: 0;
+    }
+    .ticker-item {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        color: #fff;
+        font-family: var(--font-heading);
+        font-size: 1rem;
+        font-weight: 500;
+        white-space: nowrap;
+        padding: 0 2rem;
+    }
+    .ticker-item strong {
+        font-weight: 700;
+        font-size: 1.15rem;
+    }
+    .ticker-item i {
+        font-size: 0.9rem;
+        opacity: 0.85;
+    }
+    .ticker-dot {
+        width: 5px;
+        height: 5px;
+        border-radius: 50%;
+        background: rgba(255,255,255,0.5);
+        flex-shrink: 0;
+    }
+    @keyframes tickerScroll {
+        0% { transform: translateX(0); }
+        100% { transform: translateX(-50%); }
+    }
+
+    /* ========== PARTNERS SECTION (home) ========== */
+    .home-partners-section {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 1.5rem;
+        padding: 3rem 2rem;
+        background: #fff;
+        border-top: 1px solid rgba(0, 212, 170, 0.15);
+        border-bottom: 1px solid rgba(0, 212, 170, 0.15);
+        margin-bottom: 2.5rem;
+    }
+    [data-theme="dark"] .home-partners-section {
+        background: #fff;
+    }
+    .home-partners-header {
+        display: flex;
+        align-items: center;
+        gap: 1.5rem;
+        width: 100%;
+        max-width: 900px;
+    }
+    .home-partners-header::before,
+    .home-partners-header::after {
+        content: '';
+        flex: 1;
+        height: 1px;
+        background: linear-gradient(90deg, transparent, rgba(0, 212, 170, 0.3), transparent);
+    }
+    .home-partners-label {
+        font-family: var(--font-heading);
+        font-size: 1.5rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.15em;
+        color: var(--accent);
+        white-space: nowrap;
+        flex-shrink: 0;
+    }
+    .home-partners-grid {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 2.5rem;
+        flex-wrap: wrap;
+        padding: 0.5rem 2rem;
+        width: 100%;
+    }
+    .home-partner-item {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: visible;
+    }
+    .home-partner-item img {
+        height: 110px;
+        width: auto;
+        max-width: 400px;
+        object-fit: contain;
+        opacity: 0.9;
+        border-radius: 12px;
+        transition: all 0.3s ease;
+    }
+    .home-partner-item img:hover {
+        opacity: 1;
+        transform: scale(1.05);
+    }
+    .home-partner-item.partner-lg img {
+        height: 220px;
+    }
+    .home-partner-item.partner-mtn img {
+        height: auto;
+        width: 350px;
+        max-width: 350px;
+    }
+    .home-partner-fallback {
+        font-family: var(--font-heading);
+        font-size: 1rem;
+        font-weight: 700;
+        color: var(--accent);
+        opacity: 0.6;
+        letter-spacing: 0.05em;
+    }
+    .partner-fallback-lg {
+        font-size: 1.4rem;
+    }
+    @keyframes partnersScroll {
+        0% { transform: translateX(0); }
+        100% { transform: translateX(-50%); }
+    }
+
+    /* ---------- SECTION HEADER ---------- */
+    .section-header {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        margin-bottom: 1.5rem;
+    }
+    .section-header-icon {
+        width: 36px;
+        height: 36px;
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 0.95rem;
+        color: #fff;
+        flex-shrink: 0;
+    }
+    .section-header h2 {
+        font-family: 'Space Grotesk', 'Poppins', sans-serif;
+        font-size: 1.4rem;
+        font-weight: 700;
+        margin: 0;
+        color: var(--text-primary);
+    }
+
+    /* ---------- CHART GRID ---------- */
+    .charts-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1.25rem;
+        margin-bottom: 2.5rem;
+    }
+    .chart-card {
+        background: var(--bg-card);
+        border: 1px solid var(--border-color);
+        border-radius: 16px;
+        padding: 1.25rem;
+        transition: all 0.3s ease;
+        position: relative;
+    }
+    .chart-card:hover {
+        border-color: var(--border-color);
+        box-shadow: 0 8px 24px var(--shadow-color);
+    }
+    [data-theme="light"] .chart-card {
+        background: rgba(255, 255, 255, 0.9);
+    }
+    .chart-card-header {
+        display: flex;
+        align-items: center;
+        gap: 0.6rem;
+        margin-bottom: 1rem;
+        padding-bottom: 0.75rem;
+        border-bottom: 1px solid var(--border-color);
+    }
+    .chart-card-header i {
+        color: var(--accent);
+        font-size: 1rem;
+    }
+    .chart-card-header span {
+        font-family: 'Space Grotesk', 'Poppins', sans-serif;
+        font-weight: 600;
+        font-size: 0.95rem;
+        color: var(--text-primary);
+    }
+    .chart-wrapper {
+        position: relative;
+        height: 400px;
+    }
+    .chart-loading {
+        position: absolute;
+        inset: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 0.75rem;
+        z-index: 2;
+    }
+    .chart-spinner {
+        width: 32px;
+        height: 32px;
+        border: 3px solid var(--border-color);
+        border-top-color: var(--accent);
+        border-radius: 50%;
+        animation: spin 0.8s linear infinite;
+    }
+    @keyframes spin {
+        to { transform: rotate(360deg); }
+    }
+    .chart-loading span {
+        color: var(--text-muted);
+        font-size: 0.8rem;
+    }
+
+    /* ---------- APPELS À PROJETS ---------- */
+    .appels-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 1.25rem;
+        margin-bottom: 1.5rem;
+    }
+    .appel-card {
+        background: var(--bg-card);
+        border: 1px solid var(--border-color);
+        border-radius: 16px;
+        padding: 1.5rem;
+        text-decoration: none;
+        color: inherit;
+        display: flex;
+        flex-direction: column;
+        gap: 0.75rem;
+        transition: all 0.3s ease;
+        border-left: 4px solid #8B5CF6;
+    }
+    .appel-card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 8px 24px rgba(139, 92, 246, 0.15);
+        border-color: #8B5CF6;
+    }
+    .appel-card-top {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+    }
+    .appel-org {
+        font-size: 0.72rem;
+        font-weight: 600;
+        color: #8B5CF6;
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+    }
+    .appel-deadline {
+        font-size: 0.72rem;
+        color: var(--text-muted);
+        display: flex;
+        align-items: center;
+        gap: 0.3rem;
+    }
+    .appel-title {
+        font-size: 0.95rem;
+        font-weight: 700;
+        color: var(--text-primary);
+        line-height: 1.4;
+        margin: 0;
+    }
+    .appel-desc {
+        font-size: 0.8rem;
+        color: var(--text-muted);
+        line-height: 1.5;
+        margin: 0;
+        flex: 1;
+    }
+    .appel-footer {
+        display: flex;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 0.4rem;
+        margin-top: auto;
+        padding-top: 0.75rem;
+        border-top: 1px solid var(--border-color);
+    }
+    .appel-tag {
+        font-size: 0.68rem;
+        background: rgba(139, 92, 246, 0.1);
+        color: #8B5CF6;
+        padding: 0.2rem 0.5rem;
+        border-radius: 6px;
+        font-weight: 500;
+    }
+    .appel-cta {
+        margin-left: auto;
+        font-size: 0.75rem;
+        font-weight: 600;
+        color: #8B5CF6;
+        display: flex;
+        align-items: center;
+        gap: 0.3rem;
+    }
+    @media (max-width: 768px) {
+        .appels-grid { grid-template-columns: 1fr; }
+    }
+
+    /* ---------- STARTUP CARDS ---------- */
+    .startups-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 1.25rem;
+        margin-bottom: 2rem;
+    }
+    .startup-card {
+        position: relative;
+        background: var(--bg-card);
+        border: 1px solid var(--border-color);
+        border-radius: 16px;
+        padding: 1.5rem;
+        text-decoration: none;
+        color: inherit;
+        transition: all 0.35s ease;
+        display: flex;
+        flex-direction: column;
+        gap: 0.75rem;
+        opacity: 0;
+        transform: translateY(20px);
+        min-width: 0;
+        overflow: hidden;
+    }
+    .startup-card.visible {
+        opacity: 1;
+        transform: translateY(0);
+    }
+    .startup-card:hover {
+        transform: translateY(-6px);
+        box-shadow: 0 16px 40px var(--shadow-color);
+        border-color: var(--accent);
+        color: inherit;
+    }
+    .startup-card:hover .startup-card-glow {
+        opacity: 1;
+    }
+    .startup-card-glow {
+        position: absolute;
+        inset: -1px;
+        border-radius: 17px;
+        background: linear-gradient(135deg, rgba(16, 185, 129, 0.15), rgba(59, 130, 246, 0.1));
+        opacity: 0;
+        transition: opacity 0.35s ease;
+        pointer-events: none;
+        z-index: 0;
+    }
+    [data-theme="light"] .startup-card {
+        background: rgba(255, 255, 255, 0.9);
+    }
+    .startup-card > *:not(.startup-card-glow) {
+        position: relative;
+        z-index: 1;
+    }
+    .startup-card-top {
+        display: flex;
+        align-items: flex-start;
+        gap: 0.75rem;
+    }
+    .startup-rank {
+        width: 28px;
+        height: 28px;
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-family: 'Space Grotesk', 'Poppins', sans-serif;
+        font-weight: 800;
+        font-size: 0.8rem;
+        color: #fff;
+        flex-shrink: 0;
+        background: linear-gradient(135deg, var(--accent), #009e7e);
+    }
+    .startup-rank.rank-1 { background: linear-gradient(135deg, #f7b731, #f59e0b); }
+    .startup-rank.rank-2 { background: linear-gradient(135deg, #94A3B8, #64748B); }
+    .startup-rank.rank-3 { background: linear-gradient(135deg, #cd7f32, #a0522d); }
+
+    .startup-logo {
+        width: 44px;
+        height: 44px;
+        border-radius: 12px;
+        object-fit: cover;
+        background: var(--bg-card-hover);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+        overflow: hidden;
+        border: 1px solid var(--border-color);
+    }
+    .startup-logo img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+    .startup-logo-placeholder {
+        width: 44px;
+        height: 44px;
+        border-radius: 12px;
+        background: var(--bg-card-hover);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+        color: var(--text-muted);
+        font-size: 1.2rem;
+        border: 1px solid var(--border-color);
+    }
+    .startup-info {
+        flex: 1;
+        min-width: 0;
+    }
+    .startup-name {
+        font-family: 'Space Grotesk', 'Poppins', sans-serif;
+        font-weight: 700;
+        font-size: 1.05rem;
+        color: var(--text-primary);
+        margin-bottom: 0.25rem;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+    .startup-location {
+        color: var(--text-muted);
+        font-size: 0.8rem;
+        display: flex;
+        align-items: center;
+        gap: 0.3rem;
+    }
+    .startup-badges {
+        display: flex;
+        gap: 0.5rem;
+        flex-wrap: wrap;
+    }
+    .badge-sector,
+    .badge-stage {
+        padding: 0.2rem 0.6rem;
+        border-radius: 6px;
+        font-size: 0.72rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.03em;
+    }
+    .badge-sector {
+        background: rgba(16, 185, 129, 0.12);
+        color: var(--accent);
+        border: 1px solid rgba(16, 185, 129, 0.2);
+    }
+    .badge-stage {
+        background: rgba(59, 130, 246, 0.12);
+        color: var(--secondary);
+        border: 1px solid rgba(59, 130, 246, 0.2);
+    }
+    .startup-description {
+        color: var(--text-muted);
+        font-size: 0.82rem;
+        line-height: 1.4;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        min-width: 0;
+    }
+    .startup-description.lang-fr { display: none; }
+    html[data-lang="fr"] .startup-description.lang-fr { display: block; }
+    html[data-lang="fr"] .startup-description.lang-en { display: none; }
+    .startup-funding {
+        margin-top: auto;
+        padding-top: 0.75rem;
+        border-top: 1px solid var(--border-color);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+    .funding-label {
+        color: var(--text-muted);
+        font-size: 0.75rem;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+    }
+    .funding-amount {
+        font-family: 'Space Grotesk', 'Poppins', sans-serif;
+        font-weight: 800;
+        font-size: 1.15rem;
+        background: linear-gradient(135deg, var(--accent), #00e6b8);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+    }
+
+    /* ---------- BOTTOM CTA ---------- */
+    .bottom-cta {
+        text-align: center;
+        padding: 2rem 0 1rem;
+    }
+    .btn-explore-all {
+        background: linear-gradient(135deg, var(--accent), var(--secondary));
+        color: #fff;
+        border: none;
+        padding: 0.85rem 2.5rem;
+        border-radius: 12px;
+        font-family: 'Space Grotesk', 'Poppins', sans-serif;
+        font-weight: 700;
+        font-size: 1rem;
+        text-decoration: none;
+        transition: all 0.3s ease;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.6rem;
+    }
+    .btn-explore-all:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 12px 32px rgba(16, 185, 129, 0.35);
+        color: #fff;
+    }
+
+    /* ---------- MAP SECTION ---------- */
+    .map-section {
+        margin-top: 2rem;
+        margin-bottom: 2rem;
+    }
+    .map-section .section-title {
+        font-family: 'Space Grotesk', 'Poppins', sans-serif;
+        font-weight: 700;
+        font-size: 1.4rem;
+        margin-bottom: 0.25rem;
+        color: var(--text-primary);
+    }
+    .map-section .section-subtitle {
+        color: var(--text-muted);
+        font-size: 0.9rem;
+        margin-bottom: 1rem;
+    }
+    #moroccoMap {
+        height: 500px;
+        border-radius: 16px;
+        overflow: hidden;
+        border: 1px solid var(--border-color);
+        z-index: 1;
+    }
+    #moroccoMap .leaflet-popup-content-wrapper {
+        background: var(--card-bg);
+        color: var(--text-primary);
+        border-radius: 12px;
+        box-shadow: 0 8px 32px rgba(0,0,0,0.18);
+        border: 1px solid var(--border-color);
+    }
+    #moroccoMap .leaflet-popup-tip {
+        background: var(--card-bg);
+    }
+    #moroccoMap .leaflet-popup-content {
+        margin: 10px 14px;
+        font-family: 'DM Sans', 'Inter', sans-serif;
+        font-size: 0.85rem;
+    }
+    .map-popup-city {
+        font-weight: 700;
+        font-size: 1rem;
+        color: var(--accent);
+        margin-bottom: 2px;
+    }
+    .map-popup-count {
+        font-size: 0.85rem;
+        color: var(--text-muted);
+    }
+    .map-popup-count strong {
+        color: var(--text-primary);
+        font-size: 1.1rem;
+    }
+
+    /* ---------- RESPONSIVE ---------- */
+    @media (max-width: 1200px) {
+        .startups-grid {
+            grid-template-columns: repeat(2, 1fr);
+        }
+    }
+    @media (max-width: 992px) {
+        .charts-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+    @media (max-width: 768px) {
+        .startups-grid {
+            grid-template-columns: 1fr;
+        }
+        .hero-headline {
+            font-size: 1.6rem;
+        }
+        .home-partners-section {
+            padding: 1.5rem 1rem;
+            gap: 1rem;
+        }
+        .ticker-item { font-size: 0.85rem; padding: 0 1.25rem; }
+        .ticker-item strong { font-size: 1rem; }
+        .home-partners-label { font-size: 0.82rem; }
+    }
+
+    /* ---------- COUNT-UP ANIMATION ---------- */
+    @keyframes fadeInUp {
+        from { opacity: 0; transform: translateY(24px); }
+        to   { opacity: 1; transform: translateY(0); }
+    }
+    .animate-fade-in-up { animation: fadeInUp 0.5s ease forwards; }
+
+    /* ---------- ACTUALITÉS GRID (full-width, 2 columns) ---------- */
+    .actu-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 0.85rem;
+        margin-bottom: 0.5rem;
+    }
+    @media (max-width: 768px) { .actu-grid { grid-template-columns: 1fr; } }
+    .actu-card {
+        background: var(--bg-card);
+        border: 1px solid var(--border-color);
+        border-radius: 14px;
+        padding: 1rem 1.1rem;
+        text-decoration: none;
+        color: inherit;
+        transition: all 0.25s ease;
+        display: flex;
+        flex-direction: column;
+        gap: 0.35rem;
+    }
+    .actu-card:hover {
+        border-color: var(--accent);
+        transform: translateX(3px);
+        color: inherit;
+    }
+    [data-theme="light"] .actu-card { background: rgba(255,255,255,0.9); }
+    .actu-cat {
+        font-size: 0.68rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+        color: var(--accent);
+    }
+    .actu-cat.cat-interview { color: #8B5CF6; }
+    .actu-cat.cat-analyse   { color: var(--secondary); }
+    .actu-title {
+        font-family: 'Space Grotesk', 'Poppins', sans-serif;
+        font-weight: 600;
+        font-size: 0.88rem;
+        line-height: 1.4;
+        color: var(--text-primary);
+    }
+    .actu-meta {
+        font-size: 0.72rem;
+        color: var(--text-muted);
+        display: flex;
+        align-items: center;
+        gap: 0.4rem;
+    }
+    /* ---------- CO-FOUNDERS SECTION ---------- */
+    .cofound-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 1.25rem;
+        margin-bottom: 1rem;
+    }
+    @media (max-width: 992px) { .cofound-grid { grid-template-columns: repeat(2,1fr); } }
+    @media (max-width: 600px)  { .cofound-grid { grid-template-columns: 1fr; } }
+    .cofound-card {
+        background: var(--bg-card);
+        border: 1px solid var(--border-color);
+        border-radius: 16px;
+        padding: 1.4rem;
+        text-decoration: none;
+        color: inherit;
+        display: flex;
+        flex-direction: column;
+        gap: 0.6rem;
+        transition: all 0.3s ease;
+        border-left: 4px solid #10B981;
+    }
+    .cofound-card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 8px 24px rgba(16,185,129,0.15);
+        border-color: var(--accent);
+        color: inherit;
+    }
+    [data-theme="light"] .cofound-card { background: rgba(255,255,255,0.9); }
+    .cofound-stage {
+        font-size: 0.68rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        color: var(--accent);
+    }
+    .cofound-title {
+        font-family: 'Space Grotesk','Poppins',sans-serif;
+        font-weight: 700;
+        font-size: 0.95rem;
+        line-height: 1.35;
+        color: var(--text-primary);
+    }
+    .cofound-desc {
+        font-size: 0.78rem;
+        color: var(--text-muted);
+        line-height: 1.45;
+        flex: 1;
+    }
+    .cofound-footer {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding-top: 0.6rem;
+        border-top: 1px solid var(--border-color);
+        gap: 0.5rem;
+        flex-wrap: wrap;
+    }
+    .cofound-author {
+        font-size: 0.75rem;
+        color: var(--text-muted);
+        display: flex;
+        align-items: center;
+        gap: 0.35rem;
+    }
+    .cofound-commitment {
+        font-size: 0.7rem;
+        font-weight: 600;
+        padding: 0.2rem 0.55rem;
+        border-radius: 6px;
+        background: rgba(16,185,129,0.1);
+        color: var(--accent);
+    }
+
+    /* ---------- NEWSFEED EMBEDDED (home) ---------- */
+    :root { --nf-accent: #00d4aa; --nf-accent-light: rgba(0,212,170,0.12); --nf-accent-glow: rgba(0,212,170,0.25); }
+    .home-nf-section { margin-bottom: 3rem; }
+    .home-nf-layout {
+        display: grid;
+        grid-template-columns: 1fr 300px;
+        gap: 1.5rem;
+        align-items: start;
+    }
+    @media (max-width: 900px) { .home-nf-layout { grid-template-columns: 1fr; } }
+    .nf-create-box {
+        background: var(--bg-card); border: 1px solid var(--border-color);
+        border-radius: 16px; padding: 1.25rem 1.5rem 1.5rem;
+        margin-bottom: 1.25rem;
+        box-shadow: 0 2px 12px var(--shadow-color);
+        transition: border-color 0.2s;
+    }
+    .nf-create-box:focus-within { border-color: var(--nf-accent); box-shadow: 0 0 0 3px var(--nf-accent-glow); }
+    .nf-create-box-header { display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.9rem; }
+    .nf-avatar {
+        width: 42px; height: 42px; border-radius: 50%;
+        background: linear-gradient(135deg, var(--nf-accent), #4361ee);
+        color: #fff; display: flex; align-items: center; justify-content: center;
+        font-family: var(--font-heading); font-weight: 700; font-size: 1rem;
+        flex-shrink: 0; text-transform: uppercase;
+    }
+    .nf-avatar.sm { width: 36px; height: 36px; font-size: 0.85rem; }
+    .nf-avatar-placeholder { font-size: 0.82rem; color: var(--text-muted); }
+    .nf-create-textarea {
+        width: 100%; background: var(--bg-card); border: 1px solid var(--border-color);
+        border-radius: 10px; color: var(--text-primary); font-family: var(--font-body);
+        font-size: 0.93rem; padding: 0.75rem 1rem; resize: vertical; min-height: 90px;
+        transition: border-color 0.2s; box-sizing: border-box;
+    }
+    .nf-create-textarea:focus { outline: none; border-color: var(--nf-accent); }
+    .nf-create-textarea::placeholder { color: var(--text-muted); opacity: 0.7; }
+    .nf-create-meta { display: flex; flex-wrap: wrap; gap: 0.6rem; margin-top: 0.75rem; align-items: center; }
+    .nf-create-meta input {
+        flex: 1; min-width: 130px; background: var(--bg-card); border: 1px solid var(--border-color);
+        border-radius: 8px; color: var(--text-primary); font-family: var(--font-body);
+        font-size: 0.85rem; padding: 0.45rem 0.75rem; transition: border-color 0.2s;
+    }
+    .nf-create-meta input:focus { outline: none; border-color: var(--nf-accent); }
+    .nf-create-meta input::placeholder { color: var(--text-muted); opacity: 0.65; }
+    .nf-type-select {
+        background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 8px;
+        color: var(--text-primary); font-family: var(--font-body); font-size: 0.85rem;
+        padding: 0.45rem 0.75rem; cursor: pointer; min-width: 130px; transition: border-color 0.2s;
+    }
+    .nf-type-select:focus { outline: none; border-color: var(--nf-accent); }
+    .nf-create-footer { display: flex; align-items: center; justify-content: flex-end; margin-top: 1rem; }
+    .nf-submit-btn {
+        background: linear-gradient(135deg, var(--nf-accent), #4361ee); color: #fff; border: none;
+        border-radius: 10px; font-family: var(--font-heading); font-weight: 600; font-size: 0.88rem;
+        padding: 0.55rem 1.4rem; cursor: pointer; transition: opacity 0.2s, transform 0.15s;
+        display: flex; align-items: center; gap: 0.4rem;
+    }
+    .nf-submit-btn:hover { opacity: 0.88; transform: translateY(-1px); }
+    /* Tabs */
+    .nf-tabs {
+        display: flex; gap: 0.25rem; margin-bottom: 1.25rem;
+        background: var(--bg-card); border: 1px solid var(--border-color);
+        border-radius: 12px; padding: 0.35rem; overflow-x: auto;
+    }
+    .nf-tab {
+        flex: 1; text-align: center; padding: 0.5rem 0.9rem; border-radius: 9px;
+        font-family: var(--font-heading); font-size: 0.84rem; font-weight: 600;
+        color: var(--text-muted); cursor: pointer; border: none; background: transparent;
+        transition: all 0.2s; white-space: nowrap;
+    }
+    .nf-tab.active { background: linear-gradient(135deg, var(--nf-accent), #4361ee); color: #fff; box-shadow: 0 2px 8px var(--nf-accent-glow); }
+    .nf-tab:hover:not(.active) { background: var(--nf-accent-light); color: var(--nf-accent); }
+    /* Feed card */
+    .nf-card {
+        background: var(--bg-card); border: 1px solid var(--border-color);
+        border-radius: 16px; padding: 1.25rem 1.4rem 1rem; margin-bottom: 1rem;
+        box-shadow: 0 2px 10px var(--shadow-color); transition: border-color 0.2s, transform 0.18s;
+    }
+    .nf-card:hover { border-color: rgba(139,92,246,0.3); transform: translateY(-2px); }
+    [data-theme="light"] .nf-card { background: rgba(255,255,255,0.9); }
+    .nf-card-header { display: flex; align-items: flex-start; gap: 0.8rem; margin-bottom: 0.85rem; }
+    .nf-card-author { flex: 1; min-width: 0; }
+    .nf-card-author-name { font-family: var(--font-heading); font-size: 0.92rem; font-weight: 700; color: var(--text-primary); margin: 0; line-height: 1.3; }
+    .nf-card-author-role { font-size: 0.78rem; color: var(--text-muted); margin: 0; line-height: 1.4; }
+    .nf-card-time { font-size: 0.76rem; color: var(--text-muted); white-space: nowrap; margin-top: 2px; flex-shrink: 0; }
+    .nf-type-badge {
+        display: inline-flex; align-items: center; gap: 0.3rem; font-size: 0.7rem; font-weight: 700;
+        font-family: var(--font-heading); padding: 0.22rem 0.65rem; border-radius: 999px;
+        text-transform: uppercase; letter-spacing: 0.04em; flex-shrink: 0;
+    }
+    .nf-type-post         { background: rgba(139,92,246,0.15); color: #8B5CF6; }
+    .nf-type-announcement { background: rgba(16,185,129,0.15);  color: #10B981; }
+    .nf-type-question     { background: rgba(245,158,11,0.15);  color: #F59E0B; }
+    .nf-type-opportunity  { background: rgba(59,130,246,0.15);  color: #3B82F6; }
+    .nf-type-article      { background: rgba(0,212,170,0.12);   color: #00d4aa; }
+    .nf-card-content {
+        font-family: var(--font-body); font-size: 0.92rem; line-height: 1.65;
+        color: var(--text-primary); margin-bottom: 0.85rem; white-space: pre-wrap; word-break: break-word;
+    }
+    .nf-card-content.article-content {
+        white-space: normal; display: -webkit-box;
+        -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;
+    }
+    .nf-tags { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-bottom: 0.9rem; }
+    .nf-tag {
+        font-size: 0.72rem; font-weight: 600; color: var(--nf-accent);
+        background: var(--nf-accent-light); padding: 0.2rem 0.6rem;
+        border-radius: 999px; font-family: var(--font-heading); text-transform: lowercase;
+    }
+    .nf-card-footer {
+        display: flex; align-items: center; gap: 1rem;
+        border-top: 1px solid var(--border-color); padding-top: 0.75rem; margin-top: 0.25rem;
+    }
+    .nf-like-btn {
+        display: flex; align-items: center; gap: 0.4rem; background: transparent;
+        border: 1px solid var(--border-color); border-radius: 8px;
+        font-family: var(--font-heading); font-size: 0.8rem; font-weight: 600;
+        color: var(--text-muted); padding: 0.38rem 0.8rem; cursor: pointer; transition: all 0.2s;
+    }
+    .nf-like-btn:hover, .nf-like-btn.liked { background: rgba(239,68,68,0.1); border-color: #EF4444; color: #EF4444; }
+    .nf-like-btn i { font-size: 0.85rem; }
+    .nf-comment-btn, .nf-msg-btn {
+        display: flex; align-items: center; gap: 0.4rem; background: transparent;
+        border: 1px solid var(--border-color); border-radius: 8px;
+        font-family: var(--font-heading); font-size: 0.8rem; font-weight: 600;
+        color: var(--text-muted); padding: 0.38rem 0.8rem; cursor: pointer; transition: all 0.2s;
+    }
+    .nf-comment-btn:hover { background: rgba(139,92,246,0.1); border-color: #8B5CF6; color: #8B5CF6; }
+    .nf-msg-btn:hover { background: rgba(59,130,246,0.1); border-color: #3B82F6; color: #3B82F6; }
+    .nf-comment-btn i, .nf-msg-btn i { font-size: 0.85rem; }
+    .nf-read-more {
+        display: flex; align-items: center; gap: 0.35rem; font-size: 0.8rem; font-weight: 600;
+        font-family: var(--font-heading); color: var(--nf-accent); text-decoration: none;
+        margin-left: auto; transition: opacity 0.2s;
+    }
+    .nf-read-more:hover { opacity: 0.8; text-decoration: none; color: var(--nf-accent); }
+    /* Sidebar */
+    .nf-sidebar-widget {
+        background: var(--bg-card); border: 1px solid var(--border-color);
+        border-radius: 16px; padding: 1.25rem 1.4rem; margin-bottom: 1.25rem;
+        box-shadow: 0 2px 10px var(--shadow-color);
+    }
+    [data-theme="light"] .nf-sidebar-widget { background: rgba(255,255,255,0.9); }
+    .nf-widget-title {
+        font-family: var(--font-heading); font-size: 0.88rem; font-weight: 700;
+        color: var(--text-primary); text-transform: uppercase; letter-spacing: 0.06em;
+        margin: 0 0 1rem 0; display: flex; align-items: center; gap: 0.5rem;
+    }
+    .nf-widget-title i { color: var(--nf-accent); font-size: 0.9rem; }
+    .nf-trending-tags { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+    .nf-trending-tag {
+        font-size: 0.78rem; font-weight: 600; color: var(--nf-accent);
+        background: var(--nf-accent-light); padding: 0.3rem 0.75rem; border-radius: 999px;
+        font-family: var(--font-heading); cursor: pointer;
+        border: 1px solid rgba(139,92,246,0.2); transition: all 0.2s;
+    }
+    .nf-trending-tag:hover { background: var(--nf-accent); color: #fff; border-color: var(--nf-accent); }
+    .nf-tag-count { font-size: 0.68rem; opacity: 0.7; margin-left: 0.25rem; }
+    .nf-round-item { display: flex; flex-direction: column; gap: 0.15rem; padding: 0.75rem 0; border-bottom: 1px solid var(--border-color); }
+    .nf-round-item:last-child { border-bottom: none; padding-bottom: 0; }
+    .nf-round-item:first-child { padding-top: 0; }
+    .nf-round-startup { font-family: var(--font-heading); font-size: 0.87rem; font-weight: 700; color: var(--text-primary); }
+    .nf-round-details { display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap; }
+    .nf-round-amount { font-size: 0.8rem; font-weight: 700; color: #10B981; }
+    .nf-round-type { font-size: 0.72rem; color: var(--text-muted); background: rgba(0,0,0,0.07); padding: 0.15rem 0.5rem; border-radius: 6px; }
+    .nf-round-date { font-size: 0.72rem; color: var(--text-muted); }
+    .nf-appel-item { padding: 0.75rem 0; border-bottom: 1px solid var(--border-color); }
+    .nf-appel-item:last-child { border-bottom: none; padding-bottom: 0; }
+    .nf-appel-item:first-child { padding-top: 0; }
+    .nf-appel-title { font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: var(--text-primary); margin-bottom: 0.3rem; line-height: 1.4; }
+    .nf-appel-org { font-size: 0.76rem; color: var(--text-muted); margin-bottom: 0.5rem; }
+    .nf-appel-link {
+        font-size: 0.77rem; font-weight: 600; color: var(--nf-accent); text-decoration: none;
+        font-family: var(--font-heading); display: inline-flex; align-items: center; gap: 0.3rem; transition: opacity 0.2s;
+    }
+    .nf-appel-link:hover { opacity: 0.75; text-decoration: none; color: var(--nf-accent); }
+    .nf-card-link {
+        display: flex; align-items: center; gap: 0.5rem;
+        background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 10px;
+        padding: 0.65rem 1rem; text-decoration: none; color: var(--text-primary);
+        font-size: 0.84rem; font-weight: 600; margin-bottom: 0.85rem; transition: background 0.2s, border-color 0.2s;
+    }
+    .nf-card-link:hover { background: var(--nf-accent-light); border-color: var(--nf-accent); color: var(--nf-accent); }
+    .nf-card-link i { color: var(--nf-accent); flex-shrink: 0; }
+
+    /* ---------- FORUM / NEWSFEED BANNER (kept for other use) ---------- */
+    .forum-banner {
+        background: linear-gradient(135deg, rgba(139,92,246,0.08), rgba(67,97,238,0.06));
+        border: 1px solid rgba(139,92,246,0.25);
+        border-radius: 16px;
+        padding: 1.5rem 2rem;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 1.5rem;
+        margin-bottom: 2rem;
+        flex-wrap: wrap;
+    }
+    .forum-banner-left {
+        display: flex;
+        align-items: center;
+        gap: 1.1rem;
+    }
+    .forum-banner-icon {
+        width: 48px;
+        height: 48px;
+        border-radius: 14px;
+        background: linear-gradient(135deg, #8B5CF6, #6D28D9);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.3rem;
+        color: #fff;
+        flex-shrink: 0;
+    }
+    .forum-banner-text h3 {
+        font-family: 'Space Grotesk','Poppins',sans-serif;
+        font-weight: 700;
+        font-size: 1rem;
+        color: var(--text-primary);
+        margin: 0 0 0.2rem;
+    }
+    .forum-banner-text p {
+        font-size: 0.82rem;
+        color: var(--text-muted);
+        margin: 0;
+    }
+    .forum-banner-cta {
+        background: linear-gradient(135deg, #8B5CF6, #6D28D9);
+        color: #fff;
+        padding: 0.6rem 1.5rem;
+        border-radius: 10px;
+        text-decoration: none;
+        font-family: 'Space Grotesk','Poppins',sans-serif;
+        font-weight: 600;
+        font-size: 0.88rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        transition: all 0.25s ease;
+        white-space: nowrap;
+    }
+    .forum-banner-cta:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 20px rgba(139,92,246,0.35);
+        color: #fff;
+    }
+
+    /* ---------- SECTION CTAs — uniform shape ---------- */
+    .section-cta {
+        text-align: center;
+        padding: 1rem 0 2rem;
+    }
+    .cta-row {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.75rem;
+        flex-wrap: wrap;
+        padding: 1rem 0 2rem;
+    }
+    /* All CTAs — same size, all coloured, no white */
+    .btn-section-cta {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.7rem 2rem;
+        border-radius: 10px;
+        font-family: 'Space Grotesk','Poppins',sans-serif;
+        font-weight: 600;
+        font-size: 0.88rem;
+        text-decoration: none;
+        transition: all 0.25s ease;
+        border: none;
+        color: #fff;
+        white-space: nowrap;
+        /* default = blue */
+        background: linear-gradient(135deg, #3B82F6, #2563eb);
+    }
+    .btn-section-cta:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 20px rgba(59,130,246,0.35);
+        color: #fff;
+    }
+    .btn-section-cta.accent {
+        background: linear-gradient(135deg, #10B981, #00c896);
+    }
+    .btn-section-cta.accent:hover {
+        box-shadow: 0 8px 20px rgba(16,185,129,0.35);
+        color: #fff;
+    }
+    .btn-section-cta.purple {
+        background: linear-gradient(135deg, #8B5CF6, #7C3AED);
+    }
+    .btn-section-cta.purple:hover {
+        box-shadow: 0 8px 20px rgba(139,92,246,0.35);
+        color: #fff;
+    }
+</style>
+
+<!-- Disclaimer Banner -->
+<div class="disclaimer-banner" style="background: linear-gradient(90deg, var(--tertiary), #f59e0b); color: #0a0e1a; text-align: center; padding: 0.55rem 1rem; font-size: 0.8rem; font-weight: 600; font-family: var(--font-body); letter-spacing: 0.02em; position: relative; z-index: 100;">
+    <i class="fas fa-flask" style="margin-right: 0.4rem;"></i>
+    <span data-i18n="disclaimer_banner">This is a demo version of The Pulse platform. Data shown is for preview purposes only.</span>
+    <button onclick="this.parentElement.style.display='none'" style="background: none; border: none; color: #0a0e1a; font-size: 1rem; cursor: pointer; margin-left: 0.75rem; opacity: 0.7; line-height: 1;" aria-label="Close">&times;</button>
+</div>
+
+<!-- Floating Orbs Background -->
+<div class="home-floating-orbs">
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="orb orb-3"></div>
+</div>
+
+<div class="container-fluid px-3 px-md-4 home-body" style="position: relative; z-index: 1;">
+
+    <!-- ==================== HERO ==================== -->
+    <section class="hero-section">
+        <div class="hero-grid-overlay"></div>
+        <div class="hero-float-elements">
+            <div class="hero-float"></div>
+            <div class="hero-float"></div>
+            <div class="hero-float"></div>
+            <div class="hero-float"></div>
+            <div class="hero-float"></div>
+            <div class="hero-float"></div>
+            <div class="hero-float"></div>
+            <div class="hero-float"></div>
+            <div class="hero-float"></div>
+            <div class="hero-float"></div>
+        </div>
+        <!-- Subtle pulse glow lines -->
+        <div class="hero-pulse-line"></div>
+        <div class="hero-pulse-line-top"></div>
+        <!-- Heartbeat pulse sweep -->
+        <div class="pulse-line-container" style="position:absolute; bottom:22%; left:0; width:100%; height:80px; z-index:1; overflow:hidden; opacity:0.2; pointer-events:none;">
+            <div style="position:absolute; width:200%; height:100%; animation: pulseSweep 4s linear infinite;">
+                <svg viewBox="0 0 600 80" preserveAspectRatio="none" fill="none" xmlns="http://www.w3.org/2000/svg" style="width:50%; height:100%;">
+                    <polyline points="0,40 80,40 100,40 120,40 140,40 160,40 180,40 200,40 220,15 230,65 240,10 250,55 260,40 280,40 300,40 320,40 340,40 380,40 400,40 420,40 440,40 460,40 480,40 500,40 520,15 530,65 540,10 550,55 560,40 580,40 600,40" stroke="url(#homePulseGrad1)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <defs><linearGradient id="homePulseGrad1" x1="0" y1="0" x2="600" y2="0" gradientUnits="userSpaceOnUse">
+                        <stop offset="0%" stop-color="#00d4aa" stop-opacity="0.1"/><stop offset="30%" stop-color="#00d4aa" stop-opacity="0.7"/><stop offset="50%" stop-color="#4361ee" stop-opacity="0.8"/><stop offset="70%" stop-color="#00d4aa" stop-opacity="0.7"/><stop offset="100%" stop-color="#00d4aa" stop-opacity="0.1"/>
+                    </linearGradient></defs>
+                </svg><svg viewBox="0 0 600 80" preserveAspectRatio="none" fill="none" xmlns="http://www.w3.org/2000/svg" style="width:50%; height:100%;">
+                    <polyline points="0,40 80,40 100,40 120,40 140,40 160,40 180,40 200,40 220,15 230,65 240,10 250,55 260,40 280,40 300,40 320,40 340,40 380,40 400,40 420,40 440,40 460,40 480,40 500,40 520,15 530,65 540,10 550,55 560,40 580,40 600,40" stroke="url(#homePulseGrad2)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <defs><linearGradient id="homePulseGrad2" x1="0" y1="0" x2="600" y2="0" gradientUnits="userSpaceOnUse">
+                        <stop offset="0%" stop-color="#00d4aa" stop-opacity="0.1"/><stop offset="30%" stop-color="#00d4aa" stop-opacity="0.7"/><stop offset="50%" stop-color="#4361ee" stop-opacity="0.8"/><stop offset="70%" stop-color="#00d4aa" stop-opacity="0.7"/><stop offset="100%" stop-color="#00d4aa" stop-opacity="0.1"/>
+                    </linearGradient></defs>
+                </svg>
+            </div>
+        </div>
+        <img src="{{ url_for('static', filename='images/thepulse-noir.png') }}" alt="The Pulse" class="hero-logo-img logo-dark" style="width: 100%; max-width: 420px; height: auto; margin: 0 auto; position: relative; z-index: 2;">
+        <img src="{{ url_for('static', filename='images/thepulse-blanc.png') }}" alt="The Pulse" class="hero-logo-img logo-light" style="width: 100%; max-width: 420px; height: auto; margin: 0 auto; position: relative; z-index: 2;">
+
+        <!-- Pulsating dot -->
+        <div class="hero-pulse-dot" style="position: relative; z-index: 2;">
+            <span class="pulse-dot-core"></span>
+            <span class="pulse-dot-ring"></span>
+            <span class="pulse-dot-ring pulse-dot-ring-2"></span>
+        </div>
+
+        <p class="hero-subtitle" data-i18n="hero_subtitle" style="position: relative; z-index: 2;">Real-time data on startups, founders, investors &amp; funding across Morocco</p>
+        <div class="hero-actions" style="position: relative; z-index: 2;">
+            <a href="/join" class="btn-hero-primary" data-i18n="btn_join_pulse">
+                <i class="fas fa-bolt"></i> Join the Pulse
+            </a>
+            <a href="{{ url_for('startups') }}" class="btn-hero-secondary" data-i18n="btn_explore">
+                <i class="fas fa-compass"></i> Explore Startups
+            </a>
+        </div>
+    </section>
+
+    <!-- ==================== SCROLLING STATS TICKER ==================== -->
+    <section class="stats-ticker">
+        <div class="stats-ticker-track">
+            <div class="stats-ticker-content">
+                <span class="ticker-item"><i class="fas fa-rocket"></i> <strong>{{ startups|length }}</strong> <span data-i18n="ticker_startups">Startups</span></span>
+                <span class="ticker-dot"></span>
+                <span class="ticker-item"><i class="fas fa-user-tie"></i> <strong>{{ founders|length }}</strong> <span data-i18n="ticker_founders">Fondateurs</span></span>
+                <span class="ticker-dot"></span>
+                <span class="ticker-item"><i class="fas fa-hand-holding-usd"></i> <strong>{{ investors|length }}</strong> <span data-i18n="ticker_investors">Investisseurs</span></span>
+                <span class="ticker-dot"></span>
+                <span class="ticker-item"><i class="fas fa-chart-line"></i> <strong>${{ "%.1f"|format(total_funding) }}M</strong> <span data-i18n="ticker_funding">Financement total</span></span>
+                <span class="ticker-dot"></span>
+                <span class="ticker-item"><i class="fas fa-building"></i> <strong>{{ incubators|length if incubators is defined else '20+' }}</strong> <span data-i18n="ticker_incubators">Incubateurs</span></span>
+                <span class="ticker-dot"></span>
+            </div>
+            <div class="stats-ticker-content" aria-hidden="true">
+                <span class="ticker-item"><i class="fas fa-rocket"></i> <strong>{{ startups|length }}</strong> <span data-i18n="ticker_startups">Startups</span></span>
+                <span class="ticker-dot"></span>
+                <span class="ticker-item"><i class="fas fa-user-tie"></i> <strong>{{ founders|length }}</strong> <span data-i18n="ticker_founders">Fondateurs</span></span>
+                <span class="ticker-dot"></span>
+                <span class="ticker-item"><i class="fas fa-hand-holding-usd"></i> <strong>{{ investors|length }}</strong> <span data-i18n="ticker_investors">Investisseurs</span></span>
+                <span class="ticker-dot"></span>
+                <span class="ticker-item"><i class="fas fa-chart-line"></i> <strong>${{ "%.1f"|format(total_funding) }}M</strong> <span data-i18n="ticker_funding">Financement total</span></span>
+                <span class="ticker-dot"></span>
+                <span class="ticker-item"><i class="fas fa-building"></i> <strong>{{ incubators|length if incubators is defined else '20+' }}</strong> <span data-i18n="ticker_incubators">Incubateurs</span></span>
+                <span class="ticker-dot"></span>
+            </div>
+        </div>
+    </section>
+
+    <hr class="section-divider">
+
+    <!-- ==================== NEWSFEED EMBEDDED ==================== -->
+    <div class="home-nf-section">
+        <div class="section-header" data-scroll-reveal>
+            <div class="section-header-icon" style="background: linear-gradient(135deg, #00d4aa, #4361ee);">
+                <i class="fas fa-rss"></i>
+            </div>
+            <h2 class="home-heading">Newsfeed</h2>
+            <span style="margin-left:auto; font-size:0.78rem; color:var(--text-muted);">Posts, annonces &amp; opportunités de l'écosystème</span>
+        </div>
+
+        <div class="home-nf-layout">
+
+            <!-- ===== LEFT COLUMN ===== -->
+            <div>
+                <!-- Post creation box -->
+                <div class="nf-create-box">
+                    <div class="nf-create-box-header">
+                        <div class="nf-avatar" aria-hidden="true"><i class="fas fa-user"></i></div>
+                        <div class="nf-avatar-placeholder">Partagez quelque chose avec l'écosystème</div>
+                    </div>
+                    <form method="POST" action="/newsfeed/post">
+                        <textarea class="nf-create-textarea" name="content"
+                            placeholder="Quoi de neuf dans l'écosystème ?" maxlength="2000" required></textarea>
+                        <div class="nf-create-meta">
+                            <input type="text" name="author_name" placeholder="Votre nom" maxlength="100">
+                            <input type="text" name="author_role" placeholder="Votre rôle / startup" maxlength="100">
+                            <input type="text" name="tags" placeholder="Tags (ex: fintech,rabat)" maxlength="255">
+                            <select class="nf-type-select" name="post_type">
+                                <option value="post">Post</option>
+                                <option value="announcement">Annonce</option>
+                                <option value="question">Question</option>
+                                <option value="opportunity">Opportunité</option>
+                            </select>
+                        </div>
+                        <div class="nf-create-footer">
+                            <button type="submit" class="nf-submit-btn">
+                                <i class="fas fa-paper-plane"></i> Publier
+                            </button>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Tabs -->
+                <div class="nf-tabs" role="tablist">
+                    <button class="nf-tab active" role="tab" data-filter="all"><i class="fas fa-border-all"></i> Tout</button>
+                    <button class="nf-tab" role="tab" data-filter="article"><i class="fas fa-newspaper"></i> Actualités</button>
+                    <button class="nf-tab" role="tab" data-filter="post"><i class="fas fa-users"></i> Posts membres</button>
+                    <button class="nf-tab" role="tab" data-filter="opportunity"><i class="fas fa-bullhorn"></i> Opportunités</button>
+                </div>
+
+                <!-- Feed (home version = 4 items) -->
+                <div id="home-nf-feed">
+                    {% for item in home_feed_items %}
+                    {% set obj = item.obj %}
+
+                    {% if item.type == 'post' %}
+                    <div class="nf-card" data-filter-type="{{ obj.post_type }}" data-item-type="post">
+                        <div class="nf-card-header">
+                            <div class="nf-avatar sm">{{ (obj.author_name or 'M')[:2] | upper }}</div>
+                            <div class="nf-card-author">
+                                <p class="nf-card-author-name">{{ obj.author_name or 'Membre anonyme' }}</p>
+                                <p class="nf-card-author-role">{{ obj.author_role or 'Membre de l\'écosystème' }}</p>
+                            </div>
+                            <div style="display:flex;flex-direction:column;align-items:flex-end;gap:0.35rem;">
+                                {% if obj.post_type == 'post' %}<span class="nf-type-badge nf-type-post"><i class="fas fa-pen-nib"></i> Post</span>
+                                {% elif obj.post_type == 'announcement' %}<span class="nf-type-badge nf-type-announcement"><i class="fas fa-megaphone"></i> Annonce</span>
+                                {% elif obj.post_type == 'question' %}<span class="nf-type-badge nf-type-question"><i class="fas fa-circle-question"></i> Question</span>
+                                {% elif obj.post_type == 'opportunity' %}<span class="nf-type-badge nf-type-opportunity"><i class="fas fa-briefcase"></i> Opportunité</span>
+                                {% endif %}
+                                <span class="nf-card-time">{% if item.date %}{{ item.date.strftime('%d %b %Y, %H:%M') }}{% endif %}</span>
+                            </div>
+                        </div>
+                        <div class="nf-card-content">{{ obj.content }}</div>
+                        {% if obj.tags %}
+                        <div class="nf-tags">{% for tag in obj.tags.split(',') %}{% if tag.strip() %}<span class="nf-tag">#{{ tag.strip() }}</span>{% endif %}{% endfor %}</div>
+                        {% endif %}
+                        <div class="nf-card-footer">
+                            <button class="nf-like-btn" onclick="likePost(this, {{ obj.post_id }})" aria-label="J'aime">
+                                <i class="fas fa-heart"></i>
+                                <span class="like-count">{{ obj.likes_count or 0 }}</span>
+                            </button>
+                            <button class="nf-comment-btn" onclick="window.location.href='/newsfeed#post-{{ obj.post_id }}'" aria-label="Commentaires">
+                                <i class="fas fa-comment-dots"></i>
+                                <span>{{ obj.comments_count or 0 }}</span>
+                            </button>
+                            <button class="nf-msg-btn" onclick="window.location.href='/newsfeed?dm={{ obj.post_id }}'" aria-label="Message privé">
+                                <i class="fas fa-paper-plane"></i> Message
+                            </button>
+                        </div>
+                    </div>
+
+                    {% else %}
+                    <div class="nf-card" data-filter-type="article" data-item-type="article">
+                        <div class="nf-card-header">
+                            <div class="nf-avatar sm" style="background:linear-gradient(135deg,#00d4aa,#0099cc);"><i class="fas fa-newspaper" style="font-size:0.75rem;"></i></div>
+                            <div class="nf-card-author">
+                                <p class="nf-card-author-name">{{ obj.author or obj.source or 'The Pulse' }}</p>
+                                <p class="nf-card-author-role">{{ obj.source or 'Actualités curatées' }}</p>
+                            </div>
+                            <div style="display:flex;flex-direction:column;align-items:flex-end;gap:0.35rem;">
+                                <span class="nf-type-badge nf-type-article"><i class="fas fa-bookmark"></i> Actualité</span>
+                                <span class="nf-card-time">{% if item.date %}{{ item.date.strftime('%d %b %Y') }}{% endif %}</span>
+                            </div>
+                        </div>
+                        <div class="nf-card-content" style="font-weight:600;font-size:0.95rem;margin-bottom:0.5rem;">{{ obj.title }}</div>
+                        {% if obj.summary %}<div class="nf-card-content article-content" style="font-weight:400;margin-top:0;font-size:0.88rem;color:var(--text-muted);">{{ obj.summary }}</div>{% endif %}
+                        {% if obj.source_url %}
+                        <a href="{{ obj.source_url }}" class="nf-card-link" target="_blank" rel="noopener">
+                            <i class="fas fa-external-link-alt"></i> Lire l'article complet
+                        </a>
+                        {% endif %}
+                        <div class="nf-card-footer">
+                            <a href="{{ url_for('actualites') }}" class="nf-read-more">Voir les actualités <i class="fas fa-arrow-right"></i></a>
+                        </div>
+                    </div>
+                    {% endif %}
+
+                    {% else %}
+                    <div style="text-align:center;padding:2rem;color:var(--text-muted);font-size:0.9rem;">
+                        <i class="fas fa-stream" style="font-size:1.5rem;opacity:0.4;display:block;margin-bottom:0.5rem;"></i>
+                        Aucun contenu pour l'instant. Soyez le premier à publier !
+                    </div>
+                    {% endfor %}
+                </div>
+
+            </div>
+
+            <!-- ===== RIGHT SIDEBAR ===== -->
+            <aside>
+                <!-- Tendances -->
+                <div class="nf-sidebar-widget">
+                    <h3 class="nf-widget-title"><i class="fas fa-fire"></i> Tendances</h3>
+                    {% if home_trending_tags %}
+                    <div class="nf-trending-tags">
+                        {% for tag, count in home_trending_tags %}
+                        <span class="nf-trending-tag">#{{ tag }}<span class="nf-tag-count">{{ count }}</span></span>
+                        {% endfor %}
+                    </div>
+                    {% else %}
+                    <p style="font-size:0.82rem;color:var(--text-muted);">Aucune tendance.</p>
+                    {% endif %}
+                </div>
+
+                <!-- Dernières levées -->
+                <div class="nf-sidebar-widget">
+                    <h3 class="nf-widget-title"><i class="fas fa-chart-line"></i> Dernières levées de fonds</h3>
+                    {% for round in home_recent_rounds %}
+                    <div class="nf-round-item">
+                        <div class="nf-round-startup">{{ round.startup_name or 'Startup' }}</div>
+                        <div class="nf-round-details">
+                            {% if round.raised_amount_usd %}<span class="nf-round-amount">${{ '{:,.0f}'.format(round.raised_amount_usd | float) }}</span>{% endif %}
+                            {% if round.round_name %}<span class="nf-round-type">{{ round.round_name }}</span>{% endif %}
+                            {% if round.date %}<span class="nf-round-date">{{ round.date }}</span>{% endif %}
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+
+                <!-- Appels à projets -->
+                <div class="nf-sidebar-widget">
+                    <h3 class="nf-widget-title"><i class="fas fa-bullhorn"></i> Appels à projets actifs</h3>
+                    {% if home_appels_sidebar %}
+                    {% for appel in home_appels_sidebar %}
+                    <div class="nf-appel-item">
+                        <div class="nf-appel-title">{{ appel.title }}</div>
+                        {% if appel.organization %}<div class="nf-appel-org"><i class="fas fa-building" style="font-size:0.7rem;"></i> {{ appel.organization }}</div>{% endif %}
+                        <a href="{{ appel.url or url_for('ressources') }}" class="nf-appel-link" {% if appel.url %}target="_blank" rel="noopener"{% endif %}>
+                            Candidater <i class="fas fa-external-link-alt" style="font-size:0.65rem;"></i>
+                        </a>
+                    </div>
+                    {% endfor %}
+                    {% else %}
+                    <p style="font-size:0.82rem;color:var(--text-muted);">Aucun appel actif.</p>
+                    {% endif %}
+                    <a href="{{ url_for('ressources') }}" style="display:inline-flex;align-items:center;gap:0.35rem;font-size:0.78rem;font-weight:600;color:var(--nf-accent);text-decoration:none;margin-top:0.5rem;">
+                        Toutes les ressources <i class="fas fa-arrow-right" style="font-size:0.7rem;"></i>
+                    </a>
+                </div>
+            </aside>
+
+        </div><!-- end home-nf-layout -->
+
+        <!-- CTA centré sous les 2 colonnes -->
+        <div class="section-cta" style="padding:1.25rem 0 0;">
+            <a href="{{ url_for('newsfeed') }}" class="btn-section-cta purple">
+                <i class="fas fa-comments"></i> Explorer tout le Newsfeed
+            </a>
+        </div>
+    </div><!-- end home-nf-section -->
+
+    <hr class="section-divider">
+
+    <!-- ==================== 1) ACTUALITÉS ==================== -->
+    <div class="section-header" data-scroll-reveal>
+        <div class="section-header-icon" style="background: linear-gradient(135deg, var(--secondary), #2563eb);">
+            <i class="fas fa-newspaper"></i>
+        </div>
+        <h2 class="home-heading">Actualités</h2>
+    </div>
+    <div class="actu-grid">
+        {% for article in recent_articles %}
+        <a href="{{ article.source_url or '#' }}" {% if article.source_url %}target="_blank" rel="noopener"{% endif %} class="actu-card">
+            <span class="actu-cat {% if article.category == 'Interview' %}cat-interview{% elif article.category == 'Analyse' %}cat-analyse{% endif %}">{{ article.category }}</span>
+            <div class="actu-title">{{ article.title }}</div>
+            <div class="actu-meta">
+                <i class="fas fa-building-columns"></i> {{ article.source }}
+                {% if article.published_at %}&nbsp;·&nbsp;<i class="fas fa-clock"></i>
+                {{ article.published_at[:10] if article.published_at is string else article.published_at.strftime('%d/%m/%Y') }}{% endif %}
+            </div>
+        </a>
+        {% endfor %}
+    </div>
+    <div class="section-cta">
+        <a href="{{ url_for('actualites') }}" class="btn-section-cta accent">
+            <i class="fas fa-arrow-right"></i> Toutes les actualités
+        </a>
+    </div>
+
+    <hr class="section-divider">
+
+    <!-- ==================== 2) APPELS À PROJETS ==================== -->
+    {% if appels_a_projets %}
+    <div class="section-header" data-scroll-reveal>
+        <div class="section-header-icon" style="background: linear-gradient(135deg, #8B5CF6, #7C3AED);">
+            <i class="fas fa-bullhorn"></i>
+        </div>
+        <h2 class="home-heading">Appels à Projets</h2>
+    </div>
+    <section class="appels-grid">
+        {% for appel in appels_a_projets %}
+        <a href="{{ appel.url }}" target="_blank" rel="noopener" class="appel-card">
+            <div class="appel-card-top">
+                <span class="appel-org">{{ appel.organization }}</span>
+                {% if appel.published_at %}
+                <span class="appel-deadline"><i class="fas fa-calendar-alt"></i> {{ appel.published_at[:10] if appel.published_at is string else appel.published_at.strftime('%d/%m/%Y') }}</span>
+                {% endif %}
+            </div>
+            <h3 class="appel-title">{{ appel.title }}</h3>
+            <p class="appel-desc">{{ appel.description[:120] }}…</p>
+            <div class="appel-footer">
+                {% if appel.tags %}{% for tag in appel.tags.split(',')[:3] %}<span class="appel-tag">{{ tag.strip() }}</span>{% endfor %}{% endif %}
+                <span class="appel-cta">Voir <i class="fas fa-external-link-alt"></i></span>
+            </div>
+        </a>
+        {% endfor %}
+    </section>
+    <div class="section-cta">
+        <a href="{{ url_for('ressources') }}" class="btn-section-cta purple">
+            <i class="fas fa-arrow-right"></i> Voir tous les appels à projets
+        </a>
+    </div>
+    {% endif %}
+
+
+    <!-- ==================== 3) CHERCHENT UN CO-FONDATEUR ==================== -->
+    {% if cofound_projects %}
+    <div class="section-header" data-scroll-reveal>
+        <div class="section-header-icon" style="background: linear-gradient(135deg, #10B981, #059669);">
+            <i class="fas fa-handshake"></i>
+        </div>
+        <h2 class="home-heading">Cherchent un Co-fondateur</h2>
+    </div>
+    <section class="cofound-grid">
+        {% for project in cofound_projects %}
+        <a href="{{ url_for('cofounders') }}" class="cofound-card">
+            <span class="cofound-stage">{{ project.project_stage or 'Projet' }}</span>
+            <div class="cofound-title">{{ project.project_title }}</div>
+            {% if project.description %}
+            <div class="cofound-desc">{{ project.description[:130] }}{% if project.description|length > 130 %}…{% endif %}</div>
+            {% endif %}
+            <div class="cofound-footer">
+                <span class="cofound-author">
+                    <i class="fas fa-user-circle"></i> {{ project.author_name or 'Anonyme' }}
+                    {% if project.domain %} · {{ project.domain }}{% endif %}
+                </span>
+                {% if project.commitment_type %}<span class="cofound-commitment">{{ project.commitment_type }}</span>{% endif %}
+            </div>
+        </a>
+        {% endfor %}
+    </section>
+    <div class="section-cta">
+        <a href="{{ url_for('cofounders') }}" class="btn-section-cta">
+            <i class="fas fa-arrow-right"></i> Voir toutes les opportunités
+        </a>
+    </div>
+    {% endif %}
+
+    <hr class="section-divider">
+
+    <!-- ==================== 4) TOP FUNDED STARTUPS ==================== -->
+    <div class="section-header" data-scroll-reveal>
+        <div class="section-header-icon" style="background: linear-gradient(135deg, var(--tertiary), #e6a520);">
+            <i class="fas fa-trophy"></i>
+        </div>
+        <h2 class="home-heading" data-i18n="section_top">Top Funded Startups</h2>
+    </div>
+    <section class="startups-grid">
+        {% for startup in top_startups_funding %}
+        <a href="{{ url_for('startup_detail', startup_id=startup.startup_id) }}" class="startup-card" style="transition-delay: {{ loop.index0 * 80 }}ms;">
+            <div class="startup-card-glow"></div>
+            <div class="startup-card-top">
+                <div class="startup-rank {% if loop.index == 1 %}rank-1{% elif loop.index == 2 %}rank-2{% elif loop.index == 3 %}rank-3{% endif %}">{{ loop.index }}</div>
+                {% if startup.logo_url %}
+                <div class="startup-logo"><img src="{{ startup.logo_url }}" alt="{{ startup.startup_name }}" loading="lazy"></div>
+                {% else %}
+                <div class="startup-logo-placeholder"><i class="fas fa-building"></i></div>
+                {% endif %}
+                <div class="startup-info">
+                    <div class="startup-name">{{ startup.startup_name }}</div>
+                    {% if startup.location %}<div class="startup-location"><i class="fas fa-map-pin"></i> {{ startup.location }}</div>{% endif %}
+                </div>
+            </div>
+            <div class="startup-badges">
+                {% if startup.sector %}<span class="badge-sector">{{ startup.sector }}</span>{% endif %}
+                {% if startup.stage %}<span class="badge-stage">{{ startup.stage }}</span>{% endif %}
+            </div>
+            {% if startup.description or startup.description_en %}
+            <div class="startup-description lang-en">{{ startup.description_en or startup.description }}</div>
+            <div class="startup-description lang-fr">{{ startup.description }}</div>
+            {% endif %}
+            <div class="startup-funding">
+                <span class="funding-label">Total Funding</span>
+                <span class="funding-amount" id="startup-funding-{{ loop.index0 }}"></span>
+            </div>
+        </a>
+        {% endfor %}
+    </section>
+    <div class="section-cta">
+        <a href="{{ url_for('startups') }}" class="btn-section-cta accent">
+            <i class="fas fa-arrow-right"></i> <span data-i18n="btn_explore_all">Explorer toutes les startups</span>
+        </a>
+    </div>
+
+    <hr class="section-divider">
+
+    <!-- ==================== 5) ANALYTICS ==================== -->
+    <div class="section-header" data-scroll-reveal>
+        <div class="section-header-icon" style="background: linear-gradient(135deg, var(--accent), #009e7e);">
+            <i class="fas fa-chart-pie"></i>
+        </div>
+        <h2 class="home-heading">Analytics</h2>
+    </div>
+    <section class="charts-grid">
+        <div class="chart-card">
+            <div class="chart-card-header">
+                <i class="fas fa-th-large"></i>
+                <span data-i18n="chart_sector">Startups par secteur</span>
+            </div>
+            <div class="chart-wrapper">
+                <div class="chart-loading" id="loading-sector"><div class="chart-spinner"></div><span>Loading...</span></div>
+                <canvas id="sectorDoughnutChart"></canvas>
+            </div>
+        </div>
+        <div class="chart-card">
+            <div class="chart-card-header">
+                <i class="fas fa-map-marker-alt"></i>
+                <span data-i18n="chart_city">Startups par ville</span>
+            </div>
+            <div class="chart-wrapper">
+                <div class="chart-loading" id="loading-city"><div class="chart-spinner"></div><span>Loading...</span></div>
+                <canvas id="cityBarChart"></canvas>
+            </div>
+        </div>
+        <div class="chart-card">
+            <div class="chart-card-header">
+                <i class="fas fa-chart-area"></i>
+                <span data-i18n="chart_funding_evo">Évolution du financement</span>
+            </div>
+            <div class="chart-wrapper">
+                <div class="chart-loading" id="loading-funding"><div class="chart-spinner"></div><span>Loading...</span></div>
+                <canvas id="fundingLineChart"></canvas>
+            </div>
+        </div>
+        <div class="chart-card">
+            <div class="chart-card-header">
+                <i class="fas fa-coins"></i>
+                <span data-i18n="chart_funding_sector">Financement par secteur</span>
+            </div>
+            <div class="chart-wrapper">
+                <div class="chart-loading" id="loading-fundingSector"><div class="chart-spinner"></div><span>Loading...</span></div>
+                <canvas id="fundingSectorBarChart"></canvas>
+            </div>
+        </div>
+    </section>
+    <div class="section-cta">
+        <a href="/" class="btn-section-cta">
+            <i class="fas fa-chart-pie"></i> Toutes les analytics
+        </a>
+    </div>
+
+    <!-- ==================== PARTNERS (before footer) ==================== -->
+    <section class="home-partners-section">
+        <div class="home-partners-header">
+            <span class="home-partners-label" data-i18n="our_partners">Nos Partenaires</span>
+        </div>
+        <div class="home-partners-grid">
+            <div class="home-partner-item partner-lg">
+                <img src="{{ url_for('static', filename='images/um6p_logo.png') }}" alt="UM6P" loading="lazy" onerror="this.outerHTML='<span class=\'home-partner-fallback\'>UM6P</span>'">
+            </div>
+            <div class="home-partner-item">
+                <img src="{{ url_for('static', filename='images/bank_almaghrib_logo.png') }}" alt="Bank Al-Maghrib" loading="lazy" onerror="this.outerHTML='<span class=\'home-partner-fallback\'>BAM</span>'">
+            </div>
+            <div class="home-partner-item">
+                <img src="{{ url_for('static', filename='images/tamwilcom_logo.png') }}" alt="Tamwilcom" loading="lazy" onerror="this.outerHTML='<span class=\'home-partner-fallback\'>Tamwilcom</span>'">
+            </div>
+            <div class="home-partner-item">
+                <img src="{{ url_for('static', filename='images/amic_logo.png') }}" alt="AMIC" loading="lazy" onerror="this.outerHTML='<span class=\'home-partner-fallback\'>AMIC</span>'">
+            </div>
+            <div class="home-partner-item partner-lg">
+                <img src="{{ url_for('static', filename='images/mesc_logo.png') }}" alt="MESC" loading="lazy" onerror="this.outerHTML='<span class=\'home-partner-fallback partner-fallback-lg\'>MESC</span>'">
+            </div>
+            <div class="home-partner-item partner-mtn">
+                <img src="{{ url_for('static', filename='images/mtn_logo.svg') }}" alt="Min. Transition Numérique" loading="lazy" onerror="this.outerHTML='<span class=\'home-partner-fallback\'>MTN</span>'">
+            </div>
+        </div>
+    </section>
+
+</div>
+{% endblock %}
+
+{% block scripts %}
+<!-- Leaflet.js for interactive map -->
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+<script>
+(function() {
+    'use strict';
+
+    /* ============================================================
+       MOROCCO ECOSYSTEM MAP
+       ============================================================ */
+    function initMoroccoMap() {
+        var mapEl = document.getElementById('moroccoMap');
+        if (!mapEl) return;
+
+        var isDark = document.documentElement.getAttribute('data-theme') !== 'light';
+
+        var tileLight = 'https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png';
+        var tileDark = 'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png';
+
+        // Morocco complete bounds: from Dakhla in south to Tangier in north
+        var moroccoBounds = L.latLngBounds(
+            L.latLng(21.0, -17.5),  // Southwest corner (south of Dakhla)
+            L.latLng(36.5, -0.5)    // Northeast corner (north of Oujda)
+        );
+
+        var map = L.map('moroccoMap', {
+            center: [29.5, -8.0],
+            zoom: 5,
+            minZoom: 4,
+            maxZoom: 12,
+            maxBounds: moroccoBounds,
+            maxBoundsViscosity: 1.0,
+            scrollWheelZoom: true,
+            attributionControl: true
+        });
+
+        var currentTileLayer = L.tileLayer(isDark ? tileDark : tileLight, {
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OSM</a> &copy; <a href="https://carto.com/">CARTO</a>',
+            subdomains: 'abcd',
+            maxZoom: 19
+        }).addTo(map);
+
+        // Store references for theme switching
+        window._moroccoMap = map;
+        window._moroccoTileLayer = currentTileLayer;
+
+        // Fetch startup data and add markers
+        fetch('/api/map-data')
+            .then(function(res) { return res.json(); })
+            .then(function(data) {
+                if (!data || data.length === 0) return;
+
+                var maxCount = Math.max.apply(null, data.map(function(d) { return d.count; }));
+
+                data.forEach(function(item) {
+                    var radius = Math.max(8, Math.min(35, (item.count / maxCount) * 35));
+
+                    var circle = L.circleMarker([item.lat, item.lng], {
+                        radius: radius,
+                        fillColor: '#00d4aa',
+                        color: '#00d4aa',
+                        weight: 2,
+                        opacity: 0.8,
+                        fillOpacity: 0.35
+                    }).addTo(map);
+
+                    var plural = item.count > 1 ? 's' : '';
+                    circle.bindPopup(
+                        '<div class="map-popup-city">' + item.city + '</div>' +
+                        '<div class="map-popup-count"><strong>' + item.count + '</strong> startup' + plural + '</div>'
+                    );
+
+                    // Hover effect
+                    circle.on('mouseover', function() {
+                        this.setStyle({ fillOpacity: 0.6, weight: 3 });
+                    });
+                    circle.on('mouseout', function() {
+                        this.setStyle({ fillOpacity: 0.35, weight: 2 });
+                    });
+                });
+            })
+            .catch(function(err) {
+                console.error('Failed to load map data:', err);
+            });
+    }
+
+    // Theme switching for the map
+    function updateMapTheme() {
+        if (!window._moroccoMap || !window._moroccoTileLayer) return;
+        var isDark = document.documentElement.getAttribute('data-theme') !== 'light';
+        var tileLight = 'https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png';
+        var tileDark = 'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png';
+
+        window._moroccoMap.removeLayer(window._moroccoTileLayer);
+        window._moroccoTileLayer = L.tileLayer(isDark ? tileDark : tileLight, {
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OSM</a> &copy; <a href="https://carto.com/">CARTO</a>',
+            subdomains: 'abcd',
+            maxZoom: 19
+        }).addTo(window._moroccoMap);
+    }
+
+    // Watch for theme changes for the map
+    var mapThemeObserver = new MutationObserver(function(mutations) {
+        mutations.forEach(function(m) {
+            if (m.type === 'attributes' && m.attributeName === 'data-theme') {
+                updateMapTheme();
+            }
+        });
+    });
+    mapThemeObserver.observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
+
+    // Initialize map on DOM ready
+    document.addEventListener('DOMContentLoaded', initMoroccoMap);
+})();
+</script>
+
+<script>
+(function() {
+    'use strict';
+
+    /* ============================================================
+       GLOBAL CHART STORAGE & THEME HELPERS
+       ============================================================ */
+    window.chartInstances = {};
+
+    var PALETTE = [
+        '#10B981', '#3B82F6', '#8B5CF6', '#F59E0B', '#EC4899',
+        '#EF4444', '#6366F1', '#14B8A6', '#06B6D4', '#84CC16',
+        '#EAB308', '#F97316', '#A855F7', '#22D3EE', '#34D399'
+    ];
+
+    function isDarkTheme() {
+        return document.documentElement.getAttribute('data-theme') !== 'light';
+    }
+
+    function themeColors() {
+        var dark = isDarkTheme();
+        return {
+            text: dark ? '#94A3B8' : '#64748B',
+            grid: dark ? 'rgba(51,65,85,0.5)' : 'rgba(226,232,240,0.8)',
+            cardBg: dark ? '#1E293B' : '#FFFFFF',
+            tooltipBg: dark ? '#1E293B' : '#FFFFFF',
+            tooltipText: dark ? '#F8FAFC' : '#1E293B',
+            tooltipBorder: dark ? '#334155' : '#E2E8F0'
+        };
+    }
+
+    function hideLoader(id) {
+        var el = document.getElementById(id);
+        if (el) el.style.display = 'none';
+    }
+
+    /* ============================================================
+       TOOLTIP CONFIG (SHARED)
+       ============================================================ */
+    function tooltipConfig() {
+        var tc = themeColors();
+        return {
+            backgroundColor: tc.tooltipBg,
+            titleColor: tc.tooltipText,
+            bodyColor: tc.tooltipText,
+            borderColor: tc.tooltipBorder,
+            borderWidth: 1,
+            cornerRadius: 8,
+            padding: 10,
+            titleFont: { family: "'Space Grotesk','Poppins',sans-serif", weight: '600' },
+            bodyFont: { family: "'DM Sans','Inter',sans-serif" },
+            displayColors: true,
+            boxPadding: 4
+        };
+    }
+
+    /* ============================================================
+       CHART: STARTUPS BY SECTOR (DOUGHNUT)
+       ============================================================ */
+    function createSectorChart() {
+        var ctx = document.getElementById('sectorDoughnutChart');
+        if (!ctx) return;
+        var tc = themeColors();
+        var labels = {{ topsectors | tojson }}.map(function(l) { return l.replace(/_/g, '-'); });
+        var data = {{ nbstartupsbysector | tojson }};
+
+        window.chartInstances.sectorDoughnut = new Chart(ctx, {
+            type: 'doughnut',
+            data: {
+                labels: labels,
+                datasets: [{
+                    data: data,
+                    backgroundColor: PALETTE.slice(0, labels.length),
+                    borderColor: tc.cardBg,
+                    borderWidth: 3,
+                    hoverOffset: 8
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                cutout: '62%',
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                        labels: {
+                            color: tc.text,
+                            padding: 14,
+                            usePointStyle: true,
+                            pointStyle: 'circle',
+                            font: { family: "'DM Sans','Inter',sans-serif", size: 12 }
+                        }
+                    },
+                    tooltip: tooltipConfig()
+                },
+                animation: {
+                    animateRotate: true,
+                    duration: 1000
+                }
+            }
+        });
+        hideLoader('loading-sector');
+    }
+
+    /* ============================================================
+       CHART: STARTUPS BY CITY (BAR)
+       ============================================================ */
+    function createCityChart() {
+        var ctx = document.getElementById('cityBarChart');
+        if (!ctx) return;
+        var tc = themeColors();
+        var labels = {{ topcities | tojson }};
+        var data = {{ NbStartupsByCity | tojson }};
+
+        window.chartInstances.cityBar = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: 'Startups',
+                    data: data,
+                    backgroundColor: PALETTE.slice(0, labels.length).map(function(c) { return c + 'CC'; }),
+                    borderColor: PALETTE.slice(0, labels.length),
+                    borderWidth: 1,
+                    borderRadius: 6,
+                    borderSkipped: false,
+                    maxBarThickness: 48
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                indexAxis: 'x',
+                plugins: {
+                    legend: { display: false },
+                    tooltip: tooltipConfig()
+                },
+                scales: {
+                    x: {
+                        ticks: { color: tc.text, font: { family: "'DM Sans','Inter',sans-serif", size: 11 } },
+                        grid: { display: false }
+                    },
+                    y: {
+                        beginAtZero: true,
+                        ticks: { color: tc.text, font: { family: "'DM Sans','Inter',sans-serif", size: 11 }, precision: 0 },
+                        grid: { color: tc.grid, drawBorder: false }
+                    }
+                },
+                animation: { duration: 1000 }
+            }
+        });
+        hideLoader('loading-city');
+    }
+
+    /* ============================================================
+       CHART: FUNDING EVOLUTION (LINE WITH GRADIENT)
+       ============================================================ */
+    function createFundingLineChart() {
+        var ctx = document.getElementById('fundingLineChart');
+        if (!ctx) return;
+        var tc = themeColors();
+        var context2d = ctx.getContext('2d');
+        var gradient = context2d.createLinearGradient(0, 0, 0, 380);
+        gradient.addColorStop(0, 'rgba(16,185,129,0.35)');
+        gradient.addColorStop(1, 'rgba(16,185,129,0.02)');
+
+        var labels = {{ years | tojson }};
+        var data = {{ total_by_year | tojson }};
+
+        window.chartInstances.fundingLine = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: 'Funding ($M)',
+                    data: data,
+                    borderColor: '#10B981',
+                    backgroundColor: gradient,
+                    borderWidth: 3,
+                    pointBackgroundColor: '#10B981',
+                    pointBorderColor: tc.cardBg,
+                    pointBorderWidth: 2,
+                    pointRadius: 5,
+                    pointHoverRadius: 8,
+                    fill: true,
+                    tension: 0.35
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { display: false },
+                    tooltip: tooltipConfig()
+                },
+                scales: {
+                    x: {
+                        ticks: { color: tc.text, font: { family: "'DM Sans','Inter',sans-serif", size: 11 } },
+                        grid: { display: false }
+                    },
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            color: tc.text,
+                            font: { family: "'DM Sans','Inter',sans-serif", size: 11 },
+                            callback: function(value) { return '$' + value + 'M'; }
+                        },
+                        grid: { color: tc.grid, drawBorder: false }
+                    }
+                },
+                animation: { duration: 1200 }
+            }
+        });
+        hideLoader('loading-funding');
+    }
+
+    /* ============================================================
+       CHART: FUNDING BY SECTOR (HORIZONTAL BAR)
+       ============================================================ */
+    function createFundingSectorChart() {
+        var ctx = document.getElementById('fundingSectorBarChart');
+        if (!ctx) return;
+        var tc = themeColors();
+        var labels = {{ topsectors_funding | tojson }};
+        var data = {{ total_funding_by_sector | tojson }};
+
+        window.chartInstances.fundingSectorBar = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: 'Funding ($M)',
+                    data: data,
+                    backgroundColor: PALETTE.slice(0, labels.length).map(function(c) { return c + 'CC'; }),
+                    borderColor: PALETTE.slice(0, labels.length),
+                    borderWidth: 1,
+                    borderRadius: 6,
+                    borderSkipped: false,
+                    maxBarThickness: 36
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                indexAxis: 'y',
+                plugins: {
+                    legend: { display: false },
+                    tooltip: tooltipConfig()
+                },
+                scales: {
+                    x: {
+                        beginAtZero: true,
+                        ticks: {
+                            color: tc.text,
+                            font: { family: "'DM Sans','Inter',sans-serif", size: 11 },
+                            callback: function(value) { return '$' + value + 'M'; }
+                        },
+                        grid: { color: tc.grid, drawBorder: false }
+                    },
+                    y: {
+                        ticks: { color: tc.text, font: { family: "'DM Sans','Inter',sans-serif", size: 11 } },
+                        grid: { display: false }
+                    }
+                },
+                animation: { duration: 1000 }
+            }
+        });
+        hideLoader('loading-fundingSector');
+    }
+
+    /* ============================================================
+       REBUILD ALL CHARTS (THEME CHANGE)
+       ============================================================ */
+    function destroyAllCharts() {
+        Object.keys(window.chartInstances).forEach(function(key) {
+            if (window.chartInstances[key]) {
+                window.chartInstances[key].destroy();
+                window.chartInstances[key] = null;
+            }
+        });
+    }
+
+    function buildAllCharts() {
+        destroyAllCharts();
+        // Show loaders
+        ['loading-sector','loading-city','loading-funding','loading-fundingSector'].forEach(function(id) {
+            var el = document.getElementById(id);
+            if (el) el.style.display = 'flex';
+        });
+        createSectorChart();
+        createCityChart();
+        createFundingLineChart();
+        createFundingSectorChart();
+    }
+
+    /* ============================================================
+       COUNTER ANIMATION
+       ============================================================ */
+    function animateCounters() {
+        var counters = document.querySelectorAll('.stat-number[data-target]');
+        counters.forEach(function(el) {
+            var target = parseFloat(el.getAttribute('data-target'));
+            var prefix = el.getAttribute('data-prefix') || '';
+            var suffix = el.getAttribute('data-suffix') || '';
+            var decimals = parseInt(el.getAttribute('data-decimals') || '0', 10);
+            var duration = 1400;
+            var startTime = null;
+
+            function step(timestamp) {
+                if (!startTime) startTime = timestamp;
+                var progress = Math.min((timestamp - startTime) / duration, 1);
+                /* ease-out cubic */
+                var eased = 1 - Math.pow(1 - progress, 3);
+                var current = eased * target;
+                el.textContent = prefix + current.toFixed(decimals).replace(/\B(?=(\d{3})+(?!\d))/g, ',') + suffix;
+                if (progress < 1) {
+                    requestAnimationFrame(step);
+                }
+            }
+            requestAnimationFrame(step);
+        });
+    }
+
+    /* ============================================================
+       STARTUP FUNDING AMOUNTS
+       ============================================================ */
+    function setStartupFundingAmounts() {
+        var amounts = {{ total_funding_by_startup | tojson }};
+        amounts.forEach(function(amount, i) {
+            var el = document.getElementById('startup-funding-' + i);
+            if (el) {
+                var val = parseFloat(amount);
+                if (isNaN(val)) {
+                    el.textContent = '$' + amount + 'M';
+                } else {
+                    el.textContent = '$' + val.toFixed(1).replace(/\B(?=(\d{3})+(?!\d))/g, ',') + 'M';
+                }
+            }
+        });
+    }
+
+    /* ============================================================
+       SCROLL-TRIGGERED STARTUP CARD ANIMATION
+       ============================================================ */
+    function observeStartupCards() {
+        var cards = document.querySelectorAll('.startup-card');
+        if (!cards.length) return;
+
+        if ('IntersectionObserver' in window) {
+            var observer = new IntersectionObserver(function(entries) {
+                entries.forEach(function(entry) {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.1 });
+
+            cards.forEach(function(card) {
+                observer.observe(card);
+            });
+        } else {
+            /* fallback: show all */
+            cards.forEach(function(card) { card.classList.add('visible'); });
+        }
+    }
+
+    /* ============================================================
+       MUTATION OBSERVER FOR THEME CHANGES
+       ============================================================ */
+    function watchThemeChanges() {
+        var observer = new MutationObserver(function(mutations) {
+            mutations.forEach(function(mutation) {
+                if (mutation.type === 'attributes' && mutation.attributeName === 'data-theme') {
+                    buildAllCharts();
+                }
+            });
+        });
+        observer.observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
+    }
+
+    /* ============================================================
+       INIT
+       ============================================================ */
+    /* ============================================================
+       SCROLL REVEAL (Phase 7)
+       ============================================================ */
+    function initScrollReveal() {
+        var revealEls = document.querySelectorAll('[data-scroll-reveal], [data-scroll-reveal-stagger]');
+        if (!revealEls.length || window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+            revealEls.forEach(function(el) { el.classList.add('revealed'); });
+            return;
+        }
+        var observer = new IntersectionObserver(function(entries) {
+            entries.forEach(function(entry) {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('revealed');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+        revealEls.forEach(function(el) { observer.observe(el); });
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+        animateCounters();
+        setStartupFundingAmounts();
+        buildAllCharts();
+        observeStartupCards();
+        watchThemeChanges();
+        initScrollReveal();
+    });
+
+})();
+</script>
+
+<!-- Newsfeed embedded interactions -->
+<script>
+// Tabs (home feed)
+document.querySelectorAll('.home-nf-section .nf-tab').forEach(function(tab) {
+    tab.addEventListener('click', function() {
+        document.querySelectorAll('.home-nf-section .nf-tab').forEach(function(t) {
+            t.classList.remove('active'); t.setAttribute('aria-selected','false');
+        });
+        this.classList.add('active'); this.setAttribute('aria-selected','true');
+        var filter = this.getAttribute('data-filter');
+        document.querySelectorAll('#home-nf-feed .nf-card').forEach(function(card) {
+            if (filter === 'all') { card.style.display = ''; }
+            else if (filter === 'article') { card.style.display = (card.getAttribute('data-item-type') === 'article') ? '' : 'none'; }
+            else if (filter === 'post') { card.style.display = (card.getAttribute('data-item-type') === 'post') ? '' : 'none'; }
+            else { card.style.display = (card.getAttribute('data-filter-type') === filter) ? '' : 'none'; }
+        });
+    });
+});
+// Like button
+function likePost(btn, postId) {
+    if (btn.classList.contains('liked')) return;
+    btn.classList.add('liked');
+    fetch('/newsfeed/like/' + postId, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'X-Requested-With': 'XMLHttpRequest' }
+    })
+    .then(function(r) { return r.json(); })
+    .then(function(data) {
+        var span = btn.querySelector('.like-count');
+        if (span) span.textContent = data.likes;
+    })
+    .catch(function() { btn.classList.remove('liked'); });
+}
+</script>
+{% endblock %}
