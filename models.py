@@ -718,6 +718,7 @@ class Post(db.Model):
     is_published = db.Column(db.Boolean, default=True)
     created_at = db.Column(db.DateTime, default=db.func.now())
     author_pic = db.Column(db.String(500))
+    author_founder_id = db.Column(db.String(50))
 
 
 class DirectMessage(db.Model):

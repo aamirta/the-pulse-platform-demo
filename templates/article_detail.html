@@ -1,0 +1,137 @@
+{% extends "base.html" %}
+
+{% block title %}{{ article.title }} - The Pulse{% endblock %}
+
+{% block content %}
+<style>
+    .article-container {
+        max-width: 800px;
+        margin: 2rem auto;
+        padding: 0 1.5rem;
+    }
+    .article-back {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.4rem;
+        color: var(--text-secondary);
+        text-decoration: none;
+        font-size: 0.85rem;
+        font-weight: 600;
+        margin-bottom: 1.5rem;
+        transition: color 0.2s;
+    }
+    .article-back:hover { color: var(--accent); }
+    .article-header {
+        margin-bottom: 2rem;
+    }
+    .article-category {
+        display: inline-block;
+        font-size: 0.72rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        padding: 0.25rem 0.7rem;
+        border-radius: 20px;
+        background: var(--accent-subtle);
+        color: var(--accent);
+        border: 1px solid rgba(0,214,143,0.2);
+        margin-bottom: 0.75rem;
+    }
+    .article-title {
+        font-family: var(--font-heading);
+        font-size: 2rem;
+        font-weight: 800;
+        line-height: 1.25;
+        color: var(--text-primary);
+        margin-bottom: 0.75rem;
+    }
+    .article-meta {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        color: var(--text-muted);
+        font-size: 0.82rem;
+    }
+    .article-meta i { color: var(--accent); }
+    .article-body {
+        font-family: var(--font-body);
+        font-size: 1rem;
+        line-height: 1.85;
+        color: var(--text-primary);
+    }
+    .article-body h2 {
+        font-family: var(--font-heading);
+        font-size: 1.3rem;
+        font-weight: 700;
+        margin: 2rem 0 0.75rem;
+        color: var(--text-primary);
+    }
+    .article-body p {
+        margin-bottom: 1.25rem;
+    }
+    .article-body strong {
+        color: var(--accent);
+    }
+    .article-body blockquote {
+        border-left: 3px solid var(--accent);
+        padding: 0.75rem 1.25rem;
+        margin: 1.5rem 0;
+        background: var(--bg-surface);
+        border-radius: 0 10px 10px 0;
+        font-style: italic;
+        color: var(--text-secondary);
+    }
+    .article-footer {
+        margin-top: 3rem;
+        padding-top: 1.5rem;
+        border-top: 1px solid var(--border-color);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    .article-tags {
+        display: flex;
+        gap: 0.4rem;
+        flex-wrap: wrap;
+    }
+    .article-tag {
+        font-size: 0.72rem;
+        font-weight: 600;
+        padding: 0.2rem 0.6rem;
+        border-radius: 20px;
+        background: var(--bg-surface);
+        color: var(--text-secondary);
+        border: 1px solid var(--border-color);
+    }
+</style>
+
+<div class="article-container">
+    <a href="{{ url_for('actualites') }}" class="article-back"><i class="fas fa-arrow-left"></i> Retour aux actualités</a>
+
+    <div class="article-header">
+        {% if article.category %}
+        <span class="article-category">{{ article.category }}</span>
+        {% endif %}
+        <h1 class="article-title">{{ article.title }}</h1>
+        <div class="article-meta">
+            {% if article.source %}<span><i class="fas fa-building-columns"></i> {{ article.source }}</span>{% endif %}
+            {% if article.author %}<span><i class="fas fa-user"></i> {{ article.author }}</span>{% endif %}
+            {% if article.published_at %}<span><i class="fas fa-clock"></i> {{ article.published_at.strftime('%d/%m/%Y') if article.published_at is not string else article.published_at[:10] }}</span>{% endif %}
+        </div>
+    </div>
+
+    <div class="article-body">
+        {{ article.content|safe }}
+    </div>
+
+    {% if article.tags %}
+    <div class="article-footer">
+        <div class="article-tags">
+            {% for tag in article.tags.split(',') %}
+            <span class="article-tag">{{ tag.strip() }}</span>
+            {% endfor %}
+        </div>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

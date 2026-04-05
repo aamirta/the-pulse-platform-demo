@@ -692,7 +692,7 @@
             <div class="stat-label" data-i18n="investments">Investissements</div>
         </div>
         <div class="investment-stat-card">
-            <div class="stat-number tertiary">{{ investor.exits_count|int if investor.exits_count else 0 }}</div>
+            <div class="stat-number tertiary">{{ investor.total_exits|int if investor.total_exits else 0 }}</div>
             <div class="stat-label" data-i18n="exits">Sorties</div>
         </div>
     </div>
@@ -722,7 +722,7 @@
                     {% if investor.founding_date %}
                     <div class="info-item">
                         <div class="info-item-label" data-i18n="founded">Fond&eacute; en</div>
-                        <div class="info-item-value">{{ investor.founding_date }}</div>
+                        <div class="info-item-value">{{ investor.founding_date.strftime('%Y') if investor.founding_date is not string else investor.founding_date }}</div>
                     </div>
                     {% endif %}
 
