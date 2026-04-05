@@ -608,7 +608,8 @@
                     </div>
                     <div class="info-item">
                         <div class="info-label" data-i18n="business_status">Statut commercial</div>
-                        <div class="info-value">{{ startup.business_status or 'N/A' }}</div>
+                        <div class="info-value lang-en">{{ startup.business_status or 'N/A' }}</div>
+                        <div class="info-value lang-fr">{{ (startup.business_status or 'N/A')|replace('Generating Revenue', 'Revenus générés')|replace('Pre-Revenue', 'Pré-revenus')|replace('Profitable', 'Rentable')|replace('Startup', 'Démarrage') }}</div>
                     </div>
                     <div class="info-item">
                         <div class="info-label" data-i18n="legal_form">Forme juridique</div>

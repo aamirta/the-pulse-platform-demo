@@ -2,65 +2,65 @@
            CSS CUSTOM PROPERTIES
            ============================================ */
         :root {
-            /* Typography */
-            --font-heading: 'Space Grotesk', sans-serif;
+            /* Typography — V2 Dealroom/Linear style */
+            --font-heading: 'Syne', 'Space Grotesk', sans-serif;
             --font-body: 'DM Sans', sans-serif;
 
-            /* Dark Mode (Default) */
-            --bg-primary: #0a0e1a;
-            --bg-card: #12172b;
-            --bg-card-hover: #1a2040;
-            --bg-surface: #0d1225;
-            --bg-navbar: rgba(10, 14, 26, 0.82);
-            --bg-sidebar: #0c1022;
+            /* Dark Mode (Default) — V2 palette */
+            --bg-primary: #070B12;
+            --bg-card: #0D1420;
+            --bg-card-hover: #111927;
+            --bg-surface: #0D1420;
+            --bg-navbar: rgba(7, 11, 18, 0.85);
+            --bg-sidebar: #0A0F18;
 
-            /* Text */
-            --text-primary: #f0f2f8;
-            --text-secondary: #8892b0;
-            --text-muted: #7a84a0;
+            /* Text — V2 */
+            --text-primary: #EEF2FF;
+            --text-secondary: #7A90B0;
+            --text-muted: #3D5270;
 
-            /* Accent Colors */
-            --accent: #00d4aa;
-            --accent-hover: #00f0c0;
-            --accent-subtle: rgba(0, 212, 170, 0.1);
-            --accent-glow: rgba(0, 212, 170, 0.25);
-            --secondary: #4361ee;
-            --secondary-subtle: rgba(67, 97, 238, 0.12);
-            --tertiary: #f7b731;
-            --tertiary-subtle: rgba(247, 183, 49, 0.12);
+            /* Accent Colors — V2 */
+            --accent: #00D68F;
+            --accent-hover: #00F0A0;
+            --accent-subtle: rgba(0, 214, 143, 0.12);
+            --accent-glow: rgba(0, 214, 143, 0.25);
+            --secondary: #6366F1;
+            --secondary-subtle: rgba(99, 102, 241, 0.12);
+            --tertiary: #F59E0B;
+            --tertiary-subtle: rgba(245, 158, 11, 0.12);
 
             /* Status */
-            --success: #00d4aa;
-            --warning: #f7b731;
-            --danger: #ff6b6b;
-            --info: #4361ee;
+            --success: #00D68F;
+            --warning: #F59E0B;
+            --danger: #EF4444;
+            --info: #6366F1;
 
-            /* Borders & Surfaces */
-            --border-color: rgba(255, 255, 255, 0.06);
-            --border-primary: rgba(255, 255, 255, 0.06);
-            --border-subtle: rgba(255, 255, 255, 0.03);
-            --shadow-color: rgba(0, 0, 0, 0.4);
+            /* Borders & Surfaces — V2: no box-shadow, border only */
+            --border-color: #1A2535;
+            --dot-color: #1A2535;
+            --border-primary: #1A2535;
+            --border-hover: #2A3D55;
+            --border-subtle: #111927;
+            --shadow-color: rgba(0, 0, 0, 0.3);
 
             /* Gradients */
-            --gradient-accent: linear-gradient(135deg, #00d4aa, #00b894);
-            --gradient-secondary: linear-gradient(135deg, #4361ee, #3a56d4);
-            --gradient-tertiary: linear-gradient(135deg, #f7b731, #f0a500);
-            --gradient-danger: linear-gradient(135deg, #ff6b6b, #ee5a24);
-            --gradient-mesh: radial-gradient(ellipse at 20% 50%, rgba(0, 212, 170, 0.06) 0%, transparent 50%),
-                             radial-gradient(ellipse at 80% 20%, rgba(67, 97, 238, 0.05) 0%, transparent 50%),
-                             radial-gradient(ellipse at 50% 80%, rgba(247, 183, 49, 0.03) 0%, transparent 50%);
+            --gradient-accent: linear-gradient(135deg, #00D68F, #00B87A);
+            --gradient-secondary: linear-gradient(135deg, #6366F1, #4F46E5);
+            --gradient-tertiary: linear-gradient(135deg, #F59E0B, #D97706);
+            --gradient-danger: linear-gradient(135deg, #EF4444, #DC2626);
+            --gradient-mesh: radial-gradient(ellipse at 50% 0%, rgba(0, 214, 143, 0.07) 0%, transparent 50%);
 
             /* Chart Colors */
-            --chart-text: #8892b0;
-            --chart-grid: rgba(255, 255, 255, 0.05);
+            --chart-text: #7A90B0;
+            --chart-grid: rgba(255, 255, 255, 0.04);
 
             /* Dimensions */
-            --navbar-height: 60px;
+            --navbar-height: 58px;
             --sidebar-width: 280px;
 
-            /* Transitions */
+            /* Transitions — V2 cubic-bezier */
             --transition-fast: 0.15s ease;
-            --transition-base: 0.25s ease;
+            --transition-base: 0.28s cubic-bezier(.4,0,.2,1);
             --transition-smooth: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 
             /* ========== TYPOGRAPHY SCALE ========== */
@@ -115,33 +115,33 @@
            LIGHT MODE OVERRIDES
            ============================================ */
         [data-theme="light"] {
-            --bg-primary: #f5f6fa;
-            --bg-card: #ffffff;
-            --bg-card-hover: #f0f1f7;
-            --bg-surface: #ecedf3;
-            --bg-navbar: rgba(245, 246, 250, 0.92);
-            --bg-sidebar: #ffffff;
+            --bg-primary: #F4F7FB;
+            --bg-card: #FFFFFF;
+            --bg-card-hover: #EDF1F7;
+            --bg-surface: #EDF1F7;
+            --bg-navbar: rgba(244, 247, 251, 0.88);
+            --bg-sidebar: #FFFFFF;
 
-            --text-primary: #0f1629;
-            --text-secondary: #3d4663;
-            --text-muted: #596280;
+            --text-primary: #0D1420;
+            --text-secondary: #4A6180;
+            --text-muted: #9AB0C8;
 
-            --accent-subtle: rgba(0, 180, 140, 0.1);
-            --accent-glow: rgba(0, 180, 140, 0.18);
-            --secondary-subtle: rgba(67, 97, 238, 0.1);
-            --tertiary-subtle: rgba(247, 183, 49, 0.1);
+            --accent-subtle: rgba(0, 214, 143, 0.1);
+            --accent-glow: rgba(0, 214, 143, 0.15);
+            --secondary-subtle: rgba(99, 102, 241, 0.1);
+            --tertiary-subtle: rgba(245, 158, 11, 0.1);
 
-            --border-color: rgba(0, 0, 0, 0.1);
-            --border-primary: rgba(0, 0, 0, 0.1);
-            --border-subtle: rgba(0, 0, 0, 0.06);
-            --shadow-color: rgba(0, 0, 0, 0.1);
+            --border-color: #E1E8F0;
+            --dot-color: #C0CDD9;
+            --border-primary: #E1E8F0;
+            --border-hover: #A8C0D6;
+            --border-subtle: #EDF1F7;
+            --shadow-color: rgba(0, 0, 0, 0.06);
 
-            --chart-text: #5a6380;
-            --chart-grid: rgba(0, 0, 0, 0.06);
+            --chart-text: #4A6180;
+            --chart-grid: rgba(0, 0, 0, 0.05);
 
-            --gradient-mesh: radial-gradient(ellipse at 20% 50%, rgba(0, 212, 170, 0.04) 0%, transparent 50%),
-                             radial-gradient(ellipse at 80% 20%, rgba(67, 97, 238, 0.04) 0%, transparent 50%),
-                             radial-gradient(ellipse at 50% 80%, rgba(247, 183, 49, 0.03) 0%, transparent 50%);
+            --gradient-mesh: radial-gradient(ellipse at 50% 0%, rgba(0, 214, 143, 0.05) 0%, transparent 50%);
         }
 
         /* ============================================
@@ -164,6 +164,8 @@
             font-size: 15px;
             line-height: 1.6;
             background: var(--bg-primary);
+            background-image: radial-gradient(circle, var(--dot-color) 1px, transparent 1px);
+            background-size: 32px 32px;
             color: var(--text-primary);
             min-height: 100vh;
             overflow-x: hidden;
@@ -171,6 +173,12 @@
             -webkit-font-smoothing: antialiased;
             -moz-osx-font-smoothing: grayscale;
         }
+
+        /* V2 Scrollbar */
+        ::-webkit-scrollbar { width: 5px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: var(--border-color); border-radius: 3px; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--border-hover); }
 
         /* Skip to Content */
         .skip-to-content {
@@ -279,20 +287,19 @@
             right: 0;
             height: var(--navbar-height);
             background: var(--bg-navbar);
-            backdrop-filter: blur(20px) saturate(1.8);
-            -webkit-backdrop-filter: blur(20px) saturate(1.8);
+            backdrop-filter: blur(16px) saturate(1.6);
+            -webkit-backdrop-filter: blur(16px) saturate(1.6);
             border-bottom: 1px solid var(--border-color);
             z-index: 1050;
             display: flex;
             align-items: center;
             justify-content: space-between;
             padding: 0 1.5rem;
-            transition: box-shadow var(--transition-base), background var(--transition-base);
+            transition: all var(--transition-base);
         }
 
         .navbar-pulse.scrolled {
-            box-shadow: 0 4px 30px var(--shadow-color);
-            background: var(--bg-navbar);
+            border-bottom-color: var(--border-hover, #2A3D55);
         }
 
         /* Left group: hamburger + logo */

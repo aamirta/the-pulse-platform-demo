@@ -253,6 +253,11 @@ def startups():
 
     sector_counts = compute_sector_counts(all_startups, distinct_sectors)
 
+    # Total funding raised (from deals, same as home page)
+    deals = FundingRound.query.all()
+    total_funding = sum(deal.raised_amount_usd if deal.raised_amount_usd is not None else 0 for deal in deals)
+    total_funding_millions = total_funding / 1_000_000
+
     # Chart data: top 5 sectors and cities
     all_startups_full = query.all()
     chart_sector_counts = Counter()
@@ -280,7 +285,8 @@ def startups():
         sector_counts=sector_counts,
         pagination=pagination,
         top_sectors=top_sectors,
-        top_cities=top_cities
+        top_cities=top_cities,
+        total_funding_millions=total_funding_millions
     )
 
 @app.route("/incubators")
@@ -479,7 +485,16 @@ def investor_details(investor_id):
 
 @app.route("/founders")
 def founders():
-    query = Founder.query
+    query = Founder.query.filter(
+        Founder.name.isnot(None), Founder.name != '',
+        db.or_(
+            Founder.current_title.isnot(None),
+            Founder.profile_pic.isnot(None),
+            Founder.location.isnot(None),
+            Founder.company_details_name.isnot(None),
+            Founder.linkedin_url.isnot(None)
+        )
+    )
     selected_cities = request.args.getlist("city")
     selected_startups = request.args.getlist("startup")
 

@@ -10,10 +10,10 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
     <!-- Font Awesome -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-    <!-- Google Fonts: Space Grotesk + DM Sans -->
+    <!-- Google Fonts: Syne + DM Sans (V2) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
 
     <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}">
 </head>
@@ -352,7 +352,7 @@
                                 Simohammed Damiri <i class="fab fa-linkedin"></i>
                             </a>
                         </div>
-                        <div class="footer-team-role" data-i18n="footer_role_assoc">Directeur Adjoint The Pulse</div>
+                        <div class="footer-team-role" data-i18n="footer_role_assoc">Directeur Associé The Pulse</div>
                         <div class="footer-team-bio" data-i18n="footer_bio_simo">
                             Directeur Associé au Center of Entrepreneurship, UM6P. Entrepreneur & Startup Advisor. Passionné de venture building.
                         </div>
@@ -743,6 +743,9 @@
                 btn_join_pulse: 'Rejoindre The Pulse', btn_explore: 'Explorer les startups', btn_explore_all: 'Explorer toutes les startups',
                 stat_startups: 'Total startups', stat_founders: 'Fondateurs actifs',
                 stat_investors: 'Investisseurs', stat_funding: 'Financement total',
+                ticker_startups: 'Startups', ticker_founders: 'Fondateurs', ticker_investors: 'Investisseurs',
+                ticker_funding: 'Financement total', ticker_incubators: 'Incubateurs',
+                our_partners: 'Nos Partenaires',
                 section_analytics: 'Analytique de l\u2019\u00e9cosyst\u00e8me',
                 section_top: 'Top startups financ\u00e9es', btn_explore_all: 'Explorer toutes les startups',
                 chart_sector: 'Startups par secteur', chart_city: 'Startups par ville',
@@ -1006,7 +1009,7 @@
                 immediate: 'Immédiat',
                 // Common
                 filters: 'Filtres', clear: 'R\u00e9initialiser',
-                city: 'Ville', startup: 'Startup',
+                city: 'Ville', cities: 'Villes', startup: 'Startup',
                 apply_filters: 'Appliquer les filtres',
                 location_filter: 'Localisation', investor_type: 'Type d\u2019investisseur',
                 types: 'Types', countries: 'Pays',
@@ -1049,7 +1052,7 @@
                 footer_resources: 'Ressources',
                 footer_role_director: 'Directeur The Pulse',
                 footer_bio_hamid: 'Professeur de Management & Entrepreneuriat, UM6P Africa Business School. Directeur du Center of Entrepreneurship. Ancien professeur \u00e0 l\'ESSEC.',
-                footer_role_assoc: 'Directeur Adjoint The Pulse',
+                footer_role_assoc: 'Directeur Associé The Pulse',
                 footer_bio_simo: 'Directeur au Center of Entrepreneurship, UM6P. Entrepreneur & Startup Advisor. Passionn\u00e9 de venture building.',
                 total_raised_badge: 'levés'
             },
@@ -1139,6 +1142,9 @@
                 btn_join_pulse: 'Join the Pulse', btn_explore: 'Explore Startups', btn_explore_all: 'Explore All Startups',
                 stat_startups: 'Total Startups', stat_founders: 'Active Founders',
                 stat_investors: 'Investors', stat_funding: 'Total Funding',
+                ticker_startups: 'Startups', ticker_founders: 'Founders', ticker_investors: 'Investors',
+                ticker_funding: 'Total Funding', ticker_incubators: 'Incubators',
+                our_partners: 'Our Trusted Partners',
                 section_analytics: 'Ecosystem Analytics',
                 section_top: 'Top Funded Startups', btn_explore_all: 'Explore All Startups',
                 chart_sector: 'Startups by Sector', chart_city: 'Startups by City',
@@ -1401,7 +1407,7 @@
                 immediate: 'Immediate',
                 // Common
                 filters: 'Filters', clear: 'Clear',
-                city: 'City', startup: 'Startup',
+                city: 'City', cities: 'Cities', startup: 'Startup',
                 apply_filters: 'Apply Filters',
                 location_filter: 'Location', investor_type: 'Investor Type',
                 types: 'Types', countries: 'Countries',

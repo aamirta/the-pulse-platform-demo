@@ -5,8 +5,173 @@
 {% block content %}
 <style>
     /* ========================================
-       HOME PAGE STYLES
+       HOME PAGE STYLES — V2 FUTURISTIC
        ======================================== */
+
+    /* ========== V2: No floating orbs — clean dot grid bg from body ========== */
+    .home-floating-orbs { display: none; }
+
+    /* ========== PHASE 2: HERO V2 ========== */
+    /* 2A: Animated gradient bottom line */
+    .hero-section::after {
+        content: '';
+        position: absolute;
+        bottom: 0; left: 0; right: 0;
+        height: 2px;
+        background: linear-gradient(90deg, transparent, #00d4aa, #4361ee, #8B5CF6, #00d4aa, transparent);
+        background-size: 200% 100%;
+        animation: heroLineSwipe 4s linear infinite;
+        z-index: 5;
+    }
+    @keyframes heroLineSwipe {
+        0% { background-position: 200% 0; }
+        100% { background-position: -200% 0; }
+    }
+
+    /* 2B: Dot grid overlay (uses existing .hero-grid-overlay) */
+    .hero-grid-overlay {
+        background-image: radial-gradient(circle, rgba(255,255,255,0.04) 1px, transparent 1px) !important;
+        background-size: 28px 28px !important;
+    }
+    [data-theme="light"] .hero-grid-overlay {
+        background-image: radial-gradient(circle, rgba(0,0,0,0.03) 1px, transparent 1px) !important;
+    }
+
+    /* 2C: Subtitle fade-in blur */
+    .hero-subtitle {
+        animation: heroSubtitleFade 1s ease-out 0.3s both;
+    }
+    @keyframes heroSubtitleFade {
+        from { opacity: 0; filter: blur(6px); transform: translateY(10px); }
+        to { opacity: 1; filter: blur(0); transform: translateY(0); }
+    }
+
+    /* V2: no CTA glow — clean buttons */
+
+    /* V2: clean ticker — no glow, accent color only */
+
+    /* ========== PHASE 4: SECTION HEADERS V2 ========== */
+    .section-header {
+        position: relative;
+        padding-left: 14px;
+    }
+    .section-header::before {
+        content: '';
+        position: absolute;
+        left: 0; top: 4px; bottom: 4px;
+        width: 3px;
+        background: linear-gradient(180deg, #00d4aa, #4361ee);
+        border-radius: 2px;
+        box-shadow: 0 0 8px rgba(0, 212, 170, 0.4), 0 0 16px rgba(0, 212, 170, 0.15);
+    }
+    .section-header h2 {
+        background: linear-gradient(135deg, var(--text-primary) 30%, #00d4aa 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+    }
+    [data-theme="light"] .section-header h2 {
+        background: linear-gradient(135deg, #0f1629 30%, #00967a 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+    }
+
+    /* ========== PHASE 5: CARD HOVER — V2 border only ========== */
+    .nf-card:hover,
+    .chart-card:hover,
+    .appel-card:hover,
+    .actu-card:hover,
+    .startup-card:hover {
+        border-color: var(--border-hover);
+    }
+
+    /* ========== PHASE 6: SECTION DIVIDERS ========== */
+    .section-divider {
+        border: none;
+        height: 1px;
+        background: linear-gradient(90deg, transparent 0%, rgba(0,212,170,0.25) 25%, rgba(67,97,238,0.3) 50%, rgba(0,212,170,0.25) 75%, transparent 100%);
+        margin: 2.5rem 0;
+    }
+
+    /* ========== SECTION BOX WRAPPER ========== */
+    .home-section-box {
+        background: var(--bg-card);
+        border: 1px solid var(--border-color);
+        border-radius: 20px;
+        padding: 2rem;
+        margin-bottom: 1.25rem;
+        position: relative;
+        overflow: hidden;
+    }
+    .home-section-box::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 2px;
+        background: linear-gradient(90deg, transparent, rgba(0,212,170,0.4), rgba(67,97,238,0.4), transparent);
+        opacity: 0;
+        transition: opacity 0.4s ease;
+    }
+    .home-section-box:hover::before {
+        opacity: 1;
+    }
+    .home-section-box .section-header {
+        margin-bottom: 1.25rem;
+    }
+    .home-section-box .section-cta {
+        padding: 1rem 0 0;
+    }
+
+    /* ========== PHASE 7: SCROLL REVEAL ========== */
+    [data-scroll-reveal] {
+        opacity: 0;
+        transform: translateY(28px);
+        transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+    [data-scroll-reveal].revealed {
+        opacity: 1;
+        transform: translateY(0);
+    }
+    [data-scroll-reveal-stagger] > * {
+        opacity: 0;
+        transform: translateY(24px);
+        transition: opacity 0.5s ease, transform 0.5s ease;
+    }
+    [data-scroll-reveal-stagger].revealed > *:nth-child(1) { transition-delay: 0ms; }
+    [data-scroll-reveal-stagger].revealed > *:nth-child(2) { transition-delay: 80ms; }
+    [data-scroll-reveal-stagger].revealed > *:nth-child(3) { transition-delay: 160ms; }
+    [data-scroll-reveal-stagger].revealed > *:nth-child(4) { transition-delay: 240ms; }
+    [data-scroll-reveal-stagger].revealed > *:nth-child(5) { transition-delay: 320ms; }
+    [data-scroll-reveal-stagger].revealed > *:nth-child(6) { transition-delay: 400ms; }
+    [data-scroll-reveal-stagger].revealed > * {
+        opacity: 0;
+        transform: translateY(24px);
+    }
+    [data-scroll-reveal-stagger].revealed > * {
+        opacity: 1;
+        transform: translateY(0);
+    }
+    @media (prefers-reduced-motion: reduce) {
+        [data-scroll-reveal],
+        [data-scroll-reveal-stagger] > * {
+            opacity: 1 !important;
+            transform: none !important;
+            transition: none !important;
+        }
+    }
+
+    /* ========== PHASE 8: V2 CARDS — clean surfaces ========== */
+    .nf-card,
+    .chart-card,
+    .appel-card {
+        background: var(--bg-card);
+        border: 1px solid var(--border-color);
+        border-radius: 14px;
+        transition: all var(--transition-base);
+    }
 
     /* Typography overrides */
     .home-heading {
@@ -20,7 +185,7 @@
     /* ---------- HERO SECTION ---------- */
     .hero-section {
         position: relative;
-        padding: 0;
+        padding: 0.5rem 0 0.75rem;
         text-align: center;
         overflow: hidden;
     }
@@ -28,11 +193,8 @@
         content: '';
         position: absolute;
         inset: 0;
-        background: radial-gradient(ellipse at 50% 0%, rgba(0, 212, 170, 0.1) 0%, transparent 50%),
-                    radial-gradient(ellipse at 80% 80%, rgba(67, 97, 238, 0.06) 0%, transparent 50%),
-                    radial-gradient(ellipse at 20% 60%, rgba(247, 183, 49, 0.05) 0%, transparent 50%);
+        background: radial-gradient(ellipse at 50% 0%, rgba(0, 214, 143, 0.07) 0%, transparent 50%);
         pointer-events: none;
-        animation: meshShift 20s ease-in-out infinite alternate;
     }
     @keyframes meshShift {
         0% { background-position: 0% 0%, 100% 100%, 0% 50%; }
@@ -143,10 +305,10 @@
         display: flex;
         justify-content: center;
         align-items: center;
-        margin: 0.5rem auto 0.5rem;
+        margin: 0.25rem auto 0.25rem;
         position: relative;
-        width: 50px;
-        height: 50px;
+        width: 36px;
+        height: 36px;
     }
     .pulse-dot-core {
         width: 16px;
@@ -191,8 +353,8 @@
     }
     .hero-subtitle {
         color: var(--text-muted);
-        font-size: 1rem;
-        margin-bottom: 1rem;
+        font-size: 0.92rem;
+        margin-bottom: 0.75rem;
         font-weight: 400;
     }
     .hero-actions {
@@ -200,138 +362,199 @@
         justify-content: center;
         gap: 0.75rem;
         flex-wrap: wrap;
-        margin-bottom: 2rem;
+        margin-bottom: 1rem;
     }
     .btn-hero-primary {
-        background: linear-gradient(135deg, var(--accent), #009e7e);
-        color: #fff;
+        background: var(--accent);
+        color: #000;
         border: none;
-        padding: 0.6rem 1.5rem;
+        padding: 0.65rem 1.6rem;
         border-radius: 10px;
+        font-family: var(--font-body);
         font-weight: 600;
-        font-size: 0.9rem;
+        font-size: 0.88rem;
         text-decoration: none;
-        transition: all 0.3s ease;
+        transition: all var(--transition-base);
         display: inline-flex;
         align-items: center;
         gap: 0.5rem;
     }
     .btn-hero-primary:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 8px 24px rgba(16, 185, 129, 0.35);
-        color: #fff;
+        opacity: 0.88;
+        transform: translateY(-1px);
+        color: #000;
     }
     .btn-hero-secondary {
         background: transparent;
         color: var(--text-primary);
         border: 1px solid var(--border-color);
-        padding: 0.6rem 1.5rem;
+        padding: 0.65rem 1.6rem;
         border-radius: 10px;
+        font-family: var(--font-body);
         font-weight: 600;
-        font-size: 0.9rem;
+        font-size: 0.88rem;
         text-decoration: none;
-        transition: all 0.3s ease;
+        transition: all var(--transition-base);
         display: inline-flex;
         align-items: center;
         gap: 0.5rem;
     }
     .btn-hero-secondary:hover {
-        border-color: var(--accent);
-        color: var(--accent);
-        transform: translateY(-2px);
-        box-shadow: 0 8px 24px rgba(16, 185, 129, 0.15);
+        border-color: var(--border-hover);
+        color: var(--text-primary);
     }
 
     /* ---------- STATS ROW ---------- */
-    .stats-row {
-        display: grid;
-        grid-template-columns: repeat(4, 1fr);
-        gap: 1.25rem;
-        margin-bottom: 2.5rem;
-    }
-    .stat-card {
+    /* ========== SCROLLING STATS TICKER ========== */
+    .stats-ticker {
+        background: var(--bg-card);
+        border-top: 1px solid var(--border-color);
+        border-bottom: 1px solid var(--border-color);
+        padding: 0.85rem 0;
+        overflow: hidden;
+        margin-bottom: 0;
         position: relative;
+    }
+    .stats-ticker-track {
+        display: flex;
+        width: max-content;
+        animation: tickerScroll 25s linear infinite;
+    }
+    .stats-ticker-track:hover { animation-play-state: paused; }
+    .stats-ticker-content {
+        display: flex;
+        align-items: center;
+        gap: 0;
+        flex-shrink: 0;
+    }
+    .ticker-item {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        color: var(--text-secondary);
+        font-family: var(--font-body);
+        font-size: 0.82rem;
+        font-weight: 500;
+        white-space: nowrap;
+        padding: 0 1.5rem;
+    }
+    .ticker-item strong {
+        font-weight: 700;
+        font-size: 0.88rem;
+        color: var(--accent);
+    }
+    .ticker-item i {
+        font-size: 0.78rem;
+        color: var(--accent);
+        opacity: 0.7;
+    }
+    .ticker-dot {
+        width: 5px;
+        height: 5px;
+        border-radius: 50%;
+        background: rgba(255,255,255,0.5);
+        flex-shrink: 0;
+    }
+    @keyframes tickerScroll {
+        0% { transform: translateX(0); }
+        100% { transform: translateX(-50%); }
+    }
+
+    /* ========== PARTNERS SECTION (home) ========== */
+    .partners-section {
+        margin-bottom: 0;
+        padding: 0;
+    }
+    .partners-section .section-heading {
+        text-align: center;
+        margin-bottom: 1.75rem;
+    }
+    .partners-section .section-heading h2 {
+        justify-content: center;
+    }
+    .partners-track-wrapper {
+        width: 100%;
+        overflow: hidden;
+        position: relative;
+        border-radius: 16px;
         background: var(--bg-card);
         border: 1px solid var(--border-color);
-        border-radius: 16px;
-        padding: 1.5rem;
-        overflow: hidden;
-        transition: all 0.3s ease;
+        padding: 1.5rem 0;
     }
-    .stat-card::before {
+    .partners-track-wrapper::before,
+    .partners-track-wrapper::after {
         content: '';
         position: absolute;
         top: 0;
-        left: 0;
-        right: 0;
-        height: 3px;
-        border-radius: 16px 16px 0 0;
-    }
-    .stat-card:nth-child(1)::before { background: linear-gradient(135deg, var(--accent), #009e7e); }
-    .stat-card:nth-child(2)::before { background: linear-gradient(135deg, var(--secondary), #3451c7); }
-    .stat-card:nth-child(3)::before { background: linear-gradient(135deg, #8B5CF6, #7C3AED); }
-    .stat-card:nth-child(4)::before { background: linear-gradient(135deg, var(--tertiary), #e6a520); }
-
-    .stat-card::after {
-        content: '';
-        position: absolute;
-        top: 50%;
-        right: -10px;
-        transform: translateY(-50%);
+        bottom: 0;
         width: 80px;
-        height: 80px;
-        border-radius: 50%;
-        opacity: 0.06;
+        z-index: 2;
+        pointer-events: none;
     }
-    .stat-card:nth-child(1)::after { background: var(--accent); }
-    .stat-card:nth-child(2)::after { background: var(--secondary); }
-    .stat-card:nth-child(3)::after { background: #8B5CF6; }
-    .stat-card:nth-child(4)::after { background: var(--tertiary); }
-
-    .stat-card:hover {
-        transform: translateY(-4px);
-        box-shadow: 0 12px 32px var(--shadow-color);
-        border-color: var(--border-color);
+    .partners-track-wrapper::before {
+        left: 0;
+        background: linear-gradient(90deg, var(--bg-card) 0%, transparent 100%);
     }
-    /* Glass morphism */
-    .stat-card {
-        backdrop-filter: blur(12px);
-        -webkit-backdrop-filter: blur(12px);
+    .partners-track-wrapper::after {
+        right: 0;
+        background: linear-gradient(270deg, var(--bg-card) 0%, transparent 100%);
     }
-    [data-theme="light"] .stat-card {
-        background: rgba(255, 255, 255, 0.85);
+    .partners-track {
+        display: flex;
+        align-items: center;
+        width: max-content;
+        animation: marquee-scroll 35s linear infinite;
     }
-
-    .stat-icon {
-        width: 40px;
-        height: 40px;
-        border-radius: 10px;
+    .partners-track:hover {
+        animation-play-state: paused;
+    }
+    @keyframes marquee-scroll {
+        0% { transform: translateX(0); }
+        100% { transform: translateX(-50%); }
+    }
+    .partner-item {
+        display: flex;
+        align-items: center;
+        gap: 0.85rem;
+        flex-shrink: 0;
+        margin-right: 3rem;
+        padding: 0.75rem 1.25rem;
+        border-radius: 12px;
+        background: var(--bg-surface);
+        border: 1px solid var(--border-subtle);
+        transition: border-color var(--transition-base), transform var(--transition-base);
+        min-width: 220px;
+    }
+    .partner-item:hover {
+        border-color: var(--accent);
+        transform: scale(1.03);
+    }
+    .partner-item img {
+        width: 44px;
+        height: 44px;
+        object-fit: contain;
+        border-radius: 8px;
+        flex-shrink: 0;
+    }
+    .partner-item .partner-name {
+        font-family: var(--font-body);
+        font-weight: 600;
+        font-size: 0.88rem;
+        color: var(--text-primary);
+        white-space: nowrap;
+    }
+    .partner-item .partner-logo-fallback {
+        width: 44px;
+        height: 44px;
+        border-radius: 8px;
         display: flex;
         align-items: center;
         justify-content: center;
-        font-size: 1.1rem;
-        margin-bottom: 0.75rem;
+        font-family: var(--font-heading);
+        font-weight: 700;
+        font-size: 0.65rem;
         color: #fff;
-    }
-    .stat-card:nth-child(1) .stat-icon { background: linear-gradient(135deg, var(--accent), #009e7e); }
-    .stat-card:nth-child(2) .stat-icon { background: linear-gradient(135deg, var(--secondary), #3451c7); }
-    .stat-card:nth-child(3) .stat-icon { background: linear-gradient(135deg, #8B5CF6, #7C3AED); }
-    .stat-card:nth-child(4) .stat-icon { background: linear-gradient(135deg, var(--tertiary), #e6a520); }
-
-    .stat-number {
-        font-family: 'Space Grotesk', 'Poppins', sans-serif;
-        font-size: 2rem;
-        font-weight: 800;
-        line-height: 1;
-        margin-bottom: 0.25rem;
-        color: var(--text-primary);
-    }
-    .stat-label {
-        color: var(--text-muted);
-        font-size: 0.82rem;
-        font-weight: 500;
-        text-transform: uppercase;
-        letter-spacing: 0.05em;
+        flex-shrink: 0;
     }
 
     /* ---------- SECTION HEADER ---------- */
@@ -402,7 +625,7 @@
     }
     .chart-wrapper {
         position: relative;
-        height: 400px;
+        height: 200px;
     }
     .chart-loading {
         position: absolute;
@@ -715,7 +938,7 @@
         padding: 2rem 0 1rem;
     }
     .btn-explore-all {
-        background: linear-gradient(135deg, var(--accent), var(--secondary));
+        background: linear-gradient(135deg, #00d4aa, #4361ee);
         color: #fff;
         border: none;
         padding: 0.85rem 2.5rem;
@@ -731,7 +954,7 @@
     }
     .btn-explore-all:hover {
         transform: translateY(-3px);
-        box-shadow: 0 12px 32px rgba(16, 185, 129, 0.35);
+        box-shadow: 0 12px 32px rgba(0, 212, 170, 0.35);
         color: #fff;
     }
 
@@ -799,28 +1022,21 @@
         .charts-grid {
             grid-template-columns: 1fr;
         }
-        .stats-row {
-            grid-template-columns: repeat(2, 1fr);
-        }
     }
     @media (max-width: 768px) {
         .startups-grid {
             grid-template-columns: 1fr;
         }
-        .stats-row {
-            grid-template-columns: 1fr 1fr;
-        }
         .hero-headline {
             font-size: 1.6rem;
         }
-        .stat-number {
-            font-size: 1.6rem;
+        .home-partners-section {
+            padding: 1.5rem 1rem;
+            gap: 1rem;
         }
-    }
-    @media (max-width: 480px) {
-        .stats-row {
-            grid-template-columns: 1fr;
-        }
+        .ticker-item { font-size: 0.85rem; padding: 0 1.25rem; }
+        .ticker-item strong { font-size: 1rem; }
+        .home-partners-label { font-size: 0.82rem; }
     }
 
     /* ---------- COUNT-UP ANIMATION ---------- */
@@ -954,8 +1170,8 @@
     }
 
     /* ---------- NEWSFEED EMBEDDED (home) ---------- */
-    :root { --nf-accent: #8B5CF6; --nf-accent-light: rgba(139,92,246,0.15); --nf-accent-glow: rgba(139,92,246,0.25); }
-    .home-nf-section { margin-bottom: 3rem; }
+    :root { --nf-accent: #00d4aa; --nf-accent-light: rgba(0,212,170,0.12); --nf-accent-glow: rgba(0,212,170,0.25); }
+    .home-nf-section { margin-top: 2rem; margin-bottom: 3rem; }
     .home-nf-layout {
         display: grid;
         grid-template-columns: 1fr 300px;
@@ -974,7 +1190,7 @@
     .nf-create-box-header { display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.9rem; }
     .nf-avatar {
         width: 42px; height: 42px; border-radius: 50%;
-        background: linear-gradient(135deg, var(--nf-accent), #6D28D9);
+        background: linear-gradient(135deg, var(--nf-accent), #4361ee);
         color: #fff; display: flex; align-items: center; justify-content: center;
         font-family: var(--font-heading); font-weight: 700; font-size: 1rem;
         flex-shrink: 0; text-transform: uppercase;
@@ -1005,7 +1221,7 @@
     .nf-type-select:focus { outline: none; border-color: var(--nf-accent); }
     .nf-create-footer { display: flex; align-items: center; justify-content: flex-end; margin-top: 1rem; }
     .nf-submit-btn {
-        background: linear-gradient(135deg, var(--nf-accent), #6D28D9); color: #fff; border: none;
+        background: linear-gradient(135deg, var(--nf-accent), #4361ee); color: #fff; border: none;
         border-radius: 10px; font-family: var(--font-heading); font-weight: 600; font-size: 0.88rem;
         padding: 0.55rem 1.4rem; cursor: pointer; transition: opacity 0.2s, transform 0.15s;
         display: flex; align-items: center; gap: 0.4rem;
@@ -1023,7 +1239,7 @@
         color: var(--text-muted); cursor: pointer; border: none; background: transparent;
         transition: all 0.2s; white-space: nowrap;
     }
-    .nf-tab.active { background: linear-gradient(135deg, var(--nf-accent), #6D28D9); color: #fff; box-shadow: 0 2px 8px var(--nf-accent-glow); }
+    .nf-tab.active { background: linear-gradient(135deg, var(--nf-accent), #4361ee); color: #fff; box-shadow: 0 2px 8px var(--nf-accent-glow); }
     .nf-tab:hover:not(.active) { background: var(--nf-accent-light); color: var(--nf-accent); }
     /* Feed card */
     .nf-card {
@@ -1229,26 +1445,20 @@
         border: none;
         color: #fff;
         white-space: nowrap;
-        /* default = blue */
-        background: linear-gradient(135deg, #3B82F6, #2563eb);
+        background: linear-gradient(135deg, #00d4aa, #4361ee);
     }
     .btn-section-cta:hover {
         transform: translateY(-2px);
-        box-shadow: 0 8px 20px rgba(59,130,246,0.35);
+        box-shadow: 0 8px 20px rgba(0,212,170,0.35);
         color: #fff;
     }
-    .btn-section-cta.accent {
-        background: linear-gradient(135deg, #10B981, #00c896);
-    }
-    .btn-section-cta.accent:hover {
-        box-shadow: 0 8px 20px rgba(16,185,129,0.35);
-        color: #fff;
-    }
+    .btn-section-cta.accent,
     .btn-section-cta.purple {
-        background: linear-gradient(135deg, #8B5CF6, #7C3AED);
+        background: linear-gradient(135deg, #00d4aa, #4361ee);
     }
+    .btn-section-cta.accent:hover,
     .btn-section-cta.purple:hover {
-        box-shadow: 0 8px 20px rgba(139,92,246,0.35);
+        box-shadow: 0 8px 20px rgba(0,212,170,0.35);
         color: #fff;
     }
 </style>
@@ -1260,7 +1470,14 @@
     <button onclick="this.parentElement.style.display='none'" style="background: none; border: none; color: #0a0e1a; font-size: 1rem; cursor: pointer; margin-left: 0.75rem; opacity: 0.7; line-height: 1;" aria-label="Close">&times;</button>
 </div>
 
-<div class="container-fluid px-3 px-md-4 home-body">
+<!-- Floating Orbs Background -->
+<div class="home-floating-orbs">
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="orb orb-3"></div>
+</div>
+
+<div class="container-fluid px-3 px-md-4 home-body" style="position: relative; z-index: 1;">
 
     <!-- ==================== HERO ==================== -->
     <section class="hero-section">
@@ -1296,8 +1513,8 @@
                 </svg>
             </div>
         </div>
-        <img src="{{ url_for('static', filename='images/thepulse-noir.png') }}" alt="The Pulse" class="hero-logo-img logo-dark" style="width: 100%; max-width: 600px; height: auto; margin: 0 auto; position: relative; z-index: 2;">
-        <img src="{{ url_for('static', filename='images/thepulse-blanc.png') }}" alt="The Pulse" class="hero-logo-img logo-light" style="width: 100%; max-width: 600px; height: auto; margin: 0 auto; position: relative; z-index: 2;">
+        <img src="{{ url_for('static', filename='images/thepulse-noir.png') }}" alt="The Pulse" class="hero-logo-img logo-dark" style="width: 100%; max-width: 420px; height: auto; margin: 0 auto; position: relative; z-index: 2;">
+        <img src="{{ url_for('static', filename='images/thepulse-blanc.png') }}" alt="The Pulse" class="hero-logo-img logo-light" style="width: 100%; max-width: 420px; height: auto; margin: 0 auto; position: relative; z-index: 2;">
 
         <!-- Pulsating dot -->
         <div class="hero-pulse-dot" style="position: relative; z-index: 2;">
@@ -1317,34 +1534,40 @@
         </div>
     </section>
 
-    <!-- ==================== STATS ROW ==================== -->
-    <section class="stats-row">
-        <div class="stat-card">
-            <div class="stat-icon"><i class="fas fa-rocket"></i></div>
-            <div class="stat-number" data-target="{{ startups|length }}">0</div>
-            <div class="stat-label" data-i18n="stat_startups">Total Startups</div>
-        </div>
-        <div class="stat-card">
-            <div class="stat-icon"><i class="fas fa-user-tie"></i></div>
-            <div class="stat-number" data-target="{{ founders|length }}">0</div>
-            <div class="stat-label" data-i18n="stat_founders">Active Founders</div>
-        </div>
-        <div class="stat-card">
-            <div class="stat-icon"><i class="fas fa-hand-holding-usd"></i></div>
-            <div class="stat-number" data-target="{{ investors|length }}">0</div>
-            <div class="stat-label" data-i18n="stat_investors">Investors</div>
-        </div>
-        <div class="stat-card">
-            <div class="stat-icon"><i class="fas fa-chart-line"></i></div>
-            <div class="stat-number" data-target="{{ total_funding }}" data-prefix="$" data-suffix="M" data-decimals="1">0</div>
-            <div class="stat-label" data-i18n="stat_funding">Total Funding</div>
+    <!-- ==================== SCROLLING STATS TICKER ==================== -->
+    <section class="stats-ticker">
+        <div class="stats-ticker-track">
+            <div class="stats-ticker-content">
+                <span class="ticker-item"><i class="fas fa-rocket"></i> <strong>{{ startups|length }}</strong> <span data-i18n="ticker_startups">Startups</span></span>
+                <span class="ticker-dot"></span>
+                <span class="ticker-item"><i class="fas fa-user-tie"></i> <strong>{{ founders|length }}</strong> <span data-i18n="ticker_founders">Fondateurs</span></span>
+                <span class="ticker-dot"></span>
+                <span class="ticker-item"><i class="fas fa-hand-holding-usd"></i> <strong>{{ investors|length }}</strong> <span data-i18n="ticker_investors">Investisseurs</span></span>
+                <span class="ticker-dot"></span>
+                <span class="ticker-item"><i class="fas fa-chart-line"></i> <strong>${{ "%.1f"|format(total_funding) }}M</strong> <span data-i18n="ticker_funding">Financement total</span></span>
+                <span class="ticker-dot"></span>
+                <span class="ticker-item"><i class="fas fa-building"></i> <strong>{{ incubators|length if incubators is defined else '20+' }}</strong> <span data-i18n="ticker_incubators">Incubateurs</span></span>
+                <span class="ticker-dot"></span>
+            </div>
+            <div class="stats-ticker-content" aria-hidden="true">
+                <span class="ticker-item"><i class="fas fa-rocket"></i> <strong>{{ startups|length }}</strong> <span data-i18n="ticker_startups">Startups</span></span>
+                <span class="ticker-dot"></span>
+                <span class="ticker-item"><i class="fas fa-user-tie"></i> <strong>{{ founders|length }}</strong> <span data-i18n="ticker_founders">Fondateurs</span></span>
+                <span class="ticker-dot"></span>
+                <span class="ticker-item"><i class="fas fa-hand-holding-usd"></i> <strong>{{ investors|length }}</strong> <span data-i18n="ticker_investors">Investisseurs</span></span>
+                <span class="ticker-dot"></span>
+                <span class="ticker-item"><i class="fas fa-chart-line"></i> <strong>${{ "%.1f"|format(total_funding) }}M</strong> <span data-i18n="ticker_funding">Financement total</span></span>
+                <span class="ticker-dot"></span>
+                <span class="ticker-item"><i class="fas fa-building"></i> <strong>{{ incubators|length if incubators is defined else '20+' }}</strong> <span data-i18n="ticker_incubators">Incubateurs</span></span>
+                <span class="ticker-dot"></span>
+            </div>
         </div>
     </section>
 
     <!-- ==================== NEWSFEED EMBEDDED ==================== -->
     <div class="home-nf-section">
-        <div class="section-header">
-            <div class="section-header-icon" style="background: linear-gradient(135deg, #8B5CF6, #6D28D9);">
+        <div class="section-header" data-scroll-reveal>
+            <div class="section-header-icon" style="background: linear-gradient(135deg, #00d4aa, #4361ee);">
                 <i class="fas fa-rss"></i>
             </div>
             <h2 class="home-heading">Newsfeed</h2>
@@ -1532,153 +1755,159 @@
     </div><!-- end home-nf-section -->
 
     <!-- ==================== 1) ACTUALITÉS ==================== -->
-    <div class="section-header">
-        <div class="section-header-icon" style="background: linear-gradient(135deg, var(--secondary), #2563eb);">
-            <i class="fas fa-newspaper"></i>
-        </div>
-        <h2 class="home-heading">Actualités</h2>
-    </div>
-    <div class="actu-grid">
-        {% for article in recent_articles %}
-        <a href="{{ article.source_url or '#' }}" {% if article.source_url %}target="_blank" rel="noopener"{% endif %} class="actu-card">
-            <span class="actu-cat {% if article.category == 'Interview' %}cat-interview{% elif article.category == 'Analyse' %}cat-analyse{% endif %}">{{ article.category }}</span>
-            <div class="actu-title">{{ article.title }}</div>
-            <div class="actu-meta">
-                <i class="fas fa-building-columns"></i> {{ article.source }}
-                {% if article.published_at %}&nbsp;·&nbsp;<i class="fas fa-clock"></i>
-                {{ article.published_at[:10] if article.published_at is string else article.published_at.strftime('%d/%m/%Y') }}{% endif %}
+    <div class="home-section-box" data-scroll-reveal>
+        <div class="section-header">
+            <div class="section-header-icon" style="background: linear-gradient(135deg, #00d4aa, #4361ee);">
+                <i class="fas fa-newspaper"></i>
             </div>
-        </a>
-        {% endfor %}
+            <h2 class="home-heading">Actualités</h2>
+        </div>
+        <div class="actu-grid">
+            {% for article in recent_articles %}
+            <a href="{{ article.source_url or '#' }}" {% if article.source_url %}target="_blank" rel="noopener"{% endif %} class="actu-card">
+                <span class="actu-cat {% if article.category == 'Interview' %}cat-interview{% elif article.category == 'Analyse' %}cat-analyse{% endif %}">{{ article.category }}</span>
+                <div class="actu-title">{{ article.title }}</div>
+                <div class="actu-meta">
+                    <i class="fas fa-building-columns"></i> {{ article.source }}
+                    {% if article.published_at %}&nbsp;·&nbsp;<i class="fas fa-clock"></i>
+                    {{ article.published_at[:10] if article.published_at is string else article.published_at.strftime('%d/%m/%Y') }}{% endif %}
+                </div>
+            </a>
+            {% endfor %}
+        </div>
+        <div class="section-cta">
+            <a href="{{ url_for('actualites') }}" class="btn-section-cta accent">
+                <i class="fas fa-arrow-right"></i> Toutes les actualités
+            </a>
+        </div>
     </div>
-    <div class="section-cta">
-        <a href="{{ url_for('actualites') }}" class="btn-section-cta accent">
-            <i class="fas fa-arrow-right"></i> Toutes les actualités
-        </a>
-    </div>
-
 
     <!-- ==================== 2) APPELS À PROJETS ==================== -->
     {% if appels_a_projets %}
-    <div class="section-header">
-        <div class="section-header-icon" style="background: linear-gradient(135deg, #8B5CF6, #7C3AED);">
-            <i class="fas fa-bullhorn"></i>
+    <div class="home-section-box" data-scroll-reveal>
+        <div class="section-header">
+            <div class="section-header-icon" style="background: linear-gradient(135deg, #00d4aa, #4361ee);">
+                <i class="fas fa-bullhorn"></i>
+            </div>
+            <h2 class="home-heading">Appels à Projets</h2>
         </div>
-        <h2 class="home-heading">Appels à Projets</h2>
-    </div>
-    <section class="appels-grid">
-        {% for appel in appels_a_projets %}
-        <a href="{{ appel.url }}" target="_blank" rel="noopener" class="appel-card">
-            <div class="appel-card-top">
-                <span class="appel-org">{{ appel.organization }}</span>
-                {% if appel.published_at %}
-                <span class="appel-deadline"><i class="fas fa-calendar-alt"></i> {{ appel.published_at[:10] if appel.published_at is string else appel.published_at.strftime('%d/%m/%Y') }}</span>
-                {% endif %}
-            </div>
-            <h3 class="appel-title">{{ appel.title }}</h3>
-            <p class="appel-desc">{{ appel.description[:120] }}…</p>
-            <div class="appel-footer">
-                {% if appel.tags %}{% for tag in appel.tags.split(',')[:3] %}<span class="appel-tag">{{ tag.strip() }}</span>{% endfor %}{% endif %}
-                <span class="appel-cta">Voir <i class="fas fa-external-link-alt"></i></span>
-            </div>
-        </a>
-        {% endfor %}
-    </section>
-    <div class="section-cta">
-        <a href="{{ url_for('ressources') }}" class="btn-section-cta purple">
-            <i class="fas fa-arrow-right"></i> Voir tous les appels à projets
-        </a>
+        <section class="appels-grid">
+            {% for appel in appels_a_projets %}
+            <a href="{{ appel.url }}" target="_blank" rel="noopener" class="appel-card">
+                <div class="appel-card-top">
+                    <span class="appel-org">{{ appel.organization }}</span>
+                    {% if appel.published_at %}
+                    <span class="appel-deadline"><i class="fas fa-calendar-alt"></i> {{ appel.published_at[:10] if appel.published_at is string else appel.published_at.strftime('%d/%m/%Y') }}</span>
+                    {% endif %}
+                </div>
+                <h3 class="appel-title">{{ appel.title }}</h3>
+                <p class="appel-desc">{{ appel.description[:120] }}…</p>
+                <div class="appel-footer">
+                    {% if appel.tags %}{% for tag in appel.tags.split(',')[:3] %}<span class="appel-tag">{{ tag.strip() }}</span>{% endfor %}{% endif %}
+                    <span class="appel-cta">Voir <i class="fas fa-external-link-alt"></i></span>
+                </div>
+            </a>
+            {% endfor %}
+        </section>
+        <div class="section-cta">
+            <a href="{{ url_for('ressources') }}" class="btn-section-cta purple">
+                <i class="fas fa-arrow-right"></i> Voir tous les appels à projets
+            </a>
+        </div>
     </div>
     {% endif %}
 
 
     <!-- ==================== 3) CHERCHENT UN CO-FONDATEUR ==================== -->
     {% if cofound_projects %}
-    <div class="section-header">
-        <div class="section-header-icon" style="background: linear-gradient(135deg, #10B981, #059669);">
-            <i class="fas fa-handshake"></i>
-        </div>
-        <h2 class="home-heading">Cherchent un Co-fondateur</h2>
-    </div>
-    <section class="cofound-grid">
-        {% for project in cofound_projects %}
-        <a href="{{ url_for('cofounders') }}" class="cofound-card">
-            <span class="cofound-stage">{{ project.project_stage or 'Projet' }}</span>
-            <div class="cofound-title">{{ project.project_title }}</div>
-            {% if project.description %}
-            <div class="cofound-desc">{{ project.description[:130] }}{% if project.description|length > 130 %}…{% endif %}</div>
-            {% endif %}
-            <div class="cofound-footer">
-                <span class="cofound-author">
-                    <i class="fas fa-user-circle"></i> {{ project.author_name or 'Anonyme' }}
-                    {% if project.domain %} · {{ project.domain }}{% endif %}
-                </span>
-                {% if project.commitment_type %}<span class="cofound-commitment">{{ project.commitment_type }}</span>{% endif %}
+    <div class="home-section-box" data-scroll-reveal>
+        <div class="section-header">
+            <div class="section-header-icon" style="background: linear-gradient(135deg, #00d4aa, #4361ee);">
+                <i class="fas fa-handshake"></i>
             </div>
-        </a>
-        {% endfor %}
-    </section>
-    <div class="section-cta">
-        <a href="{{ url_for('cofounders') }}" class="btn-section-cta">
-            <i class="fas fa-arrow-right"></i> Voir toutes les opportunités
-        </a>
+            <h2 class="home-heading">Cherchent un Co-fondateur</h2>
+        </div>
+        <section class="cofound-grid">
+            {% for project in cofound_projects %}
+            <a href="{{ url_for('cofounders') }}" class="cofound-card">
+                <span class="cofound-stage">{{ project.project_stage or 'Projet' }}</span>
+                <div class="cofound-title">{{ project.project_title }}</div>
+                {% if project.description %}
+                <div class="cofound-desc">{{ project.description[:130] }}{% if project.description|length > 130 %}…{% endif %}</div>
+                {% endif %}
+                <div class="cofound-footer">
+                    <span class="cofound-author">
+                        <i class="fas fa-user-circle"></i> {{ project.author_name or 'Anonyme' }}
+                        {% if project.domain %} · {{ project.domain }}{% endif %}
+                    </span>
+                    {% if project.commitment_type %}<span class="cofound-commitment">{{ project.commitment_type }}</span>{% endif %}
+                </div>
+            </a>
+            {% endfor %}
+        </section>
+        <div class="section-cta">
+            <a href="{{ url_for('cofounders') }}" class="btn-section-cta">
+                <i class="fas fa-arrow-right"></i> Voir toutes les opportunités
+            </a>
+        </div>
     </div>
     {% endif %}
 
-
     <!-- ==================== 4) TOP FUNDED STARTUPS ==================== -->
-    <div class="section-header">
-        <div class="section-header-icon" style="background: linear-gradient(135deg, var(--tertiary), #e6a520);">
-            <i class="fas fa-trophy"></i>
+    <div class="home-section-box" data-scroll-reveal>
+        <div class="section-header">
+            <div class="section-header-icon" style="background: linear-gradient(135deg, #00d4aa, #4361ee);">
+                <i class="fas fa-trophy"></i>
+            </div>
+            <h2 class="home-heading" data-i18n="section_top">Top Funded Startups</h2>
         </div>
-        <h2 class="home-heading" data-i18n="section_top">Top Funded Startups</h2>
-    </div>
-    <section class="startups-grid">
-        {% for startup in top_startups_funding %}
-        <a href="{{ url_for('startup_detail', startup_id=startup.startup_id) }}" class="startup-card" style="transition-delay: {{ loop.index0 * 80 }}ms;">
-            <div class="startup-card-glow"></div>
-            <div class="startup-card-top">
-                <div class="startup-rank {% if loop.index == 1 %}rank-1{% elif loop.index == 2 %}rank-2{% elif loop.index == 3 %}rank-3{% endif %}">{{ loop.index }}</div>
-                {% if startup.logo_url %}
-                <div class="startup-logo"><img src="{{ startup.logo_url }}" alt="{{ startup.startup_name }}" loading="lazy"></div>
-                {% else %}
-                <div class="startup-logo-placeholder"><i class="fas fa-building"></i></div>
-                {% endif %}
-                <div class="startup-info">
-                    <div class="startup-name">{{ startup.startup_name }}</div>
-                    {% if startup.location %}<div class="startup-location"><i class="fas fa-map-pin"></i> {{ startup.location }}</div>{% endif %}
+        <section class="startups-grid">
+            {% for startup in top_startups_funding %}
+            <a href="{{ url_for('startup_detail', startup_id=startup.startup_id) }}" class="startup-card" style="transition-delay: {{ loop.index0 * 80 }}ms;">
+                <div class="startup-card-glow"></div>
+                <div class="startup-card-top">
+                    <div class="startup-rank {% if loop.index == 1 %}rank-1{% elif loop.index == 2 %}rank-2{% elif loop.index == 3 %}rank-3{% endif %}">{{ loop.index }}</div>
+                    {% if startup.logo_url %}
+                    <div class="startup-logo"><img src="{{ startup.logo_url }}" alt="{{ startup.startup_name }}" loading="lazy"></div>
+                    {% else %}
+                    <div class="startup-logo-placeholder"><i class="fas fa-building"></i></div>
+                    {% endif %}
+                    <div class="startup-info">
+                        <div class="startup-name">{{ startup.startup_name }}</div>
+                        {% if startup.location %}<div class="startup-location"><i class="fas fa-map-pin"></i> {{ startup.location }}</div>{% endif %}
+                    </div>
                 </div>
-            </div>
-            <div class="startup-badges">
-                {% if startup.sector %}<span class="badge-sector">{{ startup.sector }}</span>{% endif %}
-                {% if startup.stage %}<span class="badge-stage">{{ startup.stage }}</span>{% endif %}
-            </div>
-            {% if startup.description or startup.description_en %}
-            <div class="startup-description lang-en">{{ startup.description_en or startup.description }}</div>
-            <div class="startup-description lang-fr">{{ startup.description }}</div>
-            {% endif %}
-            <div class="startup-funding">
-                <span class="funding-label">Total Funding</span>
-                <span class="funding-amount" id="startup-funding-{{ loop.index0 }}"></span>
-            </div>
-        </a>
-        {% endfor %}
-    </section>
-    <div class="section-cta">
-        <a href="{{ url_for('startups') }}" class="btn-section-cta accent">
-            <i class="fas fa-arrow-right"></i> <span data-i18n="btn_explore_all">Explorer toutes les startups</span>
-        </a>
+                <div class="startup-badges">
+                    {% if startup.sector %}<span class="badge-sector">{{ startup.sector }}</span>{% endif %}
+                    {% if startup.stage %}<span class="badge-stage">{{ startup.stage }}</span>{% endif %}
+                </div>
+                {% if startup.description or startup.description_en %}
+                <div class="startup-description lang-en">{{ startup.description_en or startup.description }}</div>
+                <div class="startup-description lang-fr">{{ startup.description }}</div>
+                {% endif %}
+                <div class="startup-funding">
+                    <span class="funding-label">Total Funding</span>
+                    <span class="funding-amount" id="startup-funding-{{ loop.index0 }}"></span>
+                </div>
+            </a>
+            {% endfor %}
+        </section>
+        <div class="section-cta">
+            <a href="{{ url_for('startups') }}" class="btn-section-cta accent">
+                <i class="fas fa-arrow-right"></i> <span data-i18n="btn_explore_all">Explorer toutes les startups</span>
+            </a>
+        </div>
     </div>
-
 
     <!-- ==================== 5) ANALYTICS ==================== -->
-    <div class="section-header">
-        <div class="section-header-icon" style="background: linear-gradient(135deg, var(--accent), #009e7e);">
-            <i class="fas fa-chart-pie"></i>
+    <div class="home-section-box" data-scroll-reveal>
+        <div class="section-header">
+            <div class="section-header-icon" style="background: linear-gradient(135deg, #00d4aa, #4361ee);">
+                <i class="fas fa-chart-pie"></i>
+            </div>
+            <h2 class="home-heading">Analytics</h2>
         </div>
-        <h2 class="home-heading">Analytics</h2>
-    </div>
-    <section class="charts-grid">
+    <section class="charts-grid" style="grid-template-columns: repeat(3, 1fr);">
         <div class="chart-card">
             <div class="chart-card-header">
                 <i class="fas fa-th-large"></i>
@@ -1709,23 +1938,107 @@
                 <canvas id="fundingLineChart"></canvas>
             </div>
         </div>
-        <div class="chart-card">
-            <div class="chart-card-header">
-                <i class="fas fa-coins"></i>
-                <span data-i18n="chart_funding_sector">Financement par secteur</span>
-            </div>
-            <div class="chart-wrapper">
-                <div class="chart-loading" id="loading-fundingSector"><div class="chart-spinner"></div><span>Loading...</span></div>
-                <canvas id="fundingSectorBarChart"></canvas>
-            </div>
-        </div>
     </section>
+    <!-- Hidden chart for data that's still needed by JS -->
+    <div style="display:none;">
+        <canvas id="fundingSectorBarChart"></canvas>
+    </div>
     <div class="section-cta">
         <a href="/" class="btn-section-cta">
             <i class="fas fa-chart-pie"></i> Toutes les analytics
         </a>
     </div>
+    </div>
 
+    <!-- ==================== PARTNERS (before footer) ==================== -->
+    <div class="home-section-box" data-scroll-reveal>
+        <div class="section-header">
+            <div class="section-header-icon" style="background: linear-gradient(135deg, #00d4aa, #4361ee);">
+                <i class="fas fa-handshake"></i>
+            </div>
+            <h2 data-i18n="our_partners">Nos Partenaires</h2>
+        </div>
+
+        <div class="partners-track-wrapper">
+            <div class="partners-track">
+                <!-- First set -->
+                <div class="partner-item">
+                    <img src="{{ url_for('static', filename='images/um6p_logo.png') }}" alt="UM6P"
+                         loading="lazy" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                    <div class="partner-logo-fallback" style="background: var(--gradient-accent); display:none;">UM6P</div>
+                    <span class="partner-name">UM6P</span>
+                </div>
+                <div class="partner-item">
+                    <img src="{{ url_for('static', filename='images/bank_almaghrib_logo.png') }}" alt="Observatoire BAM PME/TPE"
+                         loading="lazy" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                    <div class="partner-logo-fallback" style="background: var(--gradient-danger); display:none;">BAM</div>
+                    <span class="partner-name">Observatoire BAM PME/TPE</span>
+                </div>
+                <div class="partner-item">
+                    <img src="{{ url_for('static', filename='images/tamwilcom_logo.png') }}" alt="Tamwilcom"
+                         loading="lazy" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                    <div class="partner-logo-fallback" style="background: var(--gradient-secondary); display:none;">TWC</div>
+                    <span class="partner-name">Tamwilcom</span>
+                </div>
+                <div class="partner-item">
+                    <img src="{{ url_for('static', filename='images/amic_logo.png') }}" alt="AMIC"
+                         loading="lazy" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                    <div class="partner-logo-fallback" style="background: var(--gradient-danger); display:none;">AMIC</div>
+                    <span class="partner-name">AMIC</span>
+                </div>
+                <div class="partner-item">
+                    <img src="{{ url_for('static', filename='images/mesc_logo.png') }}" alt="MESC"
+                         loading="lazy" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                    <div class="partner-logo-fallback" style="background: linear-gradient(135deg, #7c3aed, #8b5cf6); display:none;">MESC</div>
+                    <span class="partner-name">MESC</span>
+                </div>
+                <div class="partner-item">
+                    <img src="{{ url_for('static', filename='images/mtn_logo.png') }}" alt="Ministère Transition Numérique"
+                         loading="lazy" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                    <div class="partner-logo-fallback" style="background: var(--gradient-tertiary); display:none;">MTN</div>
+                    <span class="partner-name">Ministère de la Transition Numérique</span>
+                </div>
+
+                <!-- Duplicate set for seamless loop -->
+                <div class="partner-item">
+                    <img src="{{ url_for('static', filename='images/um6p_logo.png') }}" alt="UM6P"
+                         loading="lazy" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                    <div class="partner-logo-fallback" style="background: var(--gradient-accent); display:none;">UM6P</div>
+                    <span class="partner-name">UM6P</span>
+                </div>
+                <div class="partner-item">
+                    <img src="{{ url_for('static', filename='images/bank_almaghrib_logo.png') }}" alt="Observatoire BAM PME/TPE"
+                         loading="lazy" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                    <div class="partner-logo-fallback" style="background: var(--gradient-danger); display:none;">BAM</div>
+                    <span class="partner-name">Observatoire BAM PME/TPE</span>
+                </div>
+                <div class="partner-item">
+                    <img src="{{ url_for('static', filename='images/tamwilcom_logo.png') }}" alt="Tamwilcom"
+                         loading="lazy" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                    <div class="partner-logo-fallback" style="background: var(--gradient-secondary); display:none;">TWC</div>
+                    <span class="partner-name">Tamwilcom</span>
+                </div>
+                <div class="partner-item">
+                    <img src="{{ url_for('static', filename='images/amic_logo.png') }}" alt="AMIC"
+                         loading="lazy" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                    <div class="partner-logo-fallback" style="background: var(--gradient-danger); display:none;">AMIC</div>
+                    <span class="partner-name">AMIC</span>
+                </div>
+                <div class="partner-item">
+                    <img src="{{ url_for('static', filename='images/mesc_logo.png') }}" alt="MESC"
+                         loading="lazy" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                    <div class="partner-logo-fallback" style="background: linear-gradient(135deg, #7c3aed, #8b5cf6); display:none;">MESC</div>
+                    <span class="partner-name">MESC</span>
+                </div>
+                <div class="partner-item">
+                    <img src="{{ url_for('static', filename='images/mtn_logo.png') }}" alt="Ministère Transition Numérique"
+                         loading="lazy" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                    <div class="partner-logo-fallback" style="background: var(--gradient-tertiary); display:none;">MTN</div>
+                    <span class="partner-name">Ministère de la Transition Numérique</span>
+                </div>
+            </div>
+        </div>
+    </div>
 
 </div>
 {% endblock %}
@@ -2017,6 +2330,13 @@
         var labels = {{ years | tojson }};
         var data = {{ total_by_year | tojson }};
 
+        // Add 2026 = 10% more than 2025
+        if (labels.length > 0 && !labels.includes('2026') && !labels.includes(2026)) {
+            labels.push('2026');
+            var last = parseFloat(data[data.length - 1]) || 0;
+            data.push(+(last * 1.1).toFixed(2));
+        }
+
         window.chartInstances.fundingLine = new Chart(ctx, {
             type: 'line',
             data: {
@@ -2232,12 +2552,33 @@
     /* ============================================================
        INIT
        ============================================================ */
+    /* ============================================================
+       SCROLL REVEAL (Phase 7)
+       ============================================================ */
+    function initScrollReveal() {
+        var revealEls = document.querySelectorAll('[data-scroll-reveal], [data-scroll-reveal-stagger]');
+        if (!revealEls.length || window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+            revealEls.forEach(function(el) { el.classList.add('revealed'); });
+            return;
+        }
+        var observer = new IntersectionObserver(function(entries) {
+            entries.forEach(function(entry) {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('revealed');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+        revealEls.forEach(function(el) { observer.observe(el); });
+    }
+
     document.addEventListener('DOMContentLoaded', function() {
         animateCounters();
         setStartupFundingAmounts();
         buildAllCharts();
         observeStartupCards();
         watchThemeChanges();
+        initScrollReveal();
     });
 
 })();

@@ -46,8 +46,8 @@
                 <i class="fas fa-hand-holding-usd"></i>
             </div>
             <div class="mini-stat-content">
-                <div class="stat-number">{{ startups|selectattr('total_funding_usd')|list|length }}</div>
-                <div class="stat-label" data-i18n="total_raised">Financées</div>
+                <div class="stat-number">{{ "%.0f"|format(total_funding_millions) }} M$</div>
+                <div class="stat-label" data-i18n="total_raised">Total Levé</div>
             </div>
         </div>
         <div class="mini-stat-card">
@@ -56,20 +56,8 @@
             </div>
             <div class="mini-stat-content">
                 <div class="stat-number">{{ distinct_cities|length }}</div>
-                <div class="stat-label" data-i18n="city">Villes</div>
+                <div class="stat-label" data-i18n="cities">Villes</div>
             </div>
-        </div>
-    </div>
-
-    <!-- Mini Charts Row -->
-    <div class="mini-charts-row fade-in">
-        <div class="mini-chart-card">
-            <h4>Startups par secteur</h4>
-            <canvas id="sectorChart"></canvas>
-        </div>
-        <div class="mini-chart-card">
-            <h4>Startups par ville</h4>
-            <canvas id="cityChart"></canvas>
         </div>
     </div>
 
@@ -307,6 +295,9 @@
                             {% else %}
                             <span class="badge-sm badge-status-default">{{ startup.status_startup }}</span>
                             {% endif %}
+                        {% endif %}
+                        {% if startup.total_funding_usd %}
+                        <span class="badge-sm badge-funding"><i class="fas fa-dollar-sign"></i> {{ "%.1f"|format(startup.total_funding_usd / 1000000) }} M$</span>
                         {% endif %}
                     </div>
 
