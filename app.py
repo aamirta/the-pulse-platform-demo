@@ -92,49 +92,64 @@ def home():
     #top startups by total funding
     top_startups_funding, total_funding_by_startup = toptotalfundingByStartup(startups, n=3)
 
-    # Featured appels à projets for home page
-    appels_a_projets = Resource.query.filter(
-        Resource.category == 'Appels à projets',
-        Resource.is_featured == True
-    ).order_by(Resource.published_at.desc()).limit(3).all()
+    # Defensive content loading for production environments with uneven data/schema.
+    try:
+        appels_a_projets = Resource.query.filter(
+            Resource.category.in_(['Appels à projets', 'Appel à projet']),
+            Resource.is_featured == True
+        ).order_by(Resource.published_at.desc()).limit(3).all()
+    except Exception:
+        appels_a_projets = []
 
-    # Co-founder projects for home page
-    cofound_projects = CofounderProject.query.order_by(CofounderProject.created_at.desc()).limit(3).all()
+    try:
+        cofound_projects = CofounderProject.query.order_by(CofounderProject.created_at.desc()).limit(3).all()
+    except Exception:
+        cofound_projects = []
 
-    # Recent articles for home page
-    recent_articles = Article.query.order_by(Article.article_id.desc()).limit(4).all()
+    try:
+        recent_articles = Article.query.order_by(Article.article_id.desc()).limit(4).all()
+    except Exception:
+        recent_articles = []
 
-    # Newsfeed embedded section
     from datetime import datetime as _dt
-    _nf_posts    = Post.query.filter_by(is_published=True).order_by(Post.created_at.desc()).all()
-    _nf_articles = Article.query.order_by(Article.published_at.desc()).limit(10).all()
-    _feed = []
-    for p in _nf_posts:
-        _feed.append({'type': 'post',    'obj': p, 'date': p.created_at})
-    for a in _nf_articles:
-        _feed.append({'type': 'article', 'obj': a, 'date': a.published_at})
-    _feed.sort(key=lambda x: x['date'] if x['date'] else _dt.min, reverse=True)
-    # Build balanced feed: 2 articles + 2 posts + 2 opportunities
-    _articles = [x for x in _feed if x['type'] == 'article'][:2]
-    _posts = [x for x in _feed if x['type'] == 'post' and x['obj'].post_type in ('post', 'question', 'announcement') and x['obj'].author_founder_id][:2]
-    _opps = [x for x in _feed if x['type'] == 'post' and x['obj'].post_type == 'opportunity'][:2]
-    home_feed_items = _articles + _posts + _opps
-    home_feed_items.sort(key=lambda x: x['date'] if x['date'] else _dt.min, reverse=True)
+    try:
+        _nf_posts = Post.query.filter_by(is_published=True).order_by(Post.created_at.desc()).all()
+        _nf_articles = Article.query.order_by(Article.published_at.desc()).limit(10).all()
+        _feed = []
+        for p in _nf_posts:
+            _feed.append({'type': 'post', 'obj': p, 'date': p.created_at})
+        for a in _nf_articles:
+            _feed.append({'type': 'article', 'obj': a, 'date': a.published_at})
+        _feed.sort(key=lambda x: x['date'] if x['date'] else _dt.min, reverse=True)
+        _articles = [x for x in _feed if x['type'] == 'article'][:2]
+        _posts = [x for x in _feed if x['type'] == 'post' and x['obj'].post_type in ('post', 'question', 'announcement')][:2]
+        _opps = [x for x in _feed if x['type'] == 'post' and x['obj'].post_type == 'opportunity'][:2]
+        home_feed_items = _articles + _posts + _opps
+        home_feed_items.sort(key=lambda x: x['date'] if x['date'] else _dt.min, reverse=True)
 
-    _all_tags = []
-    for p in _nf_posts:
-        if p.tags:
-            _all_tags.extend([t.strip() for t in p.tags.split(',') if t.strip()])
-    home_trending_tags = Counter(_all_tags).most_common(8)
+        _all_tags = []
+        for p in _nf_posts:
+            if p.tags:
+                _all_tags.extend([t.strip() for t in p.tags.split(',') if t.strip()])
+        home_trending_tags = Counter(_all_tags).most_common(8)
+    except Exception:
+        home_feed_items = []
+        home_trending_tags = []
 
-    home_recent_rounds = FundingRound.query.filter(
-        FundingRound.raised_amount_usd.isnot(None)
-    ).order_by(FundingRound.date.desc()).limit(4).all()
+    try:
+        home_recent_rounds = FundingRound.query.filter(
+            FundingRound.raised_amount_usd.isnot(None)
+        ).order_by(FundingRound.date.desc()).limit(4).all()
+    except Exception:
+        home_recent_rounds = []
 
-    home_appels_sidebar = Resource.query.filter(
-        Resource.category == 'Appels à projets',
-        Resource.is_featured == True
-    ).order_by(Resource.published_at.desc()).limit(3).all()
+    try:
+        home_appels_sidebar = Resource.query.filter(
+            Resource.category.in_(['Appels à projets', 'Appel à projet']),
+            Resource.is_featured == True
+        ).order_by(Resource.published_at.desc()).limit(3).all()
+    except Exception:
+        home_appels_sidebar = []
 
     return render_template("home.html",
                          startups=startups,
