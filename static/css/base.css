@@ -646,6 +646,9 @@
         .btn-join:active {
             transform: translateY(0);
         }
+        .btn-join-short {
+            display: none;
+        }
 
         /* Floating Profile Button */
         .floating-profile {
@@ -1171,7 +1174,7 @@
                 padding: 1.5rem 1rem;
             }
 
-            .btn-join span {
+            .btn-join-full {
                 display: none;
             }
 
