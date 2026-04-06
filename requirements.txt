@@ -6,3 +6,5 @@ Werkzeug
 itsdangerous
 Jinja2
 MarkupSafe
+psycopg2-binary
+python-dotenv

@@ -2003,5 +2003,86 @@
         }
     }
     </script>
+
+<!-- PulseGPT Chatbot -->
+<style>
+#pulseGptBtn{position:fixed;bottom:1.5rem;right:1.5rem;z-index:9998;background:var(--accent);color:#fff;border:none;border-radius:50px;padding:0.7rem 1.2rem;font-family:var(--font-heading);font-weight:700;font-size:0.85rem;cursor:pointer;box-shadow:0 4px 20px rgba(0,212,170,0.4);display:flex;align-items:center;gap:0.5rem;transition:all 0.3s ease;}
+#pulseGptBtn:hover{transform:translateY(-2px);box-shadow:0 8px 30px rgba(0,212,170,0.5);}
+#pulseGptBtn svg{animation:ecgFloat 2s ease-in-out infinite;}
+@keyframes ecgFloat{0%,100%{opacity:0.8;}50%{opacity:1;}}
+#pulseGptChat{position:fixed;bottom:5rem;right:1.5rem;z-index:9999;width:380px;max-height:500px;background:var(--bg-card);border:1px solid var(--border-color);border-radius:16px;box-shadow:0 20px 60px rgba(0,0,0,0.25);display:none;flex-direction:column;overflow:hidden;}
+#pulseGptHeader{padding:0.75rem 1rem;border-bottom:1px solid var(--border-color);display:flex;align-items:center;justify-content:space-between;background:var(--accent);color:#fff;border-radius:16px 16px 0 0;}
+#pulseGptHeader h4{margin:0;font-family:var(--font-heading);font-size:0.9rem;display:flex;align-items:center;gap:0.4rem;}
+#pulseGptMessages{flex:1;overflow-y:auto;padding:1rem;display:flex;flex-direction:column;gap:0.6rem;max-height:340px;min-height:200px;}
+.pgpt-msg{padding:0.5rem 0.8rem;border-radius:12px;font-size:0.82rem;line-height:1.5;font-family:var(--font-body);max-width:85%;word-wrap:break-word;}
+.pgpt-bot{background:var(--bg-surface);color:var(--text-primary);align-self:flex-start;border:1px solid var(--border-color);}
+.pgpt-user{background:var(--accent);color:#fff;align-self:flex-end;}
+#pulseGptInput{display:flex;border-top:1px solid var(--border-color);padding:0.5rem;}
+#pulseGptInput input{flex:1;border:none;background:transparent;padding:0.5rem 0.7rem;font-size:0.82rem;font-family:var(--font-body);color:var(--text-primary);outline:none;}
+#pulseGptInput button{background:var(--accent);color:#fff;border:none;border-radius:8px;padding:0.4rem 0.7rem;cursor:pointer;font-size:0.8rem;}
+</style>
+
+<button id="pulseGptBtn" onclick="togglePulseGpt()">
+    <svg width="20" height="14" viewBox="0 0 22 16" fill="none"><polyline points="0,8 4,8 6,8 8,2 10,14 12,6 14,8 18,8 22,8" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>
+    PulseGPT
+</button>
+
+<div id="pulseGptChat">
+    <div id="pulseGptHeader">
+        <h4>
+            <svg width="18" height="12" viewBox="0 0 22 16" fill="none"><polyline points="0,8 4,8 6,8 8,2 10,14 12,6 14,8 18,8 22,8" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>
+            PulseGPT
+        </h4>
+        <button onclick="togglePulseGpt()" style="background:none;border:none;color:#fff;font-size:1.1rem;cursor:pointer;">&times;</button>
+    </div>
+    <div id="pulseGptMessages">
+        <div class="pgpt-msg pgpt-bot">Bonjour ! Je suis <strong>PulseGPT</strong>, l'assistant IA de The Pulse. Posez-moi une question sur les startups, fondateurs, investisseurs ou l'écosystème marocain 🇲🇦</div>
+    </div>
+    <div id="pulseGptInput">
+        <input type="text" id="pgptInput" placeholder="Posez votre question..." onkeydown="if(event.key==='Enter')sendPgpt()">
+        <button onclick="sendPgpt()"><i class="fas fa-paper-plane"></i></button>
+    </div>
+</div>
+
+<script>
+function togglePulseGpt(){
+    var c=document.getElementById('pulseGptChat');
+    c.style.display=c.style.display==='flex'?'none':'flex';
+}
+function sendPgpt(){
+    var input=document.getElementById('pgptInput');
+    var q=input.value.trim();
+    if(!q)return;
+    var msgs=document.getElementById('pulseGptMessages');
+    msgs.innerHTML+='<div class="pgpt-msg pgpt-user">'+q+'</div>';
+    input.value='';
+    setTimeout(function(){
+        var r=getPgptResponse(q.toLowerCase());
+        msgs.innerHTML+='<div class="pgpt-msg pgpt-bot">'+r+'</div>';
+        msgs.scrollTop=msgs.scrollHeight;
+    },600);
+}
+function getPgptResponse(q){
+    if(q.includes('nuit')||q.includes('nuitée'))return'<strong>Nuitée</strong> est une infrastructure tech pour le voyage, souvent décrite comme le "Stripe du travel". Fondée en 2017 par Mohamed Benmansour, la startup a levé <strong>48M$</strong> en Série A menée par Accel — le plus grand tour VC par une startup marocaine. +300 employés, +2.6M propriétés hôtelières. <a href="/startup/1093" style="color:var(--accent);">Voir la fiche →</a>';
+    if(q.includes('chari'))return'<strong>Chari</strong> est une app B2B e-commerce et fintech pour les commerces de proximité en Afrique francophone. Fondée par Ismail Belkhayat et Sophia Alj, elle a levé <strong>19.5M$</strong> (Seed + Série A). Y Combinator S21. <a href="/startup/117" style="color:var(--accent);">Voir la fiche →</a>';
+    if(q.includes('spore'))return'<strong>Spore.bio</strong> est une startup DeepTech qui détecte les bactéries en temps réel grâce à l\'IA et la biophotonique. Fondée par Amine Raji, Mohamed Tazi et Maxime Mistretta. <strong>31M$</strong> levés (Pre-Seed + Série A). <a href="/startup/1095" style="color:var(--accent);">Voir la fiche →</a>';
+    if(q.includes('yakeey'))return'<strong>Yakeey</strong> est une marketplace immobilière digitale au Maroc. Fondée par Karim Beqqali, elle a levé <strong>15M$</strong>. <a href="/startup/884" style="color:var(--accent);">Voir la fiche →</a>';
+    if(q.includes('combien')&&q.includes('startup'))return'The Pulse référence actuellement plus de <strong>1 000 startups</strong> avec leurs données financières, leurs fondateurs et leurs tours de financement.';
+    if(q.includes('combien')&&q.includes('investiss'))return'Plus de <strong>60 investisseurs</strong> actifs sont référencés sur The Pulse, incluant des fonds de capital-risque, des accélérateurs et des business angels.';
+    if(q.includes('combien')&&q.includes('fondateur'))return'Plus de <strong>900 fondateurs</strong> sont référencés avec leurs parcours, compétences et expériences professionnelles.';
+    if(q.includes('combien')&&q.includes('incubat'))return'Plus de <strong>50 incubateurs</strong> et accélérateurs sont répertoriés, dont 212 Founders, Flat6Labs, Technopark et UM6P Ventures.';
+    if(q.includes('um6p')&&q.includes('venture'))return'<strong>UM6P Ventures</strong> est le bras venture capital de l\'Université Mohammed VI Polytechnique. <strong>27 startups</strong> en portefeuille dans le DeepTech et la transformation digitale. <a href="/investor/25" style="color:var(--accent);">Voir la fiche →</a>';
+    if(q.includes('212')&&q.includes('founder'))return'<strong>212 Founders</strong> est le premier accélérateur de startups au Maroc, avec <strong>31 startups</strong> en portefeuille. Fondé par CDG Invest et UM6P. <a href="/investor/15" style="color:var(--accent);">Voir la fiche →</a>';
+    if(q.includes('levée')&&q.includes('record'))return'La plus grande levée de fonds par une startup marocaine est celle de <strong>Nuitée</strong> avec <strong>48M$</strong> en Série A menée par Accel (décembre 2024).';
+    if(q.includes('ora'))return'<strong>ORA Technologies</strong> est une fintech qui construit l\'infrastructure de paiement pour l\'Afrique. <strong>7.5M$</strong> levés, avec Azur Innovation Management et Witamax comme investisseurs. <a href="/startup/219" style="color:var(--accent);">Voir la fiche →</a>';
+    if(q.includes('ismail')||q.includes('belkhayat'))return'<strong>Ismail Belkhayat</strong> est le Co-Founder & CEO de Chari. Diplômé de l\'ISCAE et ESSEC, ex-BCG. Il a aussi fondé Sarouty.ma et Wib.co. <a href="/founder/99893" style="color:var(--accent);">Voir le profil →</a>';
+    if(q.includes('benmansour')||q.includes('med'))return'<strong>Mohamed Benmansour</strong> est le Founder & CEO de Nuitée. Master en Electrical Engineering (RIT), Executive MBA (Quantic), Certificate of Business Excellence (UC Berkeley). <a href="/founder/99885" style="color:var(--accent);">Voir le profil →</a>';
+    if(q.includes('pulse')&&q.includes('quoi'))return'<strong>The Pulse</strong> est la plateforme de données en temps réel sur l\'écosystème startup marocain. Elle référence 1000+ startups, 900+ fondateurs, 60+ investisseurs et 50+ incubateurs. C\'est le "Crunchbase marocain".';
+    if(q.includes('bonjour')||q.includes('salut')||q.includes('hello'))return'Bonjour ! Comment puis-je vous aider ? Vous pouvez me poser des questions sur les startups, fondateurs, investisseurs ou l\'écosystème marocain 😊';
+    if(q.includes('merci'))return'Avec plaisir ! N\'hésitez pas si vous avez d\'autres questions sur l\'écosystème 🙌';
+    return'Je n\'ai pas trouvé d\'information précise sur ce sujet. Essayez de me demander sur une startup (Nuitée, Chari, Spore.bio...), un fondateur (Ismail Belkhayat, Med Benmansour...) ou un investisseur (UM6P Ventures, 212 Founders...). Vous pouvez aussi explorer <a href="/startups" style="color:var(--accent);">les startups</a> ou <a href="/founders" style="color:var(--accent);">les fondateurs</a> directement.';
+}
+</script>
+
 </body>
 </html>

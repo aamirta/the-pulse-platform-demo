@@ -13,15 +13,22 @@ import time
 from datetime import timedelta
 
 import os
+from dotenv import load_dotenv
+
+load_dotenv()
 
 app = Flask(__name__)
-app.secret_key = "pulse_secret"
+app.secret_key = os.environ.get("SECRET_KEY", "pulse_secret")
 #app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(minutes=2)
 app.config['SESSION_REFRESH_EACH_REQUEST'] = False
 
-# Use SQLite for local development
-basedir = os.path.abspath(os.path.dirname(__file__))
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(basedir, 'thepulse.db')
+# Use Supabase PostgreSQL if DATABASE_URL is set, otherwise fall back to SQLite
+database_url = os.environ.get("DATABASE_URL")
+if database_url:
+    app.config['SQLALCHEMY_DATABASE_URI'] = database_url
+else:
+    basedir = os.path.abspath(os.path.dirname(__file__))
+    app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(basedir, 'thepulse.db')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 # Initialize database with app
@@ -122,7 +129,7 @@ def home():
             _feed.append({'type': 'article', 'obj': a, 'date': a.published_at})
         _feed.sort(key=lambda x: x['date'] if x['date'] else _dt.min, reverse=True)
         _articles = [x for x in _feed if x['type'] == 'article'][:2]
-        _posts = [x for x in _feed if x['type'] == 'post' and x['obj'].post_type in ('post', 'question', 'announcement')][:2]
+        _posts = [x for x in _feed if x['type'] == 'post' and x['obj'].post_type in ('post', 'question', 'announcement')][:1]
         _opps = [x for x in _feed if x['type'] == 'post' and x['obj'].post_type == 'opportunity'][:2]
         home_feed_items = _articles + _posts + _opps
         home_feed_items.sort(key=lambda x: x['date'] if x['date'] else _dt.min, reverse=True)

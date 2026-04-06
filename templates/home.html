@@ -1528,10 +1528,11 @@
 </style>
 
 <!-- Disclaimer Banner -->
-<div class="disclaimer-banner" style="background: linear-gradient(90deg, var(--tertiary), #f59e0b); color: #0a0e1a; text-align: center; padding: 0.55rem 1rem; font-size: 0.8rem; font-weight: 600; font-family: var(--font-body); letter-spacing: 0.02em; position: relative; z-index: 100;">
-    <i class="fas fa-flask" style="margin-right: 0.4rem;"></i>
-    <span data-i18n="disclaimer_banner">This is a demo version of The Pulse platform. Data shown is for preview purposes only.</span>
-    <button onclick="this.parentElement.style.display='none'" style="background: none; border: none; color: #0a0e1a; font-size: 1rem; cursor: pointer; margin-left: 0.75rem; opacity: 0.7; line-height: 1;" aria-label="Close">&times;</button>
+<div class="disclaimer-banner" style="background: linear-gradient(90deg, var(--tertiary), #f59e0b); color: #0a0e1a; display: flex; align-items: center; justify-content: center; gap: 0.4rem; padding: 0.5rem 1rem; font-size: 0.78rem; font-weight: 600; font-family: var(--font-body); letter-spacing: 0.02em; position: relative; z-index: 100; white-space: nowrap;">
+    <i class="fas fa-flask"></i>
+    <span class="lang-fr">Ceci est un MVP en cours d'évolution. Les données manquantes seront ajoutées progressivement. Merci de nous y aider.</span>
+    <span class="lang-en">This is an MVP under development. Missing data will be added progressively. Thank you for helping us improve.</span>
+    <button onclick="this.parentElement.style.display='none'" style="background: none; border: none; color: #0a0e1a; font-size: 1rem; cursor: pointer; margin-left: 0.5rem; opacity: 0.7; line-height: 1;" aria-label="Close">&times;</button>
 </div>
 
 <!-- Floating Orbs Background -->
@@ -1688,7 +1689,7 @@
                     <div class="nf-card" data-filter-type="{{ obj.post_type }}" data-item-type="post">
                         <div class="nf-card-header">
                             {% if obj.author_pic %}
-                            <img src="{{ obj.author_pic }}" alt="{{ obj.author_name }}" class="nf-avatar sm" style="object-fit: cover; border-radius: 50%;">
+                            <img src="{{ obj.author_pic }}" alt="{{ obj.author_name }}" class="nf-avatar sm" style="object-fit: contain; border-radius: 50%; background: #fff; padding: 4px; border: 1.5px solid var(--border-color);">
                             {% else %}
                             <div class="nf-avatar sm">{{ (obj.author_name or 'M')[:2] | upper }}</div>
                             {% endif %}
@@ -1710,6 +1711,9 @@
                             </div>
                         </div>
                         <div class="nf-card-content">{{ obj.content }}</div>
+                        {% if obj.post_type == 'opportunity' and obj.link_url %}
+                        <a href="{{ obj.link_url }}" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:0.3rem;margin-top:0.5rem;color:var(--accent);font-size:0.82rem;font-weight:700;text-decoration:none;">En savoir plus <i class="fas fa-arrow-right" style="font-size:0.7rem;"></i></a>
+                        {% endif %}
                         {% if obj.tags %}
                         <div class="nf-tags">{% for tag in obj.tags.split(',') %}{% if tag.strip() %}<span class="nf-tag">#{{ tag.strip() }}</span>{% endif %}{% endfor %}</div>
                         {% endif %}
@@ -1718,10 +1722,7 @@
                                 <i class="fas fa-heart"></i>
                                 <span class="like-count">{{ obj.likes_count or 0 }}</span>
                             </button>
-                            <button class="nf-comment-btn" onclick="event.preventDefault();toggleComments(this)" aria-label="Commentaires">
-                                <i class="fas fa-comment-dots"></i>
-                                <span>{{ obj.comments_count or 0 }}</span>
-                            </button>
+                            <!-- Commentaires masqués pour la démo -->
                             <button class="nf-msg-btn" onclick="event.preventDefault();openMsgModal('{{ obj.author_name }}', {{ obj.post_id }})" aria-label="Envoyer un Pulse">
                                 <svg width="16" height="10" viewBox="0 0 22 16" fill="none" style="vertical-align:middle;margin-right:0.25rem;"><polyline points="0,8 4,8 6,8 8,2 10,14 12,6 14,8 18,8 22,8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg> Pulse
                             </button>
@@ -2091,80 +2092,57 @@
         <div class="partners-track-wrapper">
             <div class="partners-track">
                 <!-- First set -->
-                <div class="partner-item">
-                    <img src="{{ url_for('static', filename='images/um6p_logo.png') }}" alt="UM6P"
-                         loading="lazy" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-                    <div class="partner-logo-fallback" style="background: var(--gradient-accent); display:none;">UM6P</div>
+                <a class="partner-item" href="https://www.um6p.ma" target="_blank" rel="noopener" style="text-decoration:none;color:inherit;">
+                    <img src="{{ url_for('static', filename='images/um6p_logo.png') }}" alt="UM6P" loading="lazy">
                     <span class="partner-name">UM6P</span>
-                </div>
-                <div class="partner-item">
-                    <img src="{{ url_for('static', filename='images/bank_almaghrib_logo.png') }}" alt="Observatoire BAM PME/TPE"
-                         loading="lazy" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-                    <div class="partner-logo-fallback" style="background: var(--gradient-danger); display:none;">BAM</div>
-                    <span class="partner-name">Observatoire BAM PME/TPE</span>
-                </div>
-                <div class="partner-item">
-                    <img src="{{ url_for('static', filename='images/tamwilcom_logo.png') }}" alt="Tamwilcom"
-                         loading="lazy" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-                    <div class="partner-logo-fallback" style="background: var(--gradient-secondary); display:none;">TWC</div>
+                </a>
+                <a class="partner-item" href="https://omtpme.ma" target="_blank" rel="noopener" style="text-decoration:none;color:inherit;">
+                    <img src="{{ url_for('static', filename='images/logo_omtpme-13.png') }}" alt="BAM" loading="lazy">
+                    <span class="partner-name">OMTPME</span>
+                </a>
+                <a class="partner-item" href="https://www.tamwilcom.ma" target="_blank" rel="noopener" style="text-decoration:none;color:inherit;">
+                    <img src="{{ url_for('static', filename='images/tamwilcom_logo.png') }}" alt="Tamwilcom" loading="lazy">
                     <span class="partner-name">Tamwilcom</span>
-                </div>
-                <div class="partner-item">
-                    <img src="{{ url_for('static', filename='images/amic_logo.png') }}" alt="AMIC"
-                         loading="lazy" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-                    <div class="partner-logo-fallback" style="background: var(--gradient-danger); display:none;">AMIC</div>
+                </a>
+                <a class="partner-item" href="https://www.amic.org.ma" target="_blank" rel="noopener" style="text-decoration:none;color:inherit;">
+                    <img src="{{ url_for('static', filename='images/amic_logo.png') }}" alt="AMIC" loading="lazy">
                     <span class="partner-name">AMIC</span>
-                </div>
+                </a>
                 <div class="partner-item">
-                    <img src="{{ url_for('static', filename='images/mesc_logo.png') }}" alt="MESC"
-                         loading="lazy" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-                    <div class="partner-logo-fallback" style="background: linear-gradient(135deg, #7c3aed, #8b5cf6); display:none;">MESC</div>
+                    <div style="width:32px;height:32px;border-radius:8px;background:linear-gradient(135deg,#7c3aed,#8b5cf6);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:800;font-size:0.85rem;flex-shrink:0;">M</div>
                     <span class="partner-name">MESC</span>
                 </div>
-                <div class="partner-item">
-                    <img src="{{ url_for('static', filename='images/mtn_logo.png') }}" alt="Ministère Transition Numérique"
-                         loading="lazy" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-                    <div class="partner-logo-fallback" style="background: var(--gradient-tertiary); display:none;">MTN</div>
+                <a class="partner-item" href="https://www.mmsp.gov.ma/fr" target="_blank" rel="noopener" style="text-decoration:none;color:inherit;">
+                    <img src="{{ url_for('static', filename='images/MTN LOGO.svg') }}" alt="MTN" loading="lazy">
                     <span class="partner-name">Ministère de la Transition Numérique</span>
-                </div>
+                </a>
 
                 <!-- Duplicate set for seamless loop -->
-                <div class="partner-item">
-                    <img src="{{ url_for('static', filename='images/um6p_logo.png') }}" alt="UM6P"
-                         loading="lazy" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-                    <div class="partner-logo-fallback" style="background: var(--gradient-accent); display:none;">UM6P</div>
+                <a class="partner-item" href="https://www.um6p.ma" target="_blank" rel="noopener" style="text-decoration:none;color:inherit;">
+                    <img src="{{ url_for('static', filename='images/um6p_logo.png') }}" alt="UM6P" loading="lazy">
                     <span class="partner-name">UM6P</span>
-                </div>
-                <div class="partner-item">
-                    <img src="{{ url_for('static', filename='images/bank_almaghrib_logo.png') }}" alt="Observatoire BAM PME/TPE"
-                         loading="lazy" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-                    <div class="partner-logo-fallback" style="background: var(--gradient-danger); display:none;">BAM</div>
-                    <span class="partner-name">Observatoire BAM PME/TPE</span>
-                </div>
-                <div class="partner-item">
-                    <img src="{{ url_for('static', filename='images/tamwilcom_logo.png') }}" alt="Tamwilcom"
-                         loading="lazy" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-                    <div class="partner-logo-fallback" style="background: var(--gradient-secondary); display:none;">TWC</div>
+                </a>
+                <a class="partner-item" href="https://omtpme.ma" target="_blank" rel="noopener" style="text-decoration:none;color:inherit;">
+                    <img src="{{ url_for('static', filename='images/logo_omtpme-13.png') }}" alt="BAM" loading="lazy">
+                    <span class="partner-name">OMTPME</span>
+                </a>
+                <a class="partner-item" href="https://www.tamwilcom.ma" target="_blank" rel="noopener" style="text-decoration:none;color:inherit;">
+                    <img src="{{ url_for('static', filename='images/tamwilcom_logo.png') }}" alt="Tamwilcom" loading="lazy">
                     <span class="partner-name">Tamwilcom</span>
-                </div>
-                <div class="partner-item">
-                    <img src="{{ url_for('static', filename='images/amic_logo.png') }}" alt="AMIC"
-                         loading="lazy" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-                    <div class="partner-logo-fallback" style="background: var(--gradient-danger); display:none;">AMIC</div>
+                </a>
+                <a class="partner-item" href="https://www.amic.org.ma" target="_blank" rel="noopener" style="text-decoration:none;color:inherit;">
+                    <img src="{{ url_for('static', filename='images/amic_logo.png') }}" alt="AMIC" loading="lazy">
                     <span class="partner-name">AMIC</span>
-                </div>
+                </a>
                 <div class="partner-item">
-                    <img src="{{ url_for('static', filename='images/mesc_logo.png') }}" alt="MESC"
+                    <img src="{{ url_for('static', filename='images/mesc_logo.png') }}" alt="MESC" loading="lazy">
                          loading="lazy" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-                    <div class="partner-logo-fallback" style="background: linear-gradient(135deg, #7c3aed, #8b5cf6); display:none;">MESC</div>
                     <span class="partner-name">MESC</span>
                 </div>
-                <div class="partner-item">
-                    <img src="{{ url_for('static', filename='images/mtn_logo.png') }}" alt="Ministère Transition Numérique"
-                         loading="lazy" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-                    <div class="partner-logo-fallback" style="background: var(--gradient-tertiary); display:none;">MTN</div>
+                <a class="partner-item" href="https://www.mmsp.gov.ma/fr" target="_blank" rel="noopener" style="text-decoration:none;color:inherit;">
+                    <img src="{{ url_for('static', filename='images/MTN LOGO.svg') }}" alt="MTN" loading="lazy">
                     <span class="partner-name">Ministère de la Transition Numérique</span>
-                </div>
+                </a>
             </div>
         </div>
     </div>
@@ -2790,7 +2768,8 @@ document.querySelectorAll('.home-nf-section .nf-tab').forEach(function(tab) {
         document.querySelectorAll('#home-nf-feed .nf-card').forEach(function(card) {
             if (filter === 'all') { card.style.display = ''; }
             else if (filter === 'article') { card.style.display = (card.getAttribute('data-item-type') === 'article') ? '' : 'none'; }
-            else if (filter === 'post') { card.style.display = (card.getAttribute('data-item-type') === 'post') ? '' : 'none'; }
+            else if (filter === 'post') { var t = card.getAttribute('data-filter-type'); card.style.display = (card.getAttribute('data-item-type') === 'post' && t !== 'opportunity') ? '' : 'none'; }
+            else if (filter === 'opportunity') { card.style.display = (card.getAttribute('data-filter-type') === 'opportunity') ? '' : 'none'; }
             else { card.style.display = (card.getAttribute('data-filter-type') === filter) ? '' : 'none'; }
         });
     });

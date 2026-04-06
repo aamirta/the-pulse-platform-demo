@@ -615,7 +615,7 @@
             <i class="fas fa-rss nf-icon"></i>
             Newsfeed
         </h1>
-        <p>Actualités, posts membres et opportunités de l'écosystème startup marocain</p>
+        <p>News, member posts and opportunities from the Moroccan startup ecosystem</p>
     </div>
 
     <div class="nf-layout">
@@ -629,49 +629,49 @@
                     <div class="nf-avatar" aria-hidden="true">
                         <i class="fas fa-user"></i>
                     </div>
-                    <div class="nf-avatar-placeholder">Partagez quelque chose avec l'écosystème</div>
+                    <div class="nf-avatar-placeholder">Share something with the ecosystem</div>
                 </div>
                 <form method="POST" action="/newsfeed/post">
                     <textarea
                         class="nf-create-textarea"
                         name="content"
-                        placeholder="Quoi de neuf dans l'écosystème ?"
+                        placeholder="What's new in the ecosystem?"
                         maxlength="2000"
                         required
                     ></textarea>
                     <div class="nf-create-meta">
-                        <input type="text" name="author_name" placeholder="Votre nom" maxlength="100">
-                        <input type="text" name="author_role" placeholder="Votre rôle / startup" maxlength="100">
-                        <input type="text" name="tags" placeholder="Tags (ex: fintech,rabat)" maxlength="255">
+                        <input type="text" name="author_name" placeholder="Your name" maxlength="100">
+                        <input type="text" name="author_role" placeholder="Your role / startup" maxlength="100">
+                        <input type="text" name="tags" placeholder="Tags (e.g. fintech,rabat)" maxlength="255">
                         <select class="nf-type-select" name="post_type">
                             <option value="post">Post</option>
-                            <option value="announcement">Annonce</option>
+                            <option value="announcement">Announcement</option>
                             <option value="question">Question</option>
-                            <option value="opportunity">Opportunité</option>
+                            <option value="opportunity">Opportunity</option>
                         </select>
                     </div>
                     <div class="nf-create-footer">
                         <button type="submit" class="nf-submit-btn">
                             <i class="fas fa-paper-plane"></i>
-                            Publier
+                            Publish
                         </button>
                     </div>
                 </form>
             </div>
 
             <!-- Tabs -->
-            <div class="nf-tabs" role="tablist" aria-label="Filtrer le fil d'actualité">
+            <div class="nf-tabs" role="tablist" aria-label="Filter the feed">
                 <button class="nf-tab active" role="tab" aria-selected="true" data-filter="all">
-                    <i class="fas fa-border-all"></i> Tout
+                    <i class="fas fa-border-all"></i> All
                 </button>
                 <button class="nf-tab" role="tab" aria-selected="false" data-filter="article">
-                    <i class="fas fa-newspaper"></i> Actualités
+                    <i class="fas fa-newspaper"></i> News
                 </button>
                 <button class="nf-tab" role="tab" aria-selected="false" data-filter="post">
-                    <i class="fas fa-users"></i> Posts membres
+                    <i class="fas fa-users"></i> Member posts
                 </button>
                 <button class="nf-tab" role="tab" aria-selected="false" data-filter="opportunity">
-                    <i class="fas fa-bullhorn"></i> Opportunités
+                    <i class="fas fa-bullhorn"></i> Opportunities
                 </button>
             </div>
 
@@ -690,7 +690,7 @@
 
                     <div class="nf-card-header">
                         {% if obj.author_pic %}
-                        <img src="{{ obj.author_pic }}" alt="{{ obj.author_name }}" class="nf-avatar sm" style="object-fit: cover; border-radius: 50%;">
+                        <img src="{{ obj.author_pic }}" alt="{{ obj.author_name }}" class="nf-avatar sm" style="object-fit: contain; border-radius: 50%; background: #fff; padding: 4px; border: 1.5px solid var(--border-color);">
                         {% else %}
                         <div class="nf-avatar sm" aria-hidden="true">
                             {{ (obj.author_name or 'M')[:2] | upper }}
@@ -702,17 +702,17 @@
                             {% else %}
                             <p class="nf-card-author-name">{{ obj.author_name or 'Membre anonyme' }}</p>
                             {% endif %}
-                            <p class="nf-card-author-role">{{ obj.author_role or 'Membre de l\'écosystème' }}</p>
+                            <p class="nf-card-author-role">{{ obj.author_role or 'Ecosystem member' }}</p>
                         </div>
                         <div style="display:flex; flex-direction:column; align-items:flex-end; gap:0.35rem;">
                             {% if obj.post_type == 'post' %}
                             <span class="nf-type-badge nf-type-post"><i class="fas fa-pen-nib"></i> Post</span>
                             {% elif obj.post_type == 'announcement' %}
-                            <span class="nf-type-badge nf-type-announcement"><i class="fas fa-megaphone"></i> Annonce</span>
+                            <span class="nf-type-badge nf-type-announcement"><i class="fas fa-megaphone"></i> Announcement</span>
                             {% elif obj.post_type == 'question' %}
                             <span class="nf-type-badge nf-type-question"><i class="fas fa-circle-question"></i> Question</span>
                             {% elif obj.post_type == 'opportunity' %}
-                            <span class="nf-type-badge nf-type-opportunity"><i class="fas fa-briefcase"></i> Opportunité</span>
+                            <span class="nf-type-badge nf-type-opportunity"><i class="fas fa-briefcase"></i> Opportunity</span>
                             {% endif %}
                             <span class="nf-card-time">
                                 {% if item.date %}
@@ -745,7 +745,7 @@
                         <button class="nf-like-btn"
                                 data-post-id="{{ obj.post_id }}"
                                 onclick="likePost(this, {{ obj.post_id }})"
-                                aria-label="J'aime ce post">
+                                aria-label="Like this post">
                             <i class="fas fa-heart"></i>
                             <span class="like-count">{{ obj.likes_count or 0 }}</span>
                         </button>
@@ -786,10 +786,10 @@
                         {% endif %}
                         <div class="nf-card-author">
                             <p class="nf-card-author-name">{{ obj.author or obj.source or 'The Pulse' }}</p>
-                            <p class="nf-card-author-role">{{ obj.source or 'Actualités curatées' }}</p>
+                            <p class="nf-card-author-role">{{ obj.source or 'Curated news' }}</p>
                         </div>
                         <div style="display:flex; flex-direction:column; align-items:flex-end; gap:0.35rem;">
-                            <span class="nf-type-badge nf-type-article"><i class="fas fa-bookmark"></i> Actualité</span>
+                            <span class="nf-type-badge nf-type-article"><i class="fas fa-bookmark"></i> News</span>
                             <span class="nf-card-time">
                                 {% if item.date %}
                                     {{ item.date.strftime('%d %b %Y') }}
@@ -811,7 +811,7 @@
                     {% if obj.source_url %}
                     <a href="{{ obj.source_url }}" class="nf-card-link" target="_blank" rel="noopener noreferrer">
                         <i class="fas fa-external-link-alt"></i>
-                        Lire l'article complet
+                        Read full article
                     </a>
                     {% endif %}
 
@@ -831,8 +831,8 @@
                             {{ obj.category }}
                         </span>
                         {% endif %}
-                        <a href="/actualites" class="nf-read-more" aria-label="Voir toutes les actualités">
-                            Voir les actualités <i class="fas fa-arrow-right"></i>
+                        <a href="/actualites" class="nf-read-more" aria-label="View all news">
+                            View news <i class="fas fa-arrow-right"></i>
                         </a>
                     </div>
                 </div>
@@ -841,7 +841,7 @@
                 {% else %}
                 <div class="nf-empty">
                     <i class="fas fa-stream"></i>
-                    <p>Aucun contenu pour l'instant. Soyez le premier à publier !</p>
+                    <p>No content yet. Be the first to post!</p>
                 </div>
                 {% endfor %}
             </div>
@@ -856,7 +856,7 @@
             <div class="nf-sidebar-widget">
                 <h3 class="nf-widget-title">
                     <i class="fas fa-fire"></i>
-                    Tendances
+                    Trending
                 </h3>
                 {% if trending_tags %}
                 <div class="nf-trending-tags">
@@ -867,7 +867,7 @@
                     {% endfor %}
                 </div>
                 {% else %}
-                <p style="font-size:0.82rem; color:var(--text-muted);">Aucune tendance pour l'instant.</p>
+                <p style="font-size:0.82rem; color:var(--text-muted);">No trending topics yet.</p>
                 {% endif %}
             </div>
 
@@ -875,7 +875,7 @@
             <div class="nf-sidebar-widget">
                 <h3 class="nf-widget-title">
                     <i class="fas fa-chart-line"></i>
-                    Dernières levées de fonds
+                    Latest Funding Rounds
                 </h3>
                 {% if recent_rounds %}
                 {% for round in recent_rounds %}
@@ -897,10 +897,10 @@
                 </div>
                 {% endfor %}
                 <a href="/funding-rounds" style="display:inline-flex; align-items:center; gap:0.35rem; font-size:0.78rem; font-weight:600; color:var(--nf-accent); text-decoration:none; margin-top:0.5rem;">
-                    Voir tous les tours <i class="fas fa-arrow-right" style="font-size:0.7rem;"></i>
+                    View all rounds <i class="fas fa-arrow-right" style="font-size:0.7rem;"></i>
                 </a>
                 {% else %}
-                <p style="font-size:0.82rem; color:var(--text-muted);">Aucune donnée disponible.</p>
+                <p style="font-size:0.82rem; color:var(--text-muted);">No data available.</p>
                 {% endif %}
             </div>
 
@@ -908,7 +908,7 @@
             <div class="nf-sidebar-widget">
                 <h3 class="nf-widget-title">
                     <i class="fas fa-bullhorn"></i>
-                    Appels à projets actifs
+                    Active Calls for Projects
                 </h3>
                 {% if appels_projets %}
                 {% for appel in appels_projets %}
@@ -922,22 +922,22 @@
                     {% endif %}
                     {% if appel.url %}
                     <a href="{{ appel.url }}" class="nf-appel-link" target="_blank" rel="noopener noreferrer">
-                        Candidater <i class="fas fa-external-link-alt" style="font-size:0.65rem;"></i>
+                        Apply <i class="fas fa-external-link-alt" style="font-size:0.65rem;"></i>
                     </a>
                     {% else %}
                     <a href="/ressources" class="nf-appel-link">
-                        En savoir plus <i class="fas fa-arrow-right" style="font-size:0.65rem;"></i>
+                        Learn more <i class="fas fa-arrow-right" style="font-size:0.65rem;"></i>
                     </a>
                     {% endif %}
                 </div>
                 {% endfor %}
                 <a href="/ressources" style="display:inline-flex; align-items:center; gap:0.35rem; font-size:0.78rem; font-weight:600; color:var(--nf-accent); text-decoration:none; margin-top:0.5rem;">
-                    Toutes les ressources <i class="fas fa-arrow-right" style="font-size:0.7rem;"></i>
+                    All resources <i class="fas fa-arrow-right" style="font-size:0.7rem;"></i>
                 </a>
                 {% else %}
-                <p style="font-size:0.82rem; color:var(--text-muted);">Aucun appel à projet actif.</p>
+                <p style="font-size:0.82rem; color:var(--text-muted);">No active calls for projects.</p>
                 <a href="/ressources" style="display:inline-flex; align-items:center; gap:0.35rem; font-size:0.78rem; font-weight:600; color:var(--nf-accent); text-decoration:none; margin-top:0.25rem;">
-                    Voir les ressources <i class="fas fa-arrow-right" style="font-size:0.7rem;"></i>
+                    View resources <i class="fas fa-arrow-right" style="font-size:0.7rem;"></i>
                 </a>
                 {% endif %}
             </div>
@@ -955,10 +955,10 @@
                     <i class="fas fa-rocket"></i>
                 </div>
                 <p style="font-family:var(--font-heading); font-size:0.88rem; font-weight:700; color:var(--text-primary); margin:0 0 0.4rem 0;">
-                    Rejoignez l'écosystème
+                    Join the ecosystem
                 </p>
                 <p style="font-size:0.78rem; color:var(--text-muted); line-height:1.5; margin:0 0 1rem 0;">
-                    Startup, investisseur ou talent — faites partie de la communauté The Pulse.
+                    Startup, investor or talent — join The Pulse community.
                 </p>
                 <a href="/join" style="
                     display: inline-flex; align-items: center; gap: 0.4rem;
@@ -968,7 +968,7 @@
                     padding: 0.5rem 1.2rem; border-radius: 10px;
                     transition: opacity 0.2s;
                 ">
-                    <i class="fas fa-bolt"></i> Rejoindre
+                    <i class="fas fa-bolt"></i> Join
                 </a>
             </div>
 
@@ -989,19 +989,19 @@
                     <p class="dm-to-role" id="dmToRole">—</p>
                 </div>
             </div>
-            <button class="dm-close-btn" onclick="closeDM()" aria-label="Fermer"><i class="fas fa-times"></i></button>
+            <button class="dm-close-btn" onclick="closeDM()" aria-label="Close"><i class="fas fa-times"></i></button>
         </div>
         <div class="dm-panel-body" id="dmBody">
-            <input  class="dm-input"    id="dmFromName"  type="text"  placeholder="Votre nom" maxlength="100">
-            <input  class="dm-input"    id="dmFromEmail" type="email" placeholder="Votre email (optionnel)" maxlength="255">
-            <textarea class="dm-textarea" id="dmMessage" placeholder="Écrivez votre message…" maxlength="1000"></textarea>
+            <input  class="dm-input"    id="dmFromName"  type="text"  placeholder="Your name" maxlength="100">
+            <input  class="dm-input"    id="dmFromEmail" type="email" placeholder="Your email (optional)" maxlength="255">
+            <textarea class="dm-textarea" id="dmMessage" placeholder="Write your message…" maxlength="1000"></textarea>
             <button class="dm-send-btn" onclick="sendDM()">
-                <i class="fas fa-paper-plane"></i> Envoyer
+                <i class="fas fa-paper-plane"></i> Send
             </button>
         </div>
         <div class="dm-success" id="dmSuccess">
             <i class="fas fa-check-circle"></i>
-            <span id="dmSuccessText">Message envoyé !</span>
+            <span id="dmSuccessText">Message sent!</span>
         </div>
     </div>
 </div>
