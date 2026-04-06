@@ -117,21 +117,10 @@
                     aria-label="Toggle dark and light mode" title="Toggle theme">
                 <i class="fas fa-moon" id="themeIcon" aria-hidden="true"></i>
             </button>
-            {% if current_member %}
-            <a href="/my-profile/{{ current_member.id }}" class="btn-profile-nav" title="Mon Profil">
-                {% if current_member.profile_pic %}
-                    <img src="{% if current_member.profile_pic.startswith('data:') %}{{ current_member.profile_pic }}{% else %}{{ url_for('static', filename=current_member.profile_pic) }}{% endif %}" alt="" class="nav-avatar">
-                {% else %}
-                    <span class="nav-avatar-placeholder">{{ current_member.full_name[0]|upper }}</span>
-                {% endif %}
-                <span class="nav-profile-name">{{ current_member.full_name.split()[0] }}</span>
-            </a>
-            {% else %}
             <a href="/join" class="btn-join">
                 <i class="fas fa-bolt" aria-hidden="true"></i>
                 <span>Join</span>
             </a>
-            {% endif %}
         </div>
     </nav>
 
@@ -236,6 +225,18 @@
 
     <!-- Overlay -->
     <div class="overlay" id="overlay" aria-hidden="true"></div>
+
+    <!-- Floating Profile Button -->
+    {% if current_member %}
+    <a href="/my-profile/{{ current_member.id }}" class="floating-profile" title="Mon Profil">
+        {% if current_member.profile_pic %}
+            <img src="{% if current_member.profile_pic.startswith('data:') %}{{ current_member.profile_pic }}{% else %}{{ url_for('static', filename=current_member.profile_pic) }}{% endif %}" alt="" class="floating-avatar">
+        {% else %}
+            <span class="floating-avatar-placeholder">{{ current_member.full_name[0]|upper }}</span>
+        {% endif %}
+        <span class="floating-name">{{ current_member.full_name.split()[0] }}</span>
+    </a>
+    {% endif %}
 
     <!-- ============================================
          COOKIE CONSENT BANNER

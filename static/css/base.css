@@ -647,46 +647,54 @@
             transform: translateY(0);
         }
 
-        /* Profile Nav Button */
-        .btn-profile-nav {
-            display: inline-flex;
+        /* Floating Profile Button */
+        .floating-profile {
+            position: fixed;
+            bottom: 1.5rem;
+            right: 1.5rem;
+            display: flex;
             align-items: center;
-            gap: 0.5rem;
-            padding: 0.3rem 0.9rem 0.3rem 0.3rem;
-            border-radius: 10px;
-            border: 1px solid var(--border-primary);
+            gap: 0.6rem;
+            padding: 0.45rem 1rem 0.45rem 0.45rem;
+            border-radius: 50px;
             background: var(--bg-card);
+            border: 1px solid var(--border-primary);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
             text-decoration: none;
+            z-index: 1050;
             transition: all var(--transition-base);
-            cursor: pointer;
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
         }
-        .btn-profile-nav:hover {
+        .floating-profile:hover {
             border-color: var(--accent);
-            background: rgba(0, 214, 143, 0.05);
+            box-shadow: 0 8px 32px rgba(0, 214, 143, 0.2);
+            transform: translateY(-2px);
         }
-        .nav-avatar {
-            width: 30px;
-            height: 30px;
-            border-radius: 8px;
+        .floating-avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
             object-fit: cover;
+            border: 2px solid var(--accent);
         }
-        .nav-avatar-placeholder {
-            width: 30px;
-            height: 30px;
-            border-radius: 8px;
+        .floating-avatar-placeholder {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
             background: linear-gradient(135deg, var(--accent), var(--secondary));
             color: #fff;
             font-family: var(--font-heading);
-            font-size: 0.8rem;
+            font-size: 0.9rem;
             font-weight: 700;
         }
-        .nav-profile-name {
+        .floating-name {
             font-family: var(--font-body);
             font-weight: 600;
-            font-size: 0.82rem;
+            font-size: 0.85rem;
             color: var(--text-primary);
             white-space: nowrap;
         }
@@ -1171,11 +1179,13 @@
                 padding: 0.45rem 0.7rem;
             }
 
-            .nav-profile-name {
+            .floating-name {
                 display: none;
             }
-            .btn-profile-nav {
-                padding: 0.3rem;
+            .floating-profile {
+                padding: 0.4rem;
+                bottom: 1rem;
+                right: 1rem;
             }
 
             .logo-text {
