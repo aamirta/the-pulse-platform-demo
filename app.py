@@ -1264,8 +1264,8 @@ def resource_form():
     return render_template("resource-form.html")
 
 
-@app.route("/api/search")
-def api_search():
+@app.route("/api/global-search")
+def api_global_search():
     q = request.args.get("q", "").strip()
     if not q or len(q) < 2:
         return jsonify({"startups": [], "founders": [], "investors": [], "incubators": []})
