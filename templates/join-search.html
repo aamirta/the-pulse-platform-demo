@@ -1,0 +1,276 @@
+{% extends "base.html" %}
+
+{% block title %}Rejoindre The Pulse - {{ config.label }}{% endblock %}
+
+{% block content %}
+<style>
+    .search-page {
+        max-width: 640px;
+        margin: 0 auto;
+        padding: 2rem 1.5rem 4rem;
+    }
+    .back-link {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        font-family: var(--font-body);
+        font-weight: 500;
+        font-size: 0.9rem;
+        color: var(--text-secondary);
+        text-decoration: none;
+        padding: 0.5rem 1rem;
+        border-radius: 8px;
+        transition: all 0.25s ease;
+        margin-bottom: 2rem;
+        border: 1px solid var(--border-primary);
+    }
+    .back-link:hover {
+        color: var(--accent);
+        border-color: var(--accent);
+        background: rgba(0, 214, 143, 0.05);
+    }
+    .search-card {
+        background: var(--bg-card);
+        border: 1px solid var(--border-primary);
+        border-radius: 16px;
+        padding: 2.5rem;
+        position: relative;
+        overflow: hidden;
+    }
+    .search-card::after {
+        content: '';
+        position: absolute;
+        top: 0; left: 0; right: 0;
+        height: 3px;
+        background: linear-gradient(90deg, var(--accent), var(--secondary), var(--tertiary));
+    }
+    .search-card h1 {
+        font-family: var(--font-heading);
+        font-weight: 700;
+        font-size: 1.6rem;
+        color: var(--text-primary);
+        margin: 0 0 0.5rem;
+    }
+    .search-card .subtitle {
+        font-family: var(--font-body);
+        font-size: 0.92rem;
+        color: var(--text-secondary);
+        margin-bottom: 2rem;
+        line-height: 1.6;
+    }
+    .search-input-wrap {
+        position: relative;
+        margin-bottom: 1rem;
+    }
+    .search-input-wrap i {
+        position: absolute;
+        left: 1rem;
+        top: 50%;
+        transform: translateY(-50%);
+        color: var(--text-muted);
+        font-size: 0.9rem;
+    }
+    .search-input {
+        width: 100%;
+        padding: 0.85rem 1rem 0.85rem 2.8rem;
+        border-radius: 10px;
+        border: 1px solid var(--border-primary);
+        background: var(--bg-surface);
+        color: var(--text-primary);
+        font-family: var(--font-body);
+        font-size: 0.95rem;
+        outline: none;
+        transition: border-color 0.2s;
+        box-sizing: border-box;
+    }
+    .search-input:focus {
+        border-color: var(--accent);
+    }
+    .search-input::placeholder {
+        color: var(--text-muted);
+    }
+    .search-results {
+        margin-bottom: 1.5rem;
+        min-height: 40px;
+    }
+    .search-empty {
+        text-align: center;
+        padding: 1.5rem;
+        color: var(--text-muted);
+        font-size: 0.85rem;
+        display: none;
+    }
+    .result-item {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        padding: 0.85rem 1rem;
+        border-radius: 10px;
+        border: 1px solid var(--border-primary);
+        background: var(--bg-surface);
+        margin-bottom: 0.5rem;
+        text-decoration: none;
+        transition: all 0.2s;
+        cursor: pointer;
+    }
+    .result-item:hover {
+        border-color: var(--accent);
+        background: rgba(0, 214, 143, 0.04);
+    }
+    .result-icon {
+        width: 40px;
+        height: 40px;
+        border-radius: 10px;
+        background: var(--accent-subtle);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--accent);
+        font-weight: 700;
+        font-size: 1rem;
+        flex-shrink: 0;
+    }
+    .result-info {
+        flex: 1;
+        min-width: 0;
+    }
+    .result-name {
+        font-family: var(--font-heading);
+        font-weight: 600;
+        font-size: 0.95rem;
+        color: var(--text-primary);
+        margin-bottom: 0.15rem;
+    }
+    .result-desc {
+        font-family: var(--font-body);
+        font-size: 0.78rem;
+        color: var(--text-secondary);
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+    .result-arrow {
+        color: var(--text-muted);
+        font-size: 0.8rem;
+    }
+    .divider {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        margin: 1.5rem 0;
+        color: var(--text-muted);
+        font-size: 0.8rem;
+        font-family: var(--font-body);
+    }
+    .divider::before, .divider::after {
+        content: '';
+        flex: 1;
+        height: 1px;
+        background: var(--border-primary);
+    }
+    .btn-create {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+        width: 100%;
+        padding: 0.85rem;
+        border-radius: 10px;
+        border: 1px dashed var(--border-hover);
+        background: transparent;
+        color: var(--text-primary);
+        font-family: var(--font-heading);
+        font-weight: 600;
+        font-size: 0.92rem;
+        text-decoration: none;
+        transition: all 0.25s;
+        cursor: pointer;
+    }
+    .btn-create:hover {
+        border-color: var(--accent);
+        color: var(--accent);
+        background: rgba(0, 214, 143, 0.04);
+    }
+    .btn-create i {
+        font-size: 1rem;
+    }
+    .loading {
+        text-align: center;
+        padding: 1rem;
+        color: var(--text-muted);
+        font-size: 0.85rem;
+        display: none;
+    }
+</style>
+
+<div class="search-page">
+    <a href="/join" class="back-link">
+        <i class="fas fa-arrow-left"></i> Retour
+    </a>
+
+    <div class="search-card">
+        <h1>{{ config.label }}</h1>
+        <p class="subtitle">Recherchez votre profil existant dans The Pulse, ou creez-en un nouveau.</p>
+
+        <div class="search-input-wrap">
+            <i class="fas fa-search"></i>
+            <input type="text" class="search-input" id="searchInput"
+                   placeholder="Rechercher par nom..." autocomplete="off" autofocus>
+        </div>
+
+        <div class="search-results" id="searchResults"></div>
+        <div class="loading" id="loading"><i class="fas fa-spinner fa-spin"></i> Recherche...</div>
+        <div class="search-empty" id="searchEmpty">Aucun resultat trouve</div>
+
+        <div class="divider">ou</div>
+
+        <a href="{{ config.form_route }}" class="btn-create">
+            <i class="fas fa-plus"></i> Creer un nouveau profil
+        </a>
+    </div>
+</div>
+
+<script>
+    const input = document.getElementById('searchInput');
+    const results = document.getElementById('searchResults');
+    const loading = document.getElementById('loading');
+    const empty = document.getElementById('searchEmpty');
+    let timer = null;
+
+    input.addEventListener('input', function() {
+        clearTimeout(timer);
+        const q = this.value.trim();
+        if (q.length < 2) {
+            results.innerHTML = '';
+            empty.style.display = 'none';
+            loading.style.display = 'none';
+            return;
+        }
+        loading.style.display = 'block';
+        empty.style.display = 'none';
+        timer = setTimeout(() => {
+            fetch('/api/search/{{ role }}?q=' + encodeURIComponent(q))
+                .then(r => r.json())
+                .then(data => {
+                    loading.style.display = 'none';
+                    if (data.length === 0) {
+                        results.innerHTML = '';
+                        empty.style.display = 'block';
+                        return;
+                    }
+                    empty.style.display = 'none';
+                    results.innerHTML = data.map(item => `
+                        <a href="${item.url}" class="result-item">
+                            <div class="result-icon">${item.name[0].toUpperCase()}</div>
+                            <div class="result-info">
+                                <div class="result-name">${item.name}</div>
+                                <div class="result-desc">${item.description || ''}</div>
+                            </div>
+                            <i class="fas fa-chevron-right result-arrow"></i>
+                        </a>
+                    `).join('');
+                });
+        }, 300);
+    });
+</script>
+{% endblock %}

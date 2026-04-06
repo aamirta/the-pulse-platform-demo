@@ -875,6 +875,45 @@ def register_pulse_member(email, full_name, role, form_data_dict):
     session["member_id"] = member.id
     return member, None
 
+## ============================================
+## SEARCH API + JOIN FLOW
+## ============================================
+
+ROLE_CONFIG = {
+    'entrepreneur': {'model': 'Startup', 'name_field': 'startup_name', 'detail_route': 'startup_detail', 'id_field': 'startup_id', 'form_route': '/entrepreneur-form', 'label': 'Startup'},
+    'investor': {'model': 'Investor', 'name_field': 'investor_name', 'detail_route': 'investor_detail', 'id_field': 'investor_id', 'form_route': '/investor-form', 'label': 'Investisseur'},
+    'program': {'model': 'Incubator', 'name_field': 'incubator', 'detail_route': 'incubator_detail', 'id_field': 'incubator_id', 'form_route': '/program-form', 'label': 'Programme'},
+    'incubator': {'model': 'Incubator', 'name_field': 'incubator', 'detail_route': 'incubator_detail', 'id_field': 'incubator_id', 'form_route': '/program-form?type=incubator', 'label': 'Incubateur'},
+    'talent': {'model': 'Founder', 'name_field': 'name', 'detail_route': 'founder_detail', 'id_field': 'founder_id', 'form_route': '/talent-form', 'label': 'Talent / Fondateur'},
+}
+
+@app.route("/api/search/<role>")
+def api_search(role):
+    q = request.args.get("q", "").strip()
+    config = ROLE_CONFIG.get(role)
+    if not config or len(q) < 2:
+        return jsonify([])
+    model_class = globals().get(config['model'])
+    name_field = getattr(model_class, config['name_field'])
+    results = model_class.query.filter(name_field.ilike(f"%{q}%")).limit(8).all()
+    items = []
+    for r in results:
+        name = getattr(r, config['name_field']) or "Sans nom"
+        rid = getattr(r, config['id_field'])
+        desc = getattr(r, 'description', None) or getattr(r, 'type_organisme', None) or ""
+        if desc and len(desc) > 80:
+            desc = desc[:80] + "..."
+        items.append({"id": rid, "name": name, "description": desc,
+                       "url": url_for(config['detail_route'], **{config['id_field']: rid})})
+    return jsonify(items)
+
+@app.route("/join/<role>")
+def join_search(role):
+    config = ROLE_CONFIG.get(role)
+    if not config:
+        return redirect(url_for("join"))
+    return render_template("join-search.html", role=role, config=config)
+
 @app.context_processor
 def inject_current_member():
     """Make current_member available in all templates."""
