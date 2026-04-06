@@ -995,10 +995,11 @@ def complete_profile(member_id):
     if request.method == "POST":
         file = request.files.get("profile_pic")
         if file and allowed_file(file.filename):
-            filename = secure_filename(f"{member.id}_{file.filename}")
-            filepath = os.path.join(UPLOAD_FOLDER, filename)
-            file.save(filepath)
-            member.profile_pic = f"uploads/{filename}"
+            import base64
+            file_data = file.read()
+            ext = file.filename.rsplit('.', 1)[1].lower()
+            b64 = base64.b64encode(file_data).decode('utf-8')
+            member.profile_pic = f"data:image/{ext};base64,{b64}"
             db.session.commit()
         return redirect(url_for("my_profile", member_id=member.id))
     return render_template("complete-profile.html", member=member)

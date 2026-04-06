@@ -256,7 +256,7 @@
     <div class="profile-hero">
         <div class="hero-layout">
             {% if member.profile_pic %}
-                <img src="{{ url_for('static', filename=member.profile_pic) }}" alt="{{ member.full_name }}" class="hero-avatar">
+                <img src="{% if member.profile_pic.startswith('data:') %}{{ member.profile_pic }}{% else %}{{ url_for('static', filename=member.profile_pic) }}{% endif %}" alt="{{ member.full_name }}" class="hero-avatar">
             {% else %}
                 <div class="hero-avatar-placeholder">
                     {{ member.full_name[0]|upper }}
