@@ -880,8 +880,13 @@ def inject_current_member():
     """Make current_member available in all templates."""
     member_id = session.get("member_id")
     if member_id:
-        member = PulseMember.query.get(member_id)
-        return {"current_member": member}
+        try:
+            member = PulseMember.query.get(member_id)
+            if member:
+                return {"current_member": member}
+        except Exception:
+            pass
+        session.pop("member_id", None)
     return {"current_member": None}
 
 @app.route("/join")
