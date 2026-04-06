@@ -119,7 +119,7 @@
             </button>
             <a href="/join" class="btn-join">
                 <i class="fas fa-bolt" aria-hidden="true"></i>
-                <span>Join</span>
+                <span>Become a Pulser</span>
             </a>
         </div>
     </nav>
@@ -214,7 +214,7 @@
             </a>
             <a href="/join" class="sidebar-link">
                 <i class="fas fa-bolt" aria-hidden="true"></i>
-                <span data-i18n="sidebar_join">Rejoindre The Pulse</span>
+                <span data-i18n="sidebar_join">Feel The Pulse</span>
             </a>
         </nav>
 
@@ -226,17 +226,6 @@
     <!-- Overlay -->
     <div class="overlay" id="overlay" aria-hidden="true"></div>
 
-    <!-- Floating Profile Button -->
-    {% if current_member %}
-    <a href="/my-profile/{{ current_member.id }}" class="floating-profile" title="Mon Profil">
-        {% if current_member.profile_pic %}
-            <img src="{% if current_member.profile_pic.startswith('data:') %}{{ current_member.profile_pic }}{% else %}{{ url_for('static', filename=current_member.profile_pic) }}{% endif %}" alt="" class="floating-avatar">
-        {% else %}
-            <span class="floating-avatar-placeholder">{{ current_member.full_name[0]|upper }}</span>
-        {% endif %}
-        <span class="floating-name">{{ current_member.full_name.split()[0] }}</span>
-    </a>
-    {% endif %}
 
     <!-- ============================================
          COOKIE CONSENT BANNER
@@ -378,7 +367,7 @@
                         <li><a href="/actualites"><i class="fas fa-newspaper"></i> Actualités</a></li>
                         <li><a href="/ressources"><i class="fas fa-book-open"></i> Ressources</a></li>
                         <li><a href="/about-us" data-i18n="sidebar_about"><i class="fas fa-circle-info"></i> À propos</a></li>
-                        <li><a href="/join" data-i18n="sidebar_join"><i class="fas fa-bolt"></i> Rejoindre The Pulse</a></li>
+                        <li><a href="/join" data-i18n="sidebar_join"><i class="fas fa-bolt"></i> Feel The Pulse</a></li>
                     </ul>
                 </div>
 
@@ -746,11 +735,11 @@
                 sidebar_home: 'Accueil', sidebar_startups: 'Startups', sidebar_founders: 'Fondateurs',
                 sidebar_investors: 'Investisseurs', sidebar_incubators: 'Incubateurs',
                 sidebar_funding: 'Tours de financement', sidebar_funds: 'Fonds',
-                sidebar_about: '\u00c0 propos', sidebar_join: 'Rejoindre The Pulse',
+                sidebar_about: '\u00c0 propos', sidebar_join: 'Feel The Pulse',
                 // Home
                 disclaimer_banner: 'Ceci est une version de d\u00e9monstration de The Pulse. Les donn\u00e9es affich\u00e9es sont pr\u00e9sent\u00e9es \u00e0 titre indicatif.',
                 hero_subtitle: 'Donn\u00e9es en temps r\u00e9el sur les startups, fondateurs, investisseurs et financements au Maroc',
-                btn_join_pulse: 'Rejoindre The Pulse', btn_explore: 'Explorer les startups', btn_explore_all: 'Explorer toutes les startups',
+                btn_join_pulse: 'Feel The Pulse', btn_explore: 'Explorer les startups', btn_explore_all: 'Explorer toutes les startups',
                 stat_startups: 'Total startups', stat_founders: 'Fondateurs actifs',
                 stat_investors: 'Investisseurs', stat_funding: 'Financement total',
                 ticker_startups: 'Startups', ticker_founders: 'Fondateurs', ticker_investors: 'Investisseurs',
@@ -897,7 +886,7 @@
                 explore_ecosystem_p: 'D\u00e9couvrez les startups, investisseurs et programmes d\u2019accompagnement du Maroc.',
                 explore_startups_btn: 'Explorer les startups',
                 // Join
-                join_title: 'Rejoindre',
+                join_title: 'Feel',
                 join_subtitle: 'Connectez-vous avec les entrepreneurs, investisseurs et programmes d\u2019innovation au Maroc. Choisissez votre profil.',
                 entrepreneur_startup: 'Entrepreneur / Startup',
                 entrepreneur_desc: 'Soumettez votre profil startup pour vous connecter avec des investisseurs, acc\u00e9l\u00e9rateurs et partenaires potentiels.',
@@ -1145,11 +1134,11 @@
                 sidebar_home: 'Home', sidebar_startups: 'Startups', sidebar_founders: 'Founders',
                 sidebar_investors: 'Investors', sidebar_incubators: 'Incubators',
                 sidebar_funding: 'Funding Rounds', sidebar_funds: 'Funds',
-                sidebar_about: 'About Us', sidebar_join: 'Join The Pulse',
+                sidebar_about: 'About Us', sidebar_join: 'Feel The Pulse',
                 // Home
                 disclaimer_banner: 'This is a demo version of The Pulse platform. Data shown is for preview purposes only.',
                 hero_subtitle: 'Real-time data on startups, founders, investors & funding across Morocco',
-                btn_join_pulse: 'Join the Pulse', btn_explore: 'Explore Startups', btn_explore_all: 'Explore All Startups',
+                btn_join_pulse: 'Feel The Pulse', btn_explore: 'Explore Startups', btn_explore_all: 'Explore All Startups',
                 stat_startups: 'Total Startups', stat_founders: 'Active Founders',
                 stat_investors: 'Investors', stat_funding: 'Total Funding',
                 ticker_startups: 'Startups', ticker_founders: 'Founders', ticker_investors: 'Investors',
@@ -1295,7 +1284,7 @@
                 explore_ecosystem_p: 'Discover Morocco\'s most innovative startups, investors, and support programs.',
                 explore_startups_btn: 'Explore Startups',
                 // Join
-                join_title: 'Join',
+                join_title: 'Feel',
                 join_subtitle: 'Connect with entrepreneurs, investors, and innovation programs across Morocco. Choose your role to get started.',
                 entrepreneur_startup: 'Entrepreneur / Startup',
                 entrepreneur_desc: 'Submit your startup profile to connect with investors, accelerators, and potential partners in Morocco\'s growing ecosystem.',
@@ -2016,11 +2005,22 @@
     }
     </script>
 
-<!-- PulseGPT Chatbot - hidden for now -->
+<!-- PulseGPT Chatbot -->
 <style>
-#pulseGptBtn{display:none !important;}
-#pulseGptPanel{display:none !important;}
-/* old PulseGPT styles hidden */
+#pulseGptBtn{position:fixed;bottom:1.5rem;right:1.5rem;z-index:9998;background:var(--accent);color:#fff;border:none;border-radius:50px;padding:0.7rem 1.2rem;font-family:var(--font-heading);font-weight:700;font-size:0.85rem;cursor:pointer;box-shadow:0 4px 20px rgba(0,212,170,0.4);display:flex;align-items:center;gap:0.5rem;transition:all 0.3s ease;}
+#pulseGptBtn:hover{transform:translateY(-2px);box-shadow:0 8px 30px rgba(0,212,170,0.5);}
+#pulseGptBtn svg{animation:ecgFloat 2s ease-in-out infinite;}
+@keyframes ecgFloat{0%,100%{opacity:0.8;}50%{opacity:1;}}
+#pulseGptChat{position:fixed;bottom:5rem;right:1.5rem;z-index:9999;width:380px;max-height:500px;background:var(--bg-card);border:1px solid var(--border-color);border-radius:16px;box-shadow:0 20px 60px rgba(0,0,0,0.25);display:none;flex-direction:column;overflow:hidden;}
+#pulseGptHeader{padding:0.75rem 1rem;border-bottom:1px solid var(--border-color);display:flex;align-items:center;justify-content:space-between;background:var(--accent);color:#fff;border-radius:16px 16px 0 0;}
+#pulseGptHeader h4{margin:0;font-family:var(--font-heading);font-size:0.9rem;display:flex;align-items:center;gap:0.4rem;}
+#pulseGptMessages{flex:1;overflow-y:auto;padding:1rem;display:flex;flex-direction:column;gap:0.6rem;max-height:340px;min-height:200px;}
+.pgpt-msg{padding:0.5rem 0.8rem;border-radius:12px;font-size:0.82rem;line-height:1.5;font-family:var(--font-body);max-width:85%;word-wrap:break-word;}
+.pgpt-bot{background:var(--bg-surface);color:var(--text-primary);align-self:flex-start;border:1px solid var(--border-color);}
+.pgpt-user{background:var(--accent);color:#fff;align-self:flex-end;}
+#pulseGptInput{display:flex;border-top:1px solid var(--border-color);padding:0.5rem;}
+#pulseGptInput input{flex:1;border:none;background:transparent;padding:0.5rem 0.7rem;font-size:0.82rem;font-family:var(--font-body);color:var(--text-primary);outline:none;}
+#pulseGptInput button{background:var(--accent);color:#fff;border:none;border-radius:8px;padding:0.4rem 0.7rem;cursor:pointer;font-size:0.8rem;}
 </style>
 
 <button id="pulseGptBtn" onclick="togglePulseGpt()">
