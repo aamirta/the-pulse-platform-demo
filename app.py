@@ -899,7 +899,7 @@ def entrepreneur_form():
             incubators = Incubator.query.all()
             investors = Investor.query.all()
             return render_template("entrepreneur-form.html", incubators=incubators, investors=investors, error=error)
-        return redirect(url_for("complete_profile", member_id=member.id))
+        return render_template("email-sent.html", email=email)
     incubators = Incubator.query.all()
     investors = Investor.query.all()
     return render_template("entrepreneur-form.html", incubators=incubators, investors=investors)
@@ -913,7 +913,7 @@ def investor_form():
         member, error = register_pulse_member(email, full_name, "investor", form_data)
         if error:
             return render_template("investor-form.html", error=error)
-        return redirect(url_for("complete_profile", member_id=member.id))
+        return render_template("email-sent.html", email=email)
     return render_template("investor-form.html")
 
 @app.route("/program-form", methods=["GET", "POST"])
@@ -926,7 +926,7 @@ def program_form():
         member, error = register_pulse_member(email, full_name, role, form_data)
         if error:
             return render_template("program-form.html", error=error)
-        return redirect(url_for("complete_profile", member_id=member.id))
+        return render_template("email-sent.html", email=email)
     return render_template("program-form.html")
 
 @app.route("/talent-form", methods=["GET", "POST"])
@@ -966,7 +966,7 @@ def talent_form():
         member, error = register_pulse_member(email, full_name, "talent", form_data)
         if error:
             return render_template("talent-form.html", error=error)
-        return redirect(url_for("complete_profile", member_id=member.id))
+        return render_template("email-sent.html", email=email)
     return render_template("talent-form.html")
 
 ## ============================================
