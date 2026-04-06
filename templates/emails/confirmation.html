@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body style="margin:0;padding:0;background:#f4f4f7;font-family:'Helvetica Neue',Arial,sans-serif;">
+    <table width="100%" cellpadding="0" cellspacing="0" style="background:#f4f4f7;padding:40px 0;">
+        <tr>
+            <td align="center">
+                <table width="560" cellpadding="0" cellspacing="0" style="background:#ffffff;border-radius:12px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,0.08);">
+                    <!-- Header -->
+                    <tr>
+                        <td style="background:linear-gradient(135deg,#00d4aa,#4361ee);padding:32px 40px;text-align:center;">
+                            <h1 style="color:#ffffff;margin:0;font-size:24px;font-weight:700;">The Pulse</h1>
+                        </td>
+                    </tr>
+                    <!-- Body -->
+                    <tr>
+                        <td style="padding:40px;">
+                            <h2 style="color:#1a1a2e;margin:0 0 16px;font-size:20px;">Bienvenue, {{ name }} !</h2>
+                            <p style="color:#555;font-size:15px;line-height:1.6;margin:0 0 24px;">
+                                Merci de rejoindre The Pulse en tant que <strong>{{ role }}</strong>.
+                                Pour finaliser votre inscription, veuillez confirmer votre adresse email.
+                            </p>
+                            <table cellpadding="0" cellspacing="0" width="100%">
+                                <tr>
+                                    <td align="center" style="padding:8px 0 32px;">
+                                        <a href="{{ confirm_url }}"
+                                           style="display:inline-block;background:#00d4aa;color:#0a0e1a;text-decoration:none;font-weight:600;font-size:15px;padding:14px 36px;border-radius:8px;">
+                                            Confirmer mon email
+                                        </a>
+                                    </td>
+                                </tr>
+                            </table>
+                            <p style="color:#999;font-size:13px;line-height:1.5;margin:0;">
+                                Si vous n'avez pas demande cette inscription, ignorez cet email.
+                            </p>
+                        </td>
+                    </tr>
+                    <!-- Footer -->
+                    <tr>
+                        <td style="background:#f9fafb;padding:20px 40px;text-align:center;border-top:1px solid #eee;">
+                            <p style="color:#aaa;font-size:12px;margin:0;">
+                                The Pulse - Morocco's Startup Ecosystem Platform
+                            </p>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+</body>
+</html>

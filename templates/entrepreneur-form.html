@@ -700,32 +700,32 @@
     </div>
 
     <div class="form-container">
-        <form>
+        <form method="POST" action="/entrepreneur-form">
                 <!-- Company Information -->
                 <div class="form-section">
                     <h2 data-i18n="company_information">Company Information</h2>
                     <div class="form-grid two-col">
                         <div class="form-group">
                             <label for="companyName"><span data-i18n="company_name">Company Name</span> *</label>
-                            <input type="text" id="companyName" placeholder="Enter your company name" required>
+                            <input type="text" id="companyName" name="company_name" placeholder="Enter your company name" required>
                         </div>
                         <div class="form-group">
                             <label for="website" data-i18n="website">Website</label>
-                            <input type="url" id="website" placeholder="https://your-website.com">
+                            <input type="url" id="website" name="website" placeholder="https://your-website.com">
                         </div>
                     </div>
                     <div class="form-group">
                         <label for="description"><span data-i18n="company_description">Company Description</span> *</label>
-                        <textarea id="description" placeholder="Describe what your company does, your mission, and value proposition" style="min-height: 120px;" required></textarea>
+                        <textarea id="description" name="description" placeholder="Describe what your company does, your mission, and value proposition" style="min-height: 120px;" required></textarea>
                     </div>
                     <div class="form-grid three-col">
                         <div class="form-group">
                             <label for="foundedYear" data-i18n="founded_year">Founded Year</label>
-                            <input type="number" id="foundedYear" placeholder="2024" min="1900" max="2024">
+                            <input type="number" id="foundedYear" name="founded_year" placeholder="2024" min="1900" max="2024">
                         </div>
                         <div class="form-group">
                             <label for="employeeCount" data-i18n="employee_count">Employee Count</label>
-                            <select id="employeeCount">
+                            <select id="employeeCount" name="employee_count">
                                 <option value="">Select range</option>
                                 <option value="1-5">1-5 employees</option>
                                 <option value="6-20">6-20 employees</option>
@@ -735,7 +735,7 @@
                         </div>
                         <div class="form-group">
                             <label for="location" data-i18n="location_filter">Location</label>
-                            <input type="text" id="location" placeholder="Casablanca, Morocco">
+                            <input type="text" id="location" name="location" placeholder="Casablanca, Morocco">
                         </div>
                     </div>
                 </div>
@@ -771,7 +771,7 @@
                     <div class="form-grid two-col">
                         <div class="form-group">
                             <label for="fundingStage" data-i18n="funding_stage">Funding Stage</label>
-                            <select id="fundingStage">
+                            <select id="fundingStage" name="funding_stage">
                                 <option value="">Select stage</option>
                                 <option value="idea">Idea Stage</option>
                                 <option value="pre-seed">Pre-Seed</option>
@@ -784,7 +784,7 @@
                         </div>
                         <div class="form-group">
                             <label for="fundingAmount" data-i18n="latest_funding">Latest Funding Amount</label>
-                            <input type="text" id="fundingAmount" placeholder="e.g., $500K">
+                            <input type="text" id="fundingAmount" name="funding_amount" placeholder="e.g., $500K">
                         </div>
                     </div>
                 </div>
@@ -804,11 +804,11 @@
                             <div class="form-grid two-col">
                                 <div class="form-group">
                                     <label><span data-i18n="full_name">Full Name</span> *</label>
-                                    <input type="text" required placeholder="Full name">
+                                    <input type="text" name="full_name" required placeholder="Full name">
                                 </div>
                                 <div class="form-group">
                                     <label><span data-i18n="email">Email</span> *</label>
-                                    <input type="email" required placeholder="founder@company.com">
+                                    <input type="email" name="email" required placeholder="founder@company.com">
                                 </div>
                             </div>
 
@@ -863,7 +863,7 @@
                     </div>
                     <div class="form-group">
                         <label for="lookingFor" data-i18n="looking_for">What are you looking for?</label>
-                        <textarea id="lookingFor" placeholder="e.g., Seed funding, mentorship, partnerships, talent..." style="min-height: 80px;"></textarea>
+                        <textarea id="lookingFor" name="looking_for" placeholder="e.g., Seed funding, mentorship, partnerships, talent..." style="min-height: 80px;"></textarea>
                     </div>
                 </div>
 
@@ -871,7 +871,6 @@
 
             <div class="form-footer">
                 <p data-i18n="terms_notice">By submitting, you agree to our Terms of Service and Privacy Policy.</p>
-                <p class="warning" data-i18n="demo_warning">⚠️ This is a demo form - submissions are not processed</p>
             </div>
         </form>
     </div>

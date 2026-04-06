@@ -1,0 +1,93 @@
+{% extends "base.html" %}
+
+{% block title %}Verifiez votre email - The Pulse{% endblock %}
+
+{% block content %}
+<style>
+    .email-sent-page {
+        min-height: 60vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 2rem 1rem;
+    }
+    .email-sent-card {
+        background: var(--bg-card);
+        border: 1px solid var(--border-color);
+        border-radius: 20px;
+        padding: 3rem 2.5rem;
+        max-width: 480px;
+        width: 100%;
+        text-align: center;
+    }
+    .email-icon {
+        width: 80px;
+        height: 80px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, #00d4aa, #4361ee);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 1.5rem;
+        font-size: 2rem;
+        color: #fff;
+    }
+    .email-sent-card h1 {
+        font-family: var(--font-heading);
+        font-weight: 700;
+        font-size: 1.8rem;
+        color: var(--text-primary);
+        margin-bottom: 0.75rem;
+    }
+    .email-sent-card p {
+        font-family: var(--font-body);
+        font-size: 1rem;
+        color: var(--text-secondary);
+        line-height: 1.7;
+        margin-bottom: 0.5rem;
+    }
+    .email-sent-card .email-highlight {
+        font-weight: 600;
+        color: var(--accent, #00d4aa);
+    }
+    .email-sent-card .hint {
+        font-size: 0.85rem;
+        color: var(--text-secondary);
+        opacity: 0.7;
+        margin-top: 1.5rem;
+    }
+    .error-card {
+        background: var(--bg-card);
+        border: 1px solid #ef4444;
+        border-radius: 20px;
+        padding: 3rem 2.5rem;
+        max-width: 480px;
+        width: 100%;
+        text-align: center;
+    }
+    .error-card h1 { color: #ef4444; font-size: 1.5rem; margin-bottom: 1rem; }
+    .error-card p { color: var(--text-secondary); }
+    .error-card a { color: var(--accent); text-decoration: none; font-weight: 600; }
+</style>
+
+<div class="email-sent-page">
+    {% if error %}
+    <div class="error-card">
+        <h1><i class="fas fa-exclamation-circle"></i> Erreur</h1>
+        <p>{{ error }}</p>
+        <p style="margin-top:1.5rem;"><a href="/join"><i class="fas fa-arrow-left"></i> Retour</a></p>
+    </div>
+    {% else %}
+    <div class="email-sent-card">
+        <div class="email-icon">
+            <i class="fas fa-envelope-open-text"></i>
+        </div>
+        <h1>Verifiez votre email</h1>
+        <p>Un email de confirmation a ete envoye a</p>
+        <p class="email-highlight">{{ email }}</p>
+        <p>Cliquez sur le lien dans l'email pour finaliser votre inscription et completer votre profil.</p>
+        <p class="hint"><i class="fas fa-info-circle"></i> Pensez a verifier vos spams si vous ne trouvez pas l'email.</p>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

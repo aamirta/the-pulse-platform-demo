@@ -698,9 +698,9 @@
                         {% endif %}
                         <div class="nf-card-author">
                             {% if obj.author_founder_id is defined and obj.author_founder_id %}
-                            <a href="/founder/{{ obj.author_founder_id }}" class="nf-card-author-name" style="text-decoration:none; color:inherit;" onclick="event.stopPropagation();">{{ obj.author_name or 'Membre anonyme' }}</a>
+                            <a href="/founder/{{ obj.author_founder_id }}" class="nf-card-author-name" style="text-decoration:none; color:inherit;" onclick="event.stopPropagation();">{{ obj.author_name or 'Anonymous member' }}</a>
                             {% else %}
-                            <p class="nf-card-author-name">{{ obj.author_name or 'Membre anonyme' }}</p>
+                            <p class="nf-card-author-name">{{ obj.author_name or 'Anonymous member' }}</p>
                             {% endif %}
                             <p class="nf-card-author-role">{{ obj.author_role or 'Ecosystem member' }}</p>
                         </div>
@@ -1062,7 +1062,7 @@ function openDM(postId, authorName, authorRole) {
     _dmPostId = postId;
     document.getElementById('dmToAvatar').textContent = authorName.split(' ').map(function(w){return w[0]||'';}).join('').substring(0,2).toUpperCase();
     document.getElementById('dmToName').textContent  = authorName;
-    document.getElementById('dmToRole').textContent  = authorRole || 'Membre de l\'écosystème';
+    document.getElementById('dmToRole').textContent  = authorRole || 'Ecosystem member';
     document.getElementById('dmBody').style.display    = 'flex';
     document.getElementById('dmSuccess').style.display = 'none';
     document.getElementById('dmMessage').value = '';

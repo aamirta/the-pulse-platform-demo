@@ -721,6 +721,19 @@ class Post(db.Model):
     author_founder_id = db.Column(db.String(50))
 
 
+class PulseMember(db.Model):
+    __tablename__ = 'pulse_members'
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    email = db.Column(db.String(255), unique=True, nullable=False)
+    full_name = db.Column(db.String(150), nullable=False)
+    role = db.Column(db.String(50), nullable=False)  # entrepreneur, investor, program, incubator, talent
+    confirmation_token = db.Column(db.String(100), unique=True)
+    is_confirmed = db.Column(db.Boolean, default=False)
+    profile_pic = db.Column(db.String(500))
+    form_data = db.Column(db.Text)  # JSON string with role-specific fields
+    created_at = db.Column(db.DateTime, default=db.func.now())
+
+
 class DirectMessage(db.Model):
     __tablename__ = 'direct_messages'
     id          = db.Column(db.Integer, primary_key=True, autoincrement=True)

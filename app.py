@@ -1,12 +1,15 @@
 from flask import Flask, request, redirect, render_template_string, session, url_for, render_template, jsonify, Response
 import csv
 import io
+import json
 from models import *
 from Functions import *
 import urllib.parse
 from collections import Counter
 from sqlalchemy import func, or_, event, case, literal
 from werkzeug.security import generate_password_hash, check_password_hash
+from werkzeug.utils import secure_filename
+import resend
 import urllib.parse
 import uuid
 import time
@@ -26,10 +29,29 @@ app.config['SESSION_REFRESH_EACH_REQUEST'] = False
 database_url = os.environ.get("DATABASE_URL")
 if database_url:
     app.config['SQLALCHEMY_DATABASE_URI'] = database_url
+    app.config['SQLALCHEMY_ENGINE_OPTIONS'] = {
+        'pool_pre_ping': True,
+        'pool_recycle': 300,
+        'connect_args': {
+            'connect_timeout': 10,
+            'options': '-c statement_timeout=30000'
+        }
+    }
 else:
     basedir = os.path.abspath(os.path.dirname(__file__))
     app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(basedir, 'thepulse.db')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+
+# Resend email configuration
+resend.api_key = os.environ.get('RESEND_API_KEY')
+MAIL_FROM = os.environ.get('MAIL_FROM', 'onboarding@resend.dev')
+
+# Upload config
+UPLOAD_FOLDER = os.path.join(os.path.abspath(os.path.dirname(__file__)), 'static', 'uploads')
+ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif', 'webp'}
+
+def allowed_file(filename):
+    return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 # Initialize database with app
 db.init_app(app)
@@ -41,15 +63,14 @@ with app.app_context():
         default_user = User(username='admin', password='admin')
         db.session.add(default_user)
         db.session.commit()
-SERVER_TOKEN = str(uuid.uuid4())
-@app.before_request
-def require_password():
-    allowed_routes = ['login', 'static']
-    if (
-        'logged_in' not in session
-        or session.get("server_token") != SERVER_TOKEN
-    ) and request.endpoint not in allowed_routes:
-        return redirect(url_for('login'))
+# Auth disabled for demo
+# @app.before_request
+# def require_password():
+#     allowed_routes = ['login', 'static', 'confirm_email', 'complete_profile', 'my_profile',
+#                       'join', 'entrepreneur_form', 'investor_form', 'program_form',
+#                       'talent_form', 'cofounder_form']
+#     if 'logged_in' not in session and request.endpoint not in allowed_routes:
+#         return redirect(url_for('login'))
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
@@ -58,9 +79,8 @@ def login():
         password = request.form.get("password")
         user = User.query.filter_by(username=username, password=password).first()
         if user:
-            session.permanent = False  # Session expires when browser closes
+            session.permanent = False
             session["logged_in"] = True
-            session["server_token"] = SERVER_TOKEN
             return redirect(url_for("home"))
         else:
             return render_template("login.html", error="Invalid credentials. Please try again.")
@@ -803,30 +823,111 @@ def funding_rounds():
         year_amounts=year_amounts
     )
 
+## ============================================
+## JOIN THE PULSE - Registration Flow
+## ============================================
+
+def send_confirmation_email(member):
+    """Send confirmation email to a new PulseMember via Resend."""
+    confirm_url = url_for('confirm_email', token=member.confirmation_token, _external=True)
+    html_content = render_template("emails/confirmation.html",
+                                   name=member.full_name,
+                                   confirm_url=confirm_url,
+                                   role=member.role)
+    try:
+        resend.Emails.send({
+            "from": f"The Pulse <{MAIL_FROM}>",
+            "to": [member.email],
+            "subject": "Confirmez votre inscription - The Pulse",
+            "html": html_content
+        })
+    except Exception as e:
+        print(f"[EMAIL ERROR] {e} — member {member.email} can confirm at {confirm_url}")
+
+def register_pulse_member(email, full_name, role, form_data_dict):
+    """Create a PulseMember, auto-confirm, and try to send email. Returns (member, error)."""
+    existing = PulseMember.query.filter_by(email=email).first()
+    if existing and existing.is_confirmed:
+        return existing, None
+    if existing and not existing.is_confirmed:
+        existing.confirmation_token = str(uuid.uuid4())
+        existing.full_name = full_name
+        existing.role = role
+        existing.is_confirmed = True
+        existing.form_data = json.dumps(form_data_dict, ensure_ascii=False)
+        db.session.commit()
+        send_confirmation_email(existing)
+        return existing, None
+
+    member = PulseMember(
+        email=email,
+        full_name=full_name,
+        role=role,
+        confirmation_token=str(uuid.uuid4()),
+        is_confirmed=True,
+        form_data=json.dumps(form_data_dict, ensure_ascii=False)
+    )
+    db.session.add(member)
+    db.session.commit()
+    send_confirmation_email(member)
+    return member, None
+
 @app.route("/join")
 def join():
     return render_template("join.html")
 
-@app.route("/entrepreneur-form")
+@app.route("/entrepreneur-form", methods=["GET", "POST"])
 def entrepreneur_form():
+    if request.method == "POST":
+        email = request.form.get("email", "").strip()
+        full_name = request.form.get("full_name", "").strip()
+        form_data = {k: v for k, v in request.form.items() if k not in ('email', 'full_name')}
+        member, error = register_pulse_member(email, full_name, "entrepreneur", form_data)
+        if error:
+            incubators = Incubator.query.all()
+            investors = Investor.query.all()
+            return render_template("entrepreneur-form.html", incubators=incubators, investors=investors, error=error)
+        return redirect(url_for("complete_profile", member_id=member.id))
     incubators = Incubator.query.all()
     investors = Investor.query.all()
     return render_template("entrepreneur-form.html", incubators=incubators, investors=investors)
 
-@app.route("/investor-form")
+@app.route("/investor-form", methods=["GET", "POST"])
 def investor_form():
+    if request.method == "POST":
+        email = request.form.get("email", "").strip()
+        full_name = request.form.get("full_name", "").strip()
+        form_data = {k: v for k, v in request.form.items() if k not in ('email', 'full_name')}
+        member, error = register_pulse_member(email, full_name, "investor", form_data)
+        if error:
+            return render_template("investor-form.html", error=error)
+        return redirect(url_for("complete_profile", member_id=member.id))
     return render_template("investor-form.html")
 
-@app.route("/program-form")
+@app.route("/program-form", methods=["GET", "POST"])
 def program_form():
+    if request.method == "POST":
+        email = request.form.get("email", "").strip()
+        full_name = request.form.get("full_name", "").strip()
+        form_data = {k: v for k, v in request.form.items() if k not in ('email', 'full_name')}
+        role = "incubator" if request.args.get("type") == "incubator" else "program"
+        member, error = register_pulse_member(email, full_name, role, form_data)
+        if error:
+            return render_template("program-form.html", error=error)
+        return redirect(url_for("complete_profile", member_id=member.id))
     return render_template("program-form.html")
 
 @app.route("/talent-form", methods=["GET", "POST"])
 def talent_form():
     if request.method == "POST":
+        email = request.form.get("email", "").strip()
+        full_name = request.form.get("full_name", "").strip()
+        form_data = {k: v for k, v in request.form.items() if k not in ('email', 'full_name')}
+
+        # Also save to Talent table for the talent directory
         new_talent = Talent(
-            full_name=request.form.get("full_name"),
-            email=request.form.get("email"),
+            full_name=full_name,
+            email=email,
             phone=request.form.get("phone"),
             location=request.form.get("location"),
             current_title=request.form.get("current_title"),
@@ -849,8 +950,47 @@ def talent_form():
         )
         db.session.add(new_talent)
         db.session.commit()
-        return redirect(url_for("talents"))
+
+        member, error = register_pulse_member(email, full_name, "talent", form_data)
+        if error:
+            return render_template("talent-form.html", error=error)
+        return redirect(url_for("complete_profile", member_id=member.id))
     return render_template("talent-form.html")
+
+## ============================================
+## EMAIL CONFIRMATION + PROFILE SETUP
+## ============================================
+
+@app.route("/confirm/<token>")
+def confirm_email(token):
+    member = PulseMember.query.filter_by(confirmation_token=token).first()
+    if not member:
+        return render_template("email-sent.html", error="Lien de confirmation invalide ou expire.")
+    member.is_confirmed = True
+    db.session.commit()
+    return redirect(url_for("complete_profile", member_id=member.id))
+
+@app.route("/complete-profile/<int:member_id>", methods=["GET", "POST"])
+def complete_profile(member_id):
+    member = PulseMember.query.get_or_404(member_id)
+    if not member.is_confirmed:
+        return redirect(url_for("join"))
+    if request.method == "POST":
+        file = request.files.get("profile_pic")
+        if file and allowed_file(file.filename):
+            filename = secure_filename(f"{member.id}_{file.filename}")
+            filepath = os.path.join(UPLOAD_FOLDER, filename)
+            file.save(filepath)
+            member.profile_pic = f"uploads/{filename}"
+            db.session.commit()
+        return redirect(url_for("my_profile", member_id=member.id))
+    return render_template("complete-profile.html", member=member)
+
+@app.route("/my-profile/<int:member_id>")
+def my_profile(member_id):
+    member = PulseMember.query.get_or_404(member_id)
+    form_data = json.loads(member.form_data) if member.form_data else {}
+    return render_template("my-profile.html", member=member, form_data=form_data)
 
 @app.route("/talents")
 def talents():
@@ -1560,4 +1700,4 @@ def send_message(post_id):
 
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(debug=True, port=8080)

@@ -337,18 +337,18 @@
 
     <div class="form-container">
 
-            <form>
+            <form method="POST" action="/program-form">
                 <!-- Program Information -->
                 <div class="form-section">
                     <h2 data-i18n="program_information">Program Information</h2>
                     <div class="form-grid two-col">
                         <div class="form-group">
                             <label for="programName"><span data-i18n="program_name">Program Name</span> *</label>
-                            <input type="text" id="programName" placeholder="Enter your program name" required>
+                            <input type="text" id="programName" name="program_name" placeholder="Enter your program name" required>
                         </div>
                         <div class="form-group">
                             <label for="programType"><span data-i18n="program_type">Program Type</span> *</label>
-                            <select id="programType" required>
+                            <select id="programType" name="program_type" required>
                                 <option value="">Select type</option>
                                 <option value="accelerator">Accelerator</option>
                                 <option value="incubator">Incubator</option>
@@ -362,29 +362,29 @@
                     <div class="form-grid two-col">
                         <div class="form-group">
                             <label for="organizationName"><span data-i18n="organization_name">Organization Name</span> *</label>
-                            <input type="text" id="organizationName" placeholder="Host organization" required>
+                            <input type="text" id="organizationName" name="organization_name" placeholder="Host organization" required>
                         </div>
                         <div class="form-group">
                             <label for="website">Website</label>
-                            <input type="url" id="website" placeholder="https://your-program.com">
+                            <input type="url" id="website" name="website" placeholder="https://your-program.com">
                         </div>
                     </div>
                     <div class="form-group">
                         <label for="description"><span data-i18n="program_description">Program Description</span> *</label>
-                        <textarea id="description" placeholder="Describe your program, mission, and what makes it unique" style="min-height: 120px;" required></textarea>
+                        <textarea id="description" name="description" placeholder="Describe your program, mission, and what makes it unique" style="min-height: 120px;" required></textarea>
                     </div>
                     <div class="form-grid three-col">
                         <div class="form-group">
                             <label for="duration" data-i18n="duration">Duration</label>
-                            <input type="text" id="duration" placeholder="e.g., 3 months, 6 weeks">
+                            <input type="text" id="duration" name="duration" placeholder="e.g., 3 months, 6 weeks">
                         </div>
                         <div class="form-group">
                             <label for="location" data-i18n="location_filter">Location</label>
-                            <input type="text" id="location" placeholder="Casablanca, Morocco">
+                            <input type="text" id="location" name="location" placeholder="Casablanca, Morocco">
                         </div>
                         <div class="form-group">
                             <label for="format" data-i18n="format_label">Format</label>
-                            <select id="format">
+                            <select id="format" name="format">
                                 <option value="">Select format</option>
                                 <option value="in-person">In-Person</option>
                                 <option value="virtual">Virtual</option>
@@ -424,17 +424,17 @@
                     <div class="form-grid two-col">
                         <div class="form-group">
                             <label for="cohortSize" data-i18n="cohort_size">Cohort Size</label>
-                            <input type="number" id="cohortSize" placeholder="Number of startups per cohort">
+                            <input type="number" id="cohortSize" name="cohort_size" placeholder="Number of startups per cohort">
                         </div>
                         <div class="form-group">
                             <label for="applicationFee" data-i18n="application_fee">Application Fee</label>
-                            <input type="text" id="applicationFee" placeholder="e.g., Free, $100, €50">
+                            <input type="text" id="applicationFee" name="application_fee" placeholder="e.g., Free, $100, €50">
                         </div>
                     </div>
 
                     <div class="form-group">
                         <label for="benefits" data-i18n="program_benefits">Program Benefits</label>
-                        <textarea id="benefits" placeholder="What do participants get? (e.g., mentorship, funding, office space, legal support)" style="min-height: 100px;"></textarea>
+                        <textarea id="benefits" name="benefits" placeholder="What do participants get? (e.g., mentorship, funding, office space, legal support)" style="min-height: 100px;"></textarea>
                     </div>
                 </div>
 
@@ -444,22 +444,22 @@
                     <div class="form-grid two-col">
                         <div class="form-group">
                             <label for="investmentOffered" data-i18n="investment_offered">Investment Offered</label>
-                            <input type="text" id="investmentOffered" placeholder="e.g., $25K for 6% equity, No investment">
+                            <input type="text" id="investmentOffered" name="investment_offered" placeholder="e.g., $25K for 6% equity, No investment">
                         </div>
                         <div class="form-group">
                             <label for="equityTaken" data-i18n="equity_taken">Equity Taken</label>
-                            <input type="text" id="equityTaken" placeholder="e.g., 6%, No equity, Varies">
+                            <input type="text" id="equityTaken" name="equity_taken" placeholder="e.g., 6%, No equity, Varies">
                         </div>
                     </div>
 
                     <div class="form-group">
                         <label for="supportServices" data-i18n="support_services">Support Services</label>
-                        <textarea id="supportServices" placeholder="What additional support do you provide? (mentorship, legal, accounting, marketing, etc.)" style="min-height: 100px;"></textarea>
+                        <textarea id="supportServices" name="support_services" placeholder="What additional support do you provide? (mentorship, legal, accounting, marketing, etc.)" style="min-height: 100px;"></textarea>
                     </div>
 
                     <div class="form-group">
                         <label for="mentorsPartners" data-i18n="mentors_partners">Notable Mentors & Partners</label>
-                        <textarea id="mentorsPartners" placeholder="List key mentors, advisors, and partner organizations"></textarea>
+                        <textarea id="mentorsPartners" name="mentors_partners" placeholder="List key mentors, advisors, and partner organizations"></textarea>
                     </div>
                 </div>
 
@@ -469,22 +469,22 @@
                     <div class="form-grid two-col">
                         <div class="form-group">
                             <label for="applicationDeadline" data-i18n="next_deadline">Next Application Deadline</label>
-                            <input type="date" id="applicationDeadline">
+                            <input type="date" id="applicationDeadline" name="application_deadline">
                         </div>
                         <div class="form-group">
                             <label for="startDate" data-i18n="next_cohort">Next Cohort Start Date</label>
-                            <input type="date" id="startDate">
+                            <input type="date" id="startDate" name="start_date">
                         </div>
                     </div>
 
                     <div class="form-group">
                         <label for="applicationProcess" data-i18n="application_process">Application Process</label>
-                        <textarea id="applicationProcess" placeholder="Describe your application and selection process" style="min-height: 100px;"></textarea>
+                        <textarea id="applicationProcess" name="application_process" placeholder="Describe your application and selection process" style="min-height: 100px;"></textarea>
                     </div>
 
                     <div class="form-group">
                         <label for="eligibilityCriteria" data-i18n="eligibility">Eligibility Criteria</label>
-                        <textarea id="eligibilityCriteria" placeholder="What are the requirements to apply? (stage, location, team size, etc.)"></textarea>
+                        <textarea id="eligibilityCriteria" name="eligibility_criteria" placeholder="What are the requirements to apply? (stage, location, team size, etc.)"></textarea>
                     </div>
                 </div>
 
@@ -494,32 +494,32 @@
                     <div class="form-grid two-col">
                         <div class="form-group">
                             <label for="managerName">Full Name *</label>
-                            <input type="text" id="managerName" required placeholder="Full name">
+                            <input type="text" id="managerName" name="full_name" required placeholder="Full name">
                         </div>
                         <div class="form-group">
                             <label for="managerTitle">Title *</label>
-                            <input type="text" id="managerTitle" required placeholder="e.g., Program Director, Founder, Managing Partner">
+                            <input type="text" id="managerTitle" name="manager_title" required placeholder="e.g., Program Director, Founder, Managing Partner">
                         </div>
                     </div>
                     <div class="form-grid two-col">
                         <div class="form-group">
                             <label for="managerEmail">Email *</label>
-                            <input type="email" id="managerEmail" required placeholder="manager@program.com">
+                            <input type="email" id="managerEmail" name="email" required placeholder="manager@program.com">
                         </div>
                         <div class="form-group">
                             <label for="managerPhone">Phone Number</label>
-                            <input type="tel" id="managerPhone" placeholder="+212 XXX XXX XXX">
+                            <input type="tel" id="managerPhone" name="phone" placeholder="+212 XXX XXX XXX">
                         </div>
                     </div>
                     <div class="form-grid two-col">
                         <div class="form-group">
                             <label for="managerLinkedin">LinkedIn Profile</label>
-                            <input type="url" id="managerLinkedin" placeholder="https://linkedin.com/in/...">
+                            <input type="url" id="managerLinkedin" name="linkedin" placeholder="https://linkedin.com/in/...">
                         </div>
                     </div>
                     <div class="form-group">
                         <label for="managerBio">Bio</label>
-                        <textarea id="managerBio" placeholder="Brief background and experience" rows="3"></textarea>
+                        <textarea id="managerBio" name="manager_bio" placeholder="Brief background and experience" rows="3"></textarea>
                     </div>
                 </div>
 
@@ -529,21 +529,21 @@
                     <div class="form-grid two-col">
                         <div class="form-group">
                             <label for="contactEmail">General Contact Email *</label>
-                            <input type="email" id="contactEmail" required placeholder="info@program.com">
+                            <input type="email" id="contactEmail" name="contact_email" required placeholder="info@program.com">
                         </div>
                         <div class="form-group">
                             <label for="contactPhone">Phone Number</label>
-                            <input type="tel" id="contactPhone" placeholder="+212 XXX XXX XXX">
+                            <input type="tel" id="contactPhone" name="contact_phone" placeholder="+212 XXX XXX XXX">
                         </div>
                     </div>
                     <div class="form-grid two-col">
                         <div class="form-group">
                             <label for="linkedinProfile">LinkedIn Profile</label>
-                            <input type="url" id="linkedinProfile" placeholder="https://linkedin.com/company/...">
+                            <input type="url" id="linkedinProfile" name="linkedin_company" placeholder="https://linkedin.com/company/...">
                         </div>
                         <div class="form-group">
                             <label for="twitter">Twitter/X Handle</label>
-                            <input type="text" id="twitter" placeholder="@yourhandle">
+                            <input type="text" id="twitter" name="twitter" placeholder="@yourhandle">
                         </div>
                     </div>
                 </div>
@@ -552,7 +552,6 @@
 
             <div class="form-footer">
                 <p data-i18n="terms_notice">By submitting, you agree to our Terms of Service and Privacy Policy.</p>
-                <p class="warning" data-i18n="demo_warning">⚠️ This is a demo form - submissions are not processed</p>
             </div>
         </form>
     </div>

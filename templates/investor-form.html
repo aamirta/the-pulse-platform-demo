@@ -282,18 +282,18 @@
     </div>
 
     <div class="form-container">
-        <form>
+        <form method="POST" action="/investor-form">
                 <!-- Organization Information -->
                 <div class="form-section">
                     <h2 data-i18n="organization_information">Organization Information</h2>
                     <div class="form-grid two-col">
                         <div class="form-group">
                             <label for="organizationName"><span data-i18n="organization_name">Organization Name</span> *</label>
-                            <input type="text" id="organizationName" placeholder="VC Fund or Investment Company" required>
+                            <input type="text" id="organizationName" name="organization_name" placeholder="VC Fund or Investment Company" required>
                         </div>
                         <div class="form-group">
                             <label for="investorType"><span data-i18n="investor_type_label">Investor Type</span> *</label>
-                            <select id="investorType" required>
+                            <select id="investorType" name="investor_type" required>
                                 <option value="">Select type</option>
                                 <option value="vc">Venture Capital</option>
                                 <option value="angel">Angel Investor</option>
@@ -307,16 +307,16 @@
                     <div class="form-grid two-col">
                         <div class="form-group">
                             <label for="website">Website</label>
-                            <input type="url" id="website" placeholder="https://your-fund.com">
+                            <input type="url" id="website" name="website" placeholder="https://your-fund.com">
                         </div>
                         <div class="form-group">
                             <label for="location">Location *</label>
-                            <input type="text" id="location" placeholder="Casablanca, Morocco" required>
+                            <input type="text" id="location" name="location" placeholder="Casablanca, Morocco" required>
                         </div>
                     </div>
                     <div class="form-group">
                         <label for="description">Description *</label>
-                        <textarea id="description" placeholder="Describe your investment philosophy, focus, and what makes you unique" style="min-height: 120px;" required></textarea>
+                        <textarea id="description" name="description" placeholder="Describe your investment philosophy, focus, and what makes you unique" style="min-height: 120px;" required></textarea>
                     </div>
                 </div>
 
@@ -344,17 +344,17 @@
                     <div class="form-grid two-col">
                         <div class="form-group">
                             <label for="ticketSizeMin" data-i18n="min_ticket">Minimum Ticket Size</label>
-                            <input type="text" id="ticketSizeMin" placeholder="e.g., $25K">
+                            <input type="text" id="ticketSizeMin" name="ticket_size_min" placeholder="e.g., $25K">
                         </div>
                         <div class="form-group">
                             <label for="ticketSizeMax" data-i18n="max_ticket">Maximum Ticket Size</label>
-                            <input type="text" id="ticketSizeMax" placeholder="e.g., $500K">
+                            <input type="text" id="ticketSizeMax" name="ticket_size_max" placeholder="e.g., $500K">
                         </div>
                     </div>
 
                     <div class="form-group">
                         <label for="geographicFocus" data-i18n="geographic_focus">Geographic Focus</label>
-                        <input type="text" id="geographicFocus" placeholder="e.g., Morocco, MENA, Africa, Global">
+                        <input type="text" id="geographicFocus" name="geographic_focus" placeholder="e.g., Morocco, MENA, Africa, Global">
                     </div>
                 </div>
 
@@ -364,26 +364,26 @@
                     <div class="form-grid three-col">
                         <div class="form-group">
                             <label for="portfolioSize" data-i18n="portfolio_size">Portfolio Size</label>
-                            <input type="number" id="portfolioSize" placeholder="Number of companies">
+                            <input type="number" id="portfolioSize" name="portfolio_size" placeholder="Number of companies">
                         </div>
                         <div class="form-group">
                             <label for="activeDeals" data-i18n="active_deals">Active Deals (2024)</label>
-                            <input type="number" id="activeDeals" placeholder="Number of deals">
+                            <input type="number" id="activeDeals" name="active_deals" placeholder="Number of deals">
                         </div>
                         <div class="form-group">
                             <label for="totalFunded" data-i18n="total_funded">Total Funded to Date</label>
-                            <input type="text" id="totalFunded" placeholder="e.g., $10M">
+                            <input type="text" id="totalFunded" name="total_funded" placeholder="e.g., $10M">
                         </div>
                     </div>
 
                     <div class="form-group">
                         <label for="notableInvestments" data-i18n="notable_investments">Notable Investments</label>
-                        <textarea id="notableInvestments" placeholder="List some of your successful portfolio companies or exits"></textarea>
+                        <textarea id="notableInvestments" name="notable_investments" placeholder="List some of your successful portfolio companies or exits"></textarea>
                     </div>
 
                     <div class="form-group">
                         <label for="investmentCriteria" data-i18n="investment_criteria">Investment Criteria</label>
-                        <textarea id="investmentCriteria" placeholder="What do you look for in startups? Revenue thresholds, team size, traction metrics, etc."></textarea>
+                        <textarea id="investmentCriteria" name="investment_criteria" placeholder="What do you look for in startups? Revenue thresholds, team size, traction metrics, etc."></textarea>
                     </div>
                 </div>
 
@@ -393,31 +393,31 @@
                     <div class="form-grid two-col">
                         <div class="form-group">
                             <label for="contactName"><span data-i18n="primary_contact">Primary Contact Name</span> *</label>
-                            <input type="text" id="contactName" placeholder="Full name" required>
+                            <input type="text" id="contactName" name="full_name" placeholder="Full name" required>
                         </div>
                         <div class="form-group">
                             <label for="contactTitle"><span data-i18n="role_title">Title/Role</span> *</label>
-                            <input type="text" id="contactTitle" placeholder="e.g., Managing Partner, Investment Manager" required>
+                            <input type="text" id="contactTitle" name="contact_title" placeholder="e.g., Managing Partner, Investment Manager" required>
                         </div>
                     </div>
                     <div class="form-grid two-col">
                         <div class="form-group">
                             <label for="contactEmail"><span data-i18n="contact_email">Contact Email</span> *</label>
-                            <input type="email" id="contactEmail" placeholder="invest@fund.com" required>
+                            <input type="email" id="contactEmail" name="email" placeholder="invest@fund.com" required>
                         </div>
                         <div class="form-group">
                             <label for="contactPhone" data-i18n="phone_number">Phone Number</label>
-                            <input type="tel" id="contactPhone" placeholder="+212 XXX XXX XXX">
+                            <input type="tel" id="contactPhone" name="phone" placeholder="+212 XXX XXX XXX">
                         </div>
                     </div>
                     <div class="form-grid two-col">
                         <div class="form-group">
                             <label for="linkedinProfile" data-i18n="linkedin_profile">LinkedIn Profile</label>
-                            <input type="url" id="linkedinProfile" placeholder="https://linkedin.com/in/...">
+                            <input type="url" id="linkedinProfile" name="linkedin" placeholder="https://linkedin.com/in/...">
                         </div>
                         <div class="form-group">
                             <label for="twitter">Twitter/X Handle</label>
-                            <input type="text" id="twitter" placeholder="@yourhandle">
+                            <input type="text" id="twitter" name="twitter" placeholder="@yourhandle">
                         </div>
                     </div>
                 </div>
@@ -426,7 +426,6 @@
 
                 <div class="form-footer">
                     <p data-i18n="terms_notice">By submitting, you agree to our Terms of Service and Privacy Policy.</p>
-                    <p class="warning" data-i18n="demo_warning">⚠️ This is a demo form - submissions are not processed</p>
                 </div>
             </form>
         </div>

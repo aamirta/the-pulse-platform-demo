@@ -11,7 +11,10 @@ def get_top_sectors(startups, sectors, n=10):
                 if s in sectors: 
                     sector_counter[s] += 1
     
-    topsectors , nbstartupsbysector= zip(*sector_counter.most_common(n))
+    most_common = sector_counter.most_common(n)
+    if not most_common:
+        return [], []
+    topsectors, nbstartupsbysector = zip(*most_common)
     return list(topsectors), list(nbstartupsbysector)
 
 def get_unique_sectors(startups):
@@ -59,7 +62,10 @@ def get_top_cities(startups, cities, n=10):
                 city_counter[location] += 1
 
     # Return top n as list of (city, count)
-    topcities, nbstartupsbycity = zip(*city_counter.most_common(n))
+    most_common = city_counter.most_common(n)
+    if not most_common:
+        return [], []
+    topcities, nbstartupsbycity = zip(*most_common)
     return list(topcities), list(nbstartupsbycity)
 
 def get_totalFunding_groupby_year(funding_rounds):
@@ -100,6 +106,8 @@ def get_total_funding_by_sector(funding_rounds, sectors, n=10):
 
     # Trier par montant décroissant
     sorted_totals = sorted(sector_totals.items(), key=lambda x: x[1], reverse=True)[:n]
+    if not sorted_totals:
+        return [], []
     topsectors, totals = zip(*sorted_totals)
     return list(topsectors), list(totals)
 def compute_sector_counts(startups, distinct_sectors):

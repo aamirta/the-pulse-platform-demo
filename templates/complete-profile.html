@@ -1,0 +1,181 @@
+{% extends "base.html" %}
+
+{% block title %}Completez votre profil - The Pulse{% endblock %}
+
+{% block content %}
+<style>
+    .complete-page {
+        min-height: 60vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 2rem 1rem;
+    }
+    .complete-card {
+        background: var(--bg-card);
+        border: 1px solid var(--border-color);
+        border-radius: 20px;
+        padding: 3rem 2.5rem;
+        max-width: 500px;
+        width: 100%;
+        text-align: center;
+    }
+    .complete-card h1 {
+        font-family: var(--font-heading);
+        font-weight: 700;
+        font-size: 1.8rem;
+        color: var(--text-primary);
+        margin-bottom: 0.5rem;
+    }
+    .complete-card .subtitle {
+        font-family: var(--font-body);
+        font-size: 1rem;
+        color: var(--text-secondary);
+        margin-bottom: 2rem;
+        line-height: 1.6;
+    }
+    .success-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.4rem;
+        background: rgba(0, 212, 170, 0.12);
+        color: #00d4aa;
+        font-weight: 600;
+        font-size: 0.8rem;
+        letter-spacing: 0.03em;
+        text-transform: uppercase;
+        padding: 0.35rem 0.85rem;
+        border-radius: 8px;
+        margin-bottom: 1.5rem;
+    }
+    .upload-area {
+        border: 2px dashed var(--border-color);
+        border-radius: 16px;
+        padding: 2.5rem 1.5rem;
+        margin-bottom: 1.5rem;
+        cursor: pointer;
+        transition: border-color 0.3s, background 0.3s;
+        position: relative;
+    }
+    .upload-area:hover {
+        border-color: #00d4aa;
+        background: rgba(0, 212, 170, 0.04);
+    }
+    .upload-area.has-file {
+        border-color: #00d4aa;
+        background: rgba(0, 212, 170, 0.06);
+    }
+    .upload-icon {
+        font-size: 2.5rem;
+        color: var(--text-secondary);
+        margin-bottom: 0.75rem;
+    }
+    .upload-area p {
+        color: var(--text-secondary);
+        font-size: 0.9rem;
+        margin: 0;
+    }
+    .upload-area .file-name {
+        color: #00d4aa;
+        font-weight: 600;
+        font-size: 0.95rem;
+    }
+    .preview-img {
+        width: 120px;
+        height: 120px;
+        border-radius: 50%;
+        object-fit: cover;
+        border: 3px solid #00d4aa;
+        margin-bottom: 0.75rem;
+        display: none;
+    }
+    .upload-area input[type="file"] {
+        position: absolute;
+        inset: 0;
+        opacity: 0;
+        cursor: pointer;
+    }
+    .btn-submit {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+        font-family: var(--font-heading);
+        font-weight: 600;
+        font-size: 1rem;
+        padding: 0.85rem 2.5rem;
+        border-radius: 12px;
+        border: none;
+        cursor: pointer;
+        background: linear-gradient(135deg, #00d4aa, #4361ee);
+        color: #fff;
+        width: 100%;
+        transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .btn-submit:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 24px rgba(0, 212, 170, 0.3);
+    }
+    .skip-link {
+        display: block;
+        margin-top: 1rem;
+        color: var(--text-secondary);
+        font-size: 0.88rem;
+        text-decoration: none;
+    }
+    .skip-link:hover { color: var(--accent); }
+</style>
+
+<div class="complete-page">
+    <div class="complete-card">
+        <span class="success-badge">
+            <i class="fas fa-check-circle"></i> Email confirme
+        </span>
+        <h1>Bienvenue, {{ member.full_name }} !</h1>
+        <p class="subtitle">Ajoutez une photo de profil pour que les autres membres puissent vous reconnaitre.</p>
+
+        <form method="POST" enctype="multipart/form-data" id="profileForm">
+            <div class="upload-area" id="uploadArea">
+                <img class="preview-img" id="previewImg" alt="Preview">
+                <div id="uploadPlaceholder">
+                    <div class="upload-icon"><i class="fas fa-camera"></i></div>
+                    <p>Cliquez ou glissez votre photo ici</p>
+                    <p style="font-size:0.78rem;margin-top:0.4rem;opacity:0.6;">PNG, JPG, WEBP - Max 5MB</p>
+                </div>
+                <p class="file-name" id="fileName" style="display:none;"></p>
+                <input type="file" name="profile_pic" id="fileInput" accept="image/*">
+            </div>
+            <button type="submit" class="btn-submit">
+                <i class="fas fa-check"></i> Completer mon profil
+            </button>
+        </form>
+        <a href="{{ url_for('my_profile', member_id=member.id) }}" class="skip-link">
+            Passer cette etape <i class="fas fa-arrow-right"></i>
+        </a>
+    </div>
+</div>
+
+<script>
+    const fileInput = document.getElementById('fileInput');
+    const previewImg = document.getElementById('previewImg');
+    const uploadPlaceholder = document.getElementById('uploadPlaceholder');
+    const fileName = document.getElementById('fileName');
+    const uploadArea = document.getElementById('uploadArea');
+
+    fileInput.addEventListener('change', function() {
+        if (this.files && this.files[0]) {
+            const file = this.files[0];
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                previewImg.src = e.target.result;
+                previewImg.style.display = 'block';
+                uploadPlaceholder.style.display = 'none';
+                fileName.textContent = file.name;
+                fileName.style.display = 'block';
+                uploadArea.classList.add('has-file');
+            };
+            reader.readAsDataURL(file);
+        }
+    });
+</script>
+{% endblock %}
