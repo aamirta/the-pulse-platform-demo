@@ -880,11 +880,11 @@ def register_pulse_member(email, full_name, role, form_data_dict):
 ## ============================================
 
 ROLE_CONFIG = {
-    'entrepreneur': {'model': 'Startup', 'name_field': 'startup_name', 'detail_route': 'startup_detail', 'id_field': 'startup_id', 'form_route': '/entrepreneur-form', 'label': 'Startup'},
-    'investor': {'model': 'Investor', 'name_field': 'investor_name', 'detail_route': 'investor_detail', 'id_field': 'investor_id', 'form_route': '/investor-form', 'label': 'Investisseur'},
-    'program': {'model': 'Incubator', 'name_field': 'incubator', 'detail_route': 'incubator_detail', 'id_field': 'incubator_id', 'form_route': '/program-form', 'label': 'Programme'},
-    'incubator': {'model': 'Incubator', 'name_field': 'incubator', 'detail_route': 'incubator_detail', 'id_field': 'incubator_id', 'form_route': '/program-form?type=incubator', 'label': 'Incubateur'},
-    'talent': {'model': 'Founder', 'name_field': 'name', 'detail_route': 'founder_detail', 'id_field': 'founder_id', 'form_route': '/talent-form', 'label': 'Talent / Fondateur'},
+    'entrepreneur': {'model': 'Startup', 'name_field': 'startup_name', 'id_field': 'startup_id', 'form_route': '/entrepreneur-form', 'edit_param': 'startup_id', 'label': 'Startup'},
+    'investor': {'model': 'Investor', 'name_field': 'investor_name', 'id_field': 'investor_id', 'form_route': '/investor-form', 'edit_param': 'investor_id', 'label': 'Investisseur'},
+    'program': {'model': 'Incubator', 'name_field': 'incubator', 'id_field': 'incubator_id', 'form_route': '/program-form', 'edit_param': 'incubator_id', 'label': 'Programme'},
+    'incubator': {'model': 'Incubator', 'name_field': 'incubator', 'id_field': 'incubator_id', 'form_route': '/program-form?type=incubator', 'edit_param': 'incubator_id', 'label': 'Incubateur'},
+    'talent': {'model': 'Founder', 'name_field': 'name', 'id_field': 'founder_id', 'form_route': '/talent-form', 'edit_param': 'founder_id', 'label': 'Talent / Fondateur'},
 }
 
 @app.route("/api/search/<role>")
@@ -903,8 +903,10 @@ def api_search(role):
         desc = getattr(r, 'description', None) or getattr(r, 'type_organisme', None) or ""
         if desc and len(desc) > 80:
             desc = desc[:80] + "..."
-        items.append({"id": rid, "name": name, "description": desc,
-                       "url": url_for(config['detail_route'], **{config['id_field']: rid})})
+        form_url = config['form_route']
+        sep = '&' if '?' in form_url else '?'
+        edit_url = f"{form_url}{sep}{config['edit_param']}={rid}"
+        items.append({"id": rid, "name": name, "description": desc, "url": edit_url})
     return jsonify(items)
 
 @app.route("/join/<role>")
@@ -934,44 +936,66 @@ def join():
 
 @app.route("/entrepreneur-form", methods=["GET", "POST"])
 def entrepreneur_form():
+    startup_id = request.args.get("startup_id")
+    existing = Startup.query.get(startup_id) if startup_id else None
     if request.method == "POST":
         email = request.form.get("email", "").strip()
         full_name = request.form.get("full_name", "").strip()
         form_data = {k: v for k, v in request.form.items() if k not in ('email', 'full_name')}
+        # Update existing startup if editing
+        if existing:
+            for key, val in form_data.items():
+                if val and hasattr(existing, key):
+                    setattr(existing, key, val)
+            db.session.commit()
         member, error = register_pulse_member(email, full_name, "entrepreneur", form_data)
         if error:
             incubators = Incubator.query.all()
             investors = Investor.query.all()
-            return render_template("entrepreneur-form.html", incubators=incubators, investors=investors, error=error)
+            return render_template("entrepreneur-form.html", incubators=incubators, investors=investors, error=error, startup=existing)
         return render_template("email-sent.html", email=email)
     incubators = Incubator.query.all()
     investors = Investor.query.all()
-    return render_template("entrepreneur-form.html", incubators=incubators, investors=investors)
+    return render_template("entrepreneur-form.html", incubators=incubators, investors=investors, startup=existing)
 
 @app.route("/investor-form", methods=["GET", "POST"])
 def investor_form():
+    inv_id = request.args.get("investor_id")
+    existing = Investor.query.get(inv_id) if inv_id else None
     if request.method == "POST":
         email = request.form.get("email", "").strip()
         full_name = request.form.get("full_name", "").strip()
         form_data = {k: v for k, v in request.form.items() if k not in ('email', 'full_name')}
+        if existing:
+            for key, val in form_data.items():
+                if val and hasattr(existing, key):
+                    setattr(existing, key, val)
+            db.session.commit()
         member, error = register_pulse_member(email, full_name, "investor", form_data)
         if error:
-            return render_template("investor-form.html", error=error)
+            return render_template("investor-form.html", error=error, investor=existing)
         return render_template("email-sent.html", email=email)
-    return render_template("investor-form.html")
+    return render_template("investor-form.html", investor=existing)
 
 @app.route("/program-form", methods=["GET", "POST"])
 def program_form():
+    inc_id = request.args.get("incubator_id")
+    existing = Incubator.query.get(inc_id) if inc_id else None
     if request.method == "POST":
         email = request.form.get("email", "").strip()
         full_name = request.form.get("full_name", "").strip()
         form_data = {k: v for k, v in request.form.items() if k not in ('email', 'full_name')}
         role = "incubator" if request.args.get("type") == "incubator" else "program"
+        if existing:
+            for key, val in form_data.items():
+                if val and hasattr(existing, key):
+                    setattr(existing, key, val)
+            db.session.commit()
         member, error = register_pulse_member(email, full_name, role, form_data)
         if error:
-            return render_template("program-form.html", error=error)
+            return render_template("program-form.html", error=error, program=existing)
         return render_template("email-sent.html", email=email)
-    return render_template("program-form.html")
+    return render_template("program-form.html", program=existing)
 
 @app.route("/talent-form", methods=["GET", "POST"])
 def talent_form():
@@ -1721,11 +1745,11 @@ def create_post():
         tags=tags,
         likes_count=0,
         comments_count=0,
-        is_published=True,
+        is_published=False,
     )
     db.session.add(post)
     db.session.commit()
-    return redirect(url_for("newsfeed"))
+    return render_template("email-sent.html", email=None, post_message=True)
 
 
 @app.route("/newsfeed/like/<int:post_id>", methods=["POST"])
