@@ -2016,22 +2016,11 @@
     }
     </script>
 
-<!-- PulseGPT Chatbot -->
+<!-- PulseGPT Chatbot - hidden for now -->
 <style>
-#pulseGptBtn{position:fixed;bottom:1.5rem;right:1.5rem;z-index:9998;background:var(--accent);color:#fff;border:none;border-radius:50px;padding:0.7rem 1.2rem;font-family:var(--font-heading);font-weight:700;font-size:0.85rem;cursor:pointer;box-shadow:0 4px 20px rgba(0,212,170,0.4);display:flex;align-items:center;gap:0.5rem;transition:all 0.3s ease;}
-#pulseGptBtn:hover{transform:translateY(-2px);box-shadow:0 8px 30px rgba(0,212,170,0.5);}
-#pulseGptBtn svg{animation:ecgFloat 2s ease-in-out infinite;}
-@keyframes ecgFloat{0%,100%{opacity:0.8;}50%{opacity:1;}}
-#pulseGptChat{position:fixed;bottom:5rem;right:1.5rem;z-index:9999;width:380px;max-height:500px;background:var(--bg-card);border:1px solid var(--border-color);border-radius:16px;box-shadow:0 20px 60px rgba(0,0,0,0.25);display:none;flex-direction:column;overflow:hidden;}
-#pulseGptHeader{padding:0.75rem 1rem;border-bottom:1px solid var(--border-color);display:flex;align-items:center;justify-content:space-between;background:var(--accent);color:#fff;border-radius:16px 16px 0 0;}
-#pulseGptHeader h4{margin:0;font-family:var(--font-heading);font-size:0.9rem;display:flex;align-items:center;gap:0.4rem;}
-#pulseGptMessages{flex:1;overflow-y:auto;padding:1rem;display:flex;flex-direction:column;gap:0.6rem;max-height:340px;min-height:200px;}
-.pgpt-msg{padding:0.5rem 0.8rem;border-radius:12px;font-size:0.82rem;line-height:1.5;font-family:var(--font-body);max-width:85%;word-wrap:break-word;}
-.pgpt-bot{background:var(--bg-surface);color:var(--text-primary);align-self:flex-start;border:1px solid var(--border-color);}
-.pgpt-user{background:var(--accent);color:#fff;align-self:flex-end;}
-#pulseGptInput{display:flex;border-top:1px solid var(--border-color);padding:0.5rem;}
-#pulseGptInput input{flex:1;border:none;background:transparent;padding:0.5rem 0.7rem;font-size:0.82rem;font-family:var(--font-body);color:var(--text-primary);outline:none;}
-#pulseGptInput button{background:var(--accent);color:#fff;border:none;border-radius:8px;padding:0.4rem 0.7rem;cursor:pointer;font-size:0.8rem;}
+#pulseGptBtn{display:none !important;}
+#pulseGptPanel{display:none !important;}
+/* old PulseGPT styles hidden */
 </style>
 
 <button id="pulseGptBtn" onclick="togglePulseGpt()">
