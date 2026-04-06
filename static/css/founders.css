@@ -624,7 +624,10 @@
 
     @media (max-width: 768px) {
         .page-title { font-size: 1.5rem; }
-        .stats-bar { gap: 1.5rem; }
+        .stats-bar { gap: 1.5rem; flex-wrap: wrap; }
         .founders-grid { grid-template-columns: 1fr; }
         .main-content-grid { gap: 1rem; }
+        .main-content-wrapper { padding: 0 0.5rem; overflow-x: hidden; }
+        .founder-card { max-width: 100%; overflow: hidden; }
+        .founder-card-header { text-align: center; }
     }

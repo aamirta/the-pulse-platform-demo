@@ -212,7 +212,7 @@
     }
     .hero-logo-wrap .hero-logo-img {
         width: auto;
-        max-width: 420px;
+        max-width: min(420px, 80vw);
         max-height: 126px;
         height: auto;
         margin: 0 auto;
@@ -1528,7 +1528,7 @@
 </style>
 
 <!-- Disclaimer Banner -->
-<div class="disclaimer-banner" style="background: linear-gradient(90deg, var(--tertiary), #f59e0b); color: #0a0e1a; display: flex; align-items: center; justify-content: center; gap: 0.4rem; padding: 0.5rem 1rem; font-size: 0.78rem; font-weight: 600; font-family: var(--font-body); letter-spacing: 0.02em; position: relative; z-index: 100; white-space: nowrap;">
+<div class="disclaimer-banner" style="background: linear-gradient(90deg, var(--tertiary), #f59e0b); color: #0a0e1a; display: flex; align-items: center; justify-content: center; gap: 0.4rem; padding: 0.5rem 1rem; font-size: 0.78rem; font-weight: 600; font-family: var(--font-body); letter-spacing: 0.02em; position: relative; z-index: 100; text-align: center; flex-wrap: wrap;">
     <i class="fas fa-flask"></i>
     <span class="lang-fr">Ceci est un MVP en cours d'évolution. Les données manquantes seront ajoutées progressivement. Merci de nous y aider.</span>
     <span class="lang-en">This is an MVP under development. Missing data will be added progressively. Thank you for helping us improve.</span>

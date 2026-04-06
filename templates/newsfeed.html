@@ -17,6 +17,8 @@
         max-width: 1180px;
         margin: 0 auto;
         padding: 2rem 1.25rem 4rem;
+        overflow-x: hidden;
+        box-sizing: border-box;
     }
 
     /* ---- PAGE HEADER ---- */
@@ -52,6 +54,16 @@
     @media (max-width: 900px) {
         .nf-layout {
             grid-template-columns: 1fr;
+        }
+        .nf-create-meta {
+            flex-direction: column;
+        }
+        .nf-create-meta input {
+            min-width: 0;
+            width: 100%;
+        }
+        .nf-create-box {
+            padding: 1rem;
         }
         .nf-sidebar {
             order: -1;
