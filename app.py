@@ -848,6 +848,7 @@ def register_pulse_member(email, full_name, role, form_data_dict):
     """Create a PulseMember, auto-confirm, and try to send email. Returns (member, error)."""
     existing = PulseMember.query.filter_by(email=email).first()
     if existing and existing.is_confirmed:
+        session["member_id"] = existing.id
         return existing, None
     if existing and not existing.is_confirmed:
         existing.confirmation_token = str(uuid.uuid4())
@@ -857,6 +858,7 @@ def register_pulse_member(email, full_name, role, form_data_dict):
         existing.form_data = json.dumps(form_data_dict, ensure_ascii=False)
         db.session.commit()
         send_confirmation_email(existing)
+        session["member_id"] = existing.id
         return existing, None
 
     member = PulseMember(
@@ -870,7 +872,17 @@ def register_pulse_member(email, full_name, role, form_data_dict):
     db.session.add(member)
     db.session.commit()
     send_confirmation_email(member)
+    session["member_id"] = member.id
     return member, None
+
+@app.context_processor
+def inject_current_member():
+    """Make current_member available in all templates."""
+    member_id = session.get("member_id")
+    if member_id:
+        member = PulseMember.query.get(member_id)
+        return {"current_member": member}
+    return {"current_member": None}
 
 @app.route("/join")
 def join():

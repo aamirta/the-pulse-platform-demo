@@ -117,10 +117,21 @@
                     aria-label="Toggle dark and light mode" title="Toggle theme">
                 <i class="fas fa-moon" id="themeIcon" aria-hidden="true"></i>
             </button>
+            {% if current_member %}
+            <a href="/my-profile/{{ current_member.id }}" class="btn-profile-nav" title="Mon Profil">
+                {% if current_member.profile_pic %}
+                    <img src="{{ url_for('static', filename=current_member.profile_pic) }}" alt="" class="nav-avatar">
+                {% else %}
+                    <span class="nav-avatar-placeholder">{{ current_member.full_name[0]|upper }}</span>
+                {% endif %}
+                <span class="nav-profile-name">{{ current_member.full_name.split()[0] }}</span>
+            </a>
+            {% else %}
             <a href="/join" class="btn-join">
                 <i class="fas fa-bolt" aria-hidden="true"></i>
                 <span>Join</span>
             </a>
+            {% endif %}
         </div>
     </nav>
 

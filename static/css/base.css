@@ -647,6 +647,50 @@
             transform: translateY(0);
         }
 
+        /* Profile Nav Button */
+        .btn-profile-nav {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.3rem 0.9rem 0.3rem 0.3rem;
+            border-radius: 10px;
+            border: 1px solid var(--border-primary);
+            background: var(--bg-card);
+            text-decoration: none;
+            transition: all var(--transition-base);
+            cursor: pointer;
+        }
+        .btn-profile-nav:hover {
+            border-color: var(--accent);
+            background: rgba(0, 214, 143, 0.05);
+        }
+        .nav-avatar {
+            width: 30px;
+            height: 30px;
+            border-radius: 8px;
+            object-fit: cover;
+        }
+        .nav-avatar-placeholder {
+            width: 30px;
+            height: 30px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, var(--accent), var(--secondary));
+            color: #fff;
+            font-family: var(--font-heading);
+            font-size: 0.8rem;
+            font-weight: 700;
+        }
+        .nav-profile-name {
+            font-family: var(--font-body);
+            font-weight: 600;
+            font-size: 0.82rem;
+            color: var(--text-primary);
+            white-space: nowrap;
+        }
+
         /* ============================================
            SIDEBAR
            ============================================ */
@@ -1125,6 +1169,13 @@
 
             .btn-join {
                 padding: 0.45rem 0.7rem;
+            }
+
+            .nav-profile-name {
+                display: none;
+            }
+            .btn-profile-nav {
+                padding: 0.3rem;
             }
 
             .logo-text {
