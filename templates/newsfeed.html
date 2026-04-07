@@ -17,16 +17,24 @@
         max-width: 1180px;
         margin: 0 auto;
         padding: 2rem 1.25rem 4rem;
-        overflow-x: hidden;
+        overflow: hidden;
         box-sizing: border-box;
         width: 100%;
     }
+    .newsfeed-wrapper * {
+        box-sizing: border-box;
+        max-width: 100%;
+    }
     @media (max-width: 768px) {
-        .main-content { padding: 1rem 0 !important; }
-        .newsfeed-wrapper { padding: 1rem 0.75rem 3rem; max-width: 100vw; }
+        .main-content { padding: 1rem 0 !important; overflow-x: hidden !important; }
+        .newsfeed-wrapper { padding: 1rem 0.5rem 3rem; width: 100vw; max-width: 100vw; }
+        .nf-layout { display: block !important; }
         .nf-header { flex-direction: column; align-items: flex-start; gap: 0.5rem; }
         .nf-header h1 { font-size: 1.4rem; }
-        .nf-card { padding: 1rem 1rem 0.75rem; }
+        .nf-card { padding: 1rem 0.85rem 0.75rem; }
+        .nf-card-header { gap: 0.5rem; }
+        .nf-card-content { font-size: 0.85rem; }
+        .nf-create-box { padding: 0.85rem; }
     }
 
     /* ---- PAGE HEADER ---- */

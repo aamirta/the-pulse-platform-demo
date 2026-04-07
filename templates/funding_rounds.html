@@ -15,11 +15,6 @@
 
 <!-- Stats Bar -->
 <div class="container">
-    <div style="display:flex; align-items:center; justify-content:flex-end; margin-bottom:0.5rem;">
-        <a href="/funding-rounds/export?{{ request.query_string.decode() }}" class="btn-export" title="Export CSV">
-            <i class="fas fa-download"></i> <span data-i18n="export_csv">Exporter CSV</span>
-        </a>
-    </div>
     <div class="stats-bar">
         <div class="stat-item">
             <div class="stat-number">{{ pagination.total }}</div>
