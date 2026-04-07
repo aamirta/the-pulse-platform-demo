@@ -22,9 +22,11 @@
         width: 100%;
     }
     @media (max-width: 768px) {
-        .newsfeed-wrapper { padding: 1rem 0.75rem 3rem; }
+        .main-content { padding: 1rem 0 !important; }
+        .newsfeed-wrapper { padding: 1rem 0.75rem 3rem; max-width: 100vw; }
         .nf-header { flex-direction: column; align-items: flex-start; gap: 0.5rem; }
         .nf-header h1 { font-size: 1.4rem; }
+        .nf-card { padding: 1rem 1rem 0.75rem; }
     }
 
     /* ---- PAGE HEADER ---- */
@@ -286,6 +288,8 @@
         color: var(--text-primary);
         margin: 0;
         line-height: 1.3;
+        overflow: hidden;
+        text-overflow: ellipsis;
     }
     .nf-card-author-role {
         font-size: 0.78rem;
@@ -347,6 +351,8 @@
         padding: 0.65rem 1rem;
         text-decoration: none;
         overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
         max-width: 100%;
         box-sizing: border-box;
         color: var(--text-primary);
