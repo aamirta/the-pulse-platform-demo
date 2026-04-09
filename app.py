@@ -87,6 +87,58 @@ def login():
     
     return render_template("login.html")
 
+@app.route("/admin/export-inscriptions")
+def export_inscriptions():
+    secret = request.args.get('key')
+    if secret != 'pulse2026export':
+        return jsonify({'error': 'unauthorized'}), 403
+    data = {}
+    try:
+        members = db.session.execute(db.text('SELECT * FROM pulse_members ORDER BY created_at DESC')).fetchall()
+        cols = db.session.execute(db.text("SELECT column_name FROM information_schema.columns WHERE table_name='pulse_members'")).fetchall()
+        member_cols = [c[0] for c in cols]
+        data['pulse_members'] = [dict(zip(member_cols, [str(v) for v in row])) for row in members]
+    except Exception:
+        try:
+            members = db.session.execute(db.text('SELECT * FROM pulse_members ORDER BY created_at DESC')).fetchall()
+            data['pulse_members'] = [dict(row._mapping) if hasattr(row, '_mapping') else list(row) for row in members]
+        except Exception as e:
+            data['pulse_members'] = str(e)
+    try:
+        talents = db.session.execute(db.text('SELECT * FROM talents ORDER BY created_at DESC')).fetchall()
+        cols = db.session.execute(db.text("SELECT column_name FROM information_schema.columns WHERE table_name='talents'")).fetchall()
+        talent_cols = [c[0] for c in cols]
+        data['talents'] = [dict(zip(talent_cols, [str(v) for v in row])) for row in talents]
+    except Exception:
+        try:
+            talents = db.session.execute(db.text('SELECT * FROM talents ORDER BY created_at DESC')).fetchall()
+            data['talents'] = [dict(row._mapping) if hasattr(row, '_mapping') else list(row) for row in talents]
+        except Exception as e:
+            data['talents'] = str(e)
+    try:
+        experts = db.session.execute(db.text('SELECT * FROM experts ORDER BY created_at DESC')).fetchall()
+        cols = db.session.execute(db.text("SELECT column_name FROM information_schema.columns WHERE table_name='experts'")).fetchall()
+        expert_cols = [c[0] for c in cols]
+        data['experts'] = [dict(zip(expert_cols, [str(v) for v in row])) for row in experts]
+    except Exception:
+        try:
+            experts = db.session.execute(db.text('SELECT * FROM experts ORDER BY created_at DESC')).fetchall()
+            data['experts'] = [dict(row._mapping) if hasattr(row, '_mapping') else list(row) for row in experts]
+        except Exception as e:
+            data['experts'] = str(e)
+    try:
+        projects = db.session.execute(db.text('SELECT * FROM cofounder_projects ORDER BY id DESC')).fetchall()
+        cols = db.session.execute(db.text("SELECT column_name FROM information_schema.columns WHERE table_name='cofounder_projects'")).fetchall()
+        proj_cols = [c[0] for c in cols]
+        data['cofounder_projects'] = [dict(zip(proj_cols, [str(v) for v in row])) for row in projects]
+    except Exception:
+        try:
+            projects = db.session.execute(db.text('SELECT * FROM cofounder_projects ORDER BY id DESC')).fetchall()
+            data['cofounder_projects'] = [dict(row._mapping) if hasattr(row, '_mapping') else list(row) for row in projects]
+        except Exception as e:
+            data['cofounder_projects'] = str(e)
+    return jsonify(data)
+
 @app.route("/")
 def home():
     # Use lightweight queries — avoid loading all rows into memory
