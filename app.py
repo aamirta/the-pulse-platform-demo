@@ -89,36 +89,67 @@ def login():
 
 @app.route("/")
 def home():
-    startups = Startup.query.all()
-    founders = Founder.query.all()
-    investors = Investor.query.all()
-    incubators = Incubator.query.all()
+    # Use lightweight queries — avoid loading all rows into memory
+    startup_count = db.session.query(db.func.count(Startup.startup_id)).scalar() or 0
+    founder_count = db.session.query(db.func.count(Founder.founder_id)).scalar() or 0
+    investor_count = db.session.query(db.func.count(Investor.investor_id)).scalar() or 0
+    incubator_count = db.session.query(db.func.count(Incubator.incubator_id)).scalar() or 0
+
+    # Create lightweight objects for template compatibility (ticker uses |length)
+    class CountObj:
+        def __init__(self, n):
+            self._n = n
+        def __len__(self):
+            return self._n
+        def __iter__(self):
+            return iter([])
+
+    startups = CountObj(startup_count)
+    founders = CountObj(founder_count)
+    investors = CountObj(investor_count)
+    incubators = CountObj(incubator_count)
+
     deals = FundingRound.query.all()
-    
+
     total_funding = sum(deal.raised_amount_usd if deal.raised_amount_usd is not None else 0 for deal in deals)
     total_funding_millions = total_funding / 1_000_000
-    
-    # Get cities and their counts properly
-    cities_list = [startup.location for startup in startups if startup.location and startup.location != "Morocco"]
+
+    # Load only startups with location/sector for charts (lighter query)
+    startups_for_charts = db.session.query(Startup.location, Startup.sector).filter(
+        db.or_(Startup.location.isnot(None), Startup.sector.isnot(None))
+    ).all()
+
+    # Get cities and their counts
+    cities_list = [s.location for s in startups_for_charts if s.location and s.location != "Morocco"]
     city_counter = Counter(cities_list)
-    
-    # Extract cities and counts in the same order
-    cities = get_unique_cities(startups)
-    topcities, NbStartupsByCity = get_top_cities(startups, cities, n=10)
 
-    #Numbr of startups by sector 
-    Sectors=get_unique_sectors(startups)
-    topsectors, nbstartupsbysector=get_top_sectors(startups,Sectors,n=10)
-    #print(topsectors, nbstartupsbysector)
+    topcities = [c for c, _ in city_counter.most_common(10)]
+    NbStartupsByCity = [n for _, n in city_counter.most_common(10)]
 
-    #total funding by year
+    # Sectors
+    sector_counter = Counter()
+    for s in startups_for_charts:
+        if s.sector:
+            for sec in s.sector.split(','):
+                sec = sec.strip()
+                if sec:
+                    sector_counter[sec] += 1
+    topsectors = [s for s, _ in sector_counter.most_common(10)]
+    nbstartupsbysector = [n for _, n in sector_counter.most_common(10)]
+
+    # Total funding by year
     years, total_by_year = get_totalFunding_groupby_year(deals)
-    print(years, total_by_year)
 
-    #total funding by sector
+    # Total funding by sector
+    Sectors = list(sector_counter.keys())
     topsectors_funding, total_funding_by_sector = get_total_funding_by_sector(deals, Sectors, n=10)
-    #top startups by total funding
-    top_startups_funding, total_funding_by_startup = toptotalfundingByStartup(startups, n=3)
+
+    # Top startups by total funding — only load top 10
+    top_funded = db.session.query(Startup).filter(
+        Startup.total_funding_usd.isnot(None)
+    ).order_by(Startup.total_funding_usd.desc()).limit(10).all()
+    top_startups_funding = top_funded[:3]  # Template needs full Startup objects
+    total_funding_by_startup = [float(s.total_funding_usd or 0) for s in top_funded[:3]]
 
     # Defensive content loading for production environments with uneven data/schema.
     try:
