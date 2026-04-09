@@ -496,8 +496,10 @@
     }
 
     @media (max-width: 768px) {
-        .page-title { font-size: 1.8rem; }
-        .stats-bar { gap: 1.5rem; }
+        .page-title { font-size: 1.5rem; }
+        .page-header { border-radius: 0; margin-left: -0.5rem; margin-right: -0.5rem; }
+        .stats-bar { gap: 1.5rem; padding: 0.85rem 1rem; }
+        .round-card-mobile { max-width: 100%; overflow: hidden; }
     }
 
     /* Sortable Table Headers */

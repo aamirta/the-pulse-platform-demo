@@ -1172,10 +1172,17 @@
         }
 
         @media (max-width: 768px) {
+            html, body, .main-content, .container {
+                overflow-x: hidden !important;
+                max-width: 100vw !important;
+                width: 100% !important;
+            }
             .main-content {
                 padding: 1rem 0.5rem;
-                overflow-x: hidden;
-                max-width: 100vw;
+            }
+            .container {
+                padding-left: 0.5rem !important;
+                padding-right: 0.5rem !important;
             }
 
             .btn-join-full {

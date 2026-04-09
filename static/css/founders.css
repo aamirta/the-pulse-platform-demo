@@ -623,11 +623,14 @@
     }
 
     @media (max-width: 768px) {
+        .page-header { border-radius: 0; margin-left: -0.5rem; margin-right: -0.5rem; }
         .page-title { font-size: 1.5rem; }
-        .stats-bar { gap: 1.5rem; flex-wrap: wrap; }
-        .founders-grid { grid-template-columns: 1fr; }
-        .main-content-grid { gap: 1rem; }
+        .stats-bar { gap: 1.5rem; flex-wrap: wrap; padding: 0.85rem 1rem; }
+        .founders-grid { grid-template-columns: 1fr; gap: 0.75rem; }
+        .main-content-grid { gap: 1rem; display: block; }
+        .main-content-grid > * { margin-bottom: 1rem; }
         .main-content-wrapper { padding: 0 0.5rem; overflow-x: hidden; }
         .founder-card { max-width: 100%; overflow: hidden; }
         .founder-card-header { text-align: center; }
+        .filters-container { margin-bottom: 1rem; }
     }

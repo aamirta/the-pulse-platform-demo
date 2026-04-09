@@ -871,39 +871,17 @@
     }
 
     @media (max-width: 640px) {
-        .startups-grid {
-            grid-template-columns: 1fr;
-        }
-
-        .stats-bar {
-            grid-template-columns: repeat(2, 1fr);
-            gap: 0.75rem;
-        }
-
-        .mini-stat-card {
-            padding: 0.9rem 1rem;
-        }
-
-        .startups-toolbar {
-            flex-direction: column;
-            align-items: stretch;
-        }
-
-        .startup-search-box {
-            max-width: 100%;
-        }
-
-        .page-header h1 {
-            font-size: 1.5rem;
-        }
-
-        .mini-charts-row {
-            flex-direction: column;
-        }
-
-        .mini-chart-card {
-            min-width: unset;
-        }
+        .startups-page { padding: 1rem 0.5rem 3rem; }
+        .startups-grid { grid-template-columns: 1fr; gap: 0.75rem; }
+        .startup-card { max-width: 100%; overflow: hidden; }
+        .stats-bar { grid-template-columns: repeat(2, 1fr); gap: 0.75rem; }
+        .mini-stat-card { padding: 0.9rem 1rem; }
+        .startups-toolbar { flex-direction: column; align-items: stretch; }
+        .startup-search-box { max-width: 100%; }
+        .page-header h1 { font-size: 1.5rem; }
+        .page-header { border-radius: 0; margin-left: -0.5rem; margin-right: -0.5rem; }
+        .mini-charts-row { flex-direction: column; }
+        .mini-chart-card { min-width: unset; }
     }
 
     /* --- Mini Charts Row --- */

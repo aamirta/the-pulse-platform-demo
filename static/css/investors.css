@@ -700,36 +700,14 @@
     }
 
     @media (max-width: 768px) {
-        .page-title {
-            font-size: 1.5rem;
-        }
-
-        .stats-bar {
-            gap: 1.5rem;
-            flex-wrap: wrap;
-        }
-
-        .investors-grid {
-            grid-template-columns: 1fr;
-        }
-
-        .investor-stats-row {
-            grid-template-columns: repeat(3, 1fr);
-            gap: 0.3rem;
-        }
-
-        .main-content-wrapper {
-            padding: 0 0.5rem;
-            overflow-x: hidden;
-        }
-
-        .investor-card {
-            max-width: 100%;
-            overflow: hidden;
-        }
-
-        .main-content-grid {
-            grid-template-columns: 1fr;
-            gap: 1rem;
-        }
+        .page-header { border-radius: 0; margin-left: -0.5rem; margin-right: -0.5rem; }
+        .page-title { font-size: 1.5rem; }
+        .stats-bar { gap: 1.5rem; flex-wrap: wrap; padding: 0.85rem 1rem; }
+        .investors-grid { grid-template-columns: 1fr; gap: 0.75rem; }
+        .investor-stats-row { grid-template-columns: repeat(3, 1fr); gap: 0.3rem; }
+        .main-content-wrapper { padding: 0 0.5rem; overflow-x: hidden; }
+        .investor-card { max-width: 100%; overflow: hidden; }
+        .main-content-grid { display: block; }
+        .main-content-grid > * { margin-bottom: 1rem; }
+        .filters-container { margin-bottom: 1rem; }
     }
