@@ -560,6 +560,10 @@ def incubator_detail(incubator_id):
 @app.route("/investors")
 def investors():
     from sqlalchemy.orm import subqueryload
+    try:
+        pulse_member_emails = [r[0].lower() for r in db.session.execute(db.text('SELECT email FROM pulse_members')).fetchall()]
+    except Exception:
+        pulse_member_emails = []
     query = Investor.query.options(
         subqueryload(Investor.investments)
         .subqueryload(Investment.funding_round)
@@ -567,7 +571,8 @@ def investors():
     ).filter(
         db.or_(
             Investor.investment_count > 0,
-            Investor.investments.any()
+            Investor.investments.any(),
+            Investor.hq_email.in_(pulse_member_emails) if pulse_member_emails else db.literal(False)
         )
     ).filter(
         Investor.investor_id != 55
@@ -617,7 +622,17 @@ def investors():
     )
     # Featured flag: UM6P Ventures always first
     featured = case((Investor.investor_id == 25, 1), else_=0)
-    query = query.order_by(featured.desc(), completeness_score.desc(), Investor.investor_name)
+    # New Member flag: pulse members get priority when sorted by new joiners
+    is_new_member = case(
+        (Investor.hq_email.in_(pulse_member_emails) if pulse_member_emails else db.literal(False), 1),
+        else_=0
+    )
+
+    sort_by = request.args.get("sort", "default")
+    if sort_by == "new_joiners":
+        query = query.order_by(is_new_member.desc(), featured.desc(), completeness_score.desc(), Investor.investor_name)
+    else:
+        query = query.order_by(featured.desc(), completeness_score.desc(), Investor.investor_name)
 
     page = request.args.get('page', 1, type=int)
     pagination = query.paginate(page=page, per_page=9, error_out=False)
@@ -660,13 +675,18 @@ def investors():
         distinct_startups=distinct_startups,
         selected=request.args,
         pagination=pagination,
-        funds=all_funds
+        funds=all_funds,
+        pulse_member_emails=pulse_member_emails
     )
 
 @app.route("/investor/<int:investor_id>")
 def investor_details(investor_id):
     from sqlalchemy.orm import joinedload
-    
+    try:
+        pulse_member_emails = [r[0].lower() for r in db.session.execute(db.text('SELECT email FROM pulse_members')).fetchall()]
+    except Exception:
+        pulse_member_emails = []
+
     investor = Investor.query.get_or_404(investor_id)
     
     # Explicitly load investments with their funding rounds using eager loading
@@ -689,11 +709,15 @@ def investor_details(investor_id):
     funds = investor.funds
     return render_template("investor_detail.html", investor=investor, startups=startups,
                             fundingRounds=fundingRounds, investements=investements,
-                              funds=funds)
+                              funds=funds, pulse_member_emails=pulse_member_emails)
 
 
 @app.route("/founders")
 def founders():
+    try:
+        pulse_member_emails = [r[0].lower() for r in db.session.execute(db.text('SELECT email FROM pulse_members')).fetchall()]
+    except Exception:
+        pulse_member_emails = []
     query = Founder.query.filter(
         Founder.name.isnot(None), Founder.name != '',
         db.or_(
@@ -760,7 +784,8 @@ def founders():
         distinct_cities=distinct_cities,
         distinct_startups=distinct_startups,
         selected=request.args,
-        pagination=pagination
+        pagination=pagination,
+        pulse_member_emails=pulse_member_emails
     )
 
 

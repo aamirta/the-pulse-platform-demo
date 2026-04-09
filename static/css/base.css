@@ -1910,3 +1910,22 @@
                 display: block;
             }
         }
+
+        /* New Pulser Badge */
+        .pulse-badge-new {
+            background: linear-gradient(135deg, #00d4aa, #4361ee);
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.7rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            display: inline-block;
+            animation: pulse-glow 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse-glow {
+            0%, 100% { box-shadow: 0 0 5px rgba(0, 212, 170, 0.3); }
+            50% { box-shadow: 0 0 15px rgba(0, 212, 170, 0.6); }
+        }

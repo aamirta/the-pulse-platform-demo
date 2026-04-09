@@ -664,6 +664,9 @@
                     </button>
                 </h1>
                 <div class="hero-badges">
+                    {% if investor.hq_email and investor.hq_email|lower in pulse_member_emails %}
+                    <span class="pulse-badge-new">&#10022; New Pulser</span>
+                    {% endif %}
                     {% if investor.primary_investor_type %}
                     <span class="pulse-badge-type">{{ investor.primary_investor_type }}</span>
                     {% endif %}

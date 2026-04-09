@@ -81,6 +81,9 @@
                     <a href="{{ url_for('investors') }}?view=autres" style="display: flex; align-items: center; gap: 0.5rem; padding: 0.5rem 0.75rem; border-radius: 8px; text-decoration: none; font-size: 0.82rem; font-weight: 600; {% if view_filter == 'autres' %}background: var(--accent-subtle); color: var(--accent); border: 1px solid rgba(0,214,143,0.2);{% else %}background: var(--bg-surface); color: var(--text-secondary); border: 1px solid var(--border-subtle);{% endif %}">
                         <i class="fas fa-user-group"></i> Autres
                     </a>
+                    <a href="{{ url_for('investors') }}?sort=new_joiners" style="display: flex; align-items: center; gap: 0.5rem; padding: 0.5rem 0.75rem; border-radius: 8px; text-decoration: none; font-size: 0.82rem; font-weight: 600; {% if selected.get('sort') == 'new_joiners' %}background: linear-gradient(135deg, rgba(0,212,170,0.15), rgba(67,97,238,0.15)); color: #00d4aa; border: 1px solid rgba(0,212,170,0.3);{% else %}background: var(--bg-surface); color: var(--text-secondary); border: 1px solid var(--border-subtle);{% endif %}">
+                        <i class="fas fa-star"></i> New Pulsers First
+                    </a>
                 </div>
 
                 <form action="{{ url_for('investors') }}" method="GET" id="filterForm">
@@ -209,6 +212,9 @@
                             <div class="investor-name-block">
                                 <h3 class="investor-name">{{ investor.investor_name or 'Investisseur inconnu' }}</h3>
                                 <div class="investor-badges">
+                                    {% if investor.hq_email and investor.hq_email|lower in pulse_member_emails %}
+                                    <span class="pulse-badge-new">&#10022; New Pulser</span>
+                                    {% endif %}
                                     {% if investor.primary_investor_type %}
                                     <span class="pulse-badge-type">{{ investor.primary_investor_type }}</span>
                                     {% endif %}
