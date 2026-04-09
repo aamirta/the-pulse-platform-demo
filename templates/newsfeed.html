@@ -26,19 +26,27 @@
         max-width: 100%;
     }
     @media (max-width: 768px) {
-        .main-content { padding: 1rem 0 !important; overflow-x: hidden !important; max-width: 100% !important; }
-        .newsfeed-wrapper { padding: 1rem 0.5rem 3rem; width: 100%; max-width: 100%; overflow-x: hidden; }
+        .main-content { padding: 0.5rem 0 !important; overflow-x: hidden !important; max-width: 100% !important; width: 100% !important; }
+        .newsfeed-wrapper { padding: 0.75rem 0.5rem 3rem !important; width: 100% !important; max-width: 100% !important; overflow-x: hidden !important; }
         .nf-layout { display: block !important; }
-        .nf-main-col { width: 100% !important; max-width: 100% !important; min-width: 0 !important; }
-        .nf-header { flex-direction: column; align-items: flex-start; gap: 0.5rem; }
-        .nf-header h1 { font-size: 1.4rem; }
-        .nf-card { padding: 1rem 0.85rem 0.75rem; max-width: 100%; overflow: hidden; }
-        .nf-card-header { gap: 0.5rem; }
-        .nf-card-content { font-size: 0.85rem; word-break: break-word; }
-        .nf-create-box { padding: 0.85rem; max-width: 100%; overflow: hidden; }
-        .nf-create-meta { flex-wrap: wrap; }
-        .nf-create-meta input { min-width: 0 !important; flex: 1 1 auto; }
-        .nf-sidebar { max-width: 100% !important; overflow: hidden; }
+        .nf-main-col { width: 100% !important; max-width: 100% !important; min-width: 0 !important; overflow: hidden; }
+        .nf-page-header { margin-bottom: 1rem; }
+        .nf-page-header h1 { font-size: 1.3rem; }
+        .nf-page-header p { font-size: 0.8rem; }
+        .nf-card { padding: 0.85rem 0.75rem 0.7rem !important; max-width: 100% !important; overflow: hidden !important; }
+        .nf-card-header { gap: 0.5rem; flex-wrap: wrap; }
+        .nf-card-content { font-size: 0.85rem; word-break: break-word; overflow-wrap: break-word; }
+        .nf-card-link { font-size: 0.75rem; padding: 0.5rem 0.7rem; }
+        .nf-create-box { padding: 0.75rem !important; max-width: 100% !important; overflow: hidden !important; }
+        .nf-create-textarea { font-size: 0.85rem; padding: 0.6rem 0.75rem; min-height: 70px; }
+        .nf-create-meta { flex-direction: column !important; gap: 0.5rem; }
+        .nf-create-meta input, .nf-type-select { width: 100% !important; min-width: 0 !important; flex: none !important; }
+        .nf-tabs { gap: 0.15rem; padding: 0.25rem; }
+        .nf-tab { padding: 0.4rem 0.6rem; font-size: 0.75rem; }
+        .nf-sidebar { max-width: 100% !important; overflow: hidden !important; }
+        .nf-sidebar-widget { padding: 1rem; }
+        .nf-card-footer { gap: 0.5rem; }
+        .nf-like-btn, .nf-msg-btn { padding: 0.3rem 0.6rem; font-size: 0.75rem; }
     }
 
     /* ---- PAGE HEADER ---- */
