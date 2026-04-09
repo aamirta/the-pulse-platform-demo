@@ -26,15 +26,19 @@
         max-width: 100%;
     }
     @media (max-width: 768px) {
-        .main-content { padding: 1rem 0 !important; overflow-x: hidden !important; }
-        .newsfeed-wrapper { padding: 1rem 0.5rem 3rem; width: 100vw; max-width: 100vw; }
+        .main-content { padding: 1rem 0 !important; overflow-x: hidden !important; max-width: 100% !important; }
+        .newsfeed-wrapper { padding: 1rem 0.5rem 3rem; width: 100%; max-width: 100%; overflow-x: hidden; }
         .nf-layout { display: block !important; }
+        .nf-main-col { width: 100% !important; max-width: 100% !important; min-width: 0 !important; }
         .nf-header { flex-direction: column; align-items: flex-start; gap: 0.5rem; }
         .nf-header h1 { font-size: 1.4rem; }
-        .nf-card { padding: 1rem 0.85rem 0.75rem; }
+        .nf-card { padding: 1rem 0.85rem 0.75rem; max-width: 100%; overflow: hidden; }
         .nf-card-header { gap: 0.5rem; }
-        .nf-card-content { font-size: 0.85rem; }
-        .nf-create-box { padding: 0.85rem; }
+        .nf-card-content { font-size: 0.85rem; word-break: break-word; }
+        .nf-create-box { padding: 0.85rem; max-width: 100%; overflow: hidden; }
+        .nf-create-meta { flex-wrap: wrap; }
+        .nf-create-meta input { min-width: 0 !important; flex: 1 1 auto; }
+        .nf-sidebar { max-width: 100% !important; overflow: hidden; }
     }
 
     /* ---- PAGE HEADER ---- */
