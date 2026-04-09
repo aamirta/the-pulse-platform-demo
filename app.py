@@ -87,67 +87,17 @@ def login():
     
     return render_template("login.html")
 
-@app.route("/admin/export-inscriptions")
-def export_inscriptions():
-    secret = request.args.get('key')
-    if secret != 'pulse2026export':
-        return jsonify({'error': 'unauthorized'}), 403
-    data = {}
-    try:
-        members = db.session.execute(db.text('SELECT * FROM pulse_members ORDER BY created_at DESC')).fetchall()
-        cols = db.session.execute(db.text("SELECT column_name FROM information_schema.columns WHERE table_name='pulse_members'")).fetchall()
-        member_cols = [c[0] for c in cols]
-        data['pulse_members'] = [dict(zip(member_cols, [str(v) for v in row])) for row in members]
-    except Exception:
-        try:
-            members = db.session.execute(db.text('SELECT * FROM pulse_members ORDER BY created_at DESC')).fetchall()
-            data['pulse_members'] = [dict(row._mapping) if hasattr(row, '_mapping') else list(row) for row in members]
-        except Exception as e:
-            data['pulse_members'] = str(e)
-    try:
-        talents = db.session.execute(db.text('SELECT * FROM talents ORDER BY created_at DESC')).fetchall()
-        cols = db.session.execute(db.text("SELECT column_name FROM information_schema.columns WHERE table_name='talents'")).fetchall()
-        talent_cols = [c[0] for c in cols]
-        data['talents'] = [dict(zip(talent_cols, [str(v) for v in row])) for row in talents]
-    except Exception:
-        try:
-            talents = db.session.execute(db.text('SELECT * FROM talents ORDER BY created_at DESC')).fetchall()
-            data['talents'] = [dict(row._mapping) if hasattr(row, '_mapping') else list(row) for row in talents]
-        except Exception as e:
-            data['talents'] = str(e)
-    try:
-        experts = db.session.execute(db.text('SELECT * FROM experts ORDER BY created_at DESC')).fetchall()
-        cols = db.session.execute(db.text("SELECT column_name FROM information_schema.columns WHERE table_name='experts'")).fetchall()
-        expert_cols = [c[0] for c in cols]
-        data['experts'] = [dict(zip(expert_cols, [str(v) for v in row])) for row in experts]
-    except Exception:
-        try:
-            experts = db.session.execute(db.text('SELECT * FROM experts ORDER BY created_at DESC')).fetchall()
-            data['experts'] = [dict(row._mapping) if hasattr(row, '_mapping') else list(row) for row in experts]
-        except Exception as e:
-            data['experts'] = str(e)
-    try:
-        projects = db.session.execute(db.text('SELECT * FROM cofounder_projects ORDER BY id DESC')).fetchall()
-        cols = db.session.execute(db.text("SELECT column_name FROM information_schema.columns WHERE table_name='cofounder_projects'")).fetchall()
-        proj_cols = [c[0] for c in cols]
-        data['cofounder_projects'] = [dict(zip(proj_cols, [str(v) for v in row])) for row in projects]
-    except Exception:
-        try:
-            projects = db.session.execute(db.text('SELECT * FROM cofounder_projects ORDER BY id DESC')).fetchall()
-            data['cofounder_projects'] = [dict(row._mapping) if hasattr(row, '_mapping') else list(row) for row in projects]
-        except Exception as e:
-            data['cofounder_projects'] = str(e)
-    return jsonify(data)
-
 @app.route("/")
 def home():
-    # Use lightweight queries — avoid loading all rows into memory
-    startup_count = db.session.query(db.func.count(Startup.startup_id)).scalar() or 0
-    founder_count = db.session.query(db.func.count(Founder.founder_id)).scalar() or 0
-    investor_count = db.session.query(db.func.count(Investor.investor_id)).scalar() or 0
-    incubator_count = db.session.query(db.func.count(Incubator.incubator_id)).scalar() or 0
+    try:
+        # Use lightweight COUNT queries
+        startup_count = db.session.query(db.func.count(Startup.startup_id)).scalar() or 0
+        founder_count = db.session.query(db.func.count(Founder.founder_id)).scalar() or 0
+        investor_count = db.session.query(db.func.count(Investor.investor_id)).scalar() or 0
+        incubator_count = db.session.query(db.func.count(Incubator.incubator_id)).scalar() or 0
+    except Exception:
+        startup_count = founder_count = investor_count = incubator_count = 0
 
-    # Create lightweight objects for template compatibility (ticker uses |length)
     class CountObj:
         def __init__(self, n):
             self._n = n
@@ -161,49 +111,63 @@ def home():
     investors = CountObj(investor_count)
     incubators = CountObj(incubator_count)
 
-    deals = FundingRound.query.all()
+    # Funding data
+    try:
+        deals = FundingRound.query.all()
+        total_funding = sum(d.raised_amount_usd or 0 for d in deals)
+        total_funding_millions = total_funding / 1_000_000
+    except Exception:
+        deals = []
+        total_funding_millions = 0
 
-    total_funding = sum(deal.raised_amount_usd if deal.raised_amount_usd is not None else 0 for deal in deals)
-    total_funding_millions = total_funding / 1_000_000
+    # Charts data
+    try:
+        startups_for_charts = db.session.query(Startup.location, Startup.sector).filter(
+            db.or_(Startup.location.isnot(None), Startup.sector.isnot(None))
+        ).all()
 
-    # Load only startups with location/sector for charts (lighter query)
-    startups_for_charts = db.session.query(Startup.location, Startup.sector).filter(
-        db.or_(Startup.location.isnot(None), Startup.sector.isnot(None))
-    ).all()
+        cities_list = [s.location for s in startups_for_charts if s.location and s.location != "Morocco"]
+        city_counter = Counter(cities_list)
+        topcities = [c for c, _ in city_counter.most_common(10)]
+        NbStartupsByCity = [n for _, n in city_counter.most_common(10)]
 
-    # Get cities and their counts
-    cities_list = [s.location for s in startups_for_charts if s.location and s.location != "Morocco"]
-    city_counter = Counter(cities_list)
+        sector_counter = Counter()
+        for s in startups_for_charts:
+            if s.sector:
+                for sec in s.sector.split(','):
+                    sec = sec.strip()
+                    if sec:
+                        sector_counter[sec] += 1
+        topsectors = [s for s, _ in sector_counter.most_common(10)]
+        nbstartupsbysector = [n for _, n in sector_counter.most_common(10)]
+    except Exception:
+        topcities = []
+        NbStartupsByCity = []
+        topsectors = []
+        nbstartupsbysector = []
+        sector_counter = Counter()
 
-    topcities = [c for c, _ in city_counter.most_common(10)]
-    NbStartupsByCity = [n for _, n in city_counter.most_common(10)]
+    try:
+        years, total_by_year = get_totalFunding_groupby_year(deals)
+    except Exception:
+        years, total_by_year = [], []
 
-    # Sectors
-    sector_counter = Counter()
-    for s in startups_for_charts:
-        if s.sector:
-            for sec in s.sector.split(','):
-                sec = sec.strip()
-                if sec:
-                    sector_counter[sec] += 1
-    topsectors = [s for s, _ in sector_counter.most_common(10)]
-    nbstartupsbysector = [n for _, n in sector_counter.most_common(10)]
+    try:
+        Sectors = list(sector_counter.keys())
+        topsectors_funding, total_funding_by_sector = get_total_funding_by_sector(deals, Sectors, n=10)
+    except Exception:
+        topsectors_funding, total_funding_by_sector = [], []
 
-    # Total funding by year
-    years, total_by_year = get_totalFunding_groupby_year(deals)
+    try:
+        top_funded = db.session.query(Startup).filter(
+            Startup.total_funding_usd.isnot(None)
+        ).order_by(Startup.total_funding_usd.desc()).limit(10).all()
+        top_startups_funding = top_funded[:3]
+        total_funding_by_startup = [float(s.total_funding_usd or 0) for s in top_funded[:3]]
+    except Exception:
+        top_startups_funding = []
+        total_funding_by_startup = []
 
-    # Total funding by sector
-    Sectors = list(sector_counter.keys())
-    topsectors_funding, total_funding_by_sector = get_total_funding_by_sector(deals, Sectors, n=10)
-
-    # Top startups by total funding — only load top 10
-    top_funded = db.session.query(Startup).filter(
-        Startup.total_funding_usd.isnot(None)
-    ).order_by(Startup.total_funding_usd.desc()).limit(10).all()
-    top_startups_funding = top_funded[:3]  # Template needs full Startup objects
-    total_funding_by_startup = [float(s.total_funding_usd or 0) for s in top_funded[:3]]
-
-    # Defensive content loading for production environments with uneven data/schema.
     try:
         appels_a_projets = Resource.query.filter(
             Resource.category.in_(['Appels à projets', 'Appel à projet']),
@@ -237,7 +201,6 @@ def home():
         _opps = [x for x in _feed if x['type'] == 'post' and x['obj'].post_type == 'opportunity'][:2]
         home_feed_items = _articles + _posts + _opps
         home_feed_items.sort(key=lambda x: x['date'] if x['date'] else _dt.min, reverse=True)
-
         _all_tags = []
         for p in _nf_posts:
             if p.tags:
