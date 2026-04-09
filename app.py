@@ -13,7 +13,8 @@ import resend
 import urllib.parse
 import uuid
 import time
-from datetime import timedelta
+import threading
+from datetime import timedelta, datetime as _dt
 
 import os
 from dotenv import load_dotenv
@@ -53,6 +54,9 @@ ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif', 'webp'}
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
+# Simple in-memory cache for home page data
+_home_cache = {'data': None, 'expires': 0, 'lock': threading.Lock()}
+
 # Initialize database with app
 db.init_app(app)
 
@@ -87,17 +91,8 @@ def login():
     
     return render_template("login.html")
 
-@app.route("/")
-def home():
-    try:
-        # Use lightweight COUNT queries
-        startup_count = db.session.query(db.func.count(Startup.startup_id)).scalar() or 0
-        founder_count = db.session.query(db.func.count(Founder.founder_id)).scalar() or 0
-        investor_count = db.session.query(db.func.count(Investor.investor_id)).scalar() or 0
-        incubator_count = db.session.query(db.func.count(Incubator.incubator_id)).scalar() or 0
-    except Exception:
-        startup_count = founder_count = investor_count = incubator_count = 0
-
+def _build_home_data():
+    """Build all home page data from DB. Called once, cached for 5 min."""
     class CountObj:
         def __init__(self, n):
             self._n = n
@@ -106,32 +101,31 @@ def home():
         def __iter__(self):
             return iter([])
 
-    startups = CountObj(startup_count)
-    founders = CountObj(founder_count)
-    investors = CountObj(investor_count)
-    incubators = CountObj(incubator_count)
+    try:
+        startup_count = db.session.query(db.func.count(Startup.startup_id)).scalar() or 0
+        founder_count = db.session.query(db.func.count(Founder.founder_id)).scalar() or 0
+        investor_count = db.session.query(db.func.count(Investor.investor_id)).scalar() or 0
+        incubator_count = db.session.query(db.func.count(Incubator.incubator_id)).scalar() or 0
+    except Exception:
+        startup_count = founder_count = investor_count = incubator_count = 0
 
-    # Funding data
     try:
         deals = FundingRound.query.all()
-        total_funding = sum(d.raised_amount_usd or 0 for d in deals)
-        total_funding_millions = total_funding / 1_000_000
+        total_funding_millions = sum(d.raised_amount_usd or 0 for d in deals) / 1_000_000
     except Exception:
         deals = []
         total_funding_millions = 0
 
-    # Charts data
+    topcities = NbStartupsByCity = topsectors = nbstartupsbysector = []
+    sector_counter = Counter()
     try:
         startups_for_charts = db.session.query(Startup.location, Startup.sector).filter(
             db.or_(Startup.location.isnot(None), Startup.sector.isnot(None))
         ).all()
-
         cities_list = [s.location for s in startups_for_charts if s.location and s.location != "Morocco"]
         city_counter = Counter(cities_list)
         topcities = [c for c, _ in city_counter.most_common(10)]
         NbStartupsByCity = [n for _, n in city_counter.most_common(10)]
-
-        sector_counter = Counter()
         for s in startups_for_charts:
             if s.sector:
                 for sec in s.sector.split(','):
@@ -141,11 +135,7 @@ def home():
         topsectors = [s for s, _ in sector_counter.most_common(10)]
         nbstartupsbysector = [n for _, n in sector_counter.most_common(10)]
     except Exception:
-        topcities = []
-        NbStartupsByCity = []
-        topsectors = []
-        nbstartupsbysector = []
-        sector_counter = Counter()
+        pass
 
     try:
         years, total_by_year = get_totalFunding_groupby_year(deals)
@@ -153,8 +143,7 @@ def home():
         years, total_by_year = [], []
 
     try:
-        Sectors = list(sector_counter.keys())
-        topsectors_funding, total_funding_by_sector = get_total_funding_by_sector(deals, Sectors, n=10)
+        topsectors_funding, total_funding_by_sector = get_total_funding_by_sector(deals, list(sector_counter.keys()), n=10)
     except Exception:
         topsectors_funding, total_funding_by_sector = [], []
 
@@ -165,8 +154,7 @@ def home():
         top_startups_funding = top_funded[:3]
         total_funding_by_startup = [float(s.total_funding_usd or 0) for s in top_funded[:3]]
     except Exception:
-        top_startups_funding = []
-        total_funding_by_startup = []
+        top_startups_funding, total_funding_by_startup = [], []
 
     try:
         appels_a_projets = Resource.query.filter(
@@ -186,7 +174,8 @@ def home():
     except Exception:
         recent_articles = []
 
-    from datetime import datetime as _dt
+    home_feed_items = []
+    home_trending_tags = []
     try:
         _nf_posts = Post.query.filter_by(is_published=True).order_by(Post.created_at.desc()).all()
         _nf_articles = Article.query.order_by(Article.published_at.desc()).limit(10).all()
@@ -207,8 +196,7 @@ def home():
                 _all_tags.extend([t.strip() for t in p.tags.split(',') if t.strip()])
         home_trending_tags = Counter(_all_tags).most_common(8)
     except Exception:
-        home_feed_items = []
-        home_trending_tags = []
+        pass
 
     try:
         home_recent_rounds = FundingRound.query.filter(
@@ -225,30 +213,41 @@ def home():
     except Exception:
         home_appels_sidebar = []
 
-    return render_template("home.html",
-                         startups=startups,
-                         founders=founders,
-                         investors=investors,
-                         deals=deals,
-                         total_funding=total_funding_millions,
-                         topcities=topcities,
-                         NbStartupsByCity=NbStartupsByCity,
-                         topsectors=topsectors,
-                         nbstartupsbysector=nbstartupsbysector,
-                         years=years,
-                         total_by_year=total_by_year,
-                         topsectors_funding=topsectors_funding,
-                         total_funding_by_sector=total_funding_by_sector,
-                         top_startups_funding=top_startups_funding,
-                         total_funding_by_startup=total_funding_by_startup,
-                         appels_a_projets=appels_a_projets,
-                         cofound_projects=cofound_projects,
-                         recent_articles=recent_articles,
-                         home_feed_items=home_feed_items,
-                         home_trending_tags=home_trending_tags,
-                         home_recent_rounds=home_recent_rounds,
-                         incubators=incubators,
-                         home_appels_sidebar=home_appels_sidebar)
+    return dict(
+        startups=CountObj(startup_count), founders=CountObj(founder_count),
+        investors=CountObj(investor_count), incubators=CountObj(incubator_count),
+        deals=deals, total_funding=total_funding_millions,
+        topcities=topcities, NbStartupsByCity=NbStartupsByCity,
+        topsectors=topsectors, nbstartupsbysector=nbstartupsbysector,
+        years=years, total_by_year=total_by_year,
+        topsectors_funding=topsectors_funding, total_funding_by_sector=total_funding_by_sector,
+        top_startups_funding=top_startups_funding, total_funding_by_startup=total_funding_by_startup,
+        appels_a_projets=appels_a_projets, cofound_projects=cofound_projects,
+        recent_articles=recent_articles, home_feed_items=home_feed_items,
+        home_trending_tags=home_trending_tags, home_recent_rounds=home_recent_rounds,
+        home_appels_sidebar=home_appels_sidebar,
+    )
+
+@app.route("/")
+def home():
+    now = time.time()
+    if _home_cache['data'] is not None and now < _home_cache['expires']:
+        return render_template("home.html", **_home_cache['data'])
+
+    with _home_cache['lock']:
+        # Double-check after acquiring lock
+        if _home_cache['data'] is not None and time.time() < _home_cache['expires']:
+            return render_template("home.html", **_home_cache['data'])
+        try:
+            data = _build_home_data()
+            _home_cache['data'] = data
+            _home_cache['expires'] = time.time() + 300  # 5 min cache
+        except Exception:
+            if _home_cache['data'] is not None:
+                return render_template("home.html", **_home_cache['data'])
+            raise
+
+    return render_template("home.html", **_home_cache['data'])
 
 
 @app.route("/startups", methods=["GET"])
