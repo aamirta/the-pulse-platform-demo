@@ -1165,6 +1165,74 @@ def cofounder_form():
 
 
 ## ============================================
+## EXPERTS
+## ============================================
+
+@app.route("/experts")
+def experts():
+    query = Expert.query
+    search = request.args.get("search", "").strip()
+    selected_domain = request.args.get("domain", "")
+    selected_availability = request.args.get("availability", "")
+
+    if search:
+        query = query.filter(
+            db.or_(
+                Expert.full_name.ilike(f"%{search}%"),
+                Expert.skills.ilike(f"%{search}%"),
+                Expert.current_title.ilike(f"%{search}%"),
+                Expert.expertise_domain.ilike(f"%{search}%"),
+                Expert.organization.ilike(f"%{search}%")
+            )
+        )
+    if selected_domain:
+        query = query.filter(Expert.expertise_domain == selected_domain)
+    if selected_availability:
+        query = query.filter(Expert.availability == selected_availability)
+
+    all_experts = query.order_by(Expert.created_at.desc()).all()
+    return render_template("experts.html", experts=all_experts, search=search,
+                         selected_domain=selected_domain, selected_availability=selected_availability)
+
+@app.route("/expert-form", methods=["GET", "POST"])
+def expert_form():
+    if request.method == "POST":
+        email = request.form.get("email", "").strip()
+        full_name = request.form.get("full_name", "").strip()
+        form_data = {k: v for k, v in request.form.items() if k not in ('email', 'full_name')}
+
+        new_expert = Expert(
+            full_name=full_name,
+            email=email,
+            phone=request.form.get("phone"),
+            location=request.form.get("location"),
+            current_title=request.form.get("current_title"),
+            organization=request.form.get("organization"),
+            expertise_domain=request.form.get("expertise_domain"),
+            years_experience=request.form.get("years_experience"),
+            professional_bio=request.form.get("professional_bio"),
+            skills=request.form.get("skills"),
+            industries_of_interest=request.form.get("industries_of_interest"),
+            services_offered=request.form.get("services_offered"),
+            target_audience=request.form.get("target_audience"),
+            availability=request.form.get("availability"),
+            linkedin_url=request.form.get("linkedin_url"),
+            portfolio_website=request.form.get("portfolio_website"),
+            other_profile=request.form.get("other_profile"),
+            achievements=request.form.get("achievements"),
+            languages=request.form.get("languages")
+        )
+        db.session.add(new_expert)
+        db.session.commit()
+
+        member, error = register_pulse_member(email, full_name, "expert", form_data)
+        if error:
+            return render_template("expert-form.html", error=error)
+        return render_template("email-sent.html", email=email)
+    return render_template("expert-form.html")
+
+
+## ============================================
 ## ACTUALITÉS
 ## ============================================
 

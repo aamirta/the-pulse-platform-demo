@@ -1,0 +1,554 @@
+{% extends "base.html" %}
+
+{% block title %}Experts - The Pulse{% endblock %}
+
+{% block content %}
+<style>
+    .page-header {
+        background: linear-gradient(135deg, rgba(249, 115, 22, 0.12) 0%, var(--secondary-subtle) 100%);
+        padding: 3rem 0 2rem 0;
+        margin-bottom: 2rem;
+        border-radius: 20px;
+        position: relative;
+        overflow: hidden;
+        border: 1px solid var(--border-color);
+    }
+    .page-header::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="dots" width="20" height="20" patternUnits="userSpaceOnUse"><circle cx="10" cy="10" r="1" fill="%23ffffff" opacity="0.05"/></pattern></defs><rect width="100" height="100" fill="url(%23dots)"/></svg>');
+        pointer-events: none;
+    }
+    .page-title {
+        font-family: var(--font-heading);
+        font-weight: 700;
+        font-size: 2rem;
+        margin-bottom: 0.5rem;
+        background: linear-gradient(135deg, #f97316, var(--secondary));
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        position: relative;
+        z-index: 2;
+    }
+    .page-subtitle {
+        color: var(--text-secondary);
+        font-size: 1.1rem;
+        position: relative;
+        z-index: 2;
+    }
+    .stats-bar {
+        background: var(--bg-card);
+        border-radius: 16px;
+        padding: 1.5rem;
+        margin-bottom: 2rem;
+        border: 1px solid var(--border-color);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 2rem;
+        flex-wrap: wrap;
+    }
+    .stat-item { text-align: center; }
+    .stat-number {
+        font-family: var(--font-heading);
+        font-size: 2rem;
+        font-weight: 700;
+        color: #f97316;
+        line-height: 1.2;
+    }
+    .stat-number.secondary { color: var(--secondary); }
+    .stat-number.accent { color: var(--accent); }
+    .stat-label {
+        color: var(--text-secondary);
+        font-size: 0.85rem;
+        font-weight: 500;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+    .search-filters-bar {
+        background: var(--bg-card);
+        border-radius: 16px;
+        padding: 1.25rem 1.5rem;
+        margin-bottom: 1.5rem;
+        border: 1px solid var(--border-color);
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        flex-wrap: wrap;
+    }
+    .search-input-wrapper {
+        flex: 1;
+        min-width: 250px;
+        position: relative;
+    }
+    .search-input-wrapper i {
+        position: absolute;
+        left: 1rem;
+        top: 50%;
+        transform: translateY(-50%);
+        color: var(--text-muted);
+        font-size: 0.85rem;
+    }
+    .search-input {
+        width: 100%;
+        padding: 0.7rem 1rem 0.7rem 2.5rem;
+        border: 1px solid var(--border-color);
+        border-radius: 10px;
+        background: var(--bg-card);
+        color: var(--text-primary);
+        font-family: var(--font-body);
+        font-size: 0.9rem;
+        outline: none;
+        transition: border-color 0.2s ease;
+    }
+    .search-input:focus { border-color: #f97316; }
+    .search-input::placeholder { color: var(--text-muted); }
+    .search-btn {
+        background: linear-gradient(135deg, #f97316, #ea580c);
+        color: #fff;
+        border: none;
+        padding: 0.7rem 1.5rem;
+        border-radius: 10px;
+        font-family: var(--font-heading);
+        font-size: 0.9rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        display: flex;
+        align-items: center;
+        gap: 0.4rem;
+    }
+    .search-btn:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 4px 12px rgba(249, 115, 22, 0.3);
+    }
+    .filter-tabs {
+        display: flex;
+        gap: 0.5rem;
+        margin-bottom: 1.5rem;
+        flex-wrap: wrap;
+    }
+    .filter-tab {
+        padding: 0.5rem 1.1rem;
+        border-radius: 10px;
+        font-size: 0.85rem;
+        font-weight: 500;
+        font-family: var(--font-body);
+        color: var(--text-secondary);
+        background: var(--bg-card);
+        border: 1px solid var(--border-color);
+        text-decoration: none;
+        transition: all 0.2s ease;
+        cursor: pointer;
+    }
+    .filter-tab:hover { border-color: #f97316; color: #f97316; }
+    .filter-tab.active {
+        background: linear-gradient(135deg, #f97316, #ea580c);
+        color: #fff;
+        border-color: #f97316;
+    }
+    .experts-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 1.5rem;
+    }
+    .expert-card {
+        background: var(--bg-card);
+        border: 1px solid var(--border-color);
+        border-radius: 14px;
+        padding: 1.5rem;
+        cursor: pointer;
+        transition: all var(--transition-base);
+        position: relative;
+        overflow: hidden;
+    }
+    .expert-card::before {
+        content: '';
+        position: absolute;
+        top: 0; left: 0; right: 0;
+        height: 3px;
+        background: linear-gradient(135deg, #f97316, var(--secondary));
+        opacity: 0;
+        transition: opacity var(--transition-base);
+    }
+    .expert-card:hover {
+        transform: translateY(-4px);
+        border-color: rgba(249, 115, 22, 0.2);
+        box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
+        background: var(--bg-card-hover);
+    }
+    .expert-card:hover::before { opacity: 1; }
+    .expert-card-header {
+        display: flex;
+        align-items: center;
+        gap: 0.85rem;
+        margin-bottom: 1rem;
+    }
+    .expert-avatar {
+        width: 44px;
+        height: 44px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, #f97316, #ea580c);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-family: var(--font-heading);
+        font-weight: 700;
+        font-size: 0.95rem;
+        flex-shrink: 0;
+    }
+    .expert-name-block { flex: 1; min-width: 0; }
+    .expert-name {
+        font-family: var(--font-heading);
+        font-weight: 600;
+        font-size: 1rem;
+        color: var(--text-primary);
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        margin: 0;
+        line-height: 1.3;
+    }
+    .expert-title {
+        font-size: 0.8rem;
+        color: var(--text-secondary);
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        line-height: 1.3;
+    }
+    .expert-meta {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+        margin-bottom: 1rem;
+    }
+    .expert-meta-item {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        font-size: 0.8rem;
+        color: var(--text-secondary);
+    }
+    .expert-meta-item i {
+        color: #f97316;
+        width: 14px;
+        text-align: center;
+        font-size: 0.75rem;
+        flex-shrink: 0;
+    }
+    .expert-meta-item span {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+    .expert-skills {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.35rem;
+        margin-bottom: 1rem;
+    }
+    .skill-tag {
+        display: inline-flex;
+        align-items: center;
+        background: rgba(249, 115, 22, 0.08);
+        color: #f97316;
+        padding: 0.2rem 0.55rem;
+        border-radius: 6px;
+        font-size: 0.72rem;
+        font-weight: 500;
+        white-space: nowrap;
+    }
+    .skill-tag.more {
+        background: var(--bg-card-hover);
+        color: var(--text-muted);
+    }
+    .expert-badges {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.4rem;
+        margin-bottom: 0.75rem;
+    }
+    .expert-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.3rem;
+        padding: 0.2rem 0.6rem;
+        border-radius: 6px;
+        font-size: 0.72rem;
+        font-weight: 500;
+    }
+    .expert-badge.domain {
+        background: rgba(249, 115, 22, 0.08);
+        color: #f97316;
+    }
+    .expert-badge.experience {
+        background: var(--secondary-subtle);
+        color: var(--secondary);
+    }
+    .expert-badge.availability-available {
+        background: rgba(16, 185, 129, 0.1);
+        color: #10b981;
+    }
+    .expert-badge.availability-partial {
+        background: rgba(245, 158, 11, 0.1);
+        color: #f59e0b;
+    }
+    .expert-badge.availability-unavailable {
+        background: rgba(107, 114, 128, 0.1);
+        color: #6b7280;
+    }
+    .expert-card-footer {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding-top: 0.75rem;
+        border-top: 1px solid var(--border-color);
+    }
+    .expert-social-links {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+    .social-link {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 30px;
+        height: 30px;
+        border-radius: 8px;
+        background: rgba(249, 115, 22, 0.08);
+        color: #f97316;
+        font-size: 0.8rem;
+        transition: all 0.15s ease;
+        text-decoration: none;
+    }
+    .social-link:hover {
+        background: #f97316;
+        color: white;
+        transform: translateY(-1px);
+    }
+    .social-link.portfolio {
+        background: var(--accent-subtle);
+        color: var(--accent);
+    }
+    .social-link.portfolio:hover {
+        background: var(--accent);
+        color: white;
+    }
+    .expert-arrow {
+        color: var(--text-muted);
+        font-size: 0.85rem;
+        transition: all var(--transition-base);
+    }
+    .expert-card:hover .expert-arrow {
+        color: #f97316;
+        transform: translateX(3px);
+    }
+    .empty-state {
+        text-align: center;
+        padding: 4rem 2rem;
+        grid-column: 1 / -1;
+    }
+    .empty-state i { font-size: 3rem; color: var(--text-muted); margin-bottom: 1rem; }
+    .empty-state h3 { font-family: var(--font-heading); color: var(--text-primary); margin-bottom: 0.5rem; }
+    .empty-state p { color: var(--text-secondary); }
+    .section-heading {
+        font-family: var(--font-heading);
+        font-weight: 700;
+        color: var(--text-primary);
+        margin-bottom: 1.25rem;
+        font-size: 1.2rem;
+    }
+    @media (max-width: 1200px) {
+        .experts-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 768px) {
+        .page-title { font-size: 1.8rem; }
+        .stats-bar { gap: 1.5rem; }
+        .experts-grid { grid-template-columns: 1fr; }
+        .search-filters-bar { flex-direction: column; }
+        .search-input-wrapper { min-width: 100%; }
+    }
+</style>
+
+<!-- Page Header -->
+<div class="page-header">
+    <div class="container">
+        <h1 class="page-title"><i class="fas fa-chalkboard-teacher"></i> Experts</h1>
+        <p class="page-subtitle">Mentors, coaches et consultants au service de l'entrepreneuriat marocain</p>
+        <div style="margin-top: 1.5rem; position: relative; z-index: 2;">
+            <a href="{{ url_for('expert_form') }}" style="
+                display: inline-flex; align-items: center; gap: 0.5rem;
+                padding: 0.75rem 1.5rem;
+                background: linear-gradient(135deg, #f97316, #ea580c);
+                color: #fff; border: none; border-radius: 12px;
+                font-family: var(--font-heading); font-weight: 600; font-size: 0.95rem;
+                text-decoration: none; transition: all 0.2s ease;
+            " onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 8px 24px rgba(249,115,22,0.3)'" onmouseout="this.style.transform=''; this.style.boxShadow=''">
+                <i class="fas fa-plus"></i> Devenir Expert
+            </a>
+        </div>
+    </div>
+</div>
+
+<!-- Stats Bar -->
+<div class="container">
+    <div class="stats-bar">
+        <div class="stat-item">
+            <div class="stat-number">{{ experts|length }}</div>
+            <div class="stat-label">Total Experts</div>
+        </div>
+        <div class="stat-item">
+            <div class="stat-number accent">{{ experts|selectattr('availability', 'equalto', 'Available')|list|length }}</div>
+            <div class="stat-label">Disponibles</div>
+        </div>
+        <div class="stat-item">
+            <div class="stat-number secondary">
+                {% set domains = experts|map(attribute='expertise_domain')|select('string')|unique|list %}
+                {{ domains|length }}
+            </div>
+            <div class="stat-label">Domaines</div>
+        </div>
+    </div>
+</div>
+
+<!-- Search & Filters -->
+<div class="container">
+    <form action="{{ url_for('experts') }}" method="GET">
+        <div class="search-filters-bar">
+            <div class="search-input-wrapper">
+                <i class="fas fa-search"></i>
+                <input type="text" class="search-input" name="search" value="{{ search }}" placeholder="Rechercher par nom, domaine, expertise...">
+            </div>
+            <input type="hidden" name="domain" value="{{ selected_domain }}">
+            <input type="hidden" name="availability" value="{{ selected_availability }}">
+            <button type="submit" class="search-btn">
+                <i class="fas fa-search"></i> Rechercher
+            </button>
+        </div>
+    </form>
+
+    <div class="filter-tabs">
+        <a href="{{ url_for('experts', search=search, availability=selected_availability) }}" class="filter-tab {% if not selected_domain %}active{% endif %}" data-i18n="filter_all">Tous</a>
+        <a href="{{ url_for('experts', search=search, domain='Go-to-Market', availability=selected_availability) }}" class="filter-tab {% if selected_domain == 'Go-to-Market' %}active{% endif %}" data-i18n="exp_gtm">Mise en marche</a>
+        <a href="{{ url_for('experts', search=search, domain='Fundraising', availability=selected_availability) }}" class="filter-tab {% if selected_domain == 'Fundraising' %}active{% endif %}" data-i18n="exp_fundraising">Levee de fonds</a>
+        <a href="{{ url_for('experts', search=search, domain='Business Model', availability=selected_availability) }}" class="filter-tab {% if selected_domain == 'Business Model' %}active{% endif %}" data-i18n="exp_bmodel">Modele economique</a>
+        <a href="{{ url_for('experts', search=search, domain='Growth', availability=selected_availability) }}" class="filter-tab {% if selected_domain == 'Growth' %}active{% endif %}" data-i18n="exp_growth">Croissance</a>
+        <a href="{{ url_for('experts', search=search, domain='Product', availability=selected_availability) }}" class="filter-tab {% if selected_domain == 'Product' %}active{% endif %}" data-i18n="exp_product">Produit & Tech</a>
+        <a href="{{ url_for('experts', search=search, domain='Finance', availability=selected_availability) }}" class="filter-tab {% if selected_domain == 'Finance' %}active{% endif %}" data-i18n="exp_finance">Finance</a>
+        <a href="{{ url_for('experts', search=search, domain='Strategy', availability=selected_availability) }}" class="filter-tab {% if selected_domain == 'Strategy' %}active{% endif %}" data-i18n="exp_strategy">Strategie</a>
+    </div>
+</div>
+
+<!-- Experts Grid -->
+<div class="container">
+    <h2 class="section-heading">
+        {% if experts|length > 0 %}
+            {{ experts|length }} expert{{ 's' if experts|length != 1 else '' }}
+        {% else %}
+            Aucun expert
+        {% endif %}
+    </h2>
+
+    <div class="experts-grid">
+        {% if experts|length > 0 %}
+            {% for expert in experts %}
+            <div class="expert-card">
+                <div class="expert-card-header">
+                    <div class="expert-avatar">
+                        {% if expert.full_name %}
+                            {{ expert.full_name[0].upper() }}
+                        {% else %}
+                            E
+                        {% endif %}
+                    </div>
+                    <div class="expert-name-block">
+                        <h3 class="expert-name">{{ expert.full_name or 'Unknown' }}</h3>
+                        {% if expert.current_title %}
+                        <div class="expert-title">{{ expert.current_title }}{% if expert.organization %} - {{ expert.organization }}{% endif %}</div>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <div class="expert-meta">
+                    {% if expert.location %}
+                    <div class="expert-meta-item">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <span>{{ expert.location }}</span>
+                    </div>
+                    {% endif %}
+                    {% if expert.services_offered %}
+                    <div class="expert-meta-item">
+                        <i class="fas fa-hands-helping"></i>
+                        <span>{{ expert.services_offered }}</span>
+                    </div>
+                    {% endif %}
+                    {% if expert.target_audience %}
+                    <div class="expert-meta-item">
+                        <i class="fas fa-bullseye"></i>
+                        <span>{{ expert.target_audience }}</span>
+                    </div>
+                    {% endif %}
+                </div>
+
+                {% if expert.skills %}
+                <div class="expert-skills">
+                    {% set skill_list = expert.skills.split(',') %}
+                    {% for skill in skill_list[:4] %}
+                        <span class="skill-tag">{{ skill.strip() }}</span>
+                    {% endfor %}
+                    {% if skill_list|length > 4 %}
+                        <span class="skill-tag more">+{{ skill_list|length - 4 }}</span>
+                    {% endif %}
+                </div>
+                {% endif %}
+
+                <div class="expert-badges">
+                    {% if expert.expertise_domain %}
+                    <span class="expert-badge domain">
+                        <i class="fas fa-graduation-cap"></i> {{ expert.expertise_domain }}
+                    </span>
+                    {% endif %}
+                    {% if expert.years_experience %}
+                    <span class="expert-badge experience">
+                        <i class="fas fa-clock"></i> {{ expert.years_experience }}
+                    </span>
+                    {% endif %}
+                    {% if expert.availability %}
+                    <span class="expert-badge {% if expert.availability == 'Available' %}availability-available{% elif expert.availability == 'Partially available' %}availability-partial{% else %}availability-unavailable{% endif %}">
+                        <i class="fas fa-calendar-check"></i> {{ expert.availability }}
+                    </span>
+                    {% endif %}
+                </div>
+
+                <div class="expert-card-footer">
+                    <div class="expert-social-links">
+                        {% if expert.linkedin_url %}
+                        <a href="{{ expert.linkedin_url }}" target="_blank" rel="noopener" class="social-link" onclick="event.stopPropagation();" title="LinkedIn">
+                            <i class="fab fa-linkedin-in"></i>
+                        </a>
+                        {% endif %}
+                        {% if expert.portfolio_website %}
+                        <a href="{{ expert.portfolio_website }}" target="_blank" rel="noopener" class="social-link portfolio" onclick="event.stopPropagation();" title="Website">
+                            <i class="fas fa-globe"></i>
+                        </a>
+                        {% endif %}
+                    </div>
+                    <i class="fas fa-arrow-right expert-arrow"></i>
+                </div>
+            </div>
+            {% endfor %}
+        {% else %}
+            <div class="empty-state">
+                <i class="fas fa-chalkboard-teacher"></i>
+                <h3>Aucun expert pour le moment</h3>
+                <p>Soyez le premier expert a rejoindre The Pulse !</p>
+            </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

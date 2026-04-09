@@ -650,6 +650,32 @@ class Talent(db.Model):
     created_at = db.Column(db.DateTime, default=db.func.now())
 
 
+class Expert(db.Model):
+    __tablename__ = 'experts'
+    expert_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    full_name = db.Column(db.String(100))
+    email = db.Column(db.String(255))
+    phone = db.Column(db.String(50))
+    location = db.Column(db.String(100))
+    current_title = db.Column(db.String(255))
+    organization = db.Column(db.String(255))
+    expertise_domain = db.Column(db.String(100))
+    years_experience = db.Column(db.String(50))
+    professional_bio = db.Column(db.Text)
+    skills = db.Column(db.Text)
+    industries_of_interest = db.Column(db.Text)
+    services_offered = db.Column(db.Text)
+    target_audience = db.Column(db.String(255))
+    availability = db.Column(db.String(50))
+    linkedin_url = db.Column(db.String(255))
+    portfolio_website = db.Column(db.String(255))
+    other_profile = db.Column(db.String(255))
+    achievements = db.Column(db.Text)
+    languages = db.Column(db.String(255))
+    profile_pic = db.Column(db.String(255))
+    created_at = db.Column(db.DateTime, default=db.func.now())
+
+
 class CofounderProject(db.Model):
     __tablename__ = 'cofounder_projects'
     project_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
