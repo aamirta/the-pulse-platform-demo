@@ -34,7 +34,7 @@ if database_url:
         'pool_recycle': 300,
         'connect_args': {
             'connect_timeout': 10,
-            'options': '-c statement_timeout=30000'
+            'options': '-c statement_timeout=60000 -c client_encoding=UTF8'
         }
     }
 else:
