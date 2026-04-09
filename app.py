@@ -29,6 +29,7 @@ app.config['SESSION_REFRESH_EACH_REQUEST'] = False
 # Use Supabase PostgreSQL if DATABASE_URL is set, otherwise fall back to SQLite
 database_url = os.environ.get("DATABASE_URL")
 if database_url:
+    print(f"[PULSE] Using PostgreSQL: {database_url[:30]}...", flush=True)
     app.config['SQLALCHEMY_DATABASE_URI'] = database_url
     app.config['SQLALCHEMY_ENGINE_OPTIONS'] = {
         'pool_pre_ping': True,
@@ -41,6 +42,7 @@ if database_url:
 else:
     basedir = os.path.abspath(os.path.dirname(__file__))
     app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(basedir, 'thepulse.db')
+    print("[PULSE] WARNING: Using SQLite (no DATABASE_URL set)", flush=True)
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 # Resend email configuration
