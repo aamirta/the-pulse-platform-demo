@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: #070B12; display: flex; align-items: center; justify-content: center; min-height: 100vh; }
+  .card {
+    width: 1200px;
+    height: 628px;
+    background: #070B12;
+    position: relative;
+    overflow: hidden;
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* Gradient mesh background */
+  .card::before {
+    content: '';
+    position: absolute;
+    top: -200px; left: -200px;
+    width: 600px; height: 600px;
+    background: radial-gradient(circle, rgba(0,214,143,0.15) 0%, transparent 60%);
+    border-radius: 50%;
+  }
+  .card::after {
+    content: '';
+    position: absolute;
+    bottom: -150px; right: -150px;
+    width: 500px; height: 500px;
+    background: radial-gradient(circle, rgba(99,102,241,0.12) 0%, transparent 60%);
+    border-radius: 50%;
+  }
+
+  /* Top gradient line */
+  .top-line {
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 5px;
+    background: linear-gradient(90deg, #00D68F, #6366F1, #F59E0B, #EF4444);
+  }
+
+  /* Dot grid */
+  .dot-grid {
+    position: absolute;
+    inset: 0;
+    background-image: radial-gradient(circle, #1A2535 1px, transparent 1px);
+    background-size: 32px 32px;
+    opacity: 0.5;
+  }
+
+  .content {
+    position: relative;
+    z-index: 2;
+    text-align: center;
+    padding: 0 60px;
+  }
+
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(0,214,143,0.1);
+    border: 1px solid rgba(0,214,143,0.3);
+    color: #00D68F;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 8px 20px;
+    border-radius: 50px;
+    margin-bottom: 32px;
+  }
+
+  .title {
+    font-size: 72px;
+    font-weight: 900;
+    letter-spacing: -0.03em;
+    line-height: 1.05;
+    margin-bottom: 20px;
+  }
+  .title .the { color: #00D68F; }
+  .title .pulse { color: #EEF2FF; }
+  .title .is { color: #7A90B0; font-weight: 400; font-size: 48px; }
+  .title .live {
+    background: linear-gradient(135deg, #00D68F, #6366F1);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .subtitle {
+    color: #7A90B0;
+    font-size: 20px;
+    line-height: 1.6;
+    max-width: 700px;
+    margin: 0 auto 36px;
+  }
+
+  .stats-row {
+    display: flex;
+    gap: 24px;
+    justify-content: center;
+    margin-bottom: 36px;
+  }
+  .stat {
+    background: rgba(17,25,39,0.8);
+    border: 1px solid #1A2535;
+    border-radius: 12px;
+    padding: 16px 28px;
+    text-align: center;
+  }
+  .stat-num {
+    font-size: 28px;
+    font-weight: 800;
+  }
+  .stat-num.green { color: #00D68F; }
+  .stat-num.purple { color: #6366F1; }
+  .stat-num.yellow { color: #F59E0B; }
+  .stat-num.red { color: #EF4444; }
+  .stat-label {
+    color: #7A90B0;
+    font-size: 11px;
+    margin-top: 4px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background: #00D68F;
+    color: #070B12;
+    font-size: 18px;
+    font-weight: 800;
+    padding: 16px 40px;
+    border-radius: 12px;
+    letter-spacing: 0.02em;
+  }
+
+  .footer {
+    position: absolute;
+    bottom: 24px;
+    left: 0; right: 0;
+    text-align: center;
+    color: #3D5270;
+    font-size: 12px;
+    z-index: 2;
+  }
+
+  /* Floating circles */
+  .circle {
+    position: absolute;
+    border-radius: 50%;
+    z-index: 1;
+  }
+  .c1 { width: 12px; height: 12px; background: #00D68F; top: 15%; left: 8%; opacity: 0.6; }
+  .c2 { width: 8px; height: 8px; background: #6366F1; top: 25%; right: 12%; opacity: 0.5; }
+  .c3 { width: 18px; height: 18px; border: 2px solid rgba(0,214,143,0.3); top: 70%; left: 5%; }
+  .c4 { width: 10px; height: 10px; background: #F59E0B; bottom: 20%; right: 8%; opacity: 0.4; }
+  .c5 { width: 14px; height: 14px; border: 2px solid rgba(99,102,241,0.3); top: 12%; right: 25%; }
+  .c6 { width: 6px; height: 6px; background: #EF4444; bottom: 35%; left: 15%; opacity: 0.5; }
+</style>
+</head>
+<body>
+<div class="card">
+  <div class="top-line"></div>
+  <div class="dot-grid"></div>
+
+  <div class="circle c1"></div>
+  <div class="circle c2"></div>
+  <div class="circle c3"></div>
+  <div class="circle c4"></div>
+  <div class="circle c5"></div>
+  <div class="circle c6"></div>
+
+  <div class="content">
+    <div class="badge">&#9889; Now Live</div>
+    <div class="title">
+      <span class="the">The</span> <span class="pulse">Pulse</span><br>
+      <span class="is">is</span> <span class="live">LIVE.</span>
+    </div>
+    <div class="subtitle">
+      2,000+ startups. 1,200+ founders. 50+ investors. 155 funding rounds.<br>
+      Morocco's startup ecosystem, finally mapped.
+    </div>
+    <div class="cta">Become a Pulser &rarr;</div>
+  </div>
+
+  <div class="footer">thepulse.ma &middot; Built by UM6P Africa Business School</div>
+</div>
+</body>
+</html>
