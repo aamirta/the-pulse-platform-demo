@@ -828,17 +828,7 @@
                     </div>
                 </div>
                 {% endif %}
-                {% if founder.teaser_phones %}
-                <div class="contact-item">
-                    <div class="contact-icon contact-icon-phone"><i class="fas fa-phone"></i></div>
-                    <div class="contact-text">
-                        <span class="contact-text-label" data-i18n="phone">T&eacute;l&eacute;phone</span>
-                        {% for phone in founder.teaser_phones.split('|') %}
-                            <span style="display:block;">{{ phone.strip() }}</span>
-                        {% endfor %}
-                    </div>
-                </div>
-                {% endif %}
+                {# Phone removed — privacy #}
 
                 <!-- Envoie un Pulse -->
                 <div class="contact-item" style="margin-top: 0.75rem; padding-top: 0.75rem; border-top: 1px solid var(--border-color);">
@@ -890,16 +880,7 @@
                         <i class="fab fa-twitter"></i> Twitter
                     </a>
                     {% endif %}
-                    {% if founder.link_facebook %}
-                    <a href="{{ founder.link_facebook }}" target="_blank" class="social-link-item social-facebook">
-                        <i class="fab fa-facebook"></i> Facebook
-                    </a>
-                    {% endif %}
-                    {% if founder.link_instagram %}
-                    <a href="{{ founder.link_instagram }}" target="_blank" class="social-link-item social-instagram">
-                        <i class="fab fa-instagram"></i> Instagram
-                    </a>
-                    {% endif %}
+                    {# Facebook & Instagram removed — privacy #}
                     {% if founder.link_github %}
                     <a href="{{ founder.link_github }}" target="_blank" class="social-link-item social-github">
                         <i class="fab fa-github"></i> GitHub

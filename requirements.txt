@@ -9,3 +9,6 @@ MarkupSafe
 psycopg2-binary
 python-dotenv
 resend
+openpyxl
+beautifulsoup4
+requests
