@@ -1088,19 +1088,23 @@
         }
     }
     @media (max-width: 768px) {
-        .startups-grid {
-            grid-template-columns: 1fr;
-        }
-        .hero-headline {
-            font-size: 1.6rem;
-        }
-        .home-partners-section {
-            padding: 1.5rem 1rem;
-            gap: 1rem;
-        }
+        .main-content { padding: 0.5rem 0 !important; overflow-x: hidden !important; max-width: 100% !important; width: 100% !important; }
+        .home-body { padding-left: 0.5rem !important; padding-right: 0.5rem !important; max-width: 100% !important; overflow-x: hidden !important; }
+        .home-section-box { padding: 1rem 0.75rem; border-radius: 12px; }
+        .startups-grid { grid-template-columns: 1fr; }
+        .startup-card { padding: 1rem; }
+        .hero-headline { font-size: 1.6rem; }
+        .hero-section { overflow: hidden !important; }
+        .hero-float-elements { display: none !important; }
+        .pulse-line-container { display: none !important; }
+        .home-partners-section { padding: 1.5rem 0.75rem; gap: 1rem; overflow: hidden; }
         .ticker-item { font-size: 0.85rem; padding: 0 1.25rem; }
         .ticker-item strong { font-size: 1rem; }
         .home-partners-label { font-size: 0.82rem; }
+        .nf-card { padding: 0.85rem 0.75rem !important; max-width: 100% !important; overflow: hidden !important; }
+        .nf-create-box { padding: 0.75rem !important; overflow: hidden !important; }
+        .home-nf-layout { display: block !important; }
+        .section-cta { flex-wrap: wrap; }
     }
 
     /* ---------- COUNT-UP ANIMATION ---------- */
