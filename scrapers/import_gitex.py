@@ -97,12 +97,18 @@ def main():
             description = clean_description(entry.get('description'))
             sectors = entry.get('sectors', '').strip()
 
+            # Truncate long fields to fit DB column limits
+            sector_short = '; '.join(sectors.split(';')[:3]).strip() if sectors else None
+            if sector_short and len(sector_short) > 250:
+                sector_short = sector_short[:250]
+            desc_short = description[:5000] if description else None
+
             startup = Startup(
                 startup_id=max_id,
-                startup_name=name,
-                description=description,
-                sector=sectors[:255] if sectors else None,
-                all_industries=sectors if sectors else None,
+                startup_name=name[:255] if name else name,
+                description=desc_short,
+                sector=sector_short,
+                all_industries=sectors[:255] if sectors else None,
                 country_code='MA',
                 hq_country='Morocco',
                 type='startup',

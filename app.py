@@ -92,6 +92,7 @@ def home():
     startups = Startup.query.all()
     founders = Founder.query.all()
     investors = Investor.query.all()
+    incubators = Incubator.query.all()
     deals = FundingRound.query.all()
     
     total_funding = sum(deal.raised_amount_usd if deal.raised_amount_usd is not None else 0 for deal in deals)
@@ -200,6 +201,7 @@ def home():
                          home_feed_items=home_feed_items,
                          home_trending_tags=home_trending_tags,
                          home_recent_rounds=home_recent_rounds,
+                         incubators=incubators,
                          home_appels_sidebar=home_appels_sidebar)
 
 
