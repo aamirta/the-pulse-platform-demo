@@ -316,5 +316,18 @@
     </div>
     {% endif %}
 
+    <!-- Danger Zone -->
+    <div class="detail-card" style="border-color: rgba(248,113,113,0.2);">
+        <h3 class="card-heading" style="color:#f87171;">
+            <i class="fas fa-exclamation-triangle"></i> Zone de danger
+        </h3>
+        <p style="color:var(--text-secondary);font-size:0.9rem;margin:0 0 1rem;">La suppression de votre compte est irréversible. Toutes vos données seront effacées.</p>
+        <form method="POST" action="{{ url_for('delete_account', member_id=member.id) }}" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer votre compte ? Cette action est irréversible.')">
+            <button type="submit" style="background:rgba(248,113,113,0.1);border:1px solid rgba(248,113,113,0.3);color:#f87171;padding:0.6rem 1.2rem;border-radius:8px;font-weight:600;font-size:0.85rem;cursor:pointer;">
+                <i class="fas fa-trash"></i> Supprimer mon compte
+            </button>
+        </form>
+    </div>
+
 </div>
 {% endblock %}

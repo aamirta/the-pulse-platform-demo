@@ -955,8 +955,7 @@ def register_pulse_member(email, full_name, role, form_data_dict):
     """Create a PulseMember, auto-confirm, and try to send email. Returns (member, error)."""
     existing = PulseMember.query.filter_by(email=email).first()
     if existing and existing.is_confirmed:
-        session["member_id"] = existing.id
-        return existing, None
+        return existing, "Cette adresse email est déjà utilisée. Veuillez vous connecter."
     if existing and not existing.is_confirmed:
         existing.confirmation_token = str(uuid.uuid4())
         existing.full_name = full_name
@@ -1219,6 +1218,69 @@ def set_password(member_id):
             db.session.commit()
             success = "Password set successfully!"
     return render_template("set-password.html", member=member, error=error, success=success)
+
+@app.route("/delete-account/<int:member_id>", methods=["POST"])
+def delete_account(member_id):
+    member = PulseMember.query.get_or_404(member_id)
+    db.session.delete(member)
+    db.session.commit()
+    session.pop("member_id", None)
+    return redirect(url_for("home"))
+
+@app.route("/forgot-password", methods=["GET", "POST"])
+def forgot_password():
+    message = None
+    if request.method == "POST":
+        email = request.form.get("email", "").strip().lower()
+        member = PulseMember.query.filter_by(email=email).first()
+        if member:
+            token = str(uuid.uuid4())
+            member.confirmation_token = token
+            db.session.commit()
+            reset_url = url_for("reset_password", token=token, _external=True)
+            # Send reset email
+            html = render_template("emails/reset_password.html", name=member.full_name.split()[0], reset_url=reset_url)
+            try:
+                if RESEND_API_KEY and resend:
+                    resend.Emails.send({
+                        "from": "The Pulse <contact@thepulse.ma>",
+                        "to": [member.email],
+                        "subject": "Réinitialisation de votre mot de passe - The Pulse",
+                        "html": html,
+                    })
+                else:
+                    msg = MIMEMultipart("alternative")
+                    msg["Subject"] = "Réinitialisation de votre mot de passe - The Pulse"
+                    msg["From"] = f"The Pulse <{GMAIL_USER}>"
+                    msg["To"] = member.email
+                    msg.attach(MIMEText(html, "html"))
+                    with smtplib.SMTP_SSL("smtp.gmail.com", 465) as smtp:
+                        smtp.login(GMAIL_USER, GMAIL_APP_PASSWORD)
+                        smtp.sendmail(GMAIL_USER, member.email, msg.as_string())
+            except Exception as e:
+                print(f"[RESET EMAIL ERROR] {e}", flush=True)
+        message = "Si cette adresse existe, un lien de réinitialisation a été envoyé."
+    return render_template("forgot-password.html", message=message)
+
+@app.route("/reset-password/<token>", methods=["GET", "POST"])
+def reset_password(token):
+    member = PulseMember.query.filter_by(confirmation_token=token).first_or_404()
+    error = None
+    success = None
+    if request.method == "POST":
+        password = request.form.get("password", "")
+        confirm = request.form.get("confirm_password", "")
+        if len(password) < 8:
+            error = "Le mot de passe doit contenir au moins 8 caractères."
+        elif password != confirm:
+            error = "Les mots de passe ne correspondent pas."
+        else:
+            member.password_hash = generate_password_hash(password)
+            member.confirmation_token = str(uuid.uuid4())  # invalidate token
+            db.session.commit()
+            session["member_id"] = member.id
+            success = "Mot de passe mis à jour avec succès !"
+    return render_template("reset-password.html", member=member, error=error, success=success, token=token)
 
 @app.route("/talents")
 def talents():
