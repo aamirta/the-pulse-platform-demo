@@ -1283,15 +1283,18 @@ def forgot_password():
             reset_url = url_for("reset_password", token=token, _external=True)
             # Send reset email
             html = render_template("emails/reset_password.html", name=member.full_name.split()[0], reset_url=reset_url)
+            print(f"[RESET] Sending reset email to {member.email}, RESEND_API_KEY set: {bool(RESEND_API_KEY)}, resend module: {bool(resend)}", flush=True)
             try:
                 if RESEND_API_KEY and resend:
-                    resend.Emails.send({
+                    result = resend.Emails.send({
                         "from": "The Pulse <contact@thepulse.ma>",
                         "to": [member.email],
                         "subject": "Réinitialisation de votre mot de passe - The Pulse",
                         "html": html,
                     })
+                    print(f"[RESET OK via Resend] {result}", flush=True)
                 else:
+                    print(f"[RESET] Falling back to Gmail SMTP", flush=True)
                     msg = MIMEMultipart("alternative")
                     msg["Subject"] = "Réinitialisation de votre mot de passe - The Pulse"
                     msg["From"] = f"The Pulse <{GMAIL_USER}>"
@@ -1300,6 +1303,7 @@ def forgot_password():
                     with smtplib.SMTP_SSL("smtp.gmail.com", 465) as smtp:
                         smtp.login(GMAIL_USER, GMAIL_APP_PASSWORD)
                         smtp.sendmail(GMAIL_USER, member.email, msg.as_string())
+                    print(f"[RESET OK via Gmail]", flush=True)
             except Exception as e:
                 print(f"[RESET EMAIL ERROR] {e}", flush=True)
         message = "Si cette adresse existe, un lien de réinitialisation a été envoyé."
