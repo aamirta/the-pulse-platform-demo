@@ -1210,22 +1210,27 @@ def edit_profile(member_id):
     member = PulseMember.query.get_or_404(member_id)
     form_data = json.loads(member.form_data) if member.form_data else {}
     if request.method == "POST":
-        member.full_name = request.form.get("full_name", member.full_name).strip()
-        member.role = request.form.get("role", member.role)
-        file = request.files.get("profile_pic")
-        if file and allowed_file(file.filename):
-            file_data = file.read()
-            ext = file.filename.rsplit('.', 1)[1].lower()
-            b64 = base64.b64encode(file_data).decode('utf-8')
-            member.profile_pic = f"data:image/{ext};base64,{b64}"
-        # Update form_data fields
-        reserved = {'full_name', 'role', 'profile_pic', 'csrf_token'}
-        for key in request.form:
-            if key not in reserved:
-                val = request.form.get(key, "").strip()
-                form_data[key] = val
-        member.form_data = json.dumps(form_data, ensure_ascii=False)
-        db.session.commit()
+        try:
+            member.full_name = request.form.get("full_name", member.full_name).strip()
+            member.role = request.form.get("role", member.role)
+            file = request.files.get("profile_pic")
+            if file and file.filename and allowed_file(file.filename):
+                file_data = file.read()
+                ext = file.filename.rsplit('.', 1)[1].lower()
+                b64 = base64.b64encode(file_data).decode('utf-8')
+                member.profile_pic = f"data:image/{ext};base64,{b64}"
+            # Update form_data fields
+            reserved = {'full_name', 'role', 'profile_pic', 'csrf_token'}
+            for key in request.form:
+                if key not in reserved:
+                    val = request.form.get(key, "").strip()
+                    form_data[key] = val
+            member.form_data = json.dumps(form_data, ensure_ascii=False)
+            db.session.commit()
+        except Exception as e:
+            db.session.rollback()
+            print(f"[EDIT PROFILE ERROR] {e}", flush=True)
+            return render_template("edit-profile.html", member=member, form_data=form_data)
         return redirect(url_for("my_profile", member_id=member_id))
     return render_template("edit-profile.html", member=member, form_data=form_data)
 
