@@ -1932,81 +1932,28 @@ def favorites():
 # NEWSFEED ROUTES
 # ============================================================
 
-def _seed_posts():
-    """Insert seed posts if the posts table is empty."""
-    if Post.query.first():
-        return
-    from datetime import datetime, timedelta
-    seed_data = [
-        Post(
-            author_name="Youssef El Amrani",
-            author_role="Fondateur & CEO, Chari.ma",
-            content="Très fier d'annoncer que Chari.ma vient de clôturer une levée de fonds de série A de 5M$ ! Merci à nos investisseurs, notre équipe incroyable, et tout l'écosystème marocain qui nous a soutenus. 🇲🇦 On continue à révolutionner la distribution FMCG au Maroc et en Afrique. #StartupsMaroc #Financement #Ecommerce",
-            post_type="announcement",
-            tags="financement,ecommerce,fmcg,casablanca",
-            likes_count=142,
-            comments_count=28,
-            created_at=datetime.now() - timedelta(hours=3),
-        ),
-        Post(
-            author_name="Imane Bensaid",
-            author_role="Directrice, Maroc Numeric Fund",
-            content="Appel à candidatures ouvert ! Le programme Innov'Up de la CCG lance sa 5ème édition. Nous cherchons des startups deep-tech et greentech avec un fort potentiel de croissance. Dossiers à soumettre avant le 30 avril 2026. Les lauréats bénéficieront d'un accompagnement de 18 mois et d'un financement pouvant atteindre 2M MAD. Partagez avec vos réseaux !",
-            post_type="opportunity",
-            tags="appel-a-projets,deeptech,greentech,CCG,financement",
-            likes_count=89,
-            comments_count=15,
-            created_at=datetime.now() - timedelta(hours=8),
-        ),
-        Post(
-            author_name="Mehdi Tazi",
-            author_role="Partner, CDG Invest Growth",
-            content="Question ouverte à l'écosystème : quels sont selon vous les principaux freins au développement des startups B2B SaaS au Maroc ? Cycle de vente long avec les grandes entreprises ? Manque de talents tech senior ? Accès au marché international complexe ? Je prépare une étude et vos retours terrain sont précieux. Merci d'avance pour vos réponses ! 🙏",
-            post_type="question",
-            tags="saas,b2b,ecosysteme,maroc,vc",
-            likes_count=67,
-            comments_count=41,
-            created_at=datetime.now() - timedelta(hours=14),
-        ),
-        Post(
-            author_name="Salma Ouazzani",
-            author_role="Co-fondatrice, Dawrni",
-            content="Retour d'expérience après 6 mois au sein de l'incubateur UM6P Ventures : ce programme a été un vrai accélérateur pour nous. Accès à des mentors de qualité, infrastructure technique, et surtout une communauté de fondateurs bienveillante. Dawrni a multiplié son MRR par 3 pendant cette période. Je recommande vivement à toute startup edtech ou impact ! #UMVentures #Maroc",
-            post_type="post",
-            tags="incubateur,edtech,um6p,startup,maroc",
-            likes_count=203,
-            comments_count=19,
-            created_at=datetime.now() - timedelta(days=1),
-        ),
-        Post(
-            author_name="Amine Benali",
-            author_role="Ingénieur IA, OCP Innovation",
-            content="Excellent événement hier à Technopark Casablanca — le Moroccan Startup Summit 2026 a réuni plus de 800 participants ! Highlights : annonce du fonds Emerging Africa de 50M$, 12 startups pitchées devant des investisseurs internationaux, et une table ronde inspirante sur l'IA générative dans le secteur agricole. L'écosystème marocain est clairement en train de passer à la vitesse supérieure.",
-            post_type="post",
-            tags="evenement,summit,casablanca,ia,agritech",
-            likes_count=312,
-            comments_count=53,
-            created_at=datetime.now() - timedelta(days=2),
-        ),
-        Post(
-            author_name="Nadia El Fassi",
-            author_role="Responsable Partenariats, Flat6Labs Rabat",
-            content="Opportunité à saisir ! Flat6Labs Rabat ouvre les candidatures pour sa cohorte printemps 2026. On recherche des startups en phase early-stage dans les secteurs fintech, healthtech et agritech. Programme de 4 mois, investissement seed de 25 000$, accès à notre réseau de 200+ mentors MENA. Candidatez sur flat6labs.com/rabat avant le 15 mai. RT bienvenu ! 🚀",
-            post_type="opportunity",
-            tags="flat6labs,accelerateur,fintech,healthtech,agritech,rabat",
-            likes_count=178,
-            comments_count=34,
-            created_at=datetime.now() - timedelta(days=3),
-        ),
+def _cleanup_seed_posts():
+    """Remove fake seed posts and add to_email column if missing."""
+    fake_authors = [
+        "Youssef El Amrani", "Imane Bensaid", "Mehdi Tazi",
+        "Salma Ouazzani", "Amine Benali", "Nadia El Fassi",
     ]
-    for post in seed_data:
-        db.session.add(post)
-    db.session.commit()
+    deleted = Post.query.filter(Post.author_name.in_(fake_authors)).delete(synchronize_session=False)
+    if deleted:
+        db.session.commit()
+        print(f"[PULSE] Cleaned up {deleted} fake seed posts", flush=True)
+    # Ensure to_email column exists on direct_messages
+    try:
+        db.session.execute(db.text("ALTER TABLE direct_messages ADD COLUMN to_email VARCHAR(255)"))
+        db.session.commit()
+        print("[PULSE] Added to_email column to direct_messages", flush=True)
+    except Exception:
+        db.session.rollback()
 
 
 with app.app_context():
     db.create_all()
-    _seed_posts()
+    _cleanup_seed_posts()
 
 
 @app.route("/newsfeed")

@@ -571,10 +571,18 @@
             <button onclick="closeExpertMsg()" style="background:none; border:none; color:var(--text-muted); font-size:1.2rem; cursor:pointer;">&times;</button>
         </div>
         <input type="hidden" id="expertMsgToEmail" value="">
+        {% if current_member %}
+        <input type="hidden" id="expertMsgSenderName" value="{{ current_member.full_name }}">
+        <input type="hidden" id="expertMsgSenderEmail" value="{{ current_member.email }}">
+        <div style="font-size:0.82rem; color:var(--text-secondary); margin-bottom:0.6rem;">
+            <i class="fas fa-user" style="margin-right:0.3rem;"></i> {{ current_member.full_name }} ({{ current_member.email }})
+        </div>
+        {% else %}
         <div style="display:flex; gap:0.5rem; margin-bottom:0.6rem;">
             <input type="text" id="expertMsgSenderName" placeholder="Votre nom" style="flex:1; padding:0.5rem 0.7rem; border:1px solid var(--border-color); border-radius:8px; background:var(--bg-surface); color:var(--text-primary); font-size:0.82rem; font-family:var(--font-body); outline:none;">
             <input type="email" id="expertMsgSenderEmail" placeholder="Votre email" style="flex:1; padding:0.5rem 0.7rem; border:1px solid var(--border-color); border-radius:8px; background:var(--bg-surface); color:var(--text-primary); font-size:0.82rem; font-family:var(--font-body); outline:none;">
         </div>
+        {% endif %}
         <textarea id="expertMsgContent" rows="3" placeholder="Votre message..." style="width:100%; padding:0.6rem 0.8rem; border:1px solid var(--border-color); border-radius:10px; background:var(--bg-surface); color:var(--text-primary); font-size:0.85rem; font-family:var(--font-body); outline:none; resize:none;"></textarea>
         <button onclick="sendExpertMsg()" style="margin-top:0.75rem; width:100%; padding:0.6rem; border:none; border-radius:10px; background:var(--accent); color:#fff; font-size:0.85rem; font-weight:700; cursor:pointer; font-family:var(--font-body);">
             <svg width="16" height="10" viewBox="0 0 22 16" fill="none" style="vertical-align:middle;margin-right:0.3rem;"><polyline points="0,8 4,8 6,8 8,2 10,14 12,6 14,8 18,8 22,8" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg> Envoyer le Pulse
