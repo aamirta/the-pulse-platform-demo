@@ -1,0 +1,204 @@
+{% extends "base.html" %}
+
+{% block title %}Inbox - The Pulse{% endblock %}
+
+{% block content %}
+<style>
+    .inbox-container {
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 2rem 1rem;
+    }
+    .inbox-header {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        margin-bottom: 2rem;
+    }
+    .inbox-header h1 {
+        font-family: var(--font-heading);
+        font-size: 1.6rem;
+        font-weight: 700;
+        color: var(--text-primary);
+        margin: 0;
+    }
+    .inbox-header .badge {
+        background: var(--accent);
+        color: #fff;
+        font-size: 0.75rem;
+        font-weight: 700;
+        padding: 0.2rem 0.6rem;
+        border-radius: 20px;
+    }
+    .inbox-tabs {
+        display: flex;
+        gap: 0.5rem;
+        margin-bottom: 1.5rem;
+        border-bottom: 2px solid var(--border-color);
+        padding-bottom: 0;
+    }
+    .inbox-tab {
+        padding: 0.6rem 1.2rem;
+        font-family: var(--font-heading);
+        font-size: 0.9rem;
+        font-weight: 600;
+        color: var(--text-secondary);
+        background: none;
+        border: none;
+        cursor: pointer;
+        border-bottom: 2px solid transparent;
+        margin-bottom: -2px;
+        transition: all 0.2s ease;
+    }
+    .inbox-tab:hover { color: var(--accent); }
+    .inbox-tab.active {
+        color: var(--accent);
+        border-bottom-color: var(--accent);
+    }
+    .inbox-panel { display: none; }
+    .inbox-panel.active { display: block; }
+    .msg-list {
+        display: flex;
+        flex-direction: column;
+        gap: 0.75rem;
+    }
+    .msg-card {
+        background: var(--bg-card);
+        border: 1px solid var(--border-color);
+        border-radius: 12px;
+        padding: 1.1rem 1.25rem;
+        transition: all 0.2s ease;
+    }
+    .msg-card:hover {
+        border-color: rgba(0, 212, 170, 0.3);
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+    }
+    .msg-card-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 0.5rem;
+    }
+    .msg-from {
+        font-family: var(--font-heading);
+        font-weight: 600;
+        font-size: 0.92rem;
+        color: var(--text-primary);
+    }
+    .msg-time {
+        font-size: 0.75rem;
+        color: var(--text-muted);
+    }
+    .msg-from-email {
+        font-size: 0.78rem;
+        color: var(--text-secondary);
+        margin-bottom: 0.5rem;
+    }
+    .msg-body {
+        font-size: 0.88rem;
+        color: var(--text-primary);
+        line-height: 1.5;
+        white-space: pre-wrap;
+    }
+    .msg-to {
+        font-size: 0.78rem;
+        color: var(--text-muted);
+        margin-top: 0.4rem;
+    }
+    .empty-inbox {
+        text-align: center;
+        padding: 3rem 1rem;
+        color: var(--text-muted);
+    }
+    .empty-inbox i {
+        font-size: 2.5rem;
+        opacity: 0.4;
+        display: block;
+        margin-bottom: 0.75rem;
+    }
+    .empty-inbox p {
+        font-size: 0.9rem;
+    }
+    @media (max-width: 768px) {
+        .inbox-container { padding: 1rem 0.5rem; }
+        .inbox-header h1 { font-size: 1.3rem; }
+    }
+</style>
+
+<div class="inbox-container">
+    <div class="inbox-header">
+        <h1>
+            <svg width="22" height="14" viewBox="0 0 22 16" fill="none" style="vertical-align:middle; margin-right:0.4rem;">
+                <polyline points="0,8 4,8 6,8 8,2 10,14 12,6 14,8 18,8 22,8" stroke="var(--accent)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+            </svg>
+            Inbox
+        </h1>
+        {% if received %}
+        <span class="badge">{{ received|length }} message{{ 's' if received|length != 1 else '' }}</span>
+        {% endif %}
+    </div>
+
+    <div class="inbox-tabs">
+        <button class="inbox-tab active" onclick="switchTab('received', this)">
+            <i class="fas fa-inbox" style="margin-right:0.3rem;"></i> Reçus ({{ received|length }})
+        </button>
+        <button class="inbox-tab" onclick="switchTab('sent', this)">
+            <i class="fas fa-paper-plane" style="margin-right:0.3rem;"></i> Envoyés ({{ sent|length }})
+        </button>
+    </div>
+
+    <!-- Received Messages -->
+    <div id="panel-received" class="inbox-panel active">
+        {% if received %}
+        <div class="msg-list">
+            {% for msg in received %}
+            <div class="msg-card">
+                <div class="msg-card-header">
+                    <span class="msg-from">{{ msg.from_name or 'Anonyme' }}</span>
+                    <span class="msg-time">{{ msg.created_at.strftime('%d %b %Y à %H:%M') if msg.created_at else '' }}</span>
+                </div>
+                <div class="msg-from-email">{{ msg.from_email or '' }}</div>
+                <div class="msg-body">{{ msg.message }}</div>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <div class="empty-inbox">
+            <i class="fas fa-inbox"></i>
+            <p>Aucun message reçu pour l'instant.</p>
+        </div>
+        {% endif %}
+    </div>
+
+    <!-- Sent Messages -->
+    <div id="panel-sent" class="inbox-panel">
+        {% if sent %}
+        <div class="msg-list">
+            {% for msg in sent %}
+            <div class="msg-card">
+                <div class="msg-card-header">
+                    <span class="msg-from">À : {{ msg.to_name or 'Inconnu' }}</span>
+                    <span class="msg-time">{{ msg.created_at.strftime('%d %b %Y à %H:%M') if msg.created_at else '' }}</span>
+                </div>
+                <div class="msg-body">{{ msg.message }}</div>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <div class="empty-inbox">
+            <i class="fas fa-paper-plane"></i>
+            <p>Aucun message envoyé.</p>
+        </div>
+        {% endif %}
+    </div>
+</div>
+
+<script>
+function switchTab(tab, btn) {
+    document.querySelectorAll('.inbox-tab').forEach(function(t) { t.classList.remove('active'); });
+    document.querySelectorAll('.inbox-panel').forEach(function(p) { p.classList.remove('active'); });
+    btn.classList.add('active');
+    document.getElementById('panel-' + tab).classList.add('active');
+}
+</script>
+{% endblock %}

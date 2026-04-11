@@ -2112,5 +2112,49 @@ def send_message(post_id):
     return jsonify({"ok": True, "to": post.author_name})
 
 
+@app.route("/send-pulse", methods=["POST"])
+def send_pulse():
+    data = request.get_json(silent=True) or {}
+    to_name    = data.get("to_name", "").strip()
+    to_email   = data.get("to_email", "").strip()
+    from_name  = data.get("from_name", "").strip() or "Anonyme"
+    from_email = data.get("from_email", "").strip()
+    message    = data.get("message", "").strip()
+    if not message:
+        return jsonify({"ok": False, "error": "Message vide"}), 400
+    dm = DirectMessage(
+        to_name    = to_name,
+        to_email   = to_email,
+        from_name  = from_name,
+        from_email = from_email,
+        message    = message,
+    )
+    db.session.add(dm)
+    db.session.commit()
+    return jsonify({"ok": True, "to": to_name})
+
+
+@app.route("/inbox")
+def inbox():
+    member_id = session.get("member_id")
+    if not member_id:
+        return redirect(url_for("member_login"))
+    member = PulseMember.query.get(member_id)
+    if not member:
+        session.pop("member_id", None)
+        return redirect(url_for("member_login"))
+    # Messages received (to this member's email)
+    received = DirectMessage.query.filter_by(to_email=member.email).order_by(DirectMessage.created_at.desc()).all()
+    # Messages sent (from this member's email)
+    sent = DirectMessage.query.filter_by(from_email=member.email).order_by(DirectMessage.created_at.desc()).all()
+    # Mark received as read
+    unread = [m for m in received if not m.is_read]
+    for m in unread:
+        m.is_read = True
+    if unread:
+        db.session.commit()
+    return render_template("inbox.html", member=member, received=received, sent=sent)
+
+
 if __name__ == "__main__":
     app.run(debug=True, port=8080)

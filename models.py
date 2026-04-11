@@ -766,6 +766,7 @@ class DirectMessage(db.Model):
     id          = db.Column(db.Integer, primary_key=True, autoincrement=True)
     post_id     = db.Column(db.Integer, nullable=True)
     to_name     = db.Column(db.String(100))
+    to_email    = db.Column(db.String(255), nullable=True)
     from_name   = db.Column(db.String(100))
     from_email  = db.Column(db.String(255))
     message     = db.Column(db.Text, nullable=False)

@@ -459,6 +459,9 @@
             {% for expert in experts %}
             <div class="expert-card">
                 <div class="expert-card-header">
+                    {% if expert.profile_pic %}
+                    <img src="{{ expert.profile_pic }}" alt="{{ expert.full_name }}" class="expert-avatar" style="object-fit:cover;">
+                    {% else %}
                     <div class="expert-avatar">
                         {% if expert.full_name %}
                             {{ expert.full_name[0].upper() }}
@@ -466,6 +469,7 @@
                             E
                         {% endif %}
                     </div>
+                    {% endif %}
                     <div class="expert-name-block">
                         <h3 class="expert-name">{{ expert.full_name or 'Unknown' }}</h3>
                         {% if expert.current_title %}
@@ -538,7 +542,9 @@
                         </a>
                         {% endif %}
                     </div>
-                    <i class="fas fa-arrow-right expert-arrow"></i>
+                    <button class="pulse-btn" onclick="event.stopPropagation();openExpertMsg('{{ expert.full_name }}', '{{ expert.email }}')" title="Envoyer un Pulse">
+                        <svg width="16" height="10" viewBox="0 0 22 16" fill="none" style="vertical-align:middle;margin-right:0.25rem;"><polyline points="0,8 4,8 6,8 8,2 10,14 12,6 14,8 18,8 22,8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg> Pulse
+                    </button>
                 </div>
             </div>
             {% endfor %}
@@ -551,4 +557,93 @@
         {% endif %}
     </div>
 </div>
+
+<!-- Message Modal -->
+<div id="expertMsgModal" style="display:none; position:fixed; top:0; left:0; right:0; bottom:0; z-index:99999; background:rgba(0,0,0,0.5); backdrop-filter:blur(4px); align-items:center; justify-content:center; overflow:hidden;" onclick="if(event.target===this)closeExpertMsg()">
+    <div style="background:var(--bg-card); border:1px solid var(--border-color); border-radius:16px; padding:1.5rem; width:90%; max-width:420px; box-shadow:0 20px 60px rgba(0,0,0,0.3); position:relative;">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1rem;">
+            <h3 style="font-family:var(--font-heading); font-size:1rem; margin:0;">
+                <svg width="18" height="12" viewBox="0 0 22 16" fill="none" style="vertical-align:middle; margin-right:0.4rem;">
+                    <polyline points="0,8 4,8 6,8 8,2 10,14 12,6 14,8 18,8 22,8" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+                </svg>
+                Envoyer un Pulse à <span id="expertMsgRecipient"></span>
+            </h3>
+            <button onclick="closeExpertMsg()" style="background:none; border:none; color:var(--text-muted); font-size:1.2rem; cursor:pointer;">&times;</button>
+        </div>
+        <input type="hidden" id="expertMsgToEmail" value="">
+        <div style="display:flex; gap:0.5rem; margin-bottom:0.6rem;">
+            <input type="text" id="expertMsgSenderName" placeholder="Votre nom" style="flex:1; padding:0.5rem 0.7rem; border:1px solid var(--border-color); border-radius:8px; background:var(--bg-surface); color:var(--text-primary); font-size:0.82rem; font-family:var(--font-body); outline:none;">
+            <input type="email" id="expertMsgSenderEmail" placeholder="Votre email" style="flex:1; padding:0.5rem 0.7rem; border:1px solid var(--border-color); border-radius:8px; background:var(--bg-surface); color:var(--text-primary); font-size:0.82rem; font-family:var(--font-body); outline:none;">
+        </div>
+        <textarea id="expertMsgContent" rows="3" placeholder="Votre message..." style="width:100%; padding:0.6rem 0.8rem; border:1px solid var(--border-color); border-radius:10px; background:var(--bg-surface); color:var(--text-primary); font-size:0.85rem; font-family:var(--font-body); outline:none; resize:none;"></textarea>
+        <button onclick="sendExpertMsg()" style="margin-top:0.75rem; width:100%; padding:0.6rem; border:none; border-radius:10px; background:var(--accent); color:#fff; font-size:0.85rem; font-weight:700; cursor:pointer; font-family:var(--font-body);">
+            <svg width="16" height="10" viewBox="0 0 22 16" fill="none" style="vertical-align:middle;margin-right:0.3rem;"><polyline points="0,8 4,8 6,8 8,2 10,14 12,6 14,8 18,8 22,8" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg> Envoyer le Pulse
+        </button>
+    </div>
+</div>
+
+<script>
+function openExpertMsg(name, email) {
+    document.getElementById('expertMsgRecipient').textContent = name;
+    document.getElementById('expertMsgToEmail').value = email;
+    var modal = document.getElementById('expertMsgModal');
+    modal.style.display = 'flex';
+    setTimeout(function() { document.getElementById('expertMsgContent').focus(); }, 100);
+}
+function closeExpertMsg() {
+    document.getElementById('expertMsgModal').style.display = 'none';
+    document.getElementById('expertMsgContent').value = '';
+    document.getElementById('expertMsgSenderName').value = '';
+    document.getElementById('expertMsgSenderEmail').value = '';
+}
+function sendExpertMsg() {
+    var toEmail = document.getElementById('expertMsgToEmail').value;
+    var toName = document.getElementById('expertMsgRecipient').textContent;
+    var fromName = document.getElementById('expertMsgSenderName').value.trim();
+    var fromEmail = document.getElementById('expertMsgSenderEmail').value.trim();
+    var message = document.getElementById('expertMsgContent').value.trim();
+    if (!message) { alert('Veuillez écrire un message.'); return; }
+    if (!fromName || !fromEmail) { alert('Veuillez renseigner votre nom et email.'); return; }
+
+    fetch('/send-pulse', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({to_name: toName, to_email: toEmail, from_name: fromName, from_email: fromEmail, message: message})
+    }).then(function(r) { return r.json(); }).then(function(data) {
+        if (data.ok) {
+            closeExpertMsg();
+            var toast = document.createElement('div');
+            toast.innerHTML = '<svg width="18" height="12" viewBox="0 0 22 16" fill="none" style="vertical-align:middle;margin-right:0.4rem;"><polyline points="0,8 4,8 6,8 8,2 10,14 12,6 14,8 18,8 22,8" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg> Pulse envoyé !';
+            toast.style.cssText = 'position:fixed;bottom:2rem;left:50%;transform:translateX(-50%);background:var(--accent);color:#fff;padding:0.75rem 1.5rem;border-radius:12px;font-family:var(--font-body);font-weight:700;font-size:0.9rem;z-index:99999;box-shadow:0 8px 30px rgba(0,212,170,0.4);animation:toastIn 0.4s ease;';
+            document.body.appendChild(toast);
+            setTimeout(function(){toast.style.animation='toastOut 0.4s ease forwards';setTimeout(function(){toast.remove();},400);},5000);
+        } else {
+            alert(data.error || 'Erreur lors de l\'envoi.');
+        }
+    }).catch(function() { alert('Erreur réseau.'); });
+}
+</script>
+<style>
+.pulse-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    padding: 0.4rem 0.85rem;
+    border: none;
+    border-radius: 8px;
+    background: var(--accent);
+    color: #fff;
+    font-size: 0.78rem;
+    font-weight: 600;
+    font-family: var(--font-body);
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+.pulse-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0, 212, 170, 0.3);
+}
+@keyframes toastIn{from{opacity:0;transform:translateX(-50%) translateY(20px);}to{opacity:1;transform:translateX(-50%) translateY(0);}}
+@keyframes toastOut{from{opacity:1;transform:translateX(-50%) translateY(0);}to{opacity:0;transform:translateX(-50%) translateY(20px);}}
+</style>
 {% endblock %}
