@@ -10,13 +10,13 @@ from sqlalchemy import func, or_, event, case, literal
 from werkzeug.security import generate_password_hash, check_password_hash
 from werkzeug.utils import secure_filename
 import smtplib
+import base64
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 try:
     import resend
 except ImportError:
     resend = None
-import urllib.parse
 import uuid
 import time
 import threading
@@ -1164,7 +1164,6 @@ def complete_profile(member_id):
     if request.method == "POST":
         file = request.files.get("profile_pic")
         if file and allowed_file(file.filename):
-            import base64
             file_data = file.read()
             ext = file.filename.rsplit('.', 1)[1].lower()
             b64 = base64.b64encode(file_data).decode('utf-8')
@@ -1192,7 +1191,6 @@ def edit_profile(member_id):
         member.role = request.form.get("role", member.role)
         file = request.files.get("profile_pic")
         if file and allowed_file(file.filename):
-            import base64
             file_data = file.read()
             ext = file.filename.rsplit('.', 1)[1].lower()
             b64 = base64.b64encode(file_data).decode('utf-8')
