@@ -383,7 +383,6 @@
             align-items: center;
             gap: 0.25rem;
             min-width: 0;
-            overflow: hidden;
         }
 
         .nav-link-item {
