@@ -1,0 +1,4658 @@
+[
+  {
+    "name": "Hamza EL JADIDI",
+    "role": "Fondateur",
+    "slug": "hamza-el-jadidi",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/hamza-el-jadidi/",
+    "startup_name": "AIVIS",
+    "startup_slug": "aivis"
+  },
+  {
+    "name": "Ahmed HAMDAOUI",
+    "role": "Fondateur",
+    "slug": "ahmed-hamdaoui",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/ahmed-hamdaoui/",
+    "startup_name": "Acridia",
+    "startup_slug": "acridia"
+  },
+  {
+    "name": "Othmane TOUFELLA",
+    "role": "Fondateur",
+    "slug": "othmane-toufella",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/othmane-toufella/",
+    "startup_name": "AEQO Technologies",
+    "startup_slug": "aeqo-technologies"
+  },
+  {
+    "name": "Zakaria ARROUB",
+    "role": "Fondateur",
+    "slug": "zakaria-arroub",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/zakaria-arroub/",
+    "startup_name": "Ederest",
+    "startup_slug": "ederest"
+  },
+  {
+    "name": "Amr Yassine MOUAQIT",
+    "role": "Fondateur",
+    "slug": "amr-yassine-mouaqit",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/amr-yassine-mouaqit/",
+    "startup_name": "Charikaty.com",
+    "startup_slug": "charikaty-com"
+  },
+  {
+    "name": "Driss SIJELMASSI",
+    "role": "Fondateur",
+    "slug": "driss-sijelmassi",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/driss-sijelmassi/",
+    "startup_name": "Charikaty.com",
+    "startup_slug": "charikaty-com"
+  },
+  {
+    "name": "Hamza SLIMANI",
+    "role": "Fondateur",
+    "slug": "hamza-slimani",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/hamza-slimani/",
+    "startup_name": "GoSwap Morocco",
+    "startup_slug": "goswap-morocco"
+  },
+  {
+    "name": "Taoufiq EL AMMARI",
+    "role": "Fondateur",
+    "slug": "taoufiq-el-ammari",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/taoufiq-el-ammari/",
+    "startup_name": "Shifti",
+    "startup_slug": "shifti"
+  },
+  {
+    "name": "Joani Leroi MPAMBI",
+    "role": "Fondateur",
+    "slug": "joani-leroi-mpambi",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/joani-leroi-mpambi/",
+    "startup_name": "Gova",
+    "startup_slug": "gova"
+  },
+  {
+    "name": "Mohamed Saad BOUALIL",
+    "role": "Fondateur",
+    "slug": "mohamed-saad-boualil",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/mohamed-saad-boualil/",
+    "startup_name": "JBUJB",
+    "startup_slug": "jbujb"
+  },
+  {
+    "name": "Karim BEQQALI",
+    "role": "Fondateur",
+    "slug": "karim-beqqali",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/karim-beqqali/",
+    "startup_name": "Yakeey",
+    "startup_slug": "yakeey"
+  },
+  {
+    "name": "Lekan OMOTOSHO",
+    "role": "Fondateur",
+    "slug": "lekan-omotosho",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/lekan-omotosho/",
+    "startup_name": "PaidHR",
+    "startup_slug": "paidhr"
+  },
+  {
+    "name": "Seye BANDELE",
+    "role": "Fondateur",
+    "slug": "seye-bandele",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/seye-bandele/",
+    "startup_name": "PaidHR",
+    "startup_slug": "paidhr"
+  },
+  {
+    "name": "Drew DURBIN",
+    "role": "Fondateur",
+    "slug": "drew-durbin",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/drew-durbin/",
+    "startup_name": "Wave",
+    "startup_slug": "wave"
+  },
+  {
+    "name": "Lincoln QUIRK",
+    "role": "Fondateur",
+    "slug": "lincoln-quirk",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/lincoln-quirk/",
+    "startup_name": "Wave",
+    "startup_slug": "wave"
+  },
+  {
+    "name": "Babs OGUNDEYI",
+    "role": "Fondateur",
+    "slug": "babs-ogundeyi",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/babs-ogundeyi/",
+    "startup_name": "Kuda",
+    "startup_slug": "kuda"
+  },
+  {
+    "name": "Musty MUSTAPHA",
+    "role": "Fondateur",
+    "slug": "musty-mustapha",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/musty-mustapha/",
+    "startup_name": "Kuda",
+    "startup_slug": "kuda"
+  },
+  {
+    "name": "Obi EMETAROM",
+    "role": "Fondateur",
+    "slug": "obi-emetarom",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/obi-emetarom/",
+    "startup_name": "Zone",
+    "startup_slug": "zone"
+  },
+  {
+    "name": "Wale ONAWUNMI",
+    "role": "Fondateur",
+    "slug": "wale-onawunmi",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/wale-onawunmi/",
+    "startup_name": "Zone",
+    "startup_slug": "zone"
+  },
+  {
+    "name": "Femi  ORIOWO",
+    "role": "Fondateur",
+    "slug": "femi-oriowo",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/femi-oriowo/",
+    "startup_name": "Carbin Africa",
+    "startup_slug": "carbin-africa"
+  },
+  {
+    "name": "Fawaz  ABDUL",
+    "role": "Fondateur",
+    "slug": "fawaz-abdul",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/fawaz-abdul/",
+    "startup_name": "Carbin Africa",
+    "startup_slug": "carbin-africa"
+  },
+  {
+    "name": "Max SMITH",
+    "role": "Fondateur",
+    "slug": "max-smith",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/max-smith/",
+    "startup_name": "Lengo AI",
+    "startup_slug": "lengo-ai"
+  },
+  {
+    "name": "Roger Xavier MACIA",
+    "role": "Fondateur",
+    "slug": "roger-xavier-macia",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/roger-xavier-macia/",
+    "startup_name": "Lengo AI",
+    "startup_slug": "lengo-ai"
+  },
+  {
+    "name": "Jide ODUNSI",
+    "role": "Fondateur",
+    "slug": "jide-odunsi",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/jide-odunsi/",
+    "startup_name": "Moove",
+    "startup_slug": "moove"
+  },
+  {
+    "name": "Ladi Delano",
+    "role": "Fondateur",
+    "slug": "ladi-delano",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/ladi-delano/",
+    "startup_name": "Moove",
+    "startup_slug": "moove"
+  },
+  {
+    "name": "Omar MENNANI",
+    "role": "Fondateur",
+    "slug": "omar-mennani",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/omar-mennani/",
+    "startup_name": "GO212",
+    "startup_slug": "go212"
+  },
+  {
+    "name": "Nada JRAOUS",
+    "role": "Fondateur",
+    "slug": "nada-jraous",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/nada-jraous/",
+    "startup_name": "Kenzup",
+    "startup_slug": "kenzup"
+  },
+  {
+    "name": "Thomas PAYS",
+    "role": "Fondateur",
+    "slug": "thomas-pays",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/thomas-pays/",
+    "startup_name": "Ozow",
+    "startup_slug": "ozow"
+  },
+  {
+    "name": "Mitchan ADAMS",
+    "role": "Fondateur",
+    "slug": "mitchan-adams",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/mitchan-adams/",
+    "startup_name": "Ozow",
+    "startup_slug": "ozow"
+  },
+  {
+    "name": "Lyle ECKSTEIN",
+    "role": "Fondateur",
+    "slug": "lyle-eckstein",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/lyle-eckstein/",
+    "startup_name": "Ozow",
+    "startup_slug": "ozow"
+  },
+  {
+    "name": "Shola AKINLADE",
+    "role": "Fondateur",
+    "slug": "shola-akinlade",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/shola-akinlade/",
+    "startup_name": "Paystack",
+    "startup_slug": "paystack"
+  },
+  {
+    "name": "Ezra OLUBI",
+    "role": "Fondateur",
+    "slug": "ezra-olubi",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/ezra-olubi/",
+    "startup_name": "Paystack",
+    "startup_slug": "paystack"
+  },
+  {
+    "name": "Germain BAHRI",
+    "role": "Fondateur",
+    "slug": "germain-bahri",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/germain-bahri/",
+    "startup_name": "Zazu",
+    "startup_slug": "zazu"
+  },
+  {
+    "name": "Rinse JACOBS",
+    "role": "Fondateur",
+    "slug": "rinse-jacobs",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/rinse-jacobs/",
+    "startup_name": "Zazu",
+    "startup_slug": "zazu"
+  },
+  {
+    "name": "Oliver HOBSON",
+    "role": "Fondateur",
+    "slug": "oliver-hobson",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/oliver-hobson/",
+    "startup_name": "Cloudax",
+    "startup_slug": "cloudax"
+  },
+  {
+    "name": "Leo MOTLEY",
+    "role": "Fondateur",
+    "slug": "leo-motley",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/leo-motley/",
+    "startup_name": "Cloudax",
+    "startup_slug": "cloudax"
+  },
+  {
+    "name": "Odin Demassieux",
+    "role": "Fondateur",
+    "slug": "odin-demassieux",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/odin-demassieux/",
+    "startup_name": "ToumAI",
+    "startup_slug": "toumai"
+  },
+  {
+    "name": "Youcef RAHMANI",
+    "role": "Fondateur",
+    "slug": "youcef-rahmani",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/youcef-rahmani/",
+    "startup_name": "ToumAI",
+    "startup_slug": "toumai"
+  },
+  {
+    "name": "Kaarel KOTKAS",
+    "role": "Fondateur",
+    "slug": "kaarel-kotkas",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/kaarel-kotkas/",
+    "startup_name": "Veriff",
+    "startup_slug": "veriff"
+  },
+  {
+    "name": "Janer GOROHHOV",
+    "role": "Fondateur",
+    "slug": "janer-gorohhov",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/janer-gorohhov/",
+    "startup_name": "Veriff",
+    "startup_slug": "veriff"
+  },
+  {
+    "name": "Ayoub AIT EL MAALEM",
+    "role": "Fondateur",
+    "slug": "inspairx-company-startup-edtech-maroc",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/inspairx-company-startup-edtech-maroc/",
+    "startup_name": "INSPAIRX COMPANY",
+    "startup_slug": "inspairx-company-startup-edtech-maroc"
+  },
+  {
+    "name": "Varun PURI",
+    "role": "Fondateur",
+    "slug": "varun-puri-yoodli",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/varun-puri-yoodli/",
+    "startup_name": "Yoodli AI",
+    "startup_slug": "yoodli-coaching-ia"
+  },
+  {
+    "name": "Esha JOSHI",
+    "role": "Fondateur",
+    "slug": "esha-joshi-yoodli",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/esha-joshi-yoodli/",
+    "startup_name": "Yoodli AI",
+    "startup_slug": "yoodli-coaching-ia"
+  },
+  {
+    "name": "Rhim SHAH",
+    "role": "Fondateur",
+    "slug": "rhim-shah-fondateur-arva-ai",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/rhim-shah-fondateur-arva-ai/",
+    "startup_name": "Arva AI",
+    "startup_slug": "arva-ai-kyb-aml-automation"
+  },
+  {
+    "name": "Oliver WALES",
+    "role": "Fondateur",
+    "slug": "oliver-wales-cto-arva-ai",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/oliver-wales-cto-arva-ai/",
+    "startup_name": "Arva AI",
+    "startup_slug": "arva-ai-kyb-aml-automation"
+  },
+  {
+    "name": "Nabil SEBTI",
+    "role": "Fondateur",
+    "slug": "nabil-sebti-fondateur-deviz-ma",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/nabil-sebti-fondateur-deviz-ma/",
+    "startup_name": "Deviz",
+    "startup_slug": "deviz-application-taux-de-change-maroc"
+  },
+  {
+    "name": "Ouafae AAMER",
+    "role": "Fondateur",
+    "slug": "ouafae-aamer",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/ouafae-aamer/",
+    "startup_name": "Nexa AI",
+    "startup_slug": "nexa-ai"
+  },
+  {
+    "name": "Aniela HOITINK",
+    "role": "Fondateur",
+    "slug": "aniela-hoitink",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/aniela-hoitink/",
+    "startup_name": "Startup : Mycotex",
+    "startup_slug": "mycotex-textile-durable-mycelium"
+  },
+  {
+    "name": "Daniel RODRIGUEZ",
+    "role": "Fondateur",
+    "slug": "daniel-rodriguez",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/daniel-rodriguez/",
+    "startup_name": "Talent Hackers",
+    "startup_slug": "talent-hackers"
+  },
+  {
+    "name": "Sebastian THIELKE",
+    "role": "Fondateur",
+    "slug": "sebastian-thielke-ingenieur-innovation-logicielle",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/sebastian-thielke-ingenieur-innovation-logicielle/",
+    "startup_name": "Startup Growblocks",
+    "startup_slug": "growblocks-solution-automatisation-croissance"
+  },
+  {
+    "name": "Emil DYRVIG",
+    "role": "Fondateur",
+    "slug": "emil-dyrvig-stratege-commercial-technologie",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/emil-dyrvig-stratege-commercial-technologie/",
+    "startup_name": "Startup Growblocks",
+    "startup_slug": "growblocks-solution-automatisation-croissance"
+  },
+  {
+    "name": "Mads FOSSELIUS",
+    "role": "Fondateur",
+    "slug": "mads-fosselius",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/mads-fosselius/",
+    "startup_name": "Startup Growblocks",
+    "startup_slug": "growblocks-solution-automatisation-croissance"
+  },
+  {
+    "name": "Herbert BAY",
+    "role": "Fondateur",
+    "slug": "dr-herbert-bay-intelligence-artificielle-vision",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/dr-herbert-bay-intelligence-artificielle-vision/",
+    "startup_name": "Startup : Earkick",
+    "startup_slug": "earkick-healthtech-sante-mentale-intelligence-artificielle"
+  },
+  {
+    "name": "Karin Andrea STEPHAN",
+    "role": "Fondateur",
+    "slug": "karin-andrea-stephan-architecte-urbanisme-durable",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/karin-andrea-stephan-architecte-urbanisme-durable/",
+    "startup_name": "Startup : Earkick",
+    "startup_slug": "earkick-healthtech-sante-mentale-intelligence-artificielle"
+  },
+  {
+    "name": "Ivan LINN",
+    "role": "Fondateur",
+    "slug": "ivan-linn-compositeur-entrepreneur-musique",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/ivan-linn-compositeur-entrepreneur-musique/",
+    "startup_name": "Startup : Wavv",
+    "startup_slug": "startup-wavv"
+  },
+  {
+    "name": "James ELKIN",
+    "role": "Fondateur",
+    "slug": "james-elkin-zero-one-creative",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/james-elkin-zero-one-creative/",
+    "startup_name": "Zero One Creative",
+    "startup_slug": "zero-one-creative"
+  },
+  {
+    "name": "Rupert ASPDEN",
+    "role": "Fondateur",
+    "slug": "rupert-aspden",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/rupert-aspden/",
+    "startup_name": "Zero One Creative",
+    "startup_slug": "zero-one-creative"
+  },
+  {
+    "name": "Ashkan DABBAGH",
+    "role": "Fondateur",
+    "slug": "ashkan-dabbagh-innovateur-ia-zero-one-creative",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/ashkan-dabbagh-innovateur-ia-zero-one-creative/",
+    "startup_name": "Zero One Creative",
+    "startup_slug": "zero-one-creative"
+  },
+  {
+    "name": "Ahmed Amine ASSAHMOU",
+    "role": "Fondateur",
+    "slug": "ahmed-amine-assahmou-goride-transfers-mobilite-numerique-maroc",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/ahmed-amine-assahmou-goride-transfers-mobilite-numerique-maroc/",
+    "startup_name": "GoRide Transfers",
+    "startup_slug": "goride-transfers-transferts-aeroportuaires-maroc"
+  },
+  {
+    "name": "James E. BENOUDA",
+    "role": "Fondateur",
+    "slug": "james-e-benouda",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/james-e-benouda/",
+    "startup_name": "ALQAMAR Space",
+    "startup_slug": "alqamar-space"
+  },
+  {
+    "name": "Mohammed BAKKAL",
+    "role": "Fondateur",
+    "slug": "sidi-mohammed-bakkal-alqamar-space",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/sidi-mohammed-bakkal-alqamar-space/",
+    "startup_name": "ALQAMAR Space",
+    "startup_slug": "alqamar-space"
+  },
+  {
+    "name": "Said IBRAHIMI",
+    "role": "Fondateur",
+    "slug": "said-ibrahimi",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/said-ibrahimi/",
+    "startup_name": "Azur Innovation Management",
+    "startup_slug": "azur-innovation-management"
+  },
+  {
+    "name": "Hillary  SANG",
+    "role": "Fondateur",
+    "slug": "hillary-sang-fanaka",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/hillary-sang-fanaka/",
+    "startup_name": "Fanaka Technologies Limited",
+    "startup_slug": "fanaka-technologies-inclusion-financiere"
+  },
+  {
+    "name": "ZOUHAIR BROUZI",
+    "role": "Fondateur",
+    "slug": "zouhair-brouzi",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/zouhair-brouzi/",
+    "startup_name": "Datao",
+    "startup_slug": "datao"
+  },
+  {
+    "name": "Faical BENFDIL",
+    "role": "Fondateur",
+    "slug": "faical-benfdil-fondateur-stooding-edtech-afrique",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/faical-benfdil-fondateur-stooding-edtech-afrique/",
+    "startup_name": "Stooding",
+    "startup_slug": "stooding-edtech-orientation-educative-afrique"
+  },
+  {
+    "name": "Ilias ELBADAOUI",
+    "role": "Fondateur",
+    "slug": "ilias-elbadaoui-neuroclause",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/ilias-elbadaoui-neuroclause/",
+    "startup_name": "NeuroClause",
+    "startup_slug": "neuroclause-legaltech-maroc"
+  },
+  {
+    "name": "Soundous BEN HARIZ",
+    "role": "Fondateur",
+    "slug": "soundous-ben-hariz",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/soundous-ben-hariz/",
+    "startup_name": "Neolean",
+    "startup_slug": "neolean"
+  },
+  {
+    "name": "El mehdi BENNIX",
+    "role": "Fondateur",
+    "slug": "el-mehdi-bennix",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/el-mehdi-bennix/",
+    "startup_name": "Assisteo",
+    "startup_slug": "assisteo-ai-startup-intelligence-artificielle-maroc"
+  },
+  {
+    "name": "Omar TARAKI",
+    "role": "Fondateur",
+    "slug": "omar-taraki",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/omar-taraki/",
+    "startup_name": "Assisteo",
+    "startup_slug": "assisteo-ai-startup-intelligence-artificielle-maroc"
+  },
+  {
+    "name": "Youssra AKEDDANE",
+    "role": "Fondateur",
+    "slug": "youssra-akeddane",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/youssra-akeddane/",
+    "startup_name": "Skoolino",
+    "startup_slug": "skoolino"
+  },
+  {
+    "name": "Ziyad ROUFKI",
+    "role": "Fondateur",
+    "slug": "ziyad-roufki",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/ziyad-roufki/",
+    "startup_name": "Suppliflex",
+    "startup_slug": "supplifex"
+  },
+  {
+    "name": "Yassine RAHMANI",
+    "role": "Fondateur",
+    "slug": "yassine-rahmani",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/yassine-rahmani/",
+    "startup_name": "Suppliflex",
+    "startup_slug": "supplifex"
+  },
+  {
+    "name": "Sarah Michelle WEHKAMP",
+    "role": "Fondateur",
+    "slug": "sarah-michelle-wehkamp",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/sarah-michelle-wehkamp/",
+    "startup_name": "Suppliflex",
+    "startup_slug": "supplifex"
+  },
+  {
+    "name": "Imad BENALLAI",
+    "role": "Fondateur",
+    "slug": "imad-benallai",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/imad-benallai/",
+    "startup_name": "Nhancit",
+    "startup_slug": "nhancit"
+  },
+  {
+    "name": "Dr. Fatine Rizlene LABRAIMI",
+    "role": "Fondateur",
+    "slug": "dr-fatine-rizlene-labraimi",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/dr-fatine-rizlene-labraimi/",
+    "startup_name": "Mama Box",
+    "startup_slug": "mamabox"
+  },
+  {
+    "name": "Dr. Loubna LAMRANI",
+    "role": "Fondateur",
+    "slug": "dr-loubna-lamrani",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/dr-loubna-lamrani/",
+    "startup_name": "Mama Box",
+    "startup_slug": "mamabox"
+  },
+  {
+    "name": "Dr. Hanae BOUAYAD",
+    "role": "Fondateur",
+    "slug": "dr-hanae-bouayad",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/dr-hanae-bouayad/",
+    "startup_name": "Mama Box",
+    "startup_slug": "mamabox"
+  },
+  {
+    "name": "Badreddin DARDOUR",
+    "role": "Fondateur",
+    "slug": "badreddin-dardour",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/badreddin-dardour/",
+    "startup_name": "Cyber Sqool",
+    "startup_slug": "cyber-sqool"
+  },
+  {
+    "name": "Mohamed El GHAISSANI",
+    "role": "Fondateur",
+    "slug": "mohamed-el-ghaissani",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/mohamed-el-ghaissani/",
+    "startup_name": "Done.ma",
+    "startup_slug": "done-ma"
+  },
+  {
+    "name": "Anouar ZBAIDA",
+    "role": "Fondateur",
+    "slug": "anouar-zbaida",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/anouar-zbaida/",
+    "startup_name": "Alltheway travel tech",
+    "startup_slug": "alltheway-travel-tech"
+  },
+  {
+    "name": "Julien DE COLFMACKER",
+    "role": "Fondateur",
+    "slug": "julien-de-colfmacker",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/julien-de-colfmacker/",
+    "startup_name": "Alltheway travel tech",
+    "startup_slug": "alltheway-travel-tech"
+  },
+  {
+    "name": "Emilie GAZEAU",
+    "role": "Fondateur",
+    "slug": "emilie-gazeau",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/emilie-gazeau/",
+    "startup_name": "Alltheway travel tech",
+    "startup_slug": "alltheway-travel-tech"
+  },
+  {
+    "name": "Tarik AITAKKAOUI",
+    "role": "Fondateur",
+    "slug": "tarik-aitakkaoui-zylio",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/tarik-aitakkaoui-zylio/",
+    "startup_name": "Zylio",
+    "startup_slug": "%f0%9f%91%89-zylio-startup-gestion-achats-ia"
+  },
+  {
+    "name": "Zaynab DAHANE",
+    "role": "Fondateur",
+    "slug": "zaynab-dahane",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/zaynab-dahane/",
+    "startup_name": "PlanTint",
+    "startup_slug": "plantint"
+  },
+  {
+    "name": "Noura ARKOINE",
+    "role": "Fondateur",
+    "slug": "noura-arkoine",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/noura-arkoine/",
+    "startup_name": "SteviSpoon",
+    "startup_slug": "stevispoon"
+  },
+  {
+    "name": "Mohamed BENMANSOUR",
+    "role": "Fondateur",
+    "slug": "mohamed-benmansour",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/mohamed-benmansour/",
+    "startup_name": "Ticket.ma",
+    "startup_slug": "ticket-ma"
+  },
+  {
+    "name": "Mohamed BENMANSOUR",
+    "role": "Fondateur",
+    "slug": "mohamed-benmansour",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/mohamed-benmansour/",
+    "startup_name": "Nuitée",
+    "startup_slug": "nuitee"
+  },
+  {
+    "name": "Achraf FATHALLAH",
+    "role": "Fondateur",
+    "slug": "achraf-fathallah",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/achraf-fathallah/",
+    "startup_name": "EcoPlast",
+    "startup_slug": "ecoplast"
+  },
+  {
+    "name": "Grâce LONDA",
+    "role": "Fondateur",
+    "slug": "grace-londa",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/grace-londa/",
+    "startup_name": "LETA",
+    "startup_slug": "leta"
+  },
+  {
+    "name": "Privé : Khalil ZGHAYOU",
+    "role": "Fondateur",
+    "slug": null,
+    "profile_url": null,
+    "startup_name": "Filmia",
+    "startup_slug": "filmia"
+  },
+  {
+    "name": "Abderrahmen MASMOUDI",
+    "role": "Fondateur",
+    "slug": "abderrahmen-masmoudi",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/abderrahmen-masmoudi/",
+    "startup_name": "Games Space",
+    "startup_slug": "games-space"
+  },
+  {
+    "name": "Ibtissam SAKHI",
+    "role": "Fondateur",
+    "slug": "ibtissam-sakhi",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/ibtissam-sakhi/",
+    "startup_name": "FUNDERLAND.AI",
+    "startup_slug": "funderland-ai"
+  },
+  {
+    "name": "Meriam BESSA",
+    "role": "Fondateur",
+    "slug": "meriam-bessa",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/meriam-bessa/",
+    "startup_name": "Hypeo Ai",
+    "startup_slug": "hypeo-ai"
+  },
+  {
+    "name": "Oussama SEKKAT",
+    "role": "Fondateur",
+    "slug": "oussama-sekkat",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/oussama-sekkat/",
+    "startup_name": "Hypeo Ai",
+    "startup_slug": "hypeo-ai"
+  },
+  {
+    "name": "Salah Eddine MIMOUNI",
+    "role": "Fondateur",
+    "slug": "salah-eddine-mimouni",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/salah-eddine-mimouni/",
+    "startup_name": "Hypeo Ai",
+    "startup_slug": "hypeo-ai"
+  },
+  {
+    "name": "Salah Eddine MIMOUNI",
+    "role": "Fondateur",
+    "slug": "salah-eddine-mimouni",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/salah-eddine-mimouni/",
+    "startup_name": "Richmedia",
+    "startup_slug": "richmedia"
+  },
+  {
+    "name": "Mehdi TRABELSI",
+    "role": "Fondateur",
+    "slug": "mehdi-trabelsi",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/mehdi-trabelsi/",
+    "startup_name": "ENTITLED",
+    "startup_slug": "entitled"
+  },
+  {
+    "name": "Jaafar ELALAMY",
+    "role": "Fondateur",
+    "slug": "jaafar-elalamy",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/jaafar-elalamy/",
+    "startup_name": "Seiki",
+    "startup_slug": "seiki"
+  },
+  {
+    "name": "Chaitanya SHARMA",
+    "role": "Fondateur",
+    "slug": "chaitanya-sharma",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/chaitanya-sharma/",
+    "startup_name": "Nascent Materials",
+    "startup_slug": "nascent-materials"
+  },
+  {
+    "name": "Achraf EL QORCHI",
+    "role": "Fondateur",
+    "slug": "achraf-el-qorchi",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/achraf-el-qorchi/",
+    "startup_name": "Mafluencer",
+    "startup_slug": "mafluencer"
+  },
+  {
+    "name": "Fayçal LOURYAGLI AMINE",
+    "role": "Fondateur",
+    "slug": "faycal-louryagli-amine",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/faycal-louryagli-amine/",
+    "startup_name": "REBORN",
+    "startup_slug": "reborn"
+  },
+  {
+    "name": "Asma ALAOUI",
+    "role": "Fondateur",
+    "slug": "asma-alaoui",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/asma-alaoui/",
+    "startup_name": "Veezen",
+    "startup_slug": "veezen"
+  },
+  {
+    "name": "Ayoub HARIJ",
+    "role": "Fondateur",
+    "slug": "ayoub-harij",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/ayoub-harij/",
+    "startup_name": "Sle3ti.ma",
+    "startup_slug": "sle3ti-ma"
+  },
+  {
+    "name": "Ahmed WADI",
+    "role": "Fondateur",
+    "slug": "ahmed-wadi",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/ahmed-wadi/",
+    "startup_name": "MoneyFellows",
+    "startup_slug": "moneyfellows"
+  },
+  {
+    "name": "Fouad TABIT",
+    "role": "Fondateur",
+    "slug": "fouad-tabit",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/fouad-tabit/",
+    "startup_name": "Agri 4.0",
+    "startup_slug": "agri-4-0"
+  },
+  {
+    "name": "Miryam ADNI",
+    "role": "Fondateur",
+    "slug": "miryam-adni",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/miryam-adni/",
+    "startup_name": "Wasit",
+    "startup_slug": "wasit"
+  },
+  {
+    "name": "Benjamin ROMBAUT",
+    "role": "Fondateur",
+    "slug": "benjamin-rombaut",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/benjamin-rombaut/",
+    "startup_name": "SandToGreen",
+    "startup_slug": "sand-to-green-agritech-maroc"
+  },
+  {
+    "name": "Gautier de CARCOUET",
+    "role": "Fondateur",
+    "slug": "gautier-de-carcouet",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/gautier-de-carcouet/",
+    "startup_name": "SandToGreen",
+    "startup_slug": "sand-to-green-agritech-maroc"
+  },
+  {
+    "name": "Wissal BEN MOUSSA",
+    "role": "Fondateur",
+    "slug": "wissal-ben-moussa",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/wissal-ben-moussa/",
+    "startup_name": "SandToGreen",
+    "startup_slug": "sand-to-green-agritech-maroc"
+  },
+  {
+    "name": "Faissal SEHBAOUI",
+    "role": "Fondateur",
+    "slug": "faissal-sehbaoui",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/faissal-sehbaoui/",
+    "startup_name": "AgriEdge",
+    "startup_slug": "agriedge"
+  },
+  {
+    "name": "Elhassan HAJJAMI",
+    "role": "Fondateur",
+    "slug": "elhassan-hajjami",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/elhassan-hajjami/",
+    "startup_name": "MazadLink",
+    "startup_slug": "mazadlink"
+  },
+  {
+    "name": "Zakaria SANKARA",
+    "role": "Fondateur",
+    "slug": "zakaria-sankara",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/zakaria-sankara/",
+    "startup_name": "LMS INVENTION",
+    "startup_slug": "lms-invention"
+  },
+  {
+    "name": "Reda Amine SAF",
+    "role": "Fondateur",
+    "slug": "reda-amine-saf",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/reda-amine-saf/",
+    "startup_name": "Yonotify",
+    "startup_slug": "yonotify"
+  },
+  {
+    "name": "Mehdi HAJJI",
+    "role": "Fondateur",
+    "slug": "mehdi-hajji",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/mehdi-hajji/",
+    "startup_name": "Freeeat",
+    "startup_slug": "freeeat"
+  },
+  {
+    "name": "Naoufal LAHLOU",
+    "role": "Fondateur",
+    "slug": "naoufal-lahlou",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/naoufal-lahlou/",
+    "startup_name": "BGEN",
+    "startup_slug": "bgen"
+  },
+  {
+    "name": "Anass BOUFI",
+    "role": "Fondateur",
+    "slug": "anass-boufi",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/anass-boufi/",
+    "startup_name": "Agrilogy",
+    "startup_slug": "agrilogy"
+  },
+  {
+    "name": "Ahmed JAAFARI",
+    "role": "Fondateur",
+    "slug": "ahmed-jaafari",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/ahmed-jaafari/",
+    "startup_name": "Annarabic",
+    "startup_slug": "annarabic"
+  },
+  {
+    "name": "Babacar DIAKHATÉ",
+    "role": "Fondateur",
+    "slug": "babacar-diakhate",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/babacar-diakhate/",
+    "startup_name": "DBS Group",
+    "startup_slug": "dbs-group"
+  },
+  {
+    "name": "Zouhir ALAOUACH",
+    "role": "Fondateur",
+    "slug": "zouhir-alouach",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/zouhir-alouach/",
+    "startup_name": "ClickToGet",
+    "startup_slug": "clicktoget"
+  },
+  {
+    "name": "Ilyass SAIFELISLAM",
+    "role": "Fondateur",
+    "slug": "ilyass-saifelislam",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/ilyass-saifelislam/",
+    "startup_name": "Craftify",
+    "startup_slug": "craftify"
+  },
+  {
+    "name": "Mimoun B. EL ALAMI",
+    "role": "Fondateur",
+    "slug": "mimoun-b-el-alami",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/mimoun-b-el-alami/",
+    "startup_name": "Stairling",
+    "startup_slug": "stairling"
+  },
+  {
+    "name": "Matthieu MALAN",
+    "role": "Fondateur",
+    "slug": "matthieu-malan",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/matthieu-malan/",
+    "startup_name": "Livremoi.ma",
+    "startup_slug": "livremoi-ma"
+  },
+  {
+    "name": "Rachid HARRANDO",
+    "role": "Fondateur",
+    "slug": "rachid-harrando",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/rachid-harrando/",
+    "startup_name": "NETpeas",
+    "startup_slug": "netpeas"
+  },
+  {
+    "name": "Samir BENNANI",
+    "role": "Fondateur",
+    "slug": "samir-bennani",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/samir-bennani/",
+    "startup_name": "Ma-navette.com",
+    "startup_slug": "ma-navette-com"
+  },
+  {
+    "name": "Imad KHARIJAH",
+    "role": "Fondateur",
+    "slug": "imad-kharijah",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/imad-kharijah/",
+    "startup_name": "RYM GAMES",
+    "startup_slug": "rym-games"
+  },
+  {
+    "name": "Karim ZAITOUNI",
+    "role": "Fondateur",
+    "slug": "karim-zaitouni",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/karim-zaitouni/",
+    "startup_name": "OnePay",
+    "startup_slug": "onepay"
+  },
+  {
+    "name": "Mohamed ALAOUI",
+    "role": "Fondateur",
+    "slug": "mohamed-alaoui-2",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/mohamed-alaoui-2/",
+    "startup_name": "Logidoo",
+    "startup_slug": "logidoo"
+  },
+  {
+    "name": "Khalil EL HAJJI",
+    "role": "Fondateur",
+    "slug": "khalil-el-hajji",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/khalil-el-hajji/",
+    "startup_name": "CleanMob",
+    "startup_slug": "cleanmob"
+  },
+  {
+    "name": "Salah EL HAJJI",
+    "role": "Fondateur",
+    "slug": "salah-el-hajji",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/salah-el-hajji/",
+    "startup_name": "CleanMob",
+    "startup_slug": "cleanmob"
+  },
+  {
+    "name": "Othman LAMDOUAR",
+    "role": "Fondateur",
+    "slug": "othman-lamdouar",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/othman-lamdouar/",
+    "startup_name": "Kaiotech",
+    "startup_slug": "kaiotech"
+  },
+  {
+    "name": "Youssef ADBIB",
+    "role": "Fondateur",
+    "slug": "youssef-adbib",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/youssef-adbib/",
+    "startup_name": "ReBean",
+    "startup_slug": "rebean"
+  },
+  {
+    "name": "Abdelilah HAMMADA",
+    "role": "Fondateur",
+    "slug": "abdelilah-hammada",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/abdelilah-hammada/",
+    "startup_name": "ALGUNO",
+    "startup_slug": "alguno"
+  },
+  {
+    "name": "Oumaima DIBA",
+    "role": "Fondateur",
+    "slug": "oumaima-diba",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/oumaima-diba/",
+    "startup_name": "EAU RO VANNE",
+    "startup_slug": "eau-ro-vanne"
+  },
+  {
+    "name": "Redouane DOUKRI",
+    "role": "Fondateur",
+    "slug": "redouane-doukri",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/redouane-doukri/",
+    "startup_name": "Geteam",
+    "startup_slug": "geteam"
+  },
+  {
+    "name": "RACHID BOUGHABA",
+    "role": "Fondateur",
+    "slug": "rachid-boughaba",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/rachid-boughaba/",
+    "startup_name": "Felis Merchandising",
+    "startup_slug": "felis-merchandising"
+  },
+  {
+    "name": "Aziz EL YAAGOUBI",
+    "role": "Fondateur",
+    "slug": "aziz-el-yaagoubi",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/aziz-el-yaagoubi/",
+    "startup_name": "AccelCity",
+    "startup_slug": "accelcity"
+  },
+  {
+    "name": "Youssef OUIZIANE",
+    "role": "Fondateur",
+    "slug": "youssef-ouiziane",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/youssef-ouiziane/",
+    "startup_name": "DIGI FIRM",
+    "startup_slug": "digi-firm"
+  },
+  {
+    "name": "Adil MEHNAOUI",
+    "role": "Fondateur",
+    "slug": "adil-mehnaoui",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/adil-mehnaoui/",
+    "startup_name": "DIGI FIRM",
+    "startup_slug": "digi-firm"
+  },
+  {
+    "name": "Kamal El HARDOUZI",
+    "role": "Fondateur",
+    "slug": "kamal-el-hardouzi",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/kamal-el-hardouzi/",
+    "startup_name": "FMCG.ma",
+    "startup_slug": "fmcg-ma"
+  },
+  {
+    "name": "Mehdi NASSER",
+    "role": "Fondateur",
+    "slug": "mehdi-nasser",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/mehdi-nasser/",
+    "startup_name": "Klit.ma",
+    "startup_slug": "klit-ma"
+  },
+  {
+    "name": "Neïla MEKNASSI",
+    "role": "Fondateur",
+    "slug": "neila-meknassi",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/neila-meknassi/",
+    "startup_name": "Boowme",
+    "startup_slug": "boowme"
+  },
+  {
+    "name": "Patricia VEGA DEL RIO",
+    "role": "Fondateur",
+    "slug": "patricia-vega-del-rio",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/patricia-vega-del-rio/",
+    "startup_name": "Colibghiti",
+    "startup_slug": "colibghiti"
+  },
+  {
+    "name": "Ibrahim El OUCHARI",
+    "role": "Fondateur",
+    "slug": "ibrahim-el-ouchari",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/ibrahim-el-ouchari/",
+    "startup_name": "SparkChats",
+    "startup_slug": "sparkchats"
+  },
+  {
+    "name": "Karima LABOUITI",
+    "role": "Fondateur",
+    "slug": "karima-labouiti",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/karima-labouiti/",
+    "startup_name": "SparkChats",
+    "startup_slug": "sparkchats"
+  },
+  {
+    "name": "Yousra ELAZZOUZI",
+    "role": "Fondateur",
+    "slug": "yousra-elazzouzi",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/yousra-elazzouzi/",
+    "startup_name": "Nelis",
+    "startup_slug": "nelis"
+  },
+  {
+    "name": "Zoubair CHAACHOUCH",
+    "role": "Fondateur",
+    "slug": "zoubair-chaachouh",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/zoubair-chaachouh/",
+    "startup_name": "SENDATRACK",
+    "startup_slug": "sendatrack"
+  },
+  {
+    "name": "ZOUHAIR BROUZI",
+    "role": "Fondateur",
+    "slug": "zouhair-brouzi",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/zouhair-brouzi/",
+    "startup_name": "SVB DEV",
+    "startup_slug": "svb-dev"
+  },
+  {
+    "name": "Brahim EL BEKKALI",
+    "role": "Fondateur",
+    "slug": "brahim-el-bekkali",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/brahim-el-bekkali/",
+    "startup_name": "POGO",
+    "startup_slug": "pogo"
+  },
+  {
+    "name": "Mohammed HASSOUNE",
+    "role": "Fondateur",
+    "slug": "mohammed-hassoune",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/mohammed-hassoune/",
+    "startup_name": "POGO",
+    "startup_slug": "pogo"
+  },
+  {
+    "name": "Justine LIPUMA",
+    "role": "Fondateur",
+    "slug": "justine-lipuma",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/justine-lipuma/",
+    "startup_name": "MyCophyto",
+    "startup_slug": "mycophyto"
+  },
+  {
+    "name": "Yassine DHIOUI",
+    "role": "Fondateur",
+    "slug": "yassine-dhioui",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/yassine-dhioui/",
+    "startup_name": "Nex Mobility Lab",
+    "startup_slug": "nex-mobility-lab"
+  },
+  {
+    "name": "Reda EL GUETBAOUI",
+    "role": "Fondateur",
+    "slug": "reda-el-guetbaoui",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/reda-el-guetbaoui/",
+    "startup_name": "TYK",
+    "startup_slug": "tyk"
+  },
+  {
+    "name": "Ahmed BAOUALI",
+    "role": "Fondateur",
+    "slug": "ahmed-baouali",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/ahmed-baouali/",
+    "startup_name": "DASAUTO",
+    "startup_slug": "dasauto"
+  },
+  {
+    "name": "Mohammed EL BOUCHIKHI",
+    "role": "Fondateur",
+    "slug": "el-bouchikhi-mohammed",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/el-bouchikhi-mohammed/",
+    "startup_name": "TOMOVIT",
+    "startup_slug": "tomovit"
+  },
+  {
+    "name": "Yacine CHAFIQ",
+    "role": "Fondateur",
+    "slug": "yacine-chafiq",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/yacine-chafiq/",
+    "startup_name": "E-stations",
+    "startup_slug": "e-stations"
+  },
+  {
+    "name": "Houssam ELHATIFI",
+    "role": "Fondateur",
+    "slug": "houssam-elhatifi",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/houssam-elhatifi/",
+    "startup_name": "Legalservices.ma",
+    "startup_slug": "legalservices-ma"
+  },
+  {
+    "name": "Fahd MEKOUAR",
+    "role": "Fondateur",
+    "slug": "fahd-mekouar",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/fahd-mekouar/",
+    "startup_name": "Taxi sahbi",
+    "startup_slug": "taxi-sahbi"
+  },
+  {
+    "name": "Mahmoud EL BOUYAHYAOUI",
+    "role": "Fondateur",
+    "slug": "mahmoud-el-bouyahyaoui",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/mahmoud-el-bouyahyaoui/",
+    "startup_name": "Nabta.ma",
+    "startup_slug": "nabta-ma"
+  },
+  {
+    "name": "Malik BELKEZIZ",
+    "role": "Fondateur",
+    "slug": "malik-belkeziz",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/malik-belkeziz/",
+    "startup_name": "Agenz",
+    "startup_slug": "agenz"
+  },
+  {
+    "name": "Amine HMAIDOUCH",
+    "role": "Fondateur",
+    "slug": "amine-hmaidouch",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/amine-hmaidouch/",
+    "startup_name": "Mazma Technologies",
+    "startup_slug": "mazma-technologies"
+  },
+  {
+    "name": "Younes EDDAOUDI",
+    "role": "Fondateur",
+    "slug": "younes-eddaoudi",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/younes-eddaoudi/",
+    "startup_name": "Quanoni",
+    "startup_slug": "quanoni"
+  },
+  {
+    "name": "Nizar SEFIANI",
+    "role": "Fondateur",
+    "slug": "nizar-sefiani",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/nizar-sefiani/",
+    "startup_name": "Calyans",
+    "startup_slug": "calyans"
+  },
+  {
+    "name": "Othman BENABIDALLAH",
+    "role": "Fondateur",
+    "slug": "othman-benabidallah",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/othman-benabidallah/",
+    "startup_name": "Logistiqa.co",
+    "startup_slug": "logistiqa-co"
+  },
+  {
+    "name": "Bilal ARAROU",
+    "role": "Fondateur",
+    "slug": "bilal-ararou",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/bilal-ararou/",
+    "startup_name": "Nuelink",
+    "startup_slug": "nuelink"
+  },
+  {
+    "name": "Yassine TIRSI",
+    "role": "Fondateur",
+    "slug": "yassine-tirsi",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/yassine-tirsi/",
+    "startup_name": "Geek Maroc",
+    "startup_slug": "geek-maroc"
+  },
+  {
+    "name": "Youssef ARMOUC",
+    "role": "Fondateur",
+    "slug": "youssef-armouc",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/youssef-armouc/",
+    "startup_name": "Ardisplay",
+    "startup_slug": "ardisplay"
+  },
+  {
+    "name": "Aouss SBAI",
+    "role": "Fondateur",
+    "slug": "aouss-sbai",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/aouss-sbai/",
+    "startup_name": "S7 Labs",
+    "startup_slug": "s7-labs"
+  },
+  {
+    "name": "Mastouri RADOUANE",
+    "role": "Fondateur",
+    "slug": "mastouri-radouane",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/mastouri-radouane/",
+    "startup_name": "Doctify Health",
+    "startup_slug": "doctify-health"
+  },
+  {
+    "name": "Michel FRAIN",
+    "role": "Fondateur",
+    "slug": "michel-frain",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/michel-frain/",
+    "startup_name": "Medvir",
+    "startup_slug": "medvir"
+  },
+  {
+    "name": "Mohamed Naoufal SERGHINI",
+    "role": "Fondateur",
+    "slug": "mohamed-naoufal-serghini",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/mohamed-naoufal-serghini/",
+    "startup_name": "Docdialy",
+    "startup_slug": "docdialy"
+  },
+  {
+    "name": "Anass FIDNI",
+    "role": "Fondateur",
+    "slug": "anass-fidni",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/anass-fidni/",
+    "startup_name": "Apotek.ma",
+    "startup_slug": "apotek"
+  },
+  {
+    "name": "Fatima Zahra BOUAZZAOUI",
+    "role": "Fondateur",
+    "slug": "fatima-zahra-bouazzaoui",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/fatima-zahra-bouazzaoui/",
+    "startup_name": "Click Doc",
+    "startup_slug": "click-doc"
+  },
+  {
+    "name": "Mohamed MOKHTARI",
+    "role": "Fondateur",
+    "slug": "mohamed-mokhtari",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/mohamed-mokhtari/",
+    "startup_name": "Airlod",
+    "startup_slug": "airlod"
+  },
+  {
+    "name": "Abdelkader EL KANBI",
+    "role": "Fondateur",
+    "slug": "abdelkader-el-kanbi",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/abdelkader-el-kanbi/",
+    "startup_name": "Firethunder",
+    "startup_slug": "firethunder"
+  },
+  {
+    "name": "Abdelkader EL KANBI",
+    "role": "Fondateur",
+    "slug": "abdelkader-el-kanbi",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/abdelkader-el-kanbi/",
+    "startup_name": "Pratisoft",
+    "startup_slug": "pratisoft"
+  },
+  {
+    "name": "Mona Alami MERROUNI",
+    "role": "Fondateur",
+    "slug": "mona-alami-merrouni",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/mona-alami-merrouni/",
+    "startup_name": "Fertidev",
+    "startup_slug": "fertidev"
+  },
+  {
+    "name": "MERIEM ZUHAIR",
+    "role": "Fondateur",
+    "slug": "meriem-zuhair",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/meriem-zuhair/",
+    "startup_name": "Smart Collecte",
+    "startup_slug": "smart-collecte"
+  },
+  {
+    "name": "Ilyas OUDGHIRI",
+    "role": "Fondateur",
+    "slug": "ilyas-oudghiri",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/ilyas-oudghiri/",
+    "startup_name": "Talaty",
+    "startup_slug": "talaty"
+  },
+  {
+    "name": "Soulaimane LAHRECH",
+    "role": "Fondateur",
+    "slug": "soulaimane-lahrech",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/soulaimane-lahrech/",
+    "startup_name": "Talaty",
+    "startup_slug": "talaty"
+  },
+  {
+    "name": "Zakaria ERRAJI",
+    "role": "Fondateur",
+    "slug": "zakaria-erraji",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/zakaria-erraji/",
+    "startup_name": "Talaty",
+    "startup_slug": "talaty"
+  },
+  {
+    "name": "Simo BERNOUSSI",
+    "role": "Fondateur",
+    "slug": "simo-bernoussi",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/simo-bernoussi/",
+    "startup_name": "Talaty",
+    "startup_slug": "talaty"
+  },
+  {
+    "name": "Khalid AOUSSAR",
+    "role": "Fondateur",
+    "slug": "aoussar-khalid",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/aoussar-khalid/",
+    "startup_name": "Vove ID",
+    "startup_slug": "vove-id"
+  },
+  {
+    "name": "Ismail AMRI",
+    "role": "Fondateur",
+    "slug": "ismail-amri",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/ismail-amri/",
+    "startup_name": "Woliz",
+    "startup_slug": "woliz"
+  },
+  {
+    "name": "Kamal El HARDOUZI",
+    "role": "Fondateur",
+    "slug": "kamal-el-hardouzi",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/kamal-el-hardouzi/",
+    "startup_name": "Woliz",
+    "startup_slug": "woliz"
+  },
+  {
+    "name": "David RODRIGUES",
+    "role": "Fondateur",
+    "slug": "david-rodrigues",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/david-rodrigues/",
+    "startup_name": "Plastik.ma",
+    "startup_slug": "plastik-ma"
+  },
+  {
+    "name": "Mahja NAIT BARKA",
+    "role": "Fondateur",
+    "slug": "mahja-nait-barka",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/mahja-nait-barka/",
+    "startup_name": "Citizon",
+    "startup_slug": "citizon"
+  },
+  {
+    "name": "Anas ZAKI",
+    "role": "Fondateur",
+    "slug": "anas-zaki",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/anas-zaki/",
+    "startup_name": "Mouja",
+    "startup_slug": "mouja"
+  },
+  {
+    "name": "Nasser KETTANI",
+    "role": "Fondateur",
+    "slug": "nasser-kettani",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/nasser-kettani/",
+    "startup_name": "AKKAN",
+    "startup_slug": "akkan"
+  },
+  {
+    "name": "Manal KALAI",
+    "role": "Fondateur",
+    "slug": "manal-kalai",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/manal-kalai/",
+    "startup_name": "Estatmar.ma",
+    "startup_slug": "estatmar-ma"
+  },
+  {
+    "name": "Mohamed FENJIRO",
+    "role": "Fondateur",
+    "slug": "mohamed-fenjiro",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/mohamed-fenjiro/",
+    "startup_name": "Sahl Financial",
+    "startup_slug": "sahl-financial"
+  },
+  {
+    "name": "Yassine ALJ",
+    "role": "Fondateur",
+    "slug": "yassine-alj",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/yassine-alj/",
+    "startup_name": "Ecowatt Maroc",
+    "startup_slug": "ecowatt-maroc"
+  },
+  {
+    "name": "Imad MOUJAHID",
+    "role": "Fondateur",
+    "slug": "imad-moujahid",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/imad-moujahid/",
+    "startup_name": "Dashy",
+    "startup_slug": "dashy"
+  },
+  {
+    "name": "Mohamed Amine BELARBI",
+    "role": "Fondateur",
+    "slug": "mohamed-amine-belarbi",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/mohamed-amine-belarbi/",
+    "startup_name": "Cypherleak",
+    "startup_slug": "cypherleak"
+  },
+  {
+    "name": "Amine SEFRIOUI",
+    "role": "Fondateur",
+    "slug": "amine-sefrioui",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/amine-sefrioui/",
+    "startup_name": "HostifAI",
+    "startup_slug": "hostifai"
+  },
+  {
+    "name": "Badr LEMKHENTE",
+    "role": "Fondateur",
+    "slug": "badr-lemkhente",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/badr-lemkhente/",
+    "startup_name": "HostifAI",
+    "startup_slug": "hostifai"
+  },
+  {
+    "name": "Mohammed BOUDDIA",
+    "role": "Fondateur",
+    "slug": "mohammed-bouddia",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/mohammed-bouddia/",
+    "startup_name": "Adeb Group",
+    "startup_slug": "adeb-group"
+  },
+  {
+    "name": "Mehdi CHRAIBI",
+    "role": "Fondateur",
+    "slug": "mehdi-chraibi",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/mehdi-chraibi/",
+    "startup_name": "Velours3D",
+    "startup_slug": "velours3d"
+  },
+  {
+    "name": "Nouzha ALAOUI",
+    "role": "Fondateur",
+    "slug": "nouzha-alaoui",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/nouzha-alaoui/",
+    "startup_name": "Tandeem",
+    "startup_slug": "tandeem"
+  },
+  {
+    "name": "Abdelouahid LYHYAOUI",
+    "role": "Fondateur",
+    "slug": "abdelouahid-lyhyaoui",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/abdelouahid-lyhyaoui/",
+    "startup_name": "Mediacaris",
+    "startup_slug": "mediacaris"
+  },
+  {
+    "name": "Sophia BENHADDOU",
+    "role": "Fondateur",
+    "slug": "sophia-benhaddou",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/sophia-benhaddou/",
+    "startup_name": "Excelway",
+    "startup_slug": "excelway"
+  },
+  {
+    "name": "Ismail BELLAMINE",
+    "role": "Fondateur",
+    "slug": "ismail-bellamine",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/ismail-bellamine/",
+    "startup_name": "Pintalent ATS",
+    "startup_slug": "pintalent-ats"
+  },
+  {
+    "name": "Imad BENBOUZID",
+    "role": "Fondateur",
+    "slug": "imad-benbouzid",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/imad-benbouzid/",
+    "startup_name": "Taffin.tech",
+    "startup_slug": "taffin-tech"
+  },
+  {
+    "name": "Aouab El FEDDALI",
+    "role": "Fondateur",
+    "slug": "aouab-el-feddali",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/aouab-el-feddali/",
+    "startup_name": "Mestanza Group",
+    "startup_slug": "mestanza-group"
+  },
+  {
+    "name": "Jalal CHAAL",
+    "role": "Fondateur",
+    "slug": "jalal-chaal",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/jalal-chaal/",
+    "startup_name": "C Behind",
+    "startup_slug": "c-behind"
+  },
+  {
+    "name": "Somaya AIT LOUTOU",
+    "role": "Fondateur",
+    "slug": "somaya-ait-loutou",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/somaya-ait-loutou/",
+    "startup_name": "Batoota.AI",
+    "startup_slug": "batoota-ai"
+  },
+  {
+    "name": "Charafeddine NASSIRI",
+    "role": "Fondateur",
+    "slug": "charafeddine-n",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/charafeddine-n/",
+    "startup_name": "Defendis",
+    "startup_slug": "denfendis"
+  },
+  {
+    "name": "Amine BAJEDDI",
+    "role": "Fondateur",
+    "slug": "amine-bajeddi",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/amine-bajeddi/",
+    "startup_name": "Defendis",
+    "startup_slug": "denfendis"
+  },
+  {
+    "name": "Marouane SABRI",
+    "role": "Fondateur",
+    "slug": "marouane-sabri",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/marouane-sabri/",
+    "startup_name": "Defendis",
+    "startup_slug": "denfendis"
+  },
+  {
+    "name": "Luc Pierre MAES",
+    "role": "Fondateur",
+    "slug": "luc-pierre-maes",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/luc-pierre-maes/",
+    "startup_name": "Axialyze",
+    "startup_slug": "axialyze"
+  },
+  {
+    "name": "Abdeljalil JLIOUAT",
+    "role": "Fondateur",
+    "slug": "abdeljalil-jliouat",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/abdeljalil-jliouat/",
+    "startup_name": "MX4 AI",
+    "startup_slug": "mx4-ai"
+  },
+  {
+    "name": "Naoufal N",
+    "role": "Fondateur",
+    "slug": "naoufal-n",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/naoufal-n/",
+    "startup_name": "Agrolora",
+    "startup_slug": "agrolora"
+  },
+  {
+    "name": "Ayoub MHIRI",
+    "role": "Fondateur",
+    "slug": "ayoub-mhiri",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/ayoub-mhiri/",
+    "startup_name": "Morogo",
+    "startup_slug": "morogo"
+  },
+  {
+    "name": "Achraf LAAKISSI",
+    "role": "Fondateur",
+    "slug": "achraf-laakissi",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/achraf-laakissi/",
+    "startup_name": "Morogo",
+    "startup_slug": "morogo"
+  },
+  {
+    "name": "Youness ACHAKROUNE",
+    "role": "Fondateur",
+    "slug": "youness-achakroune",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/youness-achakroune/",
+    "startup_name": "Morogo",
+    "startup_slug": "morogo"
+  },
+  {
+    "name": "Amir ATA AJAMI",
+    "role": "Fondateur",
+    "slug": "amir-ata-ajami",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/amir-ata-ajami/",
+    "startup_name": "Yadag",
+    "startup_slug": "yadag"
+  },
+  {
+    "name": "Issam El MISSAOUI",
+    "role": "Fondateur",
+    "slug": "issam-el-missaoui",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/issam-el-missaoui/",
+    "startup_name": "Yadag",
+    "startup_slug": "yadag"
+  },
+  {
+    "name": "ZOUANI Khalid",
+    "role": "Fondateur",
+    "slug": "zouani-khalid",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/zouani-khalid/",
+    "startup_name": "Zynerator",
+    "startup_slug": "zynerator"
+  },
+  {
+    "name": "Kamal ZOUANI",
+    "role": "Fondateur",
+    "slug": "khalid-zouani",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/khalid-zouani/",
+    "startup_name": "Zynerator",
+    "startup_slug": "zynerator"
+  },
+  {
+    "name": "Younes ZOUANI",
+    "role": "Fondateur",
+    "slug": "younes-zouani",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/younes-zouani/",
+    "startup_name": "Zynerator",
+    "startup_slug": "zynerator"
+  },
+  {
+    "name": "Mehdi KARZOUZ",
+    "role": "Fondateur",
+    "slug": "mehdi-karzouz",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/mehdi-karzouz/",
+    "startup_name": "Sygma.AI",
+    "startup_slug": "sygma-ai"
+  },
+  {
+    "name": "Fayçal TOUAF",
+    "role": "Fondateur",
+    "slug": "faycal-t",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/faycal-t/",
+    "startup_name": "Sygma.AI",
+    "startup_slug": "sygma-ai"
+  },
+  {
+    "name": "Otman NOURI",
+    "role": "Fondateur",
+    "slug": "otman-nouri",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/otman-nouri/",
+    "startup_name": "Glancy 3D",
+    "startup_slug": "glancy-3d"
+  },
+  {
+    "name": "Abdellatif OUABDALLAH",
+    "role": "Fondateur",
+    "slug": "abdellatif-ouabdallah",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/abdellatif-ouabdallah/",
+    "startup_name": "Bricop",
+    "startup_slug": "bricop"
+  },
+  {
+    "name": "Ali El AZZOUZI",
+    "role": "Fondateur",
+    "slug": "ali-el-azzouzi",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/ali-el-azzouzi/",
+    "startup_name": "Awarino",
+    "startup_slug": "awarino"
+  },
+  {
+    "name": "Youssef IDRISSI",
+    "role": "Fondateur",
+    "slug": "youssef-idrissi",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/youssef-idrissi/",
+    "startup_name": "Seeward",
+    "startup_slug": "seeward"
+  },
+  {
+    "name": "Abdelaziz GOURAIZIM",
+    "role": "Fondateur",
+    "slug": "abdelaziz-gouraizim",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/abdelaziz-gouraizim/",
+    "startup_name": "Fantastic",
+    "startup_slug": "fantastic"
+  },
+  {
+    "name": "Daoud OUASSOU",
+    "role": "Fondateur",
+    "slug": "daoud-ouassou",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/daoud-ouassou/",
+    "startup_name": "Renovly",
+    "startup_slug": "renovly"
+  },
+  {
+    "name": "Hassan LAHLOU",
+    "role": "Fondateur",
+    "slug": "hassan-lahlou",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/hassan-lahlou/",
+    "startup_name": "Mymenu.ma",
+    "startup_slug": "mymenu-ma"
+  },
+  {
+    "name": "Boubker BENNAGHMOUCH",
+    "role": "Fondateur",
+    "slug": "boubker-bennaghmouch",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/boubker-bennaghmouch/",
+    "startup_name": "Exponenciel",
+    "startup_slug": "exponenciel"
+  },
+  {
+    "name": "Zaid RHONAM",
+    "role": "Fondateur",
+    "slug": "zaid-rhonam",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/zaid-rhonam/",
+    "startup_name": "Exponenciel",
+    "startup_slug": "exponenciel"
+  },
+  {
+    "name": "Ahmed El AZZABI",
+    "role": "Fondateur",
+    "slug": "ahmed-el-azzabi",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/ahmed-el-azzabi/",
+    "startup_name": "Exponenciel",
+    "startup_slug": "exponenciel"
+  },
+  {
+    "name": "Mohamed RAHHIA",
+    "role": "Fondateur",
+    "slug": "mohamed-rahhia",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/mohamed-rahhia/",
+    "startup_name": "Englshool",
+    "startup_slug": "englshool"
+  },
+  {
+    "name": "Malik BOUACHRINE",
+    "role": "Fondateur",
+    "slug": "malik-bouachrine",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/malik-bouachrine/",
+    "startup_name": "Koding Schools",
+    "startup_slug": "koding-schools"
+  },
+  {
+    "name": "Hatim CHAHDI",
+    "role": "Fondateur",
+    "slug": "hatim-chahdi",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/hatim-chahdi/",
+    "startup_name": "Datascientist.fr",
+    "startup_slug": "datascientist-fr"
+  },
+  {
+    "name": "Ayoub ELHALABI",
+    "role": "Fondateur",
+    "slug": "ayoub-elhalabi",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/ayoub-elhalabi/",
+    "startup_name": "Skwilti",
+    "startup_slug": "skwilti"
+  },
+  {
+    "name": "JAWAD BOU-HYADI",
+    "role": "Fondateur",
+    "slug": "jawad-bou-hyadi",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/jawad-bou-hyadi/",
+    "startup_name": "Mobdie",
+    "startup_slug": "mobdie"
+  },
+  {
+    "name": "Mohammed SLAOUI",
+    "role": "Fondateur",
+    "slug": "mohammed-slaoui",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/mohammed-slaoui/",
+    "startup_name": "Mobdie",
+    "startup_slug": "mobdie"
+  },
+  {
+    "name": "El Mehdi BENSLIM",
+    "role": "Fondateur",
+    "slug": "el-mehdi-benslim",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/el-mehdi-benslim/",
+    "startup_name": "Piyes.Pro",
+    "startup_slug": "piyes-pro"
+  },
+  {
+    "name": "Ijaz SHAH",
+    "role": "Fondateur",
+    "slug": "ijaz-shah",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/ijaz-shah/",
+    "startup_name": "Futureroc",
+    "startup_slug": "futureroc"
+  },
+  {
+    "name": "Younes LAASSOULI",
+    "role": "Fondateur",
+    "slug": "younes-laassouli",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/younes-laassouli/",
+    "startup_name": "Betterfly",
+    "startup_slug": "betterfly"
+  },
+  {
+    "name": "Amlal AKESBI",
+    "role": "Fondateur",
+    "slug": "amlal-akesbi",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/amlal-akesbi/",
+    "startup_name": "Abrid",
+    "startup_slug": "abrid"
+  },
+  {
+    "name": "WAHID Fatine",
+    "role": "Fondateur",
+    "slug": "wahid-f",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/wahid-f/",
+    "startup_name": "Garista",
+    "startup_slug": "garista"
+  },
+  {
+    "name": "ILYAS  EL AOUAD",
+    "role": "Fondateur",
+    "slug": "ilyas-el-aouad",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/ilyas-el-aouad/",
+    "startup_name": "Carteo",
+    "startup_slug": "carteo"
+  },
+  {
+    "name": "Yazid BAHRAOUI",
+    "role": "Fondateur",
+    "slug": "yazid-bahraoui",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/yazid-bahraoui/",
+    "startup_name": "Tachrone",
+    "startup_slug": "tachrone"
+  },
+  {
+    "name": "Kamelia FIRDAOUS",
+    "role": "Fondateur",
+    "slug": "kamelia-firdaous",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/kamelia-firdaous/",
+    "startup_name": "Tachrone",
+    "startup_slug": "tachrone"
+  },
+  {
+    "name": "Diego GANEO",
+    "role": "Fondateur",
+    "slug": "diego-ganeo",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/diego-ganeo/",
+    "startup_name": "Medlit",
+    "startup_slug": "medlit"
+  },
+  {
+    "name": "Leyth DOUIRI",
+    "role": "Fondateur",
+    "slug": "leyth-douiri",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/leyth-douiri/",
+    "startup_name": "RentGooo",
+    "startup_slug": "rentgooo"
+  },
+  {
+    "name": "Hedi DAOUDI",
+    "role": "Fondateur",
+    "slug": "hedi-daoudi",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/hedi-daoudi/",
+    "startup_name": "RentGooo",
+    "startup_slug": "rentgooo"
+  },
+  {
+    "name": "Brahim CHOUBOU",
+    "role": "Fondateur",
+    "slug": "brahim-choubou",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/brahim-choubou/",
+    "startup_name": "AgriWise",
+    "startup_slug": "agriwise"
+  },
+  {
+    "name": "Adil SEFRAOUI",
+    "role": "Fondateur",
+    "slug": "adil-sefraoui",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/adil-sefraoui/",
+    "startup_name": "​ProCrèche",
+    "startup_slug": "procreche"
+  },
+  {
+    "name": "Réda RAIS",
+    "role": "Fondateur",
+    "slug": "reda-rais",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/reda-rais/",
+    "startup_name": "​SixièmeHomme",
+    "startup_slug": "sixiemehomme"
+  },
+  {
+    "name": "Tarik El HADDAOUI",
+    "role": "Fondateur",
+    "slug": "tarik-el-haddaoui",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/tarik-el-haddaoui/",
+    "startup_name": "EVODENTAL",
+    "startup_slug": "evodental"
+  },
+  {
+    "name": "Mohammed BELCAID",
+    "role": "Fondateur",
+    "slug": "mohammed-belcaid",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/mohammed-belcaid/",
+    "startup_name": "Nafssy",
+    "startup_slug": "nafssy"
+  },
+  {
+    "name": "Malik QADIRI",
+    "role": "Fondateur",
+    "slug": "malik-qadiri",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/malik-qadiri/",
+    "startup_name": "JoroCash",
+    "startup_slug": "jorocash"
+  },
+  {
+    "name": "Anas CHANAA",
+    "role": "Fondateur",
+    "slug": "anas-chanaa",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/anas-chanaa/",
+    "startup_name": "Nucleon Security",
+    "startup_slug": "nucleon-security"
+  },
+  {
+    "name": "Said BELKHAYAT",
+    "role": "Fondateur",
+    "slug": "said-belkhayat",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/said-belkhayat/",
+    "startup_name": "lacaisse.ma",
+    "startup_slug": "lacaisse-ma"
+  },
+  {
+    "name": "Omar ALAMI",
+    "role": "Fondateur",
+    "slug": "omar-alami",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/omar-alami/",
+    "startup_name": "ORA TECHNOLOGIES",
+    "startup_slug": "ora-technologies"
+  },
+  {
+    "name": "Amine SLIMANI",
+    "role": "Fondateur",
+    "slug": "amine-slimani",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/amine-slimani/",
+    "startup_name": "EDENSOUK",
+    "startup_slug": "edensouk"
+  },
+  {
+    "name": "Ishak AFRIT",
+    "role": "Fondateur",
+    "slug": "ishak-afrit",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/ishak-afrit/",
+    "startup_name": "WashMinute",
+    "startup_slug": "washminute"
+  },
+  {
+    "name": "Brahim ZAID",
+    "role": "Fondateur",
+    "slug": "brahim-zaid",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/brahim-zaid/",
+    "startup_name": "Alya Pay",
+    "startup_slug": "alya-pay"
+  },
+  {
+    "name": "Meriem BENABAD",
+    "role": "Fondateur",
+    "slug": "meriem-benabad",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/meriem-benabad/",
+    "startup_name": "Z.systems",
+    "startup_slug": "z-systems"
+  },
+  {
+    "name": "Samer CHOUMAR",
+    "role": "Fondateur",
+    "slug": "samer-choumar",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/samer-choumar/",
+    "startup_name": "Z.systems",
+    "startup_slug": "z-systems"
+  },
+  {
+    "name": "Samir BENNANI",
+    "role": "Fondateur",
+    "slug": "samir-bennani",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/samir-bennani/",
+    "startup_name": "Enakl",
+    "startup_slug": "enakl"
+  },
+  {
+    "name": "Taibi AALAM",
+    "role": "Fondateur",
+    "slug": "taibi-aalam",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/taibi-aalam/",
+    "startup_name": "UPay",
+    "startup_slug": "upay"
+  },
+  {
+    "name": "Samir YOUNES",
+    "role": "Fondateur",
+    "slug": "samir-younes",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/samir-younes/",
+    "startup_name": "Premium Technology and Services – PTS",
+    "startup_slug": "premium-technology-and-services-pts"
+  },
+  {
+    "name": "Youssef NOUMIR",
+    "role": "Fondateur",
+    "slug": "youssef-noumir",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/youssef-noumir/",
+    "startup_name": "WellPass",
+    "startup_slug": "wellpass"
+  },
+  {
+    "name": "Sokaina SAYOURI",
+    "role": "Fondateur",
+    "slug": "sokaina-sayouri",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/sokaina-sayouri/",
+    "startup_name": "Schoolify",
+    "startup_slug": "schoolify"
+  },
+  {
+    "name": "Nada BENNANI",
+    "role": "Fondateur",
+    "slug": "nada-bennani",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/nada-bennani/",
+    "startup_name": "Ur Ed",
+    "startup_slug": "ur-ed"
+  },
+  {
+    "name": "Badr OUBENYAHYA",
+    "role": "Fondateur",
+    "slug": "badr-oubenyahya",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/badr-oubenyahya/",
+    "startup_name": "OBENS",
+    "startup_slug": "obens"
+  },
+  {
+    "name": "Charaf ZAGHNANE",
+    "role": "Fondateur",
+    "slug": "charaf-zaghnane",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/charaf-zaghnane/",
+    "startup_name": "OKEYO",
+    "startup_slug": "okeyo"
+  },
+  {
+    "name": "Alieu JAGNE",
+    "role": "Fondateur",
+    "slug": "alieu-jagne",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/alieu-jagne/",
+    "startup_name": "LocaleNLP",
+    "startup_slug": "localenlp"
+  },
+  {
+    "name": "Zakaria KWYASSE",
+    "role": "Fondateur",
+    "slug": "zakaria-kwyasse",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/zakaria-kwyasse/",
+    "startup_name": "Digiwearit",
+    "startup_slug": "digiwearit"
+  },
+  {
+    "name": "Hafid GRIGUER",
+    "role": "Fondateur",
+    "slug": "hafid-griguer",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/hafid-griguer/",
+    "startup_name": "SensThings",
+    "startup_slug": "sensthings"
+  },
+  {
+    "name": "Youness OUAZRI",
+    "role": "Fondateur",
+    "slug": "youness-ouazri",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/youness-ouazri/",
+    "startup_name": "Ecodome Maroc",
+    "startup_slug": "ecodome-maroc"
+  },
+  {
+    "name": "Othmane BENSLIMANE",
+    "role": "Fondateur",
+    "slug": "othmane-benslimane",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/othmane-benslimane/",
+    "startup_name": "Valet Club",
+    "startup_slug": "valet-club"
+  },
+  {
+    "name": "Jaouad DADI",
+    "role": "Fondateur",
+    "slug": "jaouad-dadi",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/jaouad-dadi/",
+    "startup_name": "Livry",
+    "startup_slug": "livry"
+  },
+  {
+    "name": "Youssef KHALKHAL",
+    "role": "Fondateur",
+    "slug": "youssef-khalkhal",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/youssef-khalkhal/",
+    "startup_name": "MyResa",
+    "startup_slug": "myresa"
+  },
+  {
+    "name": "Salma BOUGARRANI",
+    "role": "Fondateur",
+    "slug": "salma-bougarrani",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/salma-bougarrani/",
+    "startup_name": "GREEN WATECH",
+    "startup_slug": "green-watech"
+  },
+  {
+    "name": "Karim DAKKI",
+    "role": "Fondateur",
+    "slug": "karim-dakki",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/karim-dakki/",
+    "startup_name": "Klaim.ai",
+    "startup_slug": "klaim-ai"
+  },
+  {
+    "name": "Zakaria BUHKTARI",
+    "role": "Fondateur",
+    "slug": "zakaria-buhktari",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/zakaria-buhktari/",
+    "startup_name": "Iladary",
+    "startup_slug": "iladary"
+  },
+  {
+    "name": "Achraf BENNIS",
+    "role": "Fondateur",
+    "slug": "achraf-bennis",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/achraf-bennis/",
+    "startup_name": "Forelight AI",
+    "startup_slug": "forelight-ai"
+  },
+  {
+    "name": "Youssef GUESSOUS",
+    "role": "Fondateur",
+    "slug": "youssef-guessous",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/youssef-guessous/",
+    "startup_name": "Fater AI",
+    "startup_slug": "fater-ai"
+  },
+  {
+    "name": "Mohamed AIT ELORF",
+    "role": "Fondateur",
+    "slug": "mohamed-ait-elorf",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/mohamed-ait-elorf/",
+    "startup_name": "Orderly",
+    "startup_slug": "orderly"
+  },
+  {
+    "name": "Soleiman NAIT",
+    "role": "Fondateur",
+    "slug": "soleiman-nait",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/soleiman-nait/",
+    "startup_name": "Aylink",
+    "startup_slug": "aylink"
+  },
+  {
+    "name": "Mohammed TAHARAST",
+    "role": "Fondateur",
+    "slug": "mohammed-taharast",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/mohammed-taharast/",
+    "startup_name": "Shopyan",
+    "startup_slug": "shopyan"
+  },
+  {
+    "name": "Radouane MASTOURI",
+    "role": "Fondateur",
+    "slug": "radouane-mastouri",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/radouane-mastouri/",
+    "startup_name": "Precision Systems",
+    "startup_slug": "precision-systems"
+  },
+  {
+    "name": "Mehdi BAKKALI",
+    "role": "Fondateur",
+    "slug": "mehdi-bakkali",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/mehdi-bakkali/",
+    "startup_name": "Upfund",
+    "startup_slug": "upfund"
+  },
+  {
+    "name": "Amine BERRAOUI",
+    "role": "Fondateur",
+    "slug": "amine-berraoui",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/amine-berraoui/",
+    "startup_name": "Finware",
+    "startup_slug": "finware"
+  },
+  {
+    "name": "Ouafae AAMER",
+    "role": "Fondateur",
+    "slug": "ouafae-aamer",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/ouafae-aamer/",
+    "startup_name": "SnapIQ",
+    "startup_slug": "snapiq"
+  },
+  {
+    "name": "Amine EL KAOUACHI",
+    "role": "Fondateur",
+    "slug": "amine-el-kaouachi",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/amine-el-kaouachi/",
+    "startup_name": "Quantolio",
+    "startup_slug": "quantolio"
+  },
+  {
+    "name": "Amira NAKOURI",
+    "role": "Fondateur",
+    "slug": "amira-nakouri",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/amira-nakouri/",
+    "startup_name": "Klaimy",
+    "startup_slug": "klaimy"
+  },
+  {
+    "name": "Yazid HADNI",
+    "role": "Fondateur",
+    "slug": "yazid-hadni",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/yazid-hadni/",
+    "startup_name": "Klaimy",
+    "startup_slug": "klaimy"
+  },
+  {
+    "name": "Mossaab (Simo) ABAOUZ",
+    "role": "Fondateur",
+    "slug": "mossaab-simo-abaouz",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/mossaab-simo-abaouz/",
+    "startup_name": "Gwala",
+    "startup_slug": "gwala"
+  },
+  {
+    "name": "Kamal REGGAD",
+    "role": "Fondateur",
+    "slug": "kamal-reggad",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/kamal-reggad/",
+    "startup_name": "RemotePass",
+    "startup_slug": "remotepass"
+  },
+  {
+    "name": "Abdelhak LATRACH",
+    "role": "Fondateur",
+    "slug": "abdelhak-latrach",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/abdelhak-latrach/",
+    "startup_name": "MintHR",
+    "startup_slug": "minthr"
+  },
+  {
+    "name": "Aya LARAKI",
+    "role": "Fondateur",
+    "slug": "aya-laraki",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/aya-laraki/",
+    "startup_name": "Cuimar",
+    "startup_slug": "cuimer"
+  },
+  {
+    "name": "Tarik BENSAAD",
+    "role": "Fondateur",
+    "slug": "tarik-bensaad",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/tarik-bensaad/",
+    "startup_name": "Hellowatt",
+    "startup_slug": "hellowatt"
+  },
+  {
+    "name": "Younés MEDKOURI ZIDI",
+    "role": "Fondateur",
+    "slug": "younes-medkouri-zidi",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/younes-medkouri-zidi/",
+    "startup_name": "Hellowatt",
+    "startup_slug": "hellowatt"
+  },
+  {
+    "name": "Ilyes BEN HAJ DAHMANE",
+    "role": "Fondateur",
+    "slug": "ilyes-ben-haj-dahmane",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/ilyes-ben-haj-dahmane/",
+    "startup_name": "SportifyAI",
+    "startup_slug": "sportifyai"
+  },
+  {
+    "name": "Yousef MYARA",
+    "role": "Fondateur",
+    "slug": "yousef-myara",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/yousef-myara/",
+    "startup_name": "FTBLR",
+    "startup_slug": "ftblr"
+  },
+  {
+    "name": "Anass ECHCHAKFI",
+    "role": "Fondateur",
+    "slug": "anass-echchakfi",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/anass-echchakfi/",
+    "startup_name": "XPage",
+    "startup_slug": "xpage"
+  },
+  {
+    "name": "Fouad ELAQQARI",
+    "role": "Fondateur",
+    "slug": "fouad-elaqqari",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/fouad-elaqqari/",
+    "startup_name": "IDA Tech",
+    "startup_slug": "ida-tech"
+  },
+  {
+    "name": "Omar LAHMOUMI",
+    "role": "Fondateur",
+    "slug": "omar-lahmoumi",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/omar-lahmoumi/",
+    "startup_name": "SportMa",
+    "startup_slug": "sportma"
+  },
+  {
+    "name": "Brahim ENNABIHI",
+    "role": "Fondateur",
+    "slug": "brahim-ennabihi",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/brahim-ennabihi/",
+    "startup_name": "Khabiry",
+    "startup_slug": "khabiry"
+  },
+  {
+    "name": "Hamza BOULANDOUM",
+    "role": "Fondateur",
+    "slug": "hamza-boulandoum",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/hamza-boulandoum/",
+    "startup_name": "Corosols",
+    "startup_slug": "corosols"
+  },
+  {
+    "name": "Saad RABIHI",
+    "role": "Fondateur",
+    "slug": "saad-rabihi",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/saad-rabihi/",
+    "startup_name": "DIGILEO",
+    "startup_slug": "digileo"
+  },
+  {
+    "name": "Ismail BEN ALLA",
+    "role": "Fondateur",
+    "slug": "ismail-ben-alla",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/ismail-ben-alla/",
+    "startup_name": "Juridia",
+    "startup_slug": "juridia"
+  },
+  {
+    "name": "Omar EL ADLOUNI",
+    "role": "Fondateur",
+    "slug": "omar-el-adlouni",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/omar-el-adlouni/",
+    "startup_name": "Juridia",
+    "startup_slug": "juridia"
+  },
+  {
+    "name": "Nabil BROUZ",
+    "role": "Fondateur",
+    "slug": "nabil-brouz",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/nabil-brouz/",
+    "startup_name": "JobWinWin",
+    "startup_slug": "jobwinwin"
+  },
+  {
+    "name": "Othmane TAKY",
+    "role": "Fondateur",
+    "slug": "othmane-taky",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/othmane-taky/",
+    "startup_name": "eprogram",
+    "startup_slug": "eprogram"
+  },
+  {
+    "name": "Samir TAMRI",
+    "role": "Fondateur",
+    "slug": "samir-tamri",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/samir-tamri/",
+    "startup_name": "Positeams",
+    "startup_slug": "positeams"
+  },
+  {
+    "name": "Simo ZIZI",
+    "role": "Fondateur",
+    "slug": "simo-zizi",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/simo-zizi/",
+    "startup_name": "JobZyn",
+    "startup_slug": "jobzyn"
+  },
+  {
+    "name": "Barhoum KHARBOUCH",
+    "role": "Fondateur",
+    "slug": "barhoum-kharbouch",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/barhoum-kharbouch/",
+    "startup_name": "Lombrisol",
+    "startup_slug": "lombrisol"
+  },
+  {
+    "name": "Zakaria OUAHI",
+    "role": "Fondateur",
+    "slug": "zakaria-ouahi",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/zakaria-ouahi/",
+    "startup_name": "Savey",
+    "startup_slug": "savey"
+  },
+  {
+    "name": "Otman HARRAK",
+    "role": "Fondateur",
+    "slug": "otman-harrak",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/otman-harrak/",
+    "startup_name": "Pip Pip Yalah",
+    "startup_slug": "pip-pip-yalah"
+  },
+  {
+    "name": "Hicham ZOUAOUI",
+    "role": "Fondateur",
+    "slug": "hicham-zouaoui",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/hicham-zouaoui/",
+    "startup_name": "Pip Pip Yalah",
+    "startup_slug": "pip-pip-yalah"
+  },
+  {
+    "name": "Mohammed EL HABTI",
+    "role": "Fondateur",
+    "slug": "mohammed-el-habti",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/mohammed-el-habti/",
+    "startup_name": "Organic Compost",
+    "startup_slug": "organic-compost"
+  },
+  {
+    "name": "Larbi ALAOUI BELRHITI",
+    "role": "Fondateur",
+    "slug": "larbi-alaoui-belrhiti",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/larbi-alaoui-belrhiti/",
+    "startup_name": "YoLa Fresh",
+    "startup_slug": "yola-fresh"
+  },
+  {
+    "name": "Youssef MAMOU",
+    "role": "Fondateur",
+    "slug": "youssef-mamou",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/youssef-mamou/",
+    "startup_name": "YoLa Fresh",
+    "startup_slug": "yola-fresh"
+  },
+  {
+    "name": "Yassine MOUNTACIF",
+    "role": "Fondateur",
+    "slug": "yassine-mountacif",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/yassine-mountacif/",
+    "startup_name": "UNISSEY",
+    "startup_slug": "unissey"
+  },
+  {
+    "name": "Omar NAJID",
+    "role": "Fondateur",
+    "slug": "omar-najid",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/omar-najid/",
+    "startup_name": "Docline",
+    "startup_slug": "docline"
+  },
+  {
+    "name": "Amine RAJI",
+    "role": "Fondateur",
+    "slug": "amine-raji",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/amine-raji/",
+    "startup_name": "Spore Bio",
+    "startup_slug": "spore-bio"
+  },
+  {
+    "name": "Ali LAAMRANI",
+    "role": "Fondateur",
+    "slug": "ali-laamrani",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/ali-laamrani/",
+    "startup_name": "GreenSmartAgro",
+    "startup_slug": "greensmartagro"
+  },
+  {
+    "name": "Keltoum CHAHIDI",
+    "role": "Fondateur",
+    "slug": "keltoum-chahidi",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/keltoum-chahidi/",
+    "startup_name": "L’Workshop",
+    "startup_slug": "lworkshop"
+  },
+  {
+    "name": "Hassan OUSSOUS",
+    "role": "Fondateur",
+    "slug": "hassan-oussous",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/hassan-oussous/",
+    "startup_name": "AlKora App",
+    "startup_slug": "alkora-app"
+  },
+  {
+    "name": "Soufiane BENNAIYM",
+    "role": "Fondateur",
+    "slug": "soufiane-bennaiym",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/soufiane-bennaiym/",
+    "startup_name": "AlKora App",
+    "startup_slug": "alkora-app"
+  },
+  {
+    "name": "Zakaria AZEMZI",
+    "role": "Fondateur",
+    "slug": "zakaria-azemzi",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/zakaria-azemzi/",
+    "startup_name": "AZA PETROSOLUTIONS",
+    "startup_slug": "aza-petrosolutions"
+  },
+  {
+    "name": "Salwa HARIF",
+    "role": "Fondateur",
+    "slug": "salwa-harif",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/salwa-harif/",
+    "startup_name": "ISSROAD",
+    "startup_slug": "issroad"
+  },
+  {
+    "name": "Tarik El HADDAOUI",
+    "role": "Fondateur",
+    "slug": "tarik-el-haddaoui",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/tarik-el-haddaoui/",
+    "startup_name": "Meriva",
+    "startup_slug": "meriva"
+  },
+  {
+    "name": "Malika AHMIDOUCH",
+    "role": "Fondateur",
+    "slug": "malika-ahmidouch",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/malika-ahmidouch/",
+    "startup_name": "Aishore",
+    "startup_slug": "aishore"
+  },
+  {
+    "name": "Wafa RHALLAM",
+    "role": "Fondateur",
+    "slug": "wafa-rhallam",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/wafa-rhallam/",
+    "startup_name": "VISIOPROCESS",
+    "startup_slug": "visioprocess"
+  },
+  {
+    "name": "Mohamed MEKRAN",
+    "role": "Fondateur",
+    "slug": "mohamed-mekran",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/mohamed-mekran/",
+    "startup_name": "Bewize",
+    "startup_slug": "bewize"
+  },
+  {
+    "name": "Karima LEBBAT",
+    "role": "Fondateur",
+    "slug": "karima-lebbat",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/karima-lebbat/",
+    "startup_name": "Babyandmom.ma",
+    "startup_slug": "babyandmom-ma"
+  },
+  {
+    "name": "Mohammed ERRAFI",
+    "role": "Fondateur",
+    "slug": "mohammed-errafi",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/mohammed-errafi/",
+    "startup_name": "GRAVIPACK",
+    "startup_slug": "gravipack"
+  },
+  {
+    "name": "Zidane RTIMI",
+    "role": "Fondateur",
+    "slug": "zidane-rtimi",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/zidane-rtimi/",
+    "startup_name": "SWL.MA",
+    "startup_slug": "swl-ma"
+  },
+  {
+    "name": "Abdelali BOUKACHABINE",
+    "role": "Fondateur",
+    "slug": "abdelali-boukachabine",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/abdelali-boukachabine/",
+    "startup_name": "Spotter",
+    "startup_slug": "spotter"
+  },
+  {
+    "name": "Youssef BOUYAKHF",
+    "role": "Fondateur",
+    "slug": "youssef-bouyakhf",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/youssef-bouyakhf/",
+    "startup_name": "DeepEcho",
+    "startup_slug": "deepecho"
+  },
+  {
+    "name": "Soufiane AMMAGUI",
+    "role": "Fondateur",
+    "slug": "soufiane-ammagui",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/soufiane-ammagui/",
+    "startup_name": "Aerodrive Engineering Services",
+    "startup_slug": "aerodrive-engineering-services"
+  },
+  {
+    "name": "Ismail BARGACH",
+    "role": "Fondateur",
+    "slug": "ismail-bargach",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/ismail-bargach/",
+    "startup_name": "WafR (Mobile Payment System)",
+    "startup_slug": "wafr-mobile-payment-system-maroc"
+  },
+  {
+    "name": "Youssef BENKIRANE",
+    "role": "Fondateur",
+    "slug": "youssef-benkirane",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/youssef-benkirane/",
+    "startup_name": "Terraa",
+    "startup_slug": "terraa"
+  },
+  {
+    "name": "Majd BENSOUDA",
+    "role": "Fondateur",
+    "slug": "majd-bensouda",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/majd-bensouda/",
+    "startup_name": "Sportym",
+    "startup_slug": "sportym"
+  },
+  {
+    "name": "Ismail ALAMI",
+    "role": "Fondateur",
+    "slug": "ismail-alami",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/ismail-alami/",
+    "startup_name": "Yofitt",
+    "startup_slug": "yofitt"
+  },
+  {
+    "name": "Lina JAIDI",
+    "role": "Fondateur",
+    "slug": "lina-jaidi",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/lina-jaidi/",
+    "startup_name": "Yofitt",
+    "startup_slug": "yofitt"
+  },
+  {
+    "name": "Sofiane HENRI",
+    "role": "Fondateur",
+    "slug": "sofiane-henri",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/sofiane-henri/",
+    "startup_name": "Tickie",
+    "startup_slug": "tickie"
+  },
+  {
+    "name": "Hamid ECHARKAOUI",
+    "role": "Fondateur",
+    "slug": "hamid-echarkaoui",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/hamid-echarkaoui/",
+    "startup_name": "Cryptr",
+    "startup_slug": "cryptr"
+  },
+  {
+    "name": "Youssef NADIM",
+    "role": "Fondateur",
+    "slug": "youssef-nadim",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/youssef-nadim/",
+    "startup_name": "Retco",
+    "startup_slug": "retco"
+  },
+  {
+    "name": "Fadel BENNANI",
+    "role": "Fondateur",
+    "slug": "fadel-bennani",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/fadel-bennani/",
+    "startup_name": "Tracklab",
+    "startup_slug": "tracklab"
+  },
+  {
+    "name": "El Mahdi ABOULMANADEL",
+    "role": "Fondateur",
+    "slug": "el-mahdi-aboulmanadel",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/el-mahdi-aboulmanadel/",
+    "startup_name": "DeepLeaf",
+    "startup_slug": "deapleaf"
+  },
+  {
+    "name": "Abdelhay BEKKALI",
+    "role": "Fondateur",
+    "slug": "abdelhay-bekkali",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/abdelhay-bekkali/",
+    "startup_name": "Qaal",
+    "startup_slug": "qaal"
+  },
+  {
+    "name": "Sohaïb EL OUTMANI",
+    "role": "Fondateur",
+    "slug": "sohaib-el-outmani",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/sohaib-el-outmani/",
+    "startup_name": "Entroview",
+    "startup_slug": "entroview"
+  },
+  {
+    "name": "Amine BOUBRIK",
+    "role": "Fondateur",
+    "slug": "amine-boubrik",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/amine-boubrik/",
+    "startup_name": "Gokaden",
+    "startup_slug": "gokaden"
+  },
+  {
+    "name": "Mohammed-Amine HEJJI",
+    "role": "Fondateur",
+    "slug": "mohammed-amine-hejji",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/mohammed-amine-hejji/",
+    "startup_name": "Bluedove",
+    "startup_slug": "bluedove"
+  },
+  {
+    "name": "Khalid EL GUITTI",
+    "role": "Fondateur",
+    "slug": "khalid-el-guitti",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/khalid-el-guitti/",
+    "startup_name": "Paramedic",
+    "startup_slug": "paramedic"
+  },
+  {
+    "name": "Siham ELMEJJAD",
+    "role": "Fondateur",
+    "slug": "siham-elmejjad",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/siham-elmejjad/",
+    "startup_name": "Tookeez",
+    "startup_slug": "tookeez"
+  },
+  {
+    "name": "Zaid JAI MANSOURI",
+    "role": "Fondateur",
+    "slug": "zaid-jai-mansouri",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/zaid-jai-mansouri/",
+    "startup_name": "PopCard",
+    "startup_slug": "getpopcard"
+  },
+  {
+    "name": "Younes ARAFA",
+    "role": "Fondateur",
+    "slug": "younes-arafa",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/younes-arafa/",
+    "startup_name": "KargoLive",
+    "startup_slug": "kargolive"
+  },
+  {
+    "name": "Hassan BOUCHIBA",
+    "role": "Fondateur",
+    "slug": "hassan-bouchiba",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/hassan-bouchiba/",
+    "startup_name": "Exwayz",
+    "startup_slug": "exwayz"
+  },
+  {
+    "name": "Hicham MOUTI",
+    "role": "Fondateur",
+    "slug": "hicham-mouti",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/hicham-mouti/",
+    "startup_name": "EXPERIO",
+    "startup_slug": "experio"
+  },
+  {
+    "name": "Sakina ElKASSOUANI",
+    "role": "Fondateur",
+    "slug": "sakina-elkassouani",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/sakina-elkassouani/",
+    "startup_name": "Alt Biotech",
+    "startup_slug": "alt-biotech"
+  },
+  {
+    "name": "Imad BOUMAHDI",
+    "role": "Fondateur",
+    "slug": "imad-boumahdi",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/imad-boumahdi/",
+    "startup_name": "PayTic",
+    "startup_slug": "paytic"
+  },
+  {
+    "name": "Abdelilah HAMMADA",
+    "role": "Fondateur",
+    "slug": "abdelilah-hammada",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/abdelilah-hammada/",
+    "startup_name": "ALG UNO",
+    "startup_slug": "alg-uno"
+  },
+  {
+    "name": "Mohammed TALHA",
+    "role": "Fondateur",
+    "slug": "mohammed-talha",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/mohammed-talha/",
+    "startup_name": "ALG UNO",
+    "startup_slug": "alg-uno"
+  },
+  {
+    "name": "Zakariae BENALI",
+    "role": "Fondateur",
+    "slug": "zakariae-benali",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/zakariae-benali/",
+    "startup_name": "ALG UNO",
+    "startup_slug": "alg-uno"
+  },
+  {
+    "name": "Mohssine BENLAMALAM",
+    "role": "Fondateur",
+    "slug": "mohssine-benlamalam",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/mohssine-benlamalam/",
+    "startup_name": "otoclic",
+    "startup_slug": "otoclic"
+  },
+  {
+    "name": "Sawsen REZIG",
+    "role": "Fondateur",
+    "slug": "sawsen-rezig",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/sawsen-rezig/",
+    "startup_name": "ShareID",
+    "startup_slug": "shareid"
+  },
+  {
+    "name": "Sara SEBTI",
+    "role": "Fondateur",
+    "slug": "sara-sebti",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/sara-sebti/",
+    "startup_name": "ShareID",
+    "startup_slug": "shareid"
+  },
+  {
+    "name": "Mohammed DAMIRI",
+    "role": "Fondateur",
+    "slug": "mohammed-damiri",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/mohammed-damiri/",
+    "startup_name": "Nessiam",
+    "startup_slug": "nessiam"
+  },
+  {
+    "name": "Ahmed Tawfik MOULNAKHLA",
+    "role": "Fondateur",
+    "slug": "ahmed-tawfik-moulnakhla",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/ahmed-tawfik-moulnakhla/",
+    "startup_name": "GUICHET",
+    "startup_slug": "guichet"
+  },
+  {
+    "name": "Ayoub KOUTAR",
+    "role": "Fondateur",
+    "slug": "ayoub-koutar",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/ayoub-koutar/",
+    "startup_name": "Wanaut",
+    "startup_slug": "wanaut"
+  },
+  {
+    "name": "Meryem RENEJA",
+    "role": "Fondateur",
+    "slug": "meryem-reneja",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/meryem-reneja/",
+    "startup_name": "SehaLink (Ex. Ta7alil)",
+    "startup_slug": "sehalink"
+  },
+  {
+    "name": "Najlae ZEITOUN",
+    "role": "Fondateur",
+    "slug": "najlae-zeitoun",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/najlae-zeitoun/",
+    "startup_name": "Crealo",
+    "startup_slug": "crealo"
+  },
+  {
+    "name": "Mohammed BELGHITI",
+    "role": "Fondateur",
+    "slug": "mohammed-belghiti",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/mohammed-belghiti/",
+    "startup_name": "Crealo",
+    "startup_slug": "crealo"
+  },
+  {
+    "name": "Driss ZIZI",
+    "role": "Fondateur",
+    "slug": "driss-zizi",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/driss-zizi/",
+    "startup_name": "Mynk",
+    "startup_slug": "mynk"
+  },
+  {
+    "name": "Moncef CHLOUCHI",
+    "role": "Fondateur",
+    "slug": "moncef-chlouchi",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/moncef-chlouchi/",
+    "startup_name": "INYAD",
+    "startup_slug": "inyad"
+  },
+  {
+    "name": "Othmane BENNANI SMIRES",
+    "role": "Fondateur",
+    "slug": "othmane-bennani-smires",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/othmane-bennani-smires/",
+    "startup_name": "PayLiK",
+    "startup_slug": "paylik"
+  },
+  {
+    "name": "Nizar ABDALLAOUI MAANE",
+    "role": "Fondateur",
+    "slug": "nizar-abdallaoui-maane",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/nizar-abdallaoui-maane/",
+    "startup_name": "KIFAL Auto",
+    "startup_slug": "kifal"
+  },
+  {
+    "name": "Saad JITTOU",
+    "role": "Fondateur",
+    "slug": "saad-jittou",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/saad-jittou/",
+    "startup_name": "Weego",
+    "startup_slug": "weego"
+  },
+  {
+    "name": "Aness FALLAHI",
+    "role": "Fondateur",
+    "slug": "aness-fallahi",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/aness-fallahi/",
+    "startup_name": "Weego",
+    "startup_slug": "weego"
+  },
+  {
+    "name": "Karim MEZZOUR",
+    "role": "Fondateur",
+    "slug": "karim-mezzour",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/karim-mezzour/",
+    "startup_name": "Estaly",
+    "startup_slug": "estaly"
+  },
+  {
+    "name": "Youssef KANOUNI",
+    "role": "Fondateur",
+    "slug": "youssef-kanouni",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/youssef-kanouni/",
+    "startup_name": "Estaly",
+    "startup_slug": "estaly"
+  },
+  {
+    "name": "Hassan BOUCHACHIA",
+    "role": "Fondateur",
+    "slug": "hassan-bouchachia",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/hassan-bouchachia/",
+    "startup_name": "Disklosure",
+    "startup_slug": "disklosure"
+  },
+  {
+    "name": "Driss JABAR",
+    "role": "Fondateur",
+    "slug": "driss-jabar",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/driss-jabar/",
+    "startup_name": "CloudFret",
+    "startup_slug": "cloudfret"
+  },
+  {
+    "name": "Zakariya BEKKAOUI",
+    "role": "Fondateur",
+    "slug": "zakariya-bekkaoui",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/zakariya-bekkaoui/",
+    "startup_name": "FIXUP",
+    "startup_slug": "fixup"
+  },
+  {
+    "name": "Mourad OUMENNANA",
+    "role": "Fondateur",
+    "slug": "mourad-oumennana",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/mourad-oumennana/",
+    "startup_name": "DS INDUSTRIE",
+    "startup_slug": "ds-industrie"
+  },
+  {
+    "name": "Anas TEDJINI",
+    "role": "Fondateur",
+    "slug": "anas-tedjini",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/anas-tedjini/",
+    "startup_name": "PreConstruction.ma",
+    "startup_slug": "preconstruction-ma"
+  },
+  {
+    "name": "Hicham BERRAHOU",
+    "role": "Fondateur",
+    "slug": "hicham-berrahou",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/hicham-berrahou/",
+    "startup_name": "Myfollowap",
+    "startup_slug": "myfollowap"
+  },
+  {
+    "name": "Hamza EL BAROUDI",
+    "role": "Fondateur",
+    "slug": "hamza-el-baroudi",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/hamza-el-baroudi/",
+    "startup_name": "Kilo.ma",
+    "startup_slug": "kilo-ma"
+  },
+  {
+    "name": "Abdelali AHBIB",
+    "role": "Fondateur",
+    "slug": "abdelali-ahbib",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/abdelali-ahbib/",
+    "startup_name": "Becare.ma",
+    "startup_slug": "becare-ma"
+  },
+  {
+    "name": "Karim MEKOUAR",
+    "role": "Fondateur",
+    "slug": "karim-mekouar",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/karim-mekouar/",
+    "startup_name": "SOS CONSTAT",
+    "startup_slug": "sos-constat"
+  },
+  {
+    "name": "Elmehdi EZZIOUANI",
+    "role": "Fondateur",
+    "slug": "elmehdi-ezziouani",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/elmehdi-ezziouani/",
+    "startup_name": "Smart Car Connect",
+    "startup_slug": "smart-car-connect"
+  },
+  {
+    "name": "Driss BENNIS",
+    "role": "Fondateur",
+    "slug": "driss-bennis",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/driss-bennis/",
+    "startup_name": "Jobbers.ma",
+    "startup_slug": "jobbers-ma"
+  },
+  {
+    "name": "Anas KHATIM",
+    "role": "Fondateur",
+    "slug": "anas-khatim",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/anas-khatim/",
+    "startup_name": "Skills & Smart",
+    "startup_slug": "skills-smart"
+  },
+  {
+    "name": "Issam DARUI",
+    "role": "Fondateur",
+    "slug": "issam-darui",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/issam-darui/",
+    "startup_name": "Colis.ma",
+    "startup_slug": "colis-ma"
+  },
+  {
+    "name": "Mohamed ISAM BNELKADI",
+    "role": "Fondateur",
+    "slug": "mohamed-isam-bnelkadi",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/mohamed-isam-bnelkadi/",
+    "startup_name": "Smile Snail",
+    "startup_slug": "smile-snail"
+  },
+  {
+    "name": "Ismail EL OUSSOUL",
+    "role": "Fondateur",
+    "slug": "ismail-el-oussoul",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/ismail-el-oussoul/",
+    "startup_name": "Rocmed",
+    "startup_slug": "rocmed"
+  },
+  {
+    "name": "Tahar HAMDANI",
+    "role": "Fondateur",
+    "slug": "tahar-hamdani",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/tahar-hamdani/",
+    "startup_name": "PCS AGRI",
+    "startup_slug": "pcs-agri"
+  },
+  {
+    "name": "Mohammed ZIOUANI",
+    "role": "Fondateur",
+    "slug": "mohammed-ziouani",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/mohammed-ziouani/",
+    "startup_name": "ODHIYA",
+    "startup_slug": "odhiya"
+  },
+  {
+    "name": "Ayoub EL IDRISSI",
+    "role": "Fondateur",
+    "slug": "ayoub-el-idrissi",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/ayoub-el-idrissi/",
+    "startup_name": "Carloc Maroc",
+    "startup_slug": "carloc-maroc"
+  },
+  {
+    "name": "Mohamed EL HANID",
+    "role": "Fondateur",
+    "slug": "mohamed-el-hanid",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/mohamed-el-hanid/",
+    "startup_name": "Be in Agriculture",
+    "startup_slug": "be-in-agriculture"
+  },
+  {
+    "name": "Yassine BENTALEB",
+    "role": "Fondateur",
+    "slug": "yassine-bentaleb-2",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/yassine-bentaleb-2/",
+    "startup_name": "Consomy",
+    "startup_slug": "consomy"
+  },
+  {
+    "name": "Mounaim EL KHOUATER",
+    "role": "Fondateur",
+    "slug": "mounaim-el-khouater",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/mounaim-el-khouater/",
+    "startup_name": "WoVoiture",
+    "startup_slug": "wovoiture"
+  },
+  {
+    "name": "Mohamed LAZRAK",
+    "role": "Fondateur",
+    "slug": "mohamed-lazrak",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/mohamed-lazrak/",
+    "startup_name": "Groupe Yep",
+    "startup_slug": "groupe-yep"
+  },
+  {
+    "name": "Tarik BELFASSI",
+    "role": "Fondateur",
+    "slug": "tarik-belfassi",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/tarik-belfassi/",
+    "startup_name": "MY ALL COURSES",
+    "startup_slug": "my-all-courses"
+  },
+  {
+    "name": "Ahmed ELAACHRAOUI",
+    "role": "Fondateur",
+    "slug": "ahmed-elaachraoui",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/ahmed-elaachraoui/",
+    "startup_name": "EDRIVE",
+    "startup_slug": "edrive"
+  },
+  {
+    "name": "Farouk GHARBAOUI",
+    "role": "Fondateur",
+    "slug": "farouk-gharbaoui",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/farouk-gharbaoui/",
+    "startup_name": "Sakane",
+    "startup_slug": "sakane"
+  },
+  {
+    "name": "Oussama RHEMARI",
+    "role": "Fondateur",
+    "slug": "oussama-rhemari",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/oussama-rhemari/",
+    "startup_name": "Digicall Partner",
+    "startup_slug": "digicall-partner"
+  },
+  {
+    "name": "Youssef BENSAID",
+    "role": "Fondateur",
+    "slug": "youssef-bensaid",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/youssef-bensaid/",
+    "startup_name": "PROMO MATERIAUX",
+    "startup_slug": "promo-materiaux"
+  },
+  {
+    "name": "Chourouk DELFI",
+    "role": "Fondateur",
+    "slug": "chourouk-delfi",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/chourouk-delfi/",
+    "startup_name": "Mindset Training",
+    "startup_slug": "mindset-training"
+  },
+  {
+    "name": "Mohamed Essafi EL OUARZAZI",
+    "role": "Fondateur",
+    "slug": "mohamed-essafi-el-ouarzazi",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/mohamed-essafi-el-ouarzazi/",
+    "startup_name": "KHATWA PARTNERS",
+    "startup_slug": "khatwa-partners"
+  },
+  {
+    "name": "Achraf EL QORCHI",
+    "role": "Fondateur",
+    "slug": "achraf-el-qorchi",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/achraf-el-qorchi/",
+    "startup_name": "Dabador",
+    "startup_slug": "dabador"
+  },
+  {
+    "name": "Ibrahim MELLOULI",
+    "role": "Fondateur",
+    "slug": "ibrahim-mellouli",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/ibrahim-mellouli/",
+    "startup_name": "MiQvr",
+    "startup_slug": "miqvr"
+  },
+  {
+    "name": "Hamza AIT KHI",
+    "role": "Fondateur",
+    "slug": "hamza-ait-khi",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/hamza-ait-khi/",
+    "startup_name": "Brostech",
+    "startup_slug": "brostech"
+  },
+  {
+    "name": "Hamid MOUFID",
+    "role": "Fondateur",
+    "slug": "hamid-moufid",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/hamid-moufid/",
+    "startup_name": "Maghreb Hydroponique",
+    "startup_slug": "maghreb-hydroponique"
+  },
+  {
+    "name": "Amal ALAOUI",
+    "role": "Fondateur",
+    "slug": "amal-alaoui",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/amal-alaoui/",
+    "startup_name": "Nickel",
+    "startup_slug": "nickel"
+  },
+  {
+    "name": "Amine ZAROUK",
+    "role": "Fondateur",
+    "slug": "amine-zarouk",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/amine-zarouk/",
+    "startup_name": "ARWA Solutions",
+    "startup_slug": "arwa-solutions"
+  },
+  {
+    "name": "Zouhair EL KARRAOUI",
+    "role": "Fondateur",
+    "slug": "zouhair-el-karraoui",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/zouhair-el-karraoui/",
+    "startup_name": "Tringalo",
+    "startup_slug": "tringalo"
+  },
+  {
+    "name": "Kamal ZOUANI",
+    "role": "Fondateur",
+    "slug": "khalid-zouani",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/khalid-zouani/",
+    "startup_name": "EngFlexy",
+    "startup_slug": "engflexy"
+  },
+  {
+    "name": "Hassan ZAAFRANE",
+    "role": "Fondateur",
+    "slug": "hassan-zaafrane",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/hassan-zaafrane/",
+    "startup_name": "NOVAC MANAGEMENT",
+    "startup_slug": "novac-management"
+  },
+  {
+    "name": "Ghali GHOMARI",
+    "role": "Fondateur",
+    "slug": "ghali-ghomari",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/ghali-ghomari/",
+    "startup_name": "Lemobilier.ma",
+    "startup_slug": "lemobilier-ma"
+  },
+  {
+    "name": "Alaa CHAHBOUNE",
+    "role": "Fondateur",
+    "slug": "alaa-chahboune",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/alaa-chahboune/",
+    "startup_name": "Enthalpy",
+    "startup_slug": "enthalpy"
+  },
+  {
+    "name": "Saad LACHHAB",
+    "role": "Fondateur",
+    "slug": "saad-lachhab",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/saad-lachhab/",
+    "startup_name": "Placari",
+    "startup_slug": "placari"
+  },
+  {
+    "name": "Abdelghani HAMMOUD",
+    "role": "Fondateur",
+    "slug": "abdelghani-hammoud",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/abdelghani-hammoud/",
+    "startup_name": "WeBerber",
+    "startup_slug": "weberber"
+  },
+  {
+    "name": "Aziz EL BOUZAIDI",
+    "role": "Fondateur",
+    "slug": "aziz-el-bouzaidi",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/aziz-el-bouzaidi/",
+    "startup_name": "Verdura",
+    "startup_slug": "verdura"
+  },
+  {
+    "name": "Marouane TAFFAH BENKHECHANE",
+    "role": "Fondateur",
+    "slug": "marouane-taffah-benkhechane",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/marouane-taffah-benkhechane/",
+    "startup_name": "Nsayblik",
+    "startup_slug": "nsayblik"
+  },
+  {
+    "name": "Taha EL ALJ",
+    "role": "Fondateur",
+    "slug": "taha-el-alj",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/taha-el-alj/",
+    "startup_name": "BOTI SCHOOL",
+    "startup_slug": "boti-school"
+  },
+  {
+    "name": "Ahmed SEMOUD",
+    "role": "Fondateur",
+    "slug": "ahmed-semoud",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/ahmed-semoud/",
+    "startup_name": "BOTI SCHOOL",
+    "startup_slug": "boti-school"
+  },
+  {
+    "name": "Imad BOUGATAYA",
+    "role": "Fondateur",
+    "slug": "imad-bougataya",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/imad-bougataya/",
+    "startup_name": "AILAB",
+    "startup_slug": "ailab"
+  },
+  {
+    "name": "Jalal BADER",
+    "role": "Fondateur",
+    "slug": "jalal-bader",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/jalal-bader/",
+    "startup_name": "High Delivery",
+    "startup_slug": "high-delivery"
+  },
+  {
+    "name": "Yassine HAMMOUD",
+    "role": "Fondateur",
+    "slug": "yassine-hammoud",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/yassine-hammoud/",
+    "startup_name": "GEOAP",
+    "startup_slug": "geoap"
+  },
+  {
+    "name": "Mohamed AMRANI",
+    "role": "Fondateur",
+    "slug": "mohamed-amrani",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/mohamed-amrani/",
+    "startup_name": "IYADA",
+    "startup_slug": "iyada"
+  },
+  {
+    "name": "Abdelghani ELMEKKAOUI",
+    "role": "Fondateur",
+    "slug": "abdelghani-elmekkaoui",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/abdelghani-elmekkaoui/",
+    "startup_name": "CREATIX STUDIO",
+    "startup_slug": "creatix-studio"
+  },
+  {
+    "name": "Lotf BELYCH",
+    "role": "Fondateur",
+    "slug": "lotf-belych",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/lotf-belych/",
+    "startup_name": "HooLiik",
+    "startup_slug": "hooliik"
+  },
+  {
+    "name": "Youssef BOUMAAZ",
+    "role": "Fondateur",
+    "slug": "youssef-boumaaz",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/youssef-boumaaz/",
+    "startup_name": "Smartech RFID",
+    "startup_slug": "smartech-rfid"
+  },
+  {
+    "name": "Mouad EL MOUDEN",
+    "role": "Fondateur",
+    "slug": "mouad-el-mouden",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/mouad-el-mouden/",
+    "startup_name": "KubicBits",
+    "startup_slug": "kubicbits"
+  },
+  {
+    "name": "Soufiane FAIZ",
+    "role": "Fondateur",
+    "slug": "soufiane-faiz",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/soufiane-faiz/",
+    "startup_name": "BTp360.ma",
+    "startup_slug": "btp360-ma"
+  },
+  {
+    "name": "Majid BENSLIMANE",
+    "role": "Fondateur",
+    "slug": "majid-benslimane",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/majid-benslimane/",
+    "startup_name": "Presta Freedom",
+    "startup_slug": "presta-freedom"
+  },
+  {
+    "name": "Moncef WAGAS",
+    "role": "Fondateur",
+    "slug": "moncef-wagas",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/moncef-wagas/",
+    "startup_name": "Space Up",
+    "startup_slug": "space-up"
+  },
+  {
+    "name": "Siham BOUSTIQUE",
+    "role": "Fondateur",
+    "slug": "siham-boustique",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/siham-boustique/",
+    "startup_name": "MED LEARNING ACADEMY",
+    "startup_slug": "med-learning-academy"
+  },
+  {
+    "name": "Salmane KAWTARI",
+    "role": "Fondateur",
+    "slug": "salmane-kawtari",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/salmane-kawtari/",
+    "startup_name": "MED LEARNING ACADEMY",
+    "startup_slug": "med-learning-academy"
+  },
+  {
+    "name": "Kevin GORMAND",
+    "role": "Fondateur",
+    "slug": "kevin-gormand",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/kevin-gormand/",
+    "startup_name": "Mubawab.ma",
+    "startup_slug": "mubawab-ma"
+  },
+  {
+    "name": "Amine KHAYATEI HOUSSAINI",
+    "role": "Fondateur",
+    "slug": "amine-khayatei-houssaini",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/amine-khayatei-houssaini/",
+    "startup_name": "KWIKS",
+    "startup_slug": "kwiks"
+  },
+  {
+    "name": "Karim KAOUKABI",
+    "role": "Fondateur",
+    "slug": "karim-kaoukabi",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/karim-kaoukabi/",
+    "startup_name": "KWIKS",
+    "startup_slug": "kwiks"
+  },
+  {
+    "name": "Khawla MSSYAH",
+    "role": "Fondateur",
+    "slug": "khawla-mssyah",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/khawla-mssyah/",
+    "startup_name": "Nalida Power",
+    "startup_slug": "nalida-power"
+  },
+  {
+    "name": "Ismael BELKHAYAT",
+    "role": "Fondateur",
+    "slug": "ismael-belkhayat",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/ismael-belkhayat/",
+    "startup_name": "MonDentiste.ma",
+    "startup_slug": "mondentiste-ma"
+  },
+  {
+    "name": "Ahmed LAHLOU",
+    "role": "Fondateur",
+    "slug": "ahmed-lahlou",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/ahmed-lahlou/",
+    "startup_name": "Kezakoo",
+    "startup_slug": "kezakoo"
+  },
+  {
+    "name": "Imad CHAKRI",
+    "role": "Fondateur",
+    "slug": "dr-imad-chakri",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/dr-imad-chakri/",
+    "startup_name": "PocketDoc",
+    "startup_slug": "pocketdoc"
+  },
+  {
+    "name": "Mohammed ALAA BOUZAID",
+    "role": "Fondateur",
+    "slug": "mohammed-alaa-bouzaid",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/mohammed-alaa-bouzaid/",
+    "startup_name": "Maxtron",
+    "startup_slug": "maxtron"
+  },
+  {
+    "name": "Ilyess HAMMOUDA",
+    "role": "Fondateur",
+    "slug": "ilyess-hammouda",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/ilyess-hammouda/",
+    "startup_name": "Kaalix.ma",
+    "startup_slug": "kaalix-ma"
+  },
+  {
+    "name": "Abdenour JBILI",
+    "role": "Fondateur",
+    "slug": "abdenour-jbili",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/abdenour-jbili/",
+    "startup_name": "OCP Maintenance Solutions",
+    "startup_slug": "ocp-maintenance-solutions"
+  },
+  {
+    "name": "Youssef JBEL",
+    "role": "Fondateur",
+    "slug": "youssef-jbel",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/youssef-jbel/",
+    "startup_name": "NowEdge",
+    "startup_slug": "nowedge"
+  },
+  {
+    "name": "Alaa HAMIDCHATE",
+    "role": "Fondateur",
+    "slug": "alaa-hamidchate",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/alaa-hamidchate/",
+    "startup_name": "HOOTA.ma",
+    "startup_slug": "hoota-ma"
+  },
+  {
+    "name": "Saadllah BELLA",
+    "role": "Fondateur",
+    "slug": "saadllah-bella",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/saadllah-bella/",
+    "startup_name": "NETIMAR",
+    "startup_slug": "netimar"
+  },
+  {
+    "name": "Youssef EL HAMMAL",
+    "role": "Fondateur",
+    "slug": "youssef-elhammal",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/youssef-elhammal/",
+    "startup_name": "Stagiaires.ma",
+    "startup_slug": "stagiaires-ma"
+  },
+  {
+    "name": "Mustapha FAIZ",
+    "role": "Fondateur",
+    "slug": "mustapha-faiz",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/mustapha-faiz/",
+    "startup_name": "SmartProf",
+    "startup_slug": "smartprof"
+  },
+  {
+    "name": "Ali FAOUZI",
+    "role": "Fondateur",
+    "slug": "ali-faouzi",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/ali-faouzi/",
+    "startup_name": "SmartProf",
+    "startup_slug": "smartprof"
+  },
+  {
+    "name": "Reda EL ARBAOUI",
+    "role": "Fondateur",
+    "slug": "reda-el-arbaoui",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/reda-el-arbaoui/",
+    "startup_name": "Dr Stone.ma",
+    "startup_slug": "dr-stone"
+  },
+  {
+    "name": "Ayoub SEDKI ELIDRISSI",
+    "role": "Fondateur",
+    "slug": "ayoub-sedki-elidrissi",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/ayoub-sedki-elidrissi/",
+    "startup_name": "SAHARA ADRENALINE PARK",
+    "startup_slug": "sahara-adrenaline-park"
+  },
+  {
+    "name": "Zouhair HAMDAOUI",
+    "role": "Fondateur",
+    "slug": "zouhair-hamdaoui",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/zouhair-hamdaoui/",
+    "startup_name": "Damanesign",
+    "startup_slug": "damanesign"
+  },
+  {
+    "name": "Youssef EL BROUZI",
+    "role": "Fondateur",
+    "slug": "youssef-el-brouzi",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/youssef-el-brouzi/",
+    "startup_name": "Delfisoft",
+    "startup_slug": "delfisoft"
+  },
+  {
+    "name": "Zineb MIDAFI",
+    "role": "Fondateur",
+    "slug": "zineb-midafi",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/zineb-midafi/",
+    "startup_name": "Virtual Building Solution",
+    "startup_slug": "virtual-building-solution"
+  },
+  {
+    "name": "Hamza EL JADIDI",
+    "role": "Fondateur",
+    "slug": "hamza-el-jadidi",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/hamza-el-jadidi/",
+    "startup_name": "Valcode",
+    "startup_slug": "valcode"
+  },
+  {
+    "name": "Assil BERNOSSI",
+    "role": "Fondateur",
+    "slug": "assil-bernossi",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/assil-bernossi/",
+    "startup_name": "Userguest",
+    "startup_slug": "userguest"
+  },
+  {
+    "name": "Ahmed CHAMI",
+    "role": "Fondateur",
+    "slug": "ahmed-chami",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/ahmed-chami/",
+    "startup_name": "Userguest",
+    "startup_slug": "userguest"
+  },
+  {
+    "name": "Hicham BENYEBDRI",
+    "role": "Fondateur",
+    "slug": "hicham-benyebdri",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/hicham-benyebdri/",
+    "startup_name": "Userguest",
+    "startup_slug": "userguest"
+  },
+  {
+    "name": "Otmane EL AZZAOUI",
+    "role": "Fondateur",
+    "slug": "otmane-el-azzaoui",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/otmane-el-azzaoui/",
+    "startup_name": "Machaussure.ma",
+    "startup_slug": "machaussure-ma"
+  },
+  {
+    "name": "Aicha AARABI",
+    "role": "Fondateur",
+    "slug": "aicha-aarabi",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/aicha-aarabi/",
+    "startup_name": "Bionoor Cosmetics",
+    "startup_slug": "bionoor-cosmetics"
+  },
+  {
+    "name": "Othmane IBN GHAZALA",
+    "role": "Fondateur",
+    "slug": "othmane-ibn-ghazala",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/othmane-ibn-ghazala/",
+    "startup_name": "Iktichaf Travel",
+    "startup_slug": "iktichaf-travel"
+  },
+  {
+    "name": "Othmane BEKKARI",
+    "role": "Fondateur",
+    "slug": "othmane-bekkari",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/othmane-bekkari/",
+    "startup_name": "GoMobile",
+    "startup_slug": "gomobile"
+  },
+  {
+    "name": "Jawad ZIYAT",
+    "role": "Fondateur",
+    "slug": "jawad-ziyat",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/jawad-ziyat/",
+    "startup_name": "VotreColis.ma",
+    "startup_slug": "votrecolis-ma"
+  },
+  {
+    "name": "Ismael BELKHAYAT",
+    "role": "Fondateur",
+    "slug": "ismael-belkhayat",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/ismael-belkhayat/",
+    "startup_name": "VotreColis.ma",
+    "startup_slug": "votrecolis-ma"
+  },
+  {
+    "name": "Omar SEFIANI",
+    "role": "Fondateur",
+    "slug": "omar-sefiani",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/omar-sefiani/",
+    "startup_name": "Sobrus",
+    "startup_slug": "sobrus"
+  },
+  {
+    "name": "Sofia ZAHID",
+    "role": "Fondateur",
+    "slug": "sofia-zahid",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/sofia-zahid/",
+    "startup_name": "Jodour",
+    "startup_slug": "jodour"
+  },
+  {
+    "name": "Mohammed HAMRITI",
+    "role": "Fondateur",
+    "slug": "mohammed-hamriti",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/mohammed-hamriti/",
+    "startup_name": "CashPub",
+    "startup_slug": "cashpub"
+  },
+  {
+    "name": "Omar BENNOUNA TEMSAMANI",
+    "role": "Fondateur",
+    "slug": "omar-bennouna-temsamani",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/omar-bennouna-temsamani/",
+    "startup_name": "Rock.ma",
+    "startup_slug": "rock-ma"
+  },
+  {
+    "name": "Mohammed BENKHALED",
+    "role": "Fondateur",
+    "slug": "mohammed-benkhaled",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/mohammed-benkhaled/",
+    "startup_name": "PEAQOCK",
+    "startup_slug": "peaqock"
+  },
+  {
+    "name": "Mohammed AKOUCHAM",
+    "role": "Fondateur",
+    "slug": "mohammed-akoucham",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/mohammed-akoucham/",
+    "startup_name": "AKOM SOLUTIONS",
+    "startup_slug": "akom-solutions"
+  },
+  {
+    "name": "Mohammed AIT ADDI",
+    "role": "Fondateur",
+    "slug": "mohammed-ait-addi",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/mohammed-ait-addi/",
+    "startup_name": "Saweblia",
+    "startup_slug": "saweblia"
+  },
+  {
+    "name": "Nizar BERDAI",
+    "role": "Fondateur",
+    "slug": "nizar-berdai",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/nizar-berdai/",
+    "startup_name": "WSSELNI MAAK",
+    "startup_slug": "wsselni-maak"
+  },
+  {
+    "name": "Sara HATIMI",
+    "role": "Fondateur",
+    "slug": "sara-hatimi",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/sara-hatimi/",
+    "startup_name": "NaturOPeps",
+    "startup_slug": "naturopeps"
+  },
+  {
+    "name": "NIHAL GRII",
+    "role": "Fondateur",
+    "slug": "nihal-grii",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/nihal-grii/",
+    "startup_name": "GRIMADIZ",
+    "startup_slug": "grimadiz"
+  },
+  {
+    "name": "Salima HDA",
+    "role": "Fondateur",
+    "slug": "salima-hda",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/salima-hda/",
+    "startup_name": "Diramino",
+    "startup_slug": "diramino"
+  },
+  {
+    "name": "Nassima CHORFI",
+    "role": "Fondateur",
+    "slug": "nassima-chorfi",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/nassima-chorfi/",
+    "startup_name": "Zedenya",
+    "startup_slug": "zedenya"
+  },
+  {
+    "name": "Saad MOUKITE",
+    "role": "Fondateur",
+    "slug": "saad-moukite",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/saad-moukite/",
+    "startup_name": "VitalCare",
+    "startup_slug": "vitalcare"
+  },
+  {
+    "name": "Saad KEMMOU",
+    "role": "Fondateur",
+    "slug": "saad-kemmou",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/saad-kemmou/",
+    "startup_name": "Hsabati",
+    "startup_slug": "hsabati"
+  },
+  {
+    "name": "Nada DIOURI",
+    "role": "Fondateur",
+    "slug": "nada-diouri",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/nada-diouri/",
+    "startup_name": "KOUN",
+    "startup_slug": "koun"
+  },
+  {
+    "name": "Rizk HOUSNI",
+    "role": "Fondateur",
+    "slug": "rizk-housni",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/rizk-housni/",
+    "startup_name": "MyMarket.ma",
+    "startup_slug": "mymarket-ma"
+  },
+  {
+    "name": "Reda HACHIMY",
+    "role": "Fondateur",
+    "slug": "reda-hachimy",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/reda-hachimy/",
+    "startup_name": "Evolvico",
+    "startup_slug": "evolvico"
+  },
+  {
+    "name": "Reda HACHIMY",
+    "role": "Fondateur",
+    "slug": "reda-hachimy",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/reda-hachimy/",
+    "startup_name": "Capital Quant Agency",
+    "startup_slug": "capital-quant-agency"
+  },
+  {
+    "name": "Moulay Abdellah JALAL",
+    "role": "Fondateur",
+    "slug": "moulay-abdellah-jalal",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/moulay-abdellah-jalal/",
+    "startup_name": "Corail",
+    "startup_slug": "corail"
+  },
+  {
+    "name": "Mohcine BOUSAIRY BERRADA",
+    "role": "Fondateur",
+    "slug": "mohcine-bousairy-berrada",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/mohcine-bousairy-berrada/",
+    "startup_name": "IMMOPEDIA ADVISORY & BROKERAGE",
+    "startup_slug": "immopedia-advisory-brokerage"
+  },
+  {
+    "name": "Oussama NOUR",
+    "role": "Fondateur",
+    "slug": "oussama-nour",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/oussama-nour/",
+    "startup_name": "ATAREC",
+    "startup_slug": "atarec"
+  },
+  {
+    "name": "Mohamed Taha EL OUARYACHI",
+    "role": "Fondateur",
+    "slug": "mohamed-taha-el-ouaryachi",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/mohamed-taha-el-ouaryachi/",
+    "startup_name": "ATAREC",
+    "startup_slug": "atarec"
+  },
+  {
+    "name": "Oussama BENHAMMOU",
+    "role": "Fondateur",
+    "slug": "oussama-benhammou",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/oussama-benhammou/",
+    "startup_name": "Elbotola",
+    "startup_slug": "elbotola"
+  },
+  {
+    "name": "Mohammed MRANI ALAOUI",
+    "role": "Fondateur",
+    "slug": "mohammed-mrani-alaoui",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/mohammed-mrani-alaoui/",
+    "startup_name": "Carmine",
+    "startup_slug": "carmine"
+  },
+  {
+    "name": "Taoufik ABOUDIA",
+    "role": "Fondateur",
+    "slug": "taoufik-aboudia",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/taoufik-aboudia/",
+    "startup_name": "Webpick",
+    "startup_slug": "webpick"
+  },
+  {
+    "name": "Walid MACHROUH",
+    "role": "Fondateur",
+    "slug": "walid-machrouh",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/walid-machrouh/",
+    "startup_name": "NoBox Lab",
+    "startup_slug": "nobox-lab"
+  },
+  {
+    "name": "Sophia EL BAHJA",
+    "role": "Fondateur",
+    "slug": "sophia-el-bahja",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/sophia-el-bahja/",
+    "startup_name": "NoBox Lab",
+    "startup_slug": "nobox-lab"
+  },
+  {
+    "name": "Yassine AICHOUCHE",
+    "role": "Fondateur",
+    "slug": "yassine-aichouche",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/yassine-aichouche/",
+    "startup_name": "CHRONODIALI",
+    "startup_slug": "chronodiali"
+  },
+  {
+    "name": "Yassine ARFANE",
+    "role": "Fondateur",
+    "slug": "yassine-arfane",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/yassine-arfane/",
+    "startup_name": "Vigon Systems",
+    "startup_slug": "vigon-systems"
+  },
+  {
+    "name": "Yassine BENTALEB",
+    "role": "Fondateur",
+    "slug": "yassine-bentaleb",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/yassine-bentaleb/",
+    "startup_name": "Foodeals",
+    "startup_slug": "foodeals"
+  },
+  {
+    "name": "Mehdi EL KOUHEN",
+    "role": "Fondateur",
+    "slug": "mehdi-el-kouhen",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/mehdi-el-kouhen/",
+    "startup_name": "Docti.ma",
+    "startup_slug": "docti-ma"
+  },
+  {
+    "name": "Yassine ETTAYAL",
+    "role": "Fondateur",
+    "slug": "yassine-ettayal",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/yassine-ettayal/",
+    "startup_name": "Educall",
+    "startup_slug": "educall"
+  },
+  {
+    "name": "Mehdi CHERIF ALAMI",
+    "role": "Fondateur",
+    "slug": "mehdi-cherif-alami",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/mehdi-cherif-alami/",
+    "startup_name": "Freterium",
+    "startup_slug": "freterium"
+  },
+  {
+    "name": "Omar EL KOUHENE",
+    "role": "Fondateur",
+    "slug": "omar-el-kouhene",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/omar-el-kouhene/",
+    "startup_name": "Freterium",
+    "startup_slug": "freterium"
+  },
+  {
+    "name": "Yassine NOKRY",
+    "role": "Fondateur",
+    "slug": "yassine-nokry",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/yassine-nokry/",
+    "startup_name": "Ostadi.ma",
+    "startup_slug": "ostadi-ma"
+  },
+  {
+    "name": "Abdelaziz MAYYAH",
+    "role": "Fondateur",
+    "slug": "abdelaziz-mayyah",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/abdelaziz-mayyah/",
+    "startup_name": "SWIQAT",
+    "startup_slug": "swiqat"
+  },
+  {
+    "name": "Younes AFARES",
+    "role": "Fondateur",
+    "slug": "younes-afares",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/younes-afares/",
+    "startup_name": "FIKRALABS",
+    "startup_slug": "fikralabs"
+  },
+  {
+    "name": "Manal MHADA",
+    "role": "Fondateur",
+    "slug": "manal-mhada",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/manal-mhada/",
+    "startup_name": "Amendy Foods",
+    "startup_slug": "amendy-foods"
+  },
+  {
+    "name": "Mohamed LOUAY METOUGUI",
+    "role": "Fondateur",
+    "slug": "mohamed-louay-metougui",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/mohamed-louay-metougui/",
+    "startup_name": "Amendy Foods",
+    "startup_slug": "amendy-foods"
+  },
+  {
+    "name": "Mohammed BENDAANANE",
+    "role": "Fondateur",
+    "slug": "mohammed-bendaanane",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/mohammed-bendaanane/",
+    "startup_name": "Amendy Foods",
+    "startup_slug": "amendy-foods"
+  },
+  {
+    "name": "Youness NEJJAH",
+    "role": "Fondateur",
+    "slug": "youness-nejjah",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/youness-nejjah/",
+    "startup_name": "How2Pay Services",
+    "startup_slug": "how2pay-services"
+  },
+  {
+    "name": "Mohamed KHACHANI",
+    "role": "Fondateur",
+    "slug": "mohamed-khachani",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/mohamed-khachani/",
+    "startup_name": "CLEANZY",
+    "startup_slug": "cleanzy"
+  },
+  {
+    "name": "Khaoula TANFIOUI",
+    "role": "Fondateur",
+    "slug": "khaoula-tanfioui",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/khaoula-tanfioui/",
+    "startup_name": "Bots Factory",
+    "startup_slug": "bots-factory"
+  },
+  {
+    "name": "Khalid BABA",
+    "role": "Fondateur",
+    "slug": "khalid-baba",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/khalid-baba/",
+    "startup_name": "Jibly",
+    "startup_slug": "jibly"
+  },
+  {
+    "name": "Kamal REGGAD",
+    "role": "Fondateur",
+    "slug": "kamal-reggad",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/kamal-reggad/",
+    "startup_name": "Hmizate.ma",
+    "startup_slug": "hmizate-ma"
+  },
+  {
+    "name": "Youssef LEMRINI",
+    "role": "Fondateur",
+    "slug": "youssef-lemrini",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/youssef-lemrini/",
+    "startup_name": "Manageo",
+    "startup_slug": "manageo"
+  },
+  {
+    "name": "Kaiss BOUALI",
+    "role": "Fondateur",
+    "slug": "kaiss-bouali",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/kaiss-bouali/",
+    "startup_name": "Toubib.ma",
+    "startup_slug": "toubib-ma"
+  },
+  {
+    "name": "Jalal BENNOUNA",
+    "role": "Fondateur",
+    "slug": "jalal-bennouna",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/jalal-bennouna/",
+    "startup_name": "Maborne",
+    "startup_slug": "maborne"
+  },
+  {
+    "name": "Youssef ZAROUALI",
+    "role": "Fondateur",
+    "slug": "youssef-zarouali",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/youssef-zarouali/",
+    "startup_name": "MyTeam Solution",
+    "startup_slug": "myteam-solution"
+  },
+  {
+    "name": "Issame HAMAOUI",
+    "role": "Fondateur",
+    "slug": "issame-hamaoui",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/issame-hamaoui/",
+    "startup_name": "CarDiag",
+    "startup_slug": "cardiag"
+  },
+  {
+    "name": "Issam DARUI",
+    "role": "Fondateur",
+    "slug": "issam-darui",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/issam-darui/",
+    "startup_name": "Lagare.ma",
+    "startup_slug": "lagare-ma"
+  },
+  {
+    "name": "Zaynab EL ARAKI",
+    "role": "Fondateur",
+    "slug": "zaynab-el-araki",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/zaynab-el-araki/",
+    "startup_name": "Jannatecare",
+    "startup_slug": "jannatecare"
+  },
+  {
+    "name": "Zineb DRISSI KAITOUNI",
+    "role": "Fondateur",
+    "slug": "zineb-drissi-kaitouni",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/zineb-drissi-kaitouni/",
+    "startup_name": "DabaDoc",
+    "startup_slug": "dabadoc"
+  },
+  {
+    "name": "Ismail RACHDAOUI",
+    "role": "Fondateur",
+    "slug": "ismail-rachdaoui",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/ismail-rachdaoui/",
+    "startup_name": "NEXTWI",
+    "startup_slug": "nextwi"
+  },
+  {
+    "name": "Zouhir DROUSSI",
+    "role": "Fondateur",
+    "slug": "zouhir-droussi",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/zouhir-droussi/",
+    "startup_name": "Markoub.ma",
+    "startup_slug": "markoub-ma"
+  },
+  {
+    "name": "Ismail AIT MAHDI",
+    "role": "Fondateur",
+    "slug": "ismail-ait-mahdi",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/ismail-ait-mahdi/",
+    "startup_name": "Dilegis Premium Service",
+    "startup_slug": "dilegis-premium-service"
+  },
+  {
+    "name": "Ismael BELKHAYAT",
+    "role": "Fondateur",
+    "slug": "ismael-belkhayat",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/ismael-belkhayat/",
+    "startup_name": "Sarouty.ma",
+    "startup_slug": "sarouty-ma"
+  },
+  {
+    "name": "Ismael BELKHAYAT",
+    "role": "Fondateur",
+    "slug": "ismael-belkhayat",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/ismael-belkhayat/",
+    "startup_name": "MaCroisière.ma",
+    "startup_slug": "macroisiere-ma"
+  },
+  {
+    "name": "Sophia ALJ",
+    "role": "Fondateur",
+    "slug": "sophia-alj",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/sophia-alj/",
+    "startup_name": "Chari.ma",
+    "startup_slug": "chari-ma"
+  },
+  {
+    "name": "Ismael BELKHAYAT",
+    "role": "Fondateur",
+    "slug": "ismael-belkhayat",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/ismael-belkhayat/",
+    "startup_name": "Chari.ma",
+    "startup_slug": "chari-ma"
+  },
+  {
+    "name": "Ismael BELKHAYAT",
+    "role": "Fondateur",
+    "slug": "ismael-belkhayat",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/ismael-belkhayat/",
+    "startup_name": "VotreChauffeur.ma",
+    "startup_slug": "votrechauffeur-ma"
+  },
+  {
+    "name": "Jawad ZIYAT",
+    "role": "Fondateur",
+    "slug": "jawad-ziyat",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/jawad-ziyat/",
+    "startup_name": "VotreChauffeur.ma",
+    "startup_slug": "votrechauffeur-ma"
+  },
+  {
+    "name": "Imad EL MANSOUR ZEKRI",
+    "role": "Fondateur",
+    "slug": "imad-el-mansour-zekri",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/imad-el-mansour-zekri/",
+    "startup_name": "CATHEDIS",
+    "startup_slug": "cathedis"
+  },
+  {
+    "name": "Hicham OUBELKASS",
+    "role": "Fondateur",
+    "slug": "hicham-oubelkass",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/hicham-oubelkass/",
+    "startup_name": "Doosys",
+    "startup_slug": "doosys"
+  },
+  {
+    "name": "Hicham EL ATTAR",
+    "role": "Fondateur",
+    "slug": "hicham-el-attar",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/hicham-el-attar/",
+    "startup_name": "DataPathology",
+    "startup_slug": "datapathology"
+  },
+  {
+    "name": "Hicham BENYAHYA",
+    "role": "Fondateur",
+    "slug": "hicham-benyahya",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/hicham-benyahya/",
+    "startup_name": "SYPEX",
+    "startup_slug": "sypex"
+  },
+  {
+    "name": "Hassan EL HEMER",
+    "role": "Fondateur",
+    "slug": "hassan-el-hemer",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/hassan-el-hemer/",
+    "startup_name": "BioChar Maroc",
+    "startup_slug": "biochar-maroc"
+  },
+  {
+    "name": "Hanane RIFAI",
+    "role": "Fondateur",
+    "slug": "hanane-rifai",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/hanane-rifai/",
+    "startup_name": "Hydrobarley",
+    "startup_slug": "hydrobarley"
+  },
+  {
+    "name": "Hamza EDDAHBI",
+    "role": "Fondateur",
+    "slug": "hamza-eddahbi",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/hamza-eddahbi/",
+    "startup_name": "Maana Travel",
+    "startup_slug": "maana-travel"
+  },
+  {
+    "name": "Hamza BENDAHOU",
+    "role": "Fondateur",
+    "slug": "hamza-bendahou",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/hamza-bendahou/",
+    "startup_name": "SOWIT",
+    "startup_slug": "sowit"
+  },
+  {
+    "name": "Hamza RKHA CHAHAM",
+    "role": "Fondateur",
+    "slug": "hamza-rkha-chaham",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/hamza-rkha-chaham/",
+    "startup_name": "SOWIT",
+    "startup_slug": "sowit"
+  },
+  {
+    "name": "Hamza BAKKACH",
+    "role": "Fondateur",
+    "slug": "hamza-bakkach",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/hamza-bakkach/",
+    "startup_name": "DEALKHIR",
+    "startup_slug": "dealkhir"
+  },
+  {
+    "name": "Hamza ABOULFETH",
+    "role": "Fondateur",
+    "slug": "hamza-aboulfeth",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/hamza-aboulfeth/",
+    "startup_name": "Food On Demand",
+    "startup_slug": "food-on-demand"
+  },
+  {
+    "name": "Fayçal NOUSHI",
+    "role": "Fondateur",
+    "slug": "faycal-noushi",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/faycal-noushi/",
+    "startup_name": "Zen Networks",
+    "startup_slug": "zen-networks"
+  },
+  {
+    "name": "Fayçal HAMRI",
+    "role": "Fondateur",
+    "slug": "faycal-hamri",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/faycal-hamri/",
+    "startup_name": "WorkHub",
+    "startup_slug": "workhub"
+  },
+  {
+    "name": "Emna MAKNI",
+    "role": "Fondateur",
+    "slug": "emna-makni",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/emna-makni/",
+    "startup_name": "GOACommerce",
+    "startup_slug": "goacommerce"
+  },
+  {
+    "name": "Salma AMMOR",
+    "role": "Fondateur",
+    "slug": "salma-ammor",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/salma-ammor/",
+    "startup_name": "GOACommerce",
+    "startup_slug": "goacommerce"
+  },
+  {
+    "name": "El Mehdi AGOUZAL",
+    "role": "Fondateur",
+    "slug": "el-mehdi-agouzal",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/el-mehdi-agouzal/",
+    "startup_name": "Mastery GPS",
+    "startup_slug": "mastery-gps"
+  },
+  {
+    "name": "Nabil EL MAHYAOUI",
+    "role": "Fondateur",
+    "slug": "nabil-el-mahyaoui",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/nabil-el-mahyaoui/",
+    "startup_name": "PRATICOURS",
+    "startup_slug": "praticours"
+  },
+  {
+    "name": "El Houssine BOUYAKHF",
+    "role": "Fondateur",
+    "slug": "el-houssine-bouyakhf",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/el-houssine-bouyakhf/",
+    "startup_name": "AIOX LABS",
+    "startup_slug": "aiox-labs"
+  },
+  {
+    "name": "Youssef BOUYAKHF",
+    "role": "Fondateur",
+    "slug": "youssef-bouyakhf",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/youssef-bouyakhf/",
+    "startup_name": "AIOX LABS",
+    "startup_slug": "aiox-labs"
+  },
+  {
+    "name": "El Houssain BEN MESSAOUD",
+    "role": "Fondateur",
+    "slug": "el-houssain-ben-messaoud",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/el-houssain-ben-messaoud/",
+    "startup_name": "SafeDEMAT",
+    "startup_slug": "safedemat"
+  },
+  {
+    "name": "Issam DAHMAN",
+    "role": "Fondateur",
+    "slug": "issam-dahman",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/issam-dahman/",
+    "startup_name": "KONTA",
+    "startup_slug": "konta"
+  },
+  {
+    "name": "El Arbi ABOUSSOROR",
+    "role": "Fondateur",
+    "slug": "el-arbi-aboussoror",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/el-arbi-aboussoror/",
+    "startup_name": "KONTA",
+    "startup_slug": "konta"
+  },
+  {
+    "name": "Mehdi ZIRARI",
+    "role": "Fondateur",
+    "slug": "mehdi-zirari",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/mehdi-zirari/",
+    "startup_name": "KONTA",
+    "startup_slug": "konta"
+  },
+  {
+    "name": "Driss SLAOUI",
+    "role": "Fondateur",
+    "slug": "driss-slaoui",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/driss-slaoui/",
+    "startup_name": "Welovebuzz",
+    "startup_slug": "welovebuzz"
+  },
+  {
+    "name": "Diyae KHADRI",
+    "role": "Fondateur",
+    "slug": "diyae-khadri",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/diyae-khadri/",
+    "startup_name": "Chifae",
+    "startup_slug": "chifae"
+  },
+  {
+    "name": "Mohammed KACIMI ALAOUI",
+    "role": "Fondateur",
+    "slug": "mohammed-kacimi-alaoui",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/mohammed-kacimi-alaoui/",
+    "startup_name": "Chifae",
+    "startup_slug": "chifae"
+  },
+  {
+    "name": "Chawki ELHIMRI",
+    "role": "Fondateur",
+    "slug": "chawki-elhimri",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/chawki-elhimri/",
+    "startup_name": "Neuroconversions",
+    "startup_slug": "neuroconversions"
+  },
+  {
+    "name": "Adil BERTUL",
+    "role": "Fondateur",
+    "slug": "adil-bertul",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/adil-bertul/",
+    "startup_name": "Blink Pharma",
+    "startup_slug": "blink-pharma"
+  },
+  {
+    "name": "Mohamed Ali SAMI KHALIL",
+    "role": "Fondateur",
+    "slug": "mohamed-ali-sami-khalil",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/mohamed-ali-sami-khalil/",
+    "startup_name": "Blink Pharma",
+    "startup_slug": "blink-pharma"
+  },
+  {
+    "name": "Badreddine GRINA",
+    "role": "Fondateur",
+    "slug": "badreddine-grina",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/badreddine-grina/",
+    "startup_name": "PantoFit",
+    "startup_slug": "pantofit"
+  },
+  {
+    "name": "Badr IDRISSI",
+    "role": "Fondateur",
+    "slug": "badr-idrissi",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/badr-idrissi/",
+    "startup_name": "ATLAN SPACE",
+    "startup_slug": "atlan-space"
+  },
+  {
+    "name": "Badr AIT BELLA",
+    "role": "Fondateur",
+    "slug": "badr-ait-bella",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/badr-ait-bella/",
+    "startup_name": "OriginSoft",
+    "startup_slug": "originsoft"
+  },
+  {
+    "name": "Ayoub TABOUT",
+    "role": "Fondateur",
+    "slug": "ayoub-tabout",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/ayoub-tabout/",
+    "startup_name": "Joodek",
+    "startup_slug": "joodek"
+  },
+  {
+    "name": "Ayoub KOUTAR",
+    "role": "Fondateur",
+    "slug": "ayoub-koutar",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/ayoub-koutar/",
+    "startup_name": "Outdooors",
+    "startup_slug": "outdooors"
+  },
+  {
+    "name": "Asmaa CHAKIR ALAOUI",
+    "role": "Fondateur",
+    "slug": "asmaa-chakir-alaoui",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/asmaa-chakir-alaoui/",
+    "startup_name": "VelyVelo",
+    "startup_slug": "velyvelo"
+  },
+  {
+    "name": "Jamil EL GARTI",
+    "role": "Fondateur",
+    "slug": "jamil-el-garti",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/jamil-el-garti/",
+    "startup_name": "VelyVelo",
+    "startup_slug": "velyvelo"
+  },
+  {
+    "name": "Othman RAZINE",
+    "role": "Fondateur",
+    "slug": "othman-razine",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/othman-razine/",
+    "startup_name": "VelyVelo",
+    "startup_slug": "velyvelo"
+  },
+  {
+    "name": "Anas AZZIOUI",
+    "role": "Fondateur",
+    "slug": "anas-azzioui",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/anas-azzioui/",
+    "startup_name": "MathScan",
+    "startup_slug": "mathscan"
+  },
+  {
+    "name": "Amine SLIMANI",
+    "role": "Fondateur",
+    "slug": "amine-slimani",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/amine-slimani/",
+    "startup_name": "Epicerie Verte",
+    "startup_slug": "epicerie-verte"
+  },
+  {
+    "name": "Amine FASSI FIHRI",
+    "role": "Fondateur",
+    "slug": "amine-fassi-fihri",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/amine-fassi-fihri/",
+    "startup_name": "INDATACORE",
+    "startup_slug": "indatacore"
+  },
+  {
+    "name": "Youssef EL HAMMAL",
+    "role": "Fondateur",
+    "slug": "youssef-elhammal",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/youssef-elhammal/",
+    "startup_name": "Youth Talent Africa",
+    "startup_slug": "youth-talent-africa"
+  },
+  {
+    "name": "Amine DERJ",
+    "role": "Fondateur",
+    "slug": "amine-derj",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/amine-derj/",
+    "startup_name": "Jodoor",
+    "startup_slug": "jodoor"
+  },
+  {
+    "name": "Ali MESSOUDI",
+    "role": "Fondateur",
+    "slug": "ali-messoudi",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/ali-messoudi/",
+    "startup_name": "Transpare",
+    "startup_slug": "transpare"
+  },
+  {
+    "name": "Aida KANDIL",
+    "role": "Fondateur",
+    "slug": "aida-kandil",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/aida-kandil/",
+    "startup_name": "MyTindy",
+    "startup_slug": "mytindy"
+  },
+  {
+    "name": "Adam BOUHADMA",
+    "role": "Fondateur",
+    "slug": "adam-bouhadma",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/adam-bouhadma/",
+    "startup_name": "9rayti.com (Education Media Company)",
+    "startup_slug": "9rayti-com"
+  },
+  {
+    "name": "Reda HALIB",
+    "role": "Fondateur",
+    "slug": "reda-halib",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/reda-halib/",
+    "startup_name": "Allo Garant",
+    "startup_slug": "allo-garant"
+  },
+  {
+    "name": "Maha BENNANI",
+    "role": "Fondateur",
+    "slug": "maha-bennani",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/maha-bennani/",
+    "startup_name": "LNKO",
+    "startup_slug": "lnko"
+  },
+  {
+    "name": "Malak BENNANI",
+    "role": "Fondateur",
+    "slug": "malak-bennani",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/malak-bennani/",
+    "startup_name": "LNKO",
+    "startup_slug": "lnko"
+  },
+  {
+    "name": "Youssef EL HAMMAL",
+    "role": "Fondateur",
+    "slug": "youssef-elhammal",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/youssef-elhammal/",
+    "startup_name": "Dates-concours.ma",
+    "startup_slug": "dates-concours-ma"
+  },
+  {
+    "name": "Youssef EL HAMMAL",
+    "role": "Fondateur",
+    "slug": "youssef-elhammal",
+    "profile_url": "https://www.start-up.ma/fondateurs-des-startup/youssef-elhammal/",
+    "startup_name": "MBA.ma",
+    "startup_slug": "mba-ma"
+  }
+]

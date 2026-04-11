@@ -28,20 +28,49 @@
                         <td style="padding:44px 40px 32px;">
 
                             <h2 style="color:#f8fafc;margin:0 0 8px;font-size:22px;font-weight:700;">
-                                Thank you for registering, {{ name }}!
+                                Bienvenue sur The Pulse, {{ name }} !
                             </h2>
-                            <p style="color:#94a3b8;font-size:15px;line-height:1.7;margin:0 0 28px;">
-                                You've joined The Pulse as a <strong style="color:#00d4aa;">{{ role }}</strong>.<br>
-                                Click the button below to confirm your email and activate your account.
+                            <p style="color:#94a3b8;font-size:15px;line-height:1.7;margin:0 0 24px;">
+                                Votre profil <strong style="color:#00d4aa;">{{ role }}</strong> est prêt.<br>
+                                The Pulse évolue — vous pouvez maintenant accéder à votre espace membre, modifier vos informations et vous connecter directement sur la plateforme.
                             </p>
+
+                            <!-- Feature highlights -->
+                            <table cellpadding="0" cellspacing="0" width="100%" style="margin-bottom:28px;">
+                                <tr>
+                                    <td style="background:#0f172a;border-radius:12px;padding:20px 24px;">
+                                        <p style="color:#94a3b8;font-size:13px;margin:0 0 12px;text-transform:uppercase;letter-spacing:0.05em;font-weight:600;">Ce qui vous attend</p>
+                                        <table cellpadding="0" cellspacing="0" width="100%">
+                                            <tr>
+                                                <td style="padding:6px 0;">
+                                                    <span style="color:#00d4aa;font-weight:700;margin-right:8px;">→</span>
+                                                    <span style="color:#cbd5e1;font-size:14px;">Votre profil public sur l'écosystème</span>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td style="padding:6px 0;">
+                                                    <span style="color:#00d4aa;font-weight:700;margin-right:8px;">→</span>
+                                                    <span style="color:#cbd5e1;font-size:14px;">Accès à l'annuaire des startups & fondateurs</span>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td style="padding:6px 0;">
+                                                    <span style="color:#00d4aa;font-weight:700;margin-right:8px;">→</span>
+                                                    <span style="color:#cbd5e1;font-size:14px;">Connexion directe avec un mot de passe</span>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                </tr>
+                            </table>
 
                             <!-- CTA Button -->
                             <table cellpadding="0" cellspacing="0" width="100%">
                                 <tr>
                                     <td align="center" style="padding:4px 0 36px;">
-                                        <a href="{{ confirm_url }}"
+                                        <a href="{{ profile_url }}"
                                            style="display:inline-block;background:linear-gradient(135deg,#00d4aa,#4361ee);color:#ffffff;text-decoration:none;font-weight:700;font-size:15px;padding:16px 44px;border-radius:10px;letter-spacing:0.02em;">
-                                            Confirm my email →
+                                            Voir mon profil →
                                         </a>
                                     </td>
                                 </tr>
@@ -50,13 +79,9 @@
                             <!-- Divider -->
                             <table cellpadding="0" cellspacing="0" width="100%">
                                 <tr>
-                                    <td style="border-top:1px solid #334155;padding-top:24px;">
+                                    <td style="border-top:1px solid #334155;padding-top:20px;">
                                         <p style="color:#475569;font-size:13px;line-height:1.6;margin:0;">
-                                            If the button doesn't work, copy and paste this link into your browser:<br>
-                                            <a href="{{ confirm_url }}" style="color:#00d4aa;word-break:break-all;">{{ confirm_url }}</a>
-                                        </p>
-                                        <p style="color:#475569;font-size:12px;margin:16px 0 0;">
-                                            If you didn't request this, you can safely ignore this email.
+                                            Des questions ? Répondez directement à cet email ou contactez-nous sur <a href="https://www.thepulse.ma" style="color:#00d4aa;text-decoration:none;">thepulse.ma</a>.
                                         </p>
                                     </td>
                                 </tr>

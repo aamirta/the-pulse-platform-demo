@@ -483,6 +483,11 @@ def incubators():
         .order_by(Startup.startup_name)\
         .all()
     
+    try:
+        pulse_member_emails = [r[0].lower() for r in db.session.execute(db.text('SELECT email FROM pulse_members')).fetchall()]
+    except Exception:
+        pulse_member_emails = []
+
     return render_template(
         "incubators.html",
         incubators=all_incubators,
@@ -491,7 +496,8 @@ def incubators():
         distinct_startups=distinct_startups,
         selected=request.args,
         phase_counts=phase_counts,
-        pagination=pagination
+        pagination=pagination,
+        pulse_member_emails=pulse_member_emails
     )
 
 @app.route("/about-us")
@@ -1152,6 +1158,46 @@ def my_profile(member_id):
     member = PulseMember.query.get_or_404(member_id)
     form_data = json.loads(member.form_data) if member.form_data else {}
     return render_template("my-profile.html", member=member, form_data=form_data)
+
+@app.route("/logout-member")
+def logout_member():
+    session.pop("member_id", None)
+    return redirect(url_for("home"))
+
+@app.route("/edit-profile/<int:member_id>", methods=["GET", "POST"])
+def edit_profile(member_id):
+    member = PulseMember.query.get_or_404(member_id)
+    if request.method == "POST":
+        member.full_name = request.form.get("full_name", member.full_name).strip()
+        member.role = request.form.get("role", member.role)
+        file = request.files.get("profile_pic")
+        if file and allowed_file(file.filename):
+            import base64
+            file_data = file.read()
+            ext = file.filename.rsplit('.', 1)[1].lower()
+            b64 = base64.b64encode(file_data).decode('utf-8')
+            member.profile_pic = f"data:image/{ext};base64,{b64}"
+        db.session.commit()
+        return redirect(url_for("my_profile", member_id=member_id))
+    return render_template("edit-profile.html", member=member)
+
+@app.route("/set-password/<int:member_id>", methods=["GET", "POST"])
+def set_password(member_id):
+    member = PulseMember.query.get_or_404(member_id)
+    error = None
+    success = None
+    if request.method == "POST":
+        password = request.form.get("password", "")
+        confirm = request.form.get("confirm_password", "")
+        if len(password) < 8:
+            error = "Password must be at least 8 characters."
+        elif password != confirm:
+            error = "Passwords do not match."
+        else:
+            member.password_hash = generate_password_hash(password)
+            db.session.commit()
+            success = "Password set successfully!"
+    return render_template("set-password.html", member=member, error=error, success=success)
 
 @app.route("/talents")
 def talents():

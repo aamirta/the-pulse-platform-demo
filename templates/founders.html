@@ -152,6 +152,9 @@
                                         {{ founder.name or 'Fondateur inconnu' }}
                                     {% endif %}
                                 </h3>
+                                {% if (founder.teaser_personal_emails and founder.teaser_personal_emails|lower in pulse_member_emails) or (founder.teaser_professional_emails and founder.teaser_professional_emails|lower in pulse_member_emails) %}
+                                <span class="pulse-badge-new">&#10022; New Pulser</span>
+                                {% endif %}
                                 {% if founder.current_title or founder.current_employer %}
                                 <div class="founder-title">
                                     {% if founder.current_title %}{{ founder.current_title }}{% endif %}{% if founder.current_title and founder.current_employer %} <span data-i18n="at_employer">chez</span> {% endif %}{% if founder.current_employer %}{{ founder.current_employer }}{% endif %}

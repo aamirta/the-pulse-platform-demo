@@ -141,12 +141,221 @@
                     aria-label="Toggle dark and light mode" title="Toggle theme">
                 <i class="fas fa-moon" id="themeIcon" aria-hidden="true"></i>
             </button>
+            {% if current_member %}
+            <!-- Member avatar dropdown -->
+            <div class="member-nav-dropdown" id="memberNavDropdown">
+                <button class="member-nav-trigger" id="memberNavTrigger" type="button">
+                    {% if current_member.profile_pic %}
+                        <img src="{{ current_member.profile_pic }}" alt="{{ current_member.full_name }}" class="member-nav-avatar">
+                    {% else %}
+                        <div class="member-nav-avatar-placeholder">{{ current_member.full_name[0].upper() }}</div>
+                    {% endif %}
+                    <span class="member-nav-name">{{ current_member.full_name.split()[0] }}</span>
+                    <i class="fas fa-chevron-down member-nav-chevron"></i>
+                </button>
+                <div class="member-nav-menu" id="memberNavMenu">
+                    <div class="member-nav-header">
+                        {% if current_member.profile_pic %}
+                            <img src="{{ current_member.profile_pic }}" alt="{{ current_member.full_name }}" class="member-nav-menu-avatar">
+                        {% else %}
+                            <div class="member-nav-menu-avatar-placeholder">{{ current_member.full_name[0].upper() }}</div>
+                        {% endif %}
+                        <div>
+                            <div class="member-nav-menu-name">{{ current_member.full_name }}</div>
+                            <div class="member-nav-menu-role">{{ current_member.role | capitalize }}</div>
+                        </div>
+                    </div>
+                    <div class="member-nav-divider"></div>
+                    <a href="{{ url_for('my_profile', member_id=current_member.id) }}" class="member-nav-item">
+                        <i class="fas fa-user"></i> Mon Profil
+                    </a>
+                    <a href="{{ url_for('edit_profile', member_id=current_member.id) }}" class="member-nav-item">
+                        <i class="fas fa-pen"></i> Modifier mes infos
+                    </a>
+                    <a href="{{ url_for('complete_profile', member_id=current_member.id) }}" class="member-nav-item">
+                        <i class="fas fa-camera"></i> Changer la photo
+                    </a>
+                    <a href="{{ url_for('set_password', member_id=current_member.id) }}" class="member-nav-item">
+                        <i class="fas fa-lock"></i> Mot de passe
+                    </a>
+                    <div class="member-nav-divider"></div>
+                    <a href="{{ url_for('logout_member') }}" class="member-nav-item member-nav-logout">
+                        <i class="fas fa-sign-out-alt"></i> Se déconnecter
+                    </a>
+                </div>
+            </div>
+            {% else %}
             <a href="/join" class="btn-join">
                 <i class="fas fa-bolt" aria-hidden="true"></i>
                 <span class="btn-join-full">Become a Pulser</span><span class="btn-join-short">Join</span>
             </a>
+            {% endif %}
         </div>
     </nav>
+    {% if current_member %}
+    <style>
+        .member-nav-dropdown {
+            position: relative;
+        }
+        .member-nav-trigger {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: rgba(0,212,170,0.08);
+            border: 1px solid rgba(0,212,170,0.25);
+            border-radius: 50px;
+            padding: 0.3rem 0.75rem 0.3rem 0.35rem;
+            cursor: pointer;
+            color: var(--text-primary, #f8fafc);
+            font-size: 0.85rem;
+            font-weight: 600;
+            transition: background 0.2s, border-color 0.2s;
+        }
+        .member-nav-trigger:hover {
+            background: rgba(0,212,170,0.15);
+            border-color: #00d4aa;
+        }
+        .member-nav-avatar {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid #00d4aa;
+        }
+        .member-nav-avatar-placeholder {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #00d4aa, #4361ee);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-size: 0.75rem;
+            font-weight: 700;
+            flex-shrink: 0;
+        }
+        .member-nav-chevron {
+            font-size: 0.65rem;
+            color: var(--text-secondary, #94a3b8);
+            transition: transform 0.2s;
+        }
+        .member-nav-dropdown.open .member-nav-chevron {
+            transform: rotate(180deg);
+        }
+        .member-nav-menu {
+            display: none;
+            position: absolute;
+            right: 0;
+            top: calc(100% + 10px);
+            background: var(--bg-card, #1e2535);
+            border: 1px solid var(--border-color, rgba(255,255,255,0.08));
+            border-radius: 16px;
+            min-width: 220px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+            overflow: hidden;
+            z-index: 2000;
+            animation: dropIn 0.18s ease;
+        }
+        @keyframes dropIn {
+            from { opacity: 0; transform: translateY(-6px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+        .member-nav-dropdown.open .member-nav-menu {
+            display: block;
+        }
+        .member-nav-header {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 1rem 1rem 0.75rem;
+        }
+        .member-nav-menu-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid #00d4aa;
+            flex-shrink: 0;
+        }
+        .member-nav-menu-avatar-placeholder {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #00d4aa, #4361ee);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-size: 1rem;
+            font-weight: 700;
+            flex-shrink: 0;
+        }
+        .member-nav-menu-name {
+            font-size: 0.9rem;
+            font-weight: 700;
+            color: var(--text-primary, #f8fafc);
+        }
+        .member-nav-menu-role {
+            font-size: 0.72rem;
+            color: #00d4aa;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            margin-top: 0.1rem;
+        }
+        .member-nav-divider {
+            height: 1px;
+            background: var(--border-color, rgba(255,255,255,0.07));
+            margin: 0.25rem 0;
+        }
+        .member-nav-item {
+            display: flex;
+            align-items: center;
+            gap: 0.65rem;
+            padding: 0.6rem 1rem;
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: var(--text-secondary, #94a3b8);
+            text-decoration: none;
+            transition: background 0.15s, color 0.15s;
+        }
+        .member-nav-item i {
+            width: 16px;
+            text-align: center;
+            font-size: 0.8rem;
+        }
+        .member-nav-item:hover {
+            background: rgba(255,255,255,0.05);
+            color: var(--text-primary, #f8fafc);
+        }
+        .member-nav-logout {
+            color: #f87171;
+            margin-bottom: 0.25rem;
+        }
+        .member-nav-logout:hover {
+            background: rgba(248,113,113,0.08);
+            color: #f87171;
+        }
+        @media (max-width: 640px) {
+            .member-nav-name { display: none; }
+        }
+    </style>
+    <script>
+        (function() {
+            const dropdown = document.getElementById('memberNavDropdown');
+            const trigger = document.getElementById('memberNavTrigger');
+            if (!trigger) return;
+            trigger.addEventListener('click', function(e) {
+                e.stopPropagation();
+                dropdown.classList.toggle('open');
+            });
+            document.addEventListener('click', function() {
+                dropdown.classList.remove('open');
+            });
+        })();
+    </script>
+    {% endif %}
 
     <!-- ============================================
          SIDEBAR

@@ -1,0 +1,81 @@
+{% extends "base.html" %}
+{% block title %}Edit Profile - The Pulse{% endblock %}
+{% block content %}
+<style>
+    .edit-page { min-height: 70vh; display: flex; align-items: center; justify-content: center; padding: 2rem 1rem; }
+    .edit-card { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 20px; padding: 2.5rem; max-width: 500px; width: 100%; }
+    .edit-card h1 { font-weight: 700; font-size: 1.6rem; color: var(--text-primary); margin-bottom: 0.25rem; }
+    .edit-card .sub { color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 2rem; }
+    .form-group { margin-bottom: 1.25rem; }
+    .form-group label { display: block; font-size: 0.85rem; font-weight: 600; color: var(--text-secondary); margin-bottom: 0.4rem; text-transform: uppercase; letter-spacing: 0.04em; }
+    .form-group input, .form-group select { width: 100%; padding: 0.75rem 1rem; background: var(--bg-dark); border: 1px solid var(--border-color); border-radius: 10px; color: var(--text-primary); font-size: 0.95rem; }
+    .form-group input:focus, .form-group select:focus { outline: none; border-color: #00d4aa; }
+    .avatar-section { display: flex; align-items: center; gap: 1rem; margin-bottom: 1.5rem; padding: 1rem; background: var(--bg-dark); border-radius: 12px; border: 1px solid var(--border-color); cursor: pointer; position: relative; }
+    .avatar-section input[type="file"] { position: absolute; inset: 0; opacity: 0; cursor: pointer; }
+    .avatar-section img, .avatar-section .avatar-init { width: 60px; height: 60px; border-radius: 50%; object-fit: cover; border: 2px solid #00d4aa; }
+    .avatar-init { background: linear-gradient(135deg,#00d4aa,#4361ee); display:flex; align-items:center; justify-content:center; color:#fff; font-size:1.4rem; font-weight:700; }
+    .avatar-section .avatar-hint { font-size: 0.85rem; color: var(--text-secondary); }
+    .avatar-section .avatar-hint strong { color: #00d4aa; display: block; margin-bottom: 0.2rem; }
+    .btn-save { width: 100%; padding: 0.9rem; background: linear-gradient(135deg,#00d4aa,#4361ee); color: #fff; border: none; border-radius: 12px; font-size: 1rem; font-weight: 600; cursor: pointer; margin-top: 0.5rem; }
+    .btn-save:hover { opacity: 0.9; }
+    .btn-cancel { display: block; text-align: center; margin-top: 0.75rem; color: var(--text-secondary); font-size: 0.88rem; text-decoration: none; }
+    .btn-cancel:hover { color: #00d4aa; }
+</style>
+<div class="edit-page">
+    <div class="edit-card">
+        <h1>Edit Profile</h1>
+        <p class="sub">Update your information visible on The Pulse.</p>
+
+        <form method="POST" enctype="multipart/form-data">
+            <!-- Photo -->
+            <div class="avatar-section">
+                {% if member.profile_pic %}
+                    <img src="{{ member.profile_pic }}" alt="Photo" id="avatarPreview">
+                {% else %}
+                    <div class="avatar-init" id="avatarInit">{{ member.full_name[0].upper() }}</div>
+                    <img src="" alt="Photo" id="avatarPreview" style="display:none;">
+                {% endif %}
+                <div class="avatar-hint">
+                    <strong>Change photo</strong>
+                    Click to upload a new profile picture
+                </div>
+                <input type="file" name="profile_pic" accept="image/*" id="photoInput">
+            </div>
+
+            <div class="form-group">
+                <label>Full Name</label>
+                <input type="text" name="full_name" value="{{ member.full_name }}" required>
+            </div>
+
+            <div class="form-group">
+                <label>Role</label>
+                <select name="role">
+                    <option value="entrepreneur" {% if member.role == 'entrepreneur' %}selected{% endif %}>Entrepreneur</option>
+                    <option value="investor" {% if member.role == 'investor' %}selected{% endif %}>Investor</option>
+                    <option value="talent" {% if member.role == 'talent' %}selected{% endif %}>Talent</option>
+                    <option value="program" {% if member.role == 'program' %}selected{% endif %}>Program</option>
+                    <option value="incubator" {% if member.role == 'incubator' %}selected{% endif %}>Incubator</option>
+                </select>
+            </div>
+
+            <button type="submit" class="btn-save"><i class="fas fa-check"></i> Save Changes</button>
+        </form>
+        <a href="{{ url_for('my_profile', member_id=member.id) }}" class="btn-cancel">Cancel</a>
+    </div>
+</div>
+<script>
+    document.getElementById('photoInput').addEventListener('change', function() {
+        if (this.files && this.files[0]) {
+            const reader = new FileReader();
+            reader.onload = e => {
+                const preview = document.getElementById('avatarPreview');
+                const init = document.getElementById('avatarInit');
+                preview.src = e.target.result;
+                preview.style.display = 'block';
+                if (init) init.style.display = 'none';
+            };
+            reader.readAsDataURL(this.files[0]);
+        }
+    });
+</script>
+{% endblock %}
