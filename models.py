@@ -755,7 +755,7 @@ class PulseMember(db.Model):
     role = db.Column(db.String(50), nullable=False)  # entrepreneur, investor, program, incubator, talent
     confirmation_token = db.Column(db.String(100), unique=True)
     is_confirmed = db.Column(db.Boolean, default=False)
-    profile_pic = db.Column(db.String(500))
+    profile_pic = db.Column(db.Text)
     form_data = db.Column(db.Text)  # JSON string with role-specific fields
     password_hash = db.Column(db.String(255), nullable=True)
     created_at = db.Column(db.DateTime, default=db.func.now())

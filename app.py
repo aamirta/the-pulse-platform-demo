@@ -1169,12 +1169,22 @@ def complete_profile(member_id):
         return redirect(url_for("join"))
     if request.method == "POST":
         file = request.files.get("profile_pic")
-        if file and allowed_file(file.filename):
-            file_data = file.read()
-            ext = file.filename.rsplit('.', 1)[1].lower()
-            b64 = base64.b64encode(file_data).decode('utf-8')
-            member.profile_pic = f"data:image/{ext};base64,{b64}"
-            db.session.commit()
+        if file and file.filename and allowed_file(file.filename):
+            try:
+                file_data = file.read()
+                # Limit to 2MB to avoid DB issues
+                if len(file_data) > 2 * 1024 * 1024:
+                    return render_template("complete-profile.html", member=member,
+                        error="La photo est trop lourde. Maximum 2MB.")
+                ext = file.filename.rsplit('.', 1)[1].lower()
+                b64 = base64.b64encode(file_data).decode('utf-8')
+                member.profile_pic = f"data:image/{ext};base64,{b64}"
+                db.session.commit()
+            except Exception as e:
+                db.session.rollback()
+                print(f"[UPLOAD ERROR] {e}", flush=True)
+                return render_template("complete-profile.html", member=member,
+                    error="Erreur lors de l'upload. Essayez avec une image plus petite.")
         return redirect(url_for("my_profile", member_id=member.id))
     return render_template("complete-profile.html", member=member)
 
