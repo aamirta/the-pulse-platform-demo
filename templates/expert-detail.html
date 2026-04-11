@@ -1,0 +1,357 @@
+{% extends "base.html" %}
+
+{% block title %}{{ expert.full_name }} - Expert | The Pulse{% endblock %}
+
+{% block content %}
+<style>
+    .ep-container { max-width: 750px; margin: 2rem auto; padding: 0 1rem; }
+    .ep-card {
+        background: var(--bg-card);
+        border: 1px solid var(--border-color);
+        border-radius: 18px;
+        overflow: hidden;
+    }
+    .ep-banner {
+        height: 100px;
+        background: linear-gradient(135deg, #f97316 0%, var(--accent) 100%);
+        position: relative;
+    }
+    .ep-header {
+        display: flex;
+        align-items: flex-end;
+        gap: 1.2rem;
+        padding: 0 1.5rem;
+        margin-top: -40px;
+        position: relative;
+        z-index: 2;
+    }
+    .ep-avatar {
+        width: 80px;
+        height: 80px;
+        border-radius: 50%;
+        border: 3px solid var(--bg-card);
+        background: linear-gradient(135deg, #f97316, #ea580c);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #fff;
+        font-family: var(--font-heading);
+        font-weight: 700;
+        font-size: 1.8rem;
+        flex-shrink: 0;
+        object-fit: cover;
+    }
+    .ep-name-block { padding-bottom: 0.5rem; }
+    .ep-name {
+        font-family: var(--font-heading);
+        font-weight: 700;
+        font-size: 1.4rem;
+        color: var(--text-primary);
+        margin: 0;
+    }
+    .ep-title {
+        font-size: 0.9rem;
+        color: var(--text-secondary);
+    }
+    .ep-body { padding: 1.5rem; }
+    .ep-section { margin-bottom: 1.5rem; }
+    .ep-section-title {
+        font-family: var(--font-heading);
+        font-weight: 600;
+        font-size: 0.85rem;
+        color: var(--text-muted);
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        margin-bottom: 0.6rem;
+    }
+    .ep-bio {
+        font-size: 0.9rem;
+        line-height: 1.6;
+        color: var(--text-primary);
+        white-space: pre-wrap;
+    }
+    .ep-meta-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+        gap: 0.75rem;
+    }
+    .ep-meta-item {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        font-size: 0.88rem;
+        color: var(--text-primary);
+    }
+    .ep-meta-item i {
+        color: #f97316;
+        width: 16px;
+        text-align: center;
+        font-size: 0.8rem;
+    }
+    .ep-skills {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.4rem;
+    }
+    .ep-skill {
+        background: rgba(249, 115, 22, 0.08);
+        color: #f97316;
+        padding: 0.3rem 0.7rem;
+        border-radius: 8px;
+        font-size: 0.8rem;
+        font-weight: 500;
+    }
+    .ep-badges {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+    }
+    .ep-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.3rem;
+        padding: 0.3rem 0.75rem;
+        border-radius: 8px;
+        font-size: 0.8rem;
+        font-weight: 500;
+    }
+    .ep-badge.domain { background: rgba(249,115,22,0.08); color: #f97316; }
+    .ep-badge.exp { background: var(--secondary-subtle); color: var(--secondary); }
+    .ep-badge.avail { background: rgba(16,185,129,0.1); color: #10b981; }
+    .ep-links {
+        display: flex;
+        gap: 0.6rem;
+        flex-wrap: wrap;
+    }
+    .ep-link {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.4rem;
+        padding: 0.45rem 0.9rem;
+        border-radius: 10px;
+        font-size: 0.82rem;
+        font-weight: 600;
+        text-decoration: none;
+        transition: all 0.2s ease;
+    }
+    .ep-link.linkedin { background: rgba(0,119,181,0.1); color: #0077b5; }
+    .ep-link.linkedin:hover { background: #0077b5; color: #fff; }
+    .ep-link.web { background: var(--accent-subtle); color: var(--accent); }
+    .ep-link.web:hover { background: var(--accent); color: #fff; }
+    .ep-pulse-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.4rem;
+        padding: 0.6rem 1.3rem;
+        border: none;
+        border-radius: 12px;
+        background: var(--accent);
+        color: #fff;
+        font-size: 0.9rem;
+        font-weight: 700;
+        font-family: var(--font-body);
+        cursor: pointer;
+        transition: all 0.2s ease;
+        margin-top: 0.5rem;
+    }
+    .ep-pulse-btn:hover { transform: translateY(-1px); box-shadow: 0 6px 18px rgba(0,212,170,0.35); }
+    .ep-back {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.4rem;
+        color: var(--text-secondary);
+        text-decoration: none;
+        font-size: 0.85rem;
+        font-weight: 500;
+        margin-bottom: 1rem;
+    }
+    .ep-back:hover { color: var(--accent); }
+    @media (max-width: 768px) {
+        .ep-header { gap: 0.8rem; padding: 0 1rem; }
+        .ep-avatar { width: 64px; height: 64px; font-size: 1.4rem; margin-top: -32px; }
+        .ep-name { font-size: 1.2rem; }
+        .ep-body { padding: 1rem; }
+    }
+</style>
+
+<div class="ep-container">
+    <a href="{{ url_for('experts') }}" class="ep-back"><i class="fas fa-arrow-left"></i> Retour aux experts</a>
+
+    <div class="ep-card">
+        <div class="ep-banner"></div>
+        <div class="ep-header">
+            {% if expert.profile_pic %}
+            <img src="{{ expert.profile_pic }}" class="ep-avatar" alt="{{ expert.full_name }}">
+            {% else %}
+            <div class="ep-avatar">{{ expert.full_name[0].upper() if expert.full_name else 'E' }}</div>
+            {% endif %}
+            <div class="ep-name-block">
+                <h1 class="ep-name">{{ expert.full_name }}</h1>
+                {% if expert.current_title %}
+                <div class="ep-title">{{ expert.current_title }}{% if expert.organization %} — {{ expert.organization }}{% endif %}</div>
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="ep-body">
+            <!-- Badges -->
+            <div class="ep-section">
+                <div class="ep-badges">
+                    {% if expert.expertise_domain %}
+                    <span class="ep-badge domain"><i class="fas fa-graduation-cap"></i> {{ expert.expertise_domain }}</span>
+                    {% endif %}
+                    {% if expert.years_experience %}
+                    <span class="ep-badge exp"><i class="fas fa-clock"></i> {{ expert.years_experience }}</span>
+                    {% endif %}
+                    {% if expert.availability %}
+                    <span class="ep-badge avail"><i class="fas fa-calendar-check"></i> {{ expert.availability }}</span>
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- Bio -->
+            {% if expert.professional_bio %}
+            <div class="ep-section">
+                <div class="ep-section-title">Bio</div>
+                <div class="ep-bio">{{ expert.professional_bio }}</div>
+            </div>
+            {% endif %}
+
+            <!-- Info -->
+            <div class="ep-section">
+                <div class="ep-section-title">Informations</div>
+                <div class="ep-meta-grid">
+                    {% if expert.location %}
+                    <div class="ep-meta-item"><i class="fas fa-map-marker-alt"></i> {{ expert.location }}</div>
+                    {% endif %}
+                    {% if expert.services_offered %}
+                    <div class="ep-meta-item"><i class="fas fa-hands-helping"></i> {{ expert.services_offered }}</div>
+                    {% endif %}
+                    {% if expert.target_audience %}
+                    <div class="ep-meta-item"><i class="fas fa-bullseye"></i> {{ expert.target_audience }}</div>
+                    {% endif %}
+                    {% if expert.languages %}
+                    <div class="ep-meta-item"><i class="fas fa-language"></i> {{ expert.languages }}</div>
+                    {% endif %}
+                    {% if expert.industries_of_interest %}
+                    <div class="ep-meta-item"><i class="fas fa-industry"></i> {{ expert.industries_of_interest }}</div>
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- Skills -->
+            {% if expert.skills %}
+            <div class="ep-section">
+                <div class="ep-section-title">Compétences</div>
+                <div class="ep-skills">
+                    {% for skill in expert.skills.split(',') %}
+                    {% if skill.strip() %}
+                    <span class="ep-skill">{{ skill.strip() }}</span>
+                    {% endif %}
+                    {% endfor %}
+                </div>
+            </div>
+            {% endif %}
+
+            <!-- Achievements -->
+            {% if expert.achievements %}
+            <div class="ep-section">
+                <div class="ep-section-title">Réalisations</div>
+                <div class="ep-bio">{{ expert.achievements }}</div>
+            </div>
+            {% endif %}
+
+            <!-- Links -->
+            <div class="ep-section">
+                <div class="ep-links">
+                    {% if expert.linkedin_url %}
+                    <a href="{{ expert.linkedin_url }}" target="_blank" rel="noopener" class="ep-link linkedin">
+                        <i class="fab fa-linkedin-in"></i> LinkedIn
+                    </a>
+                    {% endif %}
+                    {% if expert.portfolio_website %}
+                    <a href="{{ expert.portfolio_website }}" target="_blank" rel="noopener" class="ep-link web">
+                        <i class="fas fa-globe"></i> Site web
+                    </a>
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- Send Pulse -->
+            {% if expert.email %}
+            <button class="ep-pulse-btn" onclick="openExpertMsg('{{ expert.full_name }}', '{{ expert.email }}')">
+                <svg width="18" height="12" viewBox="0 0 22 16" fill="none"><polyline points="0,8 4,8 6,8 8,2 10,14 12,6 14,8 18,8 22,8" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>
+                Envoyer un Pulse
+            </button>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<!-- Message Modal (same as experts page) -->
+<div id="expertMsgModal" style="display:none; position:fixed; top:0; left:0; right:0; bottom:0; z-index:99999; background:rgba(0,0,0,0.5); backdrop-filter:blur(4px); align-items:center; justify-content:center;" onclick="if(event.target===this)closeExpertMsg()">
+    <div style="background:var(--bg-card); border:1px solid var(--border-color); border-radius:16px; padding:1.5rem; width:90%; max-width:420px; box-shadow:0 20px 60px rgba(0,0,0,0.3);">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1rem;">
+            <h3 style="font-family:var(--font-heading); font-size:1rem; margin:0;">
+                <svg width="18" height="12" viewBox="0 0 22 16" fill="none" style="vertical-align:middle; margin-right:0.4rem;">
+                    <polyline points="0,8 4,8 6,8 8,2 10,14 12,6 14,8 18,8 22,8" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+                </svg>
+                Envoyer un Pulse à <span id="expertMsgRecipient"></span>
+            </h3>
+            <button onclick="closeExpertMsg()" style="background:none; border:none; color:var(--text-muted); font-size:1.2rem; cursor:pointer;">&times;</button>
+        </div>
+        <input type="hidden" id="expertMsgToEmail" value="">
+        {% if current_member %}
+        <input type="hidden" id="expertMsgSenderName" value="{{ current_member.full_name }}">
+        <input type="hidden" id="expertMsgSenderEmail" value="{{ current_member.email }}">
+        <div style="font-size:0.82rem; color:var(--text-secondary); margin-bottom:0.6rem;">
+            <i class="fas fa-user" style="margin-right:0.3rem;"></i> {{ current_member.full_name }} ({{ current_member.email }})
+        </div>
+        {% else %}
+        <div style="display:flex; gap:0.5rem; margin-bottom:0.6rem;">
+            <input type="text" id="expertMsgSenderName" placeholder="Votre nom" style="flex:1; padding:0.5rem 0.7rem; border:1px solid var(--border-color); border-radius:8px; background:var(--bg-surface); color:var(--text-primary); font-size:0.82rem; font-family:var(--font-body); outline:none;">
+            <input type="email" id="expertMsgSenderEmail" placeholder="Votre email" style="flex:1; padding:0.5rem 0.7rem; border:1px solid var(--border-color); border-radius:8px; background:var(--bg-surface); color:var(--text-primary); font-size:0.82rem; font-family:var(--font-body); outline:none;">
+        </div>
+        {% endif %}
+        <textarea id="expertMsgContent" rows="3" placeholder="Votre message..." style="width:100%; padding:0.6rem 0.8rem; border:1px solid var(--border-color); border-radius:10px; background:var(--bg-surface); color:var(--text-primary); font-size:0.85rem; font-family:var(--font-body); outline:none; resize:none;"></textarea>
+        <button onclick="sendExpertMsg()" style="margin-top:0.75rem; width:100%; padding:0.6rem; border:none; border-radius:10px; background:var(--accent); color:#fff; font-size:0.85rem; font-weight:700; cursor:pointer; font-family:var(--font-body);">
+            <svg width="16" height="10" viewBox="0 0 22 16" fill="none" style="vertical-align:middle;margin-right:0.3rem;"><polyline points="0,8 4,8 6,8 8,2 10,14 12,6 14,8 18,8 22,8" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg> Envoyer le Pulse
+        </button>
+    </div>
+</div>
+<script>
+function openExpertMsg(name, email) {
+    document.getElementById('expertMsgRecipient').textContent = name;
+    document.getElementById('expertMsgToEmail').value = email;
+    document.getElementById('expertMsgModal').style.display = 'flex';
+    setTimeout(function() { document.getElementById('expertMsgContent').focus(); }, 100);
+}
+function closeExpertMsg() {
+    document.getElementById('expertMsgModal').style.display = 'none';
+    document.getElementById('expertMsgContent').value = '';
+}
+function sendExpertMsg() {
+    var toEmail = document.getElementById('expertMsgToEmail').value;
+    var toName = document.getElementById('expertMsgRecipient').textContent;
+    var fromName = document.getElementById('expertMsgSenderName').value.trim();
+    var fromEmail = document.getElementById('expertMsgSenderEmail').value.trim();
+    var message = document.getElementById('expertMsgContent').value.trim();
+    if (!message) { alert('Veuillez écrire un message.'); return; }
+    if (!fromName || !fromEmail) { alert('Veuillez renseigner votre nom et email.'); return; }
+    fetch('/send-pulse', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({to_name: toName, to_email: toEmail, from_name: fromName, from_email: fromEmail, message: message})
+    }).then(function(r) { return r.json(); }).then(function(data) {
+        if (data.ok) {
+            closeExpertMsg();
+            var toast = document.createElement('div');
+            toast.innerHTML = '<svg width="18" height="12" viewBox="0 0 22 16" fill="none" style="vertical-align:middle;margin-right:0.4rem;"><polyline points="0,8 4,8 6,8 8,2 10,14 12,6 14,8 18,8 22,8" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg> Pulse envoyé !';
+            toast.style.cssText = 'position:fixed;bottom:2rem;left:50%;transform:translateX(-50%);background:var(--accent);color:#fff;padding:0.75rem 1.5rem;border-radius:12px;font-family:var(--font-body);font-weight:700;font-size:0.9rem;z-index:99999;box-shadow:0 8px 30px rgba(0,212,170,0.4);';
+            document.body.appendChild(toast);
+            setTimeout(function(){toast.remove();},4000);
+        } else { alert(data.error || 'Erreur.'); }
+    }).catch(function() { alert('Erreur réseau.'); });
+}
+</script>
+{% endblock %}

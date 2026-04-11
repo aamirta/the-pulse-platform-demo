@@ -1424,6 +1424,12 @@ def cofounder_form():
 ## EXPERTS
 ## ============================================
 
+@app.route("/expert/<int:expert_id>")
+def expert_detail(expert_id):
+    expert = Expert.query.get_or_404(expert_id)
+    return render_template("expert-detail.html", expert=expert)
+
+
 @app.route("/experts")
 def experts():
     query = Expert.query
@@ -1478,6 +1484,7 @@ def experts():
         class _ExpertProxy:
             pass
         proxy = _ExpertProxy()
+        proxy.expert_id = None  # Not a real Expert row
         proxy.full_name = m.full_name
         proxy.email = m.email
         proxy.profile_pic = m.profile_pic
@@ -2194,13 +2201,16 @@ def inbox():
         ).all()
         for ex in experts_with_pics:
             key = (ex.email or "").strip().lower()
-            if key not in pic_map and ex.profile_pic:
-                pic_map[key] = {"pic": ex.profile_pic, "id": None, "name": ex.full_name}
+            if key not in pic_map:
+                pic_map[key] = {"pic": ex.profile_pic or "", "id": None, "name": ex.full_name, "expert_id": ex.expert_id}
+            elif "expert_id" not in pic_map[key]:
+                pic_map[key]["expert_id"] = ex.expert_id
 
     for c in sorted_convos:
         info = pic_map.get(c["email"], {})
         c["pic"] = info.get("pic", "")
         c["member_id"] = info.get("id")
+        c["expert_id"] = info.get("expert_id")
 
     # Pre-select conversation
     selected_email = request.args.get("with", "")

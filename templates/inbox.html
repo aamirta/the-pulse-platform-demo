@@ -294,7 +294,7 @@
                 {% for c in conversations %}
                 <div class="convo-item{% if c.email == selected_email %} active{% endif %}"
                      data-email="{{ c.email }}" data-name="{{ c.name }}"
-                     data-pic="{{ c.pic or '' }}" data-member-id="{{ c.member_id or '' }}"
+                     data-pic="{{ c.pic or '' }}" data-member-id="{{ c.member_id or '' }}" data-expert-id="{{ c.expert_id or '' }}"
                      onclick="selectConvo(this)">
                     {% if c.pic %}
                     <img src="{{ c.pic }}" class="convo-avatar" alt="{{ c.name }}">
@@ -377,6 +377,7 @@
         currentName = el.dataset.name;
         currentPic = el.dataset.pic;
         currentMemberId = el.dataset.memberId;
+        var currentExpertId = el.dataset.expertId;
 
         // Update header
         var avatar = document.getElementById('chatAvatar');
@@ -389,6 +390,8 @@
         nameEl.textContent = currentName;
         if (currentMemberId) {
             nameEl.href = '/my-profile/' + currentMemberId;
+        } else if (currentExpertId) {
+            nameEl.href = '/expert/' + currentExpertId;
         } else {
             nameEl.href = '#';
         }

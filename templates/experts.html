@@ -457,7 +457,7 @@
     <div class="experts-grid">
         {% if experts|length > 0 %}
             {% for expert in experts %}
-            <div class="expert-card">
+            <div class="expert-card" {% if expert.expert_id %}onclick="window.location='/expert/{{ expert.expert_id }}'"{% endif %}>
                 <div class="expert-card-header">
                     {% if expert.profile_pic %}
                     <img src="{{ expert.profile_pic }}" alt="{{ expert.full_name }}" class="expert-avatar" style="object-fit:cover;">
