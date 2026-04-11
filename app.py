@@ -1033,7 +1033,7 @@ def inject_current_member():
             if member:
                 return {"current_member": member}
         except Exception:
-            pass
+            db.session.rollback()
         session.pop("member_id", None)
     return {"current_member": None}
 
