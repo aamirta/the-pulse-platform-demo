@@ -12,7 +12,10 @@ from werkzeug.utils import secure_filename
 import smtplib
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
-import resend
+try:
+    import resend
+except ImportError:
+    resend = None
 import urllib.parse
 import uuid
 import time
@@ -52,7 +55,7 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 RESEND_API_KEY = os.environ.get('RESEND_API_KEY', '')
 GMAIL_USER = os.environ.get('GMAIL_USER', 'contact@thepulse.ma')
 GMAIL_APP_PASSWORD = os.environ.get('GMAIL_APP_PASSWORD', '')
-if RESEND_API_KEY:
+if RESEND_API_KEY and resend:
     resend.api_key = RESEND_API_KEY
 
 # Upload config
@@ -921,7 +924,7 @@ def send_confirmation_email(member):
                                    confirm_url=confirm_url,
                                    role=member.role)
     # Try Resend first (production)
-    if RESEND_API_KEY:
+    if RESEND_API_KEY and resend:
         try:
             resend.Emails.send({
                 "from": "The Pulse <contact@thepulse.ma>",
