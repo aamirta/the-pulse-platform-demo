@@ -2141,17 +2141,140 @@ def inbox():
     if not member:
         session.pop("member_id", None)
         return redirect(url_for("member_login"))
-    # Messages received (to this member's email)
-    received = DirectMessage.query.filter_by(to_email=member.email).order_by(DirectMessage.created_at.desc()).all()
-    # Messages sent (from this member's email)
-    sent = DirectMessage.query.filter_by(from_email=member.email).order_by(DirectMessage.created_at.desc()).all()
-    # Mark received as read
-    unread = [m for m in received if not m.is_read]
-    for m in unread:
-        m.is_read = True
-    if unread:
-        db.session.commit()
-    return render_template("inbox.html", member=member, received=received, sent=sent)
+    my_email = member.email.strip().lower()
+
+    # All messages where I'm sender or receiver
+    all_msgs = DirectMessage.query.filter(
+        db.or_(
+            db.func.lower(DirectMessage.to_email) == my_email,
+            db.func.lower(DirectMessage.from_email) == my_email,
+        )
+    ).order_by(DirectMessage.created_at.asc()).all()
+
+    # Group into conversations by the other person's email
+    conversations = {}  # other_email -> {name, email, messages[], unread}
+    for m in all_msgs:
+        if (m.from_email or "").strip().lower() == my_email:
+            other_email = (m.to_email or "").strip().lower()
+            other_name = m.to_name or other_email or "Inconnu"
+        else:
+            other_email = (m.from_email or "").strip().lower()
+            other_name = m.from_name or other_email or "Inconnu"
+        if not other_email:
+            continue
+        if other_email not in conversations:
+            conversations[other_email] = {
+                "name": other_name, "email": other_email,
+                "messages": [], "unread": 0, "last_time": m.created_at,
+            }
+        conversations[other_email]["messages"].append(m)
+        conversations[other_email]["last_time"] = m.created_at
+        # Update name to most recent known name
+        if other_name and other_name != other_email:
+            conversations[other_email]["name"] = other_name
+        if (m.to_email or "").strip().lower() == my_email and not m.is_read:
+            conversations[other_email]["unread"] += 1
+
+    # Sort conversations by last message time (most recent first)
+    sorted_convos = sorted(conversations.values(), key=lambda c: c["last_time"], reverse=True)
+
+    # Fetch profile pics for conversation partners
+    all_partner_emails = [c["email"] for c in sorted_convos]
+    pic_map = {}
+    if all_partner_emails:
+        members_with_pics = PulseMember.query.filter(
+            db.func.lower(PulseMember.email).in_(all_partner_emails)
+        ).all()
+        for pm in members_with_pics:
+            pic_map[pm.email.strip().lower()] = {
+                "pic": pm.profile_pic, "id": pm.id, "name": pm.full_name
+            }
+        experts_with_pics = Expert.query.filter(
+            db.func.lower(Expert.email).in_(all_partner_emails)
+        ).all()
+        for ex in experts_with_pics:
+            key = (ex.email or "").strip().lower()
+            if key not in pic_map and ex.profile_pic:
+                pic_map[key] = {"pic": ex.profile_pic, "id": None, "name": ex.full_name}
+
+    for c in sorted_convos:
+        info = pic_map.get(c["email"], {})
+        c["pic"] = info.get("pic", "")
+        c["member_id"] = info.get("id")
+
+    # Pre-select conversation
+    selected_email = request.args.get("with", "")
+    if not selected_email and sorted_convos:
+        selected_email = sorted_convos[0]["email"]
+
+    return render_template("inbox.html", member=member, conversations=sorted_convos,
+                           selected_email=selected_email, my_email=my_email)
+
+
+@app.route("/inbox/messages/<path:other_email>")
+def inbox_messages(other_email):
+    """API: return messages for a conversation as JSON."""
+    member_id = session.get("member_id")
+    if not member_id:
+        return jsonify({"error": "Not logged in"}), 401
+    member = PulseMember.query.get(member_id)
+    if not member:
+        return jsonify({"error": "Not found"}), 404
+    my_email = member.email.strip().lower()
+    other = other_email.strip().lower()
+
+    msgs = DirectMessage.query.filter(
+        db.or_(
+            db.and_(db.func.lower(DirectMessage.from_email) == my_email,
+                    db.func.lower(DirectMessage.to_email) == other),
+            db.and_(db.func.lower(DirectMessage.from_email) == other,
+                    db.func.lower(DirectMessage.to_email) == my_email),
+        )
+    ).order_by(DirectMessage.created_at.asc()).all()
+
+    # Mark incoming as read
+    for m in msgs:
+        if (m.to_email or "").strip().lower() == my_email and not m.is_read:
+            m.is_read = True
+    db.session.commit()
+
+    return jsonify([{
+        "id": m.id,
+        "from_name": m.from_name,
+        "from_email": m.from_email,
+        "to_name": m.to_name,
+        "to_email": m.to_email,
+        "message": m.message,
+        "is_mine": (m.from_email or "").strip().lower() == my_email,
+        "time": m.created_at.strftime("%d %b %Y à %H:%M") if m.created_at else "",
+    } for m in msgs])
+
+
+@app.route("/inbox/reply", methods=["POST"])
+def inbox_reply():
+    """Send a reply in a conversation."""
+    member_id = session.get("member_id")
+    if not member_id:
+        return jsonify({"error": "Not logged in"}), 401
+    member = PulseMember.query.get(member_id)
+    if not member:
+        return jsonify({"error": "Not found"}), 404
+    data = request.get_json(silent=True) or {}
+    to_email = data.get("to_email", "").strip()
+    to_name = data.get("to_name", "").strip()
+    message = data.get("message", "").strip()
+    if not message:
+        return jsonify({"ok": False, "error": "Message vide"}), 400
+    dm = DirectMessage(
+        to_name=to_name,
+        to_email=to_email,
+        from_name=member.full_name,
+        from_email=member.email,
+        message=message,
+    )
+    db.session.add(dm)
+    db.session.commit()
+    return jsonify({"ok": True})
 
 
 if __name__ == "__main__":
