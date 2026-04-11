@@ -1457,6 +1457,57 @@ def experts():
         if key:
             seen_emails.add(key)
         unique_experts.append(expert)
+
+    # Also include PulseMembers with role "expert" who are NOT already in experts table
+    expert_members = PulseMember.query.filter_by(role="expert", is_confirmed=True).all()
+    for m in expert_members:
+        key = (m.email or "").strip().lower()
+        if key and key in seen_emails:
+            continue
+        if key:
+            seen_emails.add(key)
+        # Parse form_data for extra fields
+        import json as _json
+        fd = {}
+        if m.form_data:
+            try:
+                fd = _json.loads(m.form_data)
+            except Exception:
+                pass
+        # Build a lightweight object that looks like an Expert for the template
+        class _ExpertProxy:
+            pass
+        proxy = _ExpertProxy()
+        proxy.full_name = m.full_name
+        proxy.email = m.email
+        proxy.profile_pic = m.profile_pic
+        proxy.current_title = fd.get("current_title", "")
+        proxy.organization = fd.get("organization") or fd.get("company_name", "")
+        proxy.location = fd.get("location") or fd.get("city", "")
+        proxy.expertise_domain = fd.get("expertise_domain", "")
+        proxy.years_experience = fd.get("years_experience", "")
+        proxy.skills = fd.get("skills", "")
+        proxy.services_offered = fd.get("services_offered", "")
+        proxy.target_audience = fd.get("target_audience", "")
+        proxy.availability = fd.get("availability", "")
+        proxy.linkedin_url = fd.get("linkedin_url") or fd.get("linkedin", "")
+        proxy.portfolio_website = fd.get("portfolio_website") or fd.get("website", "")
+        proxy.created_at = m.created_at
+        # Apply same search/domain/availability filters
+        if search:
+            s = search.lower()
+            haystack = " ".join([
+                proxy.full_name or "", proxy.skills or "", proxy.current_title or "",
+                proxy.expertise_domain or "", proxy.organization or ""
+            ]).lower()
+            if s not in haystack:
+                continue
+        if selected_domain and proxy.expertise_domain != selected_domain:
+            continue
+        if selected_availability and proxy.availability != selected_availability:
+            continue
+        unique_experts.append(proxy)
+
     all_experts = unique_experts
     return render_template("experts.html", experts=all_experts, search=search,
                          selected_domain=selected_domain, selected_availability=selected_availability)
