@@ -82,7 +82,7 @@
     <div class="form-container">
         {% if error %}
 <div style="background:rgba(248,113,113,0.1);border:1px solid rgba(248,113,113,0.3);border-radius:10px;padding:1rem 1.25rem;margin-bottom:1.5rem;color:#f87171;font-size:0.9rem;">
-    <i class="fas fa-exclamation-circle"></i> {{ error }}
+    <i class="fas fa-exclamation-circle"></i> {{ error | safe }}
 </div>
 {% endif %}
         <form method="POST" action="{{ url_for('expert_form') }}">
@@ -106,8 +106,8 @@
                         <input type="text" id="location" name="location" placeholder="Casablanca, Maroc">
                     </div>
                     <div class="form-group">
-                        <label for="phone">Telephone</label>
-                        <input type="tel" id="phone" name="phone" placeholder="+212 6XX XXX XXX">
+                        <label for="phone">Telephone *</label>
+                        <input type="tel" id="phone" name="phone" placeholder="+212 6XX XXX XXX" required>
                     </div>
                 </div>
             </div>
@@ -117,8 +117,8 @@
                 <h2>Expertise</h2>
                 <div class="form-grid two-col">
                     <div class="form-group">
-                        <label for="current_title">Titre / Fonction</label>
-                        <input type="text" id="current_title" name="current_title" placeholder="ex: Consultant en strategie, Business Coach">
+                        <label for="current_title">Titre / Fonction *</label>
+                        <input type="text" id="current_title" name="current_title" placeholder="ex: Consultant en strategie, Business Coach" required>
                     </div>
                     <div class="form-group">
                         <label for="organization">Organisation</label>
@@ -127,8 +127,8 @@
                 </div>
                 <div class="form-grid two-col">
                     <div class="form-group">
-                        <label for="expertise_domain">Domaine d'expertise principal</label>
-                        <select id="expertise_domain" name="expertise_domain">
+                        <label for="expertise_domain">Domaine d'expertise principal *</label>
+                        <select id="expertise_domain" name="expertise_domain" required>
                             <option value="">Selectionner un domaine</option>
                             <option value="Go-to-Market" data-i18n="exp_gtm">Mise en marche & Ventes</option>
                             <option value="Fundraising" data-i18n="exp_fundraising">Levee de fonds & Relations investisseurs</option>
@@ -158,8 +158,8 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="professional_bio">Bio professionnelle</label>
-                    <textarea id="professional_bio" name="professional_bio" placeholder="Decrivez votre parcours, votre expertise et votre approche d'accompagnement" style="min-height: 120px;"></textarea>
+                    <label for="professional_bio">Bio professionnelle *</label>
+                    <textarea id="professional_bio" name="professional_bio" placeholder="Decrivez votre parcours, votre expertise et votre approche d'accompagnement" style="min-height: 120px;" required></textarea>
                 </div>
                 <div class="form-group">
                     <label>Competences (coaching, mentoring, formation...)</label>

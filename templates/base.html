@@ -185,9 +185,13 @@
                 </div>
             </div>
             {% else %}
+            <a href="{{ url_for('member_login') }}" class="btn-join" style="background:transparent;border:1px solid rgba(0,212,170,0.4);color:var(--text-secondary);">
+                <i class="fas fa-sign-in-alt" aria-hidden="true"></i>
+                <span class="btn-join-full">Se connecter</span><span class="btn-join-short">Login</span>
+            </a>
             <a href="/join" class="btn-join">
                 <i class="fas fa-bolt" aria-hidden="true"></i>
-                <span class="btn-join-full">Become a Pulser</span><span class="btn-join-short">Join</span>
+                <span class="btn-join-full">Power the Pulse</span><span class="btn-join-short">Join</span>
             </a>
             {% endif %}
         </div>
@@ -631,11 +635,7 @@
     <!-- Bootstrap JS -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
 
-    <!-- Chart.js -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"
-            integrity="sha512-ElRFoEQdI5Ht6kZvyzXhYG9NqjtkmlkfYk0wr6wHxU9JEHakS7UJZNeml5ALk+8IKlU6jDgMabC3vkumRokgJA=="
-            crossorigin="anonymous"
-            referrerpolicy="no-referrer"></script>
+    <!-- Chart.js — loaded only on pages that need it via {% block scripts %} -->
 
     <script>
         (function() {

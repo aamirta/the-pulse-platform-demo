@@ -1,68 +1,251 @@
 {% extends "base.html" %}
-{% block title %}Edit Profile - The Pulse{% endblock %}
+{% block title %}Modifier le profil - The Pulse{% endblock %}
 {% block content %}
 <style>
-    .edit-page { min-height: 70vh; display: flex; align-items: center; justify-content: center; padding: 2rem 1rem; }
-    .edit-card { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 20px; padding: 2.5rem; max-width: 500px; width: 100%; }
-    .edit-card h1 { font-weight: 700; font-size: 1.6rem; color: var(--text-primary); margin-bottom: 0.25rem; }
-    .edit-card .sub { color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 2rem; }
-    .form-group { margin-bottom: 1.25rem; }
-    .form-group label { display: block; font-size: 0.85rem; font-weight: 600; color: var(--text-secondary); margin-bottom: 0.4rem; text-transform: uppercase; letter-spacing: 0.04em; }
-    .form-group input, .form-group select { width: 100%; padding: 0.75rem 1rem; background: var(--bg-dark); border: 1px solid var(--border-color); border-radius: 10px; color: var(--text-primary); font-size: 0.95rem; }
-    .form-group input:focus, .form-group select:focus { outline: none; border-color: #00d4aa; }
-    .avatar-section { display: flex; align-items: center; gap: 1rem; margin-bottom: 1.5rem; padding: 1rem; background: var(--bg-dark); border-radius: 12px; border: 1px solid var(--border-color); cursor: pointer; position: relative; }
+    .edit-page { max-width: 780px; margin: 0 auto; padding: 2rem 1.5rem 4rem; }
+    .edit-page h1 { font-family: var(--font-heading); font-weight: 700; font-size: 1.8rem; color: var(--text-primary); margin-bottom: 0.25rem; }
+    .edit-page .sub { color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 2rem; }
+    .edit-section { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 16px; padding: 2rem; margin-bottom: 1.5rem; }
+    .edit-section h2 { font-family: var(--font-heading); font-weight: 600; font-size: 1.1rem; color: var(--text-primary); margin: 0 0 1.25rem; display: flex; align-items: center; gap: 0.6rem; }
+    .edit-section h2 i { color: var(--accent); font-size: 0.95rem; }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem; }
+    .form-row.full { grid-template-columns: 1fr; }
+    @media (max-width: 600px) { .form-row { grid-template-columns: 1fr; } }
+    .form-group { display: flex; flex-direction: column; }
+    .form-group label { font-size: 0.78rem; font-weight: 600; color: var(--text-secondary); margin-bottom: 0.35rem; text-transform: uppercase; letter-spacing: 0.04em; }
+    .form-group input, .form-group select, .form-group textarea {
+        width: 100%; padding: 0.7rem 0.9rem; background: var(--bg-surface); border: 1px solid var(--border-color);
+        border-radius: 10px; color: var(--text-primary); font-size: 0.9rem; font-family: var(--font-body);
+        transition: border-color 0.2s ease;
+    }
+    .form-group input:focus, .form-group select:focus, .form-group textarea:focus { outline: none; border-color: var(--accent); }
+    .form-group textarea { min-height: 100px; resize: vertical; }
+    .avatar-section { display: flex; align-items: center; gap: 1.25rem; margin-bottom: 0.5rem; padding: 1rem; background: var(--bg-surface); border-radius: 12px; border: 1px solid var(--border-color); cursor: pointer; position: relative; }
     .avatar-section input[type="file"] { position: absolute; inset: 0; opacity: 0; cursor: pointer; }
-    .avatar-section img, .avatar-section .avatar-init { width: 60px; height: 60px; border-radius: 50%; object-fit: cover; border: 2px solid #00d4aa; }
-    .avatar-init { background: linear-gradient(135deg,#00d4aa,#4361ee); display:flex; align-items:center; justify-content:center; color:#fff; font-size:1.4rem; font-weight:700; }
-    .avatar-section .avatar-hint { font-size: 0.85rem; color: var(--text-secondary); }
-    .avatar-section .avatar-hint strong { color: #00d4aa; display: block; margin-bottom: 0.2rem; }
-    .btn-save { width: 100%; padding: 0.9rem; background: linear-gradient(135deg,#00d4aa,#4361ee); color: #fff; border: none; border-radius: 12px; font-size: 1rem; font-weight: 600; cursor: pointer; margin-top: 0.5rem; }
+    .avatar-section img, .avatar-section .avatar-init { width: 64px; height: 64px; border-radius: 50%; object-fit: cover; border: 2px solid var(--accent); flex-shrink: 0; }
+    .avatar-init { background: linear-gradient(135deg, var(--accent), var(--secondary)); display: flex; align-items: center; justify-content: center; color: #fff; font-size: 1.5rem; font-weight: 700; }
+    .avatar-hint { font-size: 0.85rem; color: var(--text-secondary); }
+    .avatar-hint strong { color: var(--accent); display: block; margin-bottom: 0.15rem; }
+    .btn-bar { display: flex; gap: 0.75rem; margin-top: 0.5rem; }
+    .btn-save { flex: 1; padding: 0.85rem; background: var(--accent); color: #000; border: none; border-radius: 12px; font-size: 0.95rem; font-weight: 600; cursor: pointer; font-family: var(--font-heading); }
     .btn-save:hover { opacity: 0.9; }
-    .btn-cancel { display: block; text-align: center; margin-top: 0.75rem; color: var(--text-secondary); font-size: 0.88rem; text-decoration: none; }
-    .btn-cancel:hover { color: #00d4aa; }
+    .btn-cancel { padding: 0.85rem 1.5rem; background: transparent; border: 1px solid var(--border-color); border-radius: 12px; color: var(--text-secondary); font-size: 0.9rem; font-weight: 600; text-decoration: none; text-align: center; font-family: var(--font-heading); }
+    .btn-cancel:hover { border-color: var(--accent); color: var(--accent); }
+    .back-link { display: inline-flex; align-items: center; gap: 0.5rem; font-size: 0.9rem; color: var(--text-secondary); text-decoration: none; padding: 0.5rem 1rem; border-radius: 8px; border: 1px solid var(--border-color); margin-bottom: 1.5rem; }
+    .back-link:hover { color: var(--accent); border-color: var(--accent); }
 </style>
-<div class="edit-page">
-    <div class="edit-card">
-        <h1>Edit Profile</h1>
-        <p class="sub">Update your information visible on The Pulse.</p>
 
-        <form method="POST" enctype="multipart/form-data">
-            <!-- Photo -->
+<div class="edit-page">
+    <a href="{{ url_for('my_profile', member_id=member.id) }}" class="back-link">
+        <i class="fas fa-arrow-left"></i> Retour au profil
+    </a>
+    <h1>Modifier le profil</h1>
+    <p class="sub">Mettez à jour vos informations visibles sur The Pulse.</p>
+
+    <form method="POST" enctype="multipart/form-data">
+
+        <!-- Identity Section -->
+        <div class="edit-section">
+            <h2><i class="fas fa-user"></i> Identité</h2>
+
             <div class="avatar-section">
                 {% if member.profile_pic %}
                     <img src="{{ member.profile_pic }}" alt="Photo" id="avatarPreview">
                 {% else %}
-                    <div class="avatar-init" id="avatarInit">{{ member.full_name[0].upper() }}</div>
+                    <div class="avatar-init" id="avatarInit">{{ member.full_name[0]|upper }}</div>
                     <img src="" alt="Photo" id="avatarPreview" style="display:none;">
                 {% endif %}
                 <div class="avatar-hint">
-                    <strong>Change photo</strong>
-                    Click to upload a new profile picture
+                    <strong>Changer la photo</strong>
+                    Cliquez pour uploader une nouvelle photo
                 </div>
                 <input type="file" name="profile_pic" accept="image/*" id="photoInput">
             </div>
 
-            <div class="form-group">
-                <label>Full Name</label>
-                <input type="text" name="full_name" value="{{ member.full_name }}" required>
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Nom complet *</label>
+                    <input type="text" name="full_name" value="{{ member.full_name }}" required>
+                </div>
+                <div class="form-group">
+                    <label>Role</label>
+                    <select name="role">
+                        <option value="entrepreneur" {% if member.role == 'entrepreneur' %}selected{% endif %}>Entrepreneur</option>
+                        <option value="investor" {% if member.role == 'investor' %}selected{% endif %}>Investisseur</option>
+                        <option value="talent" {% if member.role == 'talent' %}selected{% endif %}>Talent</option>
+                        <option value="program" {% if member.role == 'program' %}selected{% endif %}>Programme</option>
+                        <option value="incubator" {% if member.role == 'incubator' %}selected{% endif %}>Incubateur</option>
+                        <option value="expert" {% if member.role == 'expert' %}selected{% endif %}>Expert</option>
+                    </select>
+                </div>
             </div>
-
-            <div class="form-group">
-                <label>Role</label>
-                <select name="role">
-                    <option value="entrepreneur" {% if member.role == 'entrepreneur' %}selected{% endif %}>Entrepreneur</option>
-                    <option value="investor" {% if member.role == 'investor' %}selected{% endif %}>Investor</option>
-                    <option value="talent" {% if member.role == 'talent' %}selected{% endif %}>Talent</option>
-                    <option value="program" {% if member.role == 'program' %}selected{% endif %}>Program</option>
-                    <option value="incubator" {% if member.role == 'incubator' %}selected{% endif %}>Incubator</option>
-                </select>
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Email</label>
+                    <input type="email" value="{{ member.email }}" disabled style="opacity:0.6;">
+                </div>
+                <div class="form-group">
+                    <label>Telephone</label>
+                    <input type="tel" name="phone" value="{{ form_data.get('phone', '') }}" placeholder="+212 XXX XXX XXX">
+                </div>
             </div>
+        </div>
 
-            <button type="submit" class="btn-save"><i class="fas fa-check"></i> Save Changes</button>
-        </form>
-        <a href="{{ url_for('my_profile', member_id=member.id) }}" class="btn-cancel">Cancel</a>
-    </div>
+        <!-- Company / Organization Section -->
+        <div class="edit-section">
+            <h2><i class="fas fa-building"></i> Organisation</h2>
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Nom de l'entreprise / organisation</label>
+                    <input type="text" name="company_name" value="{{ form_data.get('company_name', form_data.get('companyName', form_data.get('organizationName', form_data.get('programName', '')))) }}" placeholder="Nom de votre entreprise">
+                </div>
+                <div class="form-group">
+                    <label>Titre / Fonction</label>
+                    <input type="text" name="current_title" value="{{ form_data.get('current_title', form_data.get('contactTitle', form_data.get('managerTitle', ''))) }}" placeholder="CEO, CTO, Fondateur...">
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Secteur</label>
+                    <input type="text" name="sector" value="{{ form_data.get('sector', form_data.get('sectors', '')) }}" placeholder="Fintech, Edtech, SaaS...">
+                </div>
+                <div class="form-group">
+                    <label>Ville / Localisation</label>
+                    <input type="text" name="location" value="{{ form_data.get('location', '') }}" placeholder="Casablanca, Rabat...">
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Annee de creation</label>
+                    <input type="number" name="founded_year" value="{{ form_data.get('founded_year', '') }}" placeholder="2024" min="1900" max="2030">
+                </div>
+                <div class="form-group">
+                    <label>Nombre d'employes</label>
+                    <select name="employee_count">
+                        <option value="">--</option>
+                        {% for opt in ['1-5', '6-10', '11-25', '26-50', '51-100', '100+'] %}
+                        <option value="{{ opt }}" {% if form_data.get('employee_count') == opt %}selected{% endif %}>{{ opt }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+            <div class="form-row full">
+                <div class="form-group">
+                    <label>Description</label>
+                    <textarea name="description" placeholder="Decrivez votre activite, mission, proposition de valeur...">{{ form_data.get('description', form_data.get('professional_bio', '')) }}</textarea>
+                </div>
+            </div>
+        </div>
+
+        <!-- Funding & Business -->
+        <div class="edit-section">
+            <h2><i class="fas fa-chart-line"></i> Business & Financement</h2>
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Stade de financement</label>
+                    <select name="funding_stage">
+                        <option value="">--</option>
+                        {% for opt in ['Pre-seed', 'Seed', 'Series A', 'Series B', 'Series C+', 'Bootstrapped', 'Grant/Subvention'] %}
+                        <option value="{{ opt }}" {% if form_data.get('funding_stage') == opt %}selected{% endif %}>{{ opt }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Montant leve</label>
+                    <input type="text" name="funding_amount" value="{{ form_data.get('funding_amount', '') }}" placeholder="ex: $500K">
+                </div>
+            </div>
+            <div class="form-row full">
+                <div class="form-group">
+                    <label>Ce que vous recherchez</label>
+                    <textarea name="looking_for" placeholder="Financement, mentorship, partenariats, talents..." style="min-height:80px;">{{ form_data.get('looking_for', '') }}</textarea>
+                </div>
+            </div>
+        </div>
+
+        <!-- Links -->
+        <div class="edit-section">
+            <h2><i class="fas fa-link"></i> Liens</h2>
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Site web</label>
+                    <input type="url" name="website" value="{{ form_data.get('website', form_data.get('portfolio_website', '')) }}" placeholder="https://...">
+                </div>
+                <div class="form-group">
+                    <label>LinkedIn</label>
+                    <input type="url" name="linkedin_url" value="{{ form_data.get('linkedin_url', form_data.get('linkedin', '')) }}" placeholder="https://linkedin.com/in/...">
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label>GitHub</label>
+                    <input type="url" name="github_profile" value="{{ form_data.get('github_profile', '') }}" placeholder="https://github.com/...">
+                </div>
+                <div class="form-group">
+                    <label>Autre lien</label>
+                    <input type="url" name="other_profile" value="{{ form_data.get('other_profile', '') }}" placeholder="https://...">
+                </div>
+            </div>
+        </div>
+
+        <!-- Skills & Expertise (for talent/expert roles) -->
+        <div class="edit-section">
+            <h2><i class="fas fa-tools"></i> Competences & Expertise</h2>
+            <div class="form-row full">
+                <div class="form-group">
+                    <label>Competences</label>
+                    <input type="text" name="skills" value="{{ form_data.get('skills', '') }}" placeholder="Python, Marketing, Finance, Design...">
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Domaine d'expertise</label>
+                    <input type="text" name="expertise_domain" value="{{ form_data.get('expertise_domain', '') }}" placeholder="Conseil strategique, Tech, Finance...">
+                </div>
+                <div class="form-group">
+                    <label>Annees d'experience</label>
+                    <select name="years_experience">
+                        <option value="">--</option>
+                        {% for opt in ['0-2', '3-5', '6-10', '11-15', '16-20', '20+'] %}
+                        <option value="{{ opt }}" {% if form_data.get('years_experience') == opt %}selected{% endif %}>{{ opt }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Industries d'interet</label>
+                    <input type="text" name="industries_of_interest" value="{{ form_data.get('industries_of_interest', '') }}" placeholder="Fintech, Agritech, Healthtech...">
+                </div>
+                <div class="form-group">
+                    <label>Langues</label>
+                    <input type="text" name="languages" value="{{ form_data.get('languages', '') }}" placeholder="Francais, Anglais, Arabe...">
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Disponibilite</label>
+                    <select name="availability">
+                        <option value="">--</option>
+                        {% for opt in ['Available', 'Part-time', 'Full-time', 'Freelance', 'Not available'] %}
+                        <option value="{{ opt }}" {% if form_data.get('availability') == opt %}selected{% endif %}>{{ opt }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Education</label>
+                    <input type="text" name="education" value="{{ form_data.get('education', '') }}" placeholder="Diplome, ecole...">
+                </div>
+            </div>
+        </div>
+
+        <div class="btn-bar">
+            <a href="{{ url_for('my_profile', member_id=member.id) }}" class="btn-cancel">Annuler</a>
+            <button type="submit" class="btn-save"><i class="fas fa-check"></i> Enregistrer</button>
+        </div>
+    </form>
 </div>
+
 <script>
     document.getElementById('photoInput').addEventListener('change', function() {
         if (this.files && this.files[0]) {

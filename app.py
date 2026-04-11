@@ -121,7 +121,8 @@ def _build_home_data():
         startup_count = founder_count = investor_count = incubator_count = 0
 
     try:
-        deals = FundingRound.query.all()
+        from sqlalchemy.orm import joinedload as jl
+        deals = FundingRound.query.options(jl(FundingRound.startup)).all()
         total_funding_millions = sum(d.raised_amount_usd or 0 for d in deals) / 1_000_000
     except Exception:
         deals = []
@@ -188,7 +189,7 @@ def _build_home_data():
     home_feed_items = []
     home_trending_tags = []
     try:
-        _nf_posts = Post.query.filter_by(is_published=True).order_by(Post.created_at.desc()).all()
+        _nf_posts = Post.query.filter_by(is_published=True).order_by(Post.created_at.desc()).limit(20).all()
         _nf_articles = Article.query.order_by(Article.published_at.desc()).limit(10).all()
         _feed = []
         for p in _nf_posts:
@@ -246,13 +247,12 @@ def home():
         return render_template("home.html", **_home_cache['data'])
 
     with _home_cache['lock']:
-        # Double-check after acquiring lock
         if _home_cache['data'] is not None and time.time() < _home_cache['expires']:
             return render_template("home.html", **_home_cache['data'])
         try:
             data = _build_home_data()
             _home_cache['data'] = data
-            _home_cache['expires'] = time.time() + 300  # 5 min cache
+            _home_cache['expires'] = time.time() + 600  # 10 min cache
         except Exception:
             if _home_cache['data'] is not None:
                 return render_template("home.html", **_home_cache['data'])
@@ -955,7 +955,7 @@ def register_pulse_member(email, full_name, role, form_data_dict):
     """Create a PulseMember, auto-confirm, and try to send email. Returns (member, error)."""
     existing = PulseMember.query.filter_by(email=email).first()
     if existing and existing.is_confirmed:
-        return existing, "Cette adresse email est déjà utilisée. Veuillez vous connecter."
+        return existing, "Cette adresse email est déjà utilisée. <a href='/member-login'>Connectez-vous</a> pour accéder à votre profil."
     if existing and not existing.is_confirmed:
         existing.confirmation_token = str(uuid.uuid4())
         existing.full_name = full_name
@@ -1110,6 +1110,12 @@ def talent_form():
         full_name = request.form.get("full_name", "").strip()
         form_data = {k: v for k, v in request.form.items() if k not in ('email', 'full_name')}
 
+        # Check if talent with this email already exists
+        existing_talent = Talent.query.filter(db.func.lower(Talent.email) == email.lower()).first()
+        if existing_talent:
+            return render_template("talent-form.html",
+                error="Cette adresse email est déjà utilisée. <a href='" + url_for('member_login') + "'>Connectez-vous</a> pour accéder à votre profil.")
+
         # Also save to Talent table for the talent directory
         new_talent = Talent(
             full_name=full_name,
@@ -1183,9 +1189,26 @@ def logout_member():
     session.pop("member_id", None)
     return redirect(url_for("home"))
 
+@app.route("/member-login", methods=["GET", "POST"])
+def member_login():
+    error = None
+    if request.method == "POST":
+        email = request.form.get("email", "").strip().lower()
+        password = request.form.get("password", "")
+        member = PulseMember.query.filter_by(email=email).first()
+        if member and member.password_hash and check_password_hash(member.password_hash, password):
+            session["member_id"] = member.id
+            return redirect(url_for("my_profile", member_id=member.id))
+        elif member and not member.password_hash:
+            error = "Vous n'avez pas encore défini de mot de passe. Utilisez le lien reçu par email pour accéder à votre profil, puis créez un mot de passe."
+        else:
+            error = "Email ou mot de passe incorrect."
+    return render_template("member-login.html", error=error)
+
 @app.route("/edit-profile/<int:member_id>", methods=["GET", "POST"])
 def edit_profile(member_id):
     member = PulseMember.query.get_or_404(member_id)
+    form_data = json.loads(member.form_data) if member.form_data else {}
     if request.method == "POST":
         member.full_name = request.form.get("full_name", member.full_name).strip()
         member.role = request.form.get("role", member.role)
@@ -1195,9 +1218,16 @@ def edit_profile(member_id):
             ext = file.filename.rsplit('.', 1)[1].lower()
             b64 = base64.b64encode(file_data).decode('utf-8')
             member.profile_pic = f"data:image/{ext};base64,{b64}"
+        # Update form_data fields
+        reserved = {'full_name', 'role', 'profile_pic', 'csrf_token'}
+        for key in request.form:
+            if key not in reserved:
+                val = request.form.get(key, "").strip()
+                form_data[key] = val
+        member.form_data = json.dumps(form_data, ensure_ascii=False)
         db.session.commit()
         return redirect(url_for("my_profile", member_id=member_id))
-    return render_template("edit-profile.html", member=member)
+    return render_template("edit-profile.html", member=member, form_data=form_data)
 
 @app.route("/set-password/<int:member_id>", methods=["GET", "POST"])
 def set_password(member_id):
@@ -1398,6 +1428,17 @@ def experts():
         query = query.filter(Expert.availability == selected_availability)
 
     all_experts = query.order_by(Expert.created_at.desc()).all()
+    # Deduplicate by email — keep only the most recent entry per email
+    seen_emails = set()
+    unique_experts = []
+    for expert in all_experts:
+        key = (expert.email or "").strip().lower()
+        if key and key in seen_emails:
+            continue
+        if key:
+            seen_emails.add(key)
+        unique_experts.append(expert)
+    all_experts = unique_experts
     return render_template("experts.html", experts=all_experts, search=search,
                          selected_domain=selected_domain, selected_availability=selected_availability)
 
@@ -1407,6 +1448,12 @@ def expert_form():
         email = request.form.get("email", "").strip()
         full_name = request.form.get("full_name", "").strip()
         form_data = {k: v for k, v in request.form.items() if k not in ('email', 'full_name')}
+
+        # Check if expert with this email already exists
+        existing_expert = Expert.query.filter(db.func.lower(Expert.email) == email.lower()).first()
+        if existing_expert:
+            return render_template("expert-form.html",
+                error="Cette adresse email est déjà utilisée. <a href='" + url_for('member_login') + "'>Connectez-vous</a> pour accéder à votre profil.")
 
         new_expert = Expert(
             full_name=full_name,
