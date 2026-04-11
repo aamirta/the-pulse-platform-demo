@@ -12,6 +12,7 @@ from werkzeug.utils import secure_filename
 import smtplib
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
+import resend
 import urllib.parse
 import uuid
 import time
@@ -47,9 +48,12 @@ else:
     print("[PULSE] WARNING: Using SQLite (no DATABASE_URL set)", flush=True)
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
-# Gmail SMTP configuration
+# Email configuration — Resend (prod) with Gmail SMTP fallback (local)
+RESEND_API_KEY = os.environ.get('RESEND_API_KEY', '')
 GMAIL_USER = os.environ.get('GMAIL_USER', 'contact@thepulse.ma')
 GMAIL_APP_PASSWORD = os.environ.get('GMAIL_APP_PASSWORD', '')
+if RESEND_API_KEY:
+    resend.api_key = RESEND_API_KEY
 
 # Upload config
 UPLOAD_FOLDER = os.path.join(os.path.abspath(os.path.dirname(__file__)), 'static', 'uploads')
@@ -910,23 +914,37 @@ def funding_rounds():
 ## ============================================
 
 def send_confirmation_email(member):
-    """Send confirmation email to a new PulseMember via Gmail SMTP."""
+    """Send confirmation email via Resend (prod) or Gmail SMTP (local fallback)."""
     confirm_url = url_for('confirm_email', token=member.confirmation_token, _external=True)
     html_content = render_template("emails/confirmation.html",
                                    name=member.full_name,
                                    confirm_url=confirm_url,
                                    role=member.role)
+    # Try Resend first (production)
+    if RESEND_API_KEY:
+        try:
+            resend.Emails.send({
+                "from": "The Pulse <contact@thepulse.ma>",
+                "to": [member.email],
+                "subject": "Confirmez votre inscription - The Pulse",
+                "html": html_content,
+            })
+            print(f"[EMAIL OK via Resend] Confirmation sent to {member.email}", flush=True)
+            return
+        except Exception as e:
+            print(f"[RESEND ERROR] {e} — falling back to Gmail SMTP", flush=True)
+
+    # Gmail SMTP fallback (local dev)
     try:
         msg = MIMEMultipart("alternative")
         msg["Subject"] = "Confirmez votre inscription - The Pulse"
         msg["From"] = f"The Pulse <{GMAIL_USER}>"
         msg["To"] = member.email
         msg.attach(MIMEText(html_content, "html"))
-
         with smtplib.SMTP_SSL("smtp.gmail.com", 465) as smtp:
             smtp.login(GMAIL_USER, GMAIL_APP_PASSWORD)
             smtp.sendmail(GMAIL_USER, member.email, msg.as_string())
-        print(f"[EMAIL OK] Confirmation sent to {member.email}", flush=True)
+        print(f"[EMAIL OK via Gmail] Confirmation sent to {member.email}", flush=True)
     except Exception as e:
         print(f"[EMAIL ERROR] {e} — member {member.email} can confirm at {confirm_url}", flush=True)
 
