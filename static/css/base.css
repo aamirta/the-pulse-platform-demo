@@ -382,6 +382,8 @@
             display: flex;
             align-items: center;
             gap: 0.25rem;
+            min-width: 0;
+            overflow: hidden;
         }
 
         .nav-link-item {
@@ -1165,7 +1167,7 @@
             }
         }
 
-        @media (max-width: 991px) {
+        @media (max-width: 1100px) {
             .nav-center {
                 display: none;
             }
