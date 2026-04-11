@@ -1866,13 +1866,11 @@ with app.app_context():
 def newsfeed():
     from datetime import datetime
 
-    # Fetch member posts
+    # Fetch member posts only (no curated articles in the feed)
     posts = Post.query.filter_by(is_published=True).order_by(Post.created_at.desc()).all()
+    articles = []
 
-    # Fetch articles (curated content)
-    articles = Article.query.order_by(Article.published_at.desc()).limit(20).all()
-
-    # Build unified feed items
+    # Build feed from member posts only
     feed_items = []
     for p in posts:
         feed_items.append({
@@ -1880,14 +1878,7 @@ def newsfeed():
             'obj': p,
             'date': p.created_at,
         })
-    for a in articles:
-        feed_items.append({
-            'type': 'article',
-            'obj': a,
-            'date': a.published_at,
-        })
 
-    # Sort combined feed by date descending
     feed_items.sort(key=lambda x: x['date'] if x['date'] else datetime.min, reverse=True)
 
     # Sidebar: trending tags from posts
