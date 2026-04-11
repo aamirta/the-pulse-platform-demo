@@ -9,7 +9,9 @@ from collections import Counter
 from sqlalchemy import func, or_, event, case, literal
 from werkzeug.security import generate_password_hash, check_password_hash
 from werkzeug.utils import secure_filename
-import resend
+import smtplib
+from email.mime.text import MIMEText
+from email.mime.multipart import MIMEMultipart
 import urllib.parse
 import uuid
 import time
@@ -45,9 +47,9 @@ else:
     print("[PULSE] WARNING: Using SQLite (no DATABASE_URL set)", flush=True)
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
-# Resend email configuration
-resend.api_key = os.environ.get('RESEND_API_KEY')
-MAIL_FROM = os.environ.get('MAIL_FROM', 'onboarding@resend.dev')
+# Gmail SMTP configuration
+GMAIL_USER = os.environ.get('GMAIL_USER', 'contact@thepulse.ma')
+GMAIL_APP_PASSWORD = os.environ.get('GMAIL_APP_PASSWORD', '')
 
 # Upload config
 UPLOAD_FOLDER = os.path.join(os.path.abspath(os.path.dirname(__file__)), 'static', 'uploads')
@@ -902,21 +904,25 @@ def funding_rounds():
 ## ============================================
 
 def send_confirmation_email(member):
-    """Send confirmation email to a new PulseMember via Resend."""
+    """Send confirmation email to a new PulseMember via Gmail SMTP."""
     confirm_url = url_for('confirm_email', token=member.confirmation_token, _external=True)
     html_content = render_template("emails/confirmation.html",
                                    name=member.full_name,
                                    confirm_url=confirm_url,
                                    role=member.role)
     try:
-        resend.Emails.send({
-            "from": f"The Pulse <{MAIL_FROM}>",
-            "to": [member.email],
-            "subject": "Confirmez votre inscription - The Pulse",
-            "html": html_content
-        })
+        msg = MIMEMultipart("alternative")
+        msg["Subject"] = "Confirmez votre inscription - The Pulse"
+        msg["From"] = f"The Pulse <{GMAIL_USER}>"
+        msg["To"] = member.email
+        msg.attach(MIMEText(html_content, "html"))
+
+        with smtplib.SMTP_SSL("smtp.gmail.com", 465) as smtp:
+            smtp.login(GMAIL_USER, GMAIL_APP_PASSWORD)
+            smtp.sendmail(GMAIL_USER, member.email, msg.as_string())
+        print(f"[EMAIL OK] Confirmation sent to {member.email}", flush=True)
     except Exception as e:
-        print(f"[EMAIL ERROR] {e} — member {member.email} can confirm at {confirm_url}")
+        print(f"[EMAIL ERROR] {e} — member {member.email} can confirm at {confirm_url}", flush=True)
 
 def register_pulse_member(email, full_name, role, form_data_dict):
     """Create a PulseMember, auto-confirm, and try to send email. Returns (member, error)."""
