@@ -1,0 +1,502 @@
+{% extends "base.html" %}
+{% block title %}Admin - Pulsers{% endblock %}
+{% block content %}
+<style>
+    .admin-wrap {
+        max-width: 1300px;
+        margin: 2rem auto;
+        padding: 0 1.5rem;
+    }
+    .admin-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: 1rem;
+        margin-bottom: 2rem;
+    }
+    .admin-header h1 {
+        font-family: 'Syne', sans-serif;
+        font-size: 1.8rem;
+        font-weight: 700;
+        color: var(--text-primary);
+        margin: 0;
+    }
+    .admin-header h1 span {
+        color: #00d4aa;
+    }
+
+    /* ── Stats cards ── */
+    .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+        gap: 1rem;
+        margin-bottom: 2rem;
+    }
+    .stat-card {
+        background: var(--surface, rgba(255,255,255,0.04));
+        border: 1px solid var(--border, rgba(255,255,255,0.06));
+        border-radius: 14px;
+        padding: 1.2rem 1.4rem;
+        text-align: center;
+    }
+    .stat-card .stat-value {
+        font-family: 'Syne', sans-serif;
+        font-size: 2rem;
+        font-weight: 800;
+        color: #00d4aa;
+    }
+    .stat-card .stat-label {
+        font-size: 0.8rem;
+        color: var(--text-secondary);
+        margin-top: 0.25rem;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+    .stat-card.warn .stat-value { color: #f97316; }
+    .stat-card.info .stat-value { color: #8B5CF6; }
+
+    /* ── Toolbar ── */
+    .toolbar {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        flex-wrap: wrap;
+        margin-bottom: 1rem;
+    }
+    .toolbar input[type="text"] {
+        flex: 1;
+        min-width: 200px;
+        padding: 0.6rem 1rem;
+        border-radius: 10px;
+        border: 1px solid var(--border, rgba(255,255,255,0.1));
+        background: var(--surface, rgba(255,255,255,0.04));
+        color: var(--text-primary);
+        font-size: 0.9rem;
+    }
+    .toolbar select {
+        padding: 0.6rem 0.8rem;
+        border-radius: 10px;
+        border: 1px solid var(--border, rgba(255,255,255,0.1));
+        background: var(--surface, rgba(255,255,255,0.04));
+        color: var(--text-primary);
+        font-size: 0.85rem;
+    }
+    .toolbar .btn-sm {
+        padding: 0.5rem 1rem;
+        border-radius: 10px;
+        border: none;
+        font-size: 0.8rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.2s;
+    }
+    .btn-confirm { background: #00d4aa; color: #000; }
+    .btn-confirm:hover { background: #00e6b8; }
+    .btn-delete { background: #ef4444; color: #fff; }
+    .btn-delete:hover { background: #dc2626; }
+    .btn-ghost {
+        background: transparent;
+        border: 1px solid var(--border, rgba(255,255,255,0.15)) !important;
+        color: var(--text-secondary);
+    }
+    .btn-ghost:hover { background: rgba(255,255,255,0.05); }
+
+    /* ── Table ── */
+    .table-wrap {
+        overflow-x: auto;
+        border-radius: 14px;
+        border: 1px solid var(--border, rgba(255,255,255,0.06));
+    }
+    table.admin-table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 0.85rem;
+    }
+    table.admin-table thead {
+        background: var(--surface, rgba(255,255,255,0.04));
+    }
+    table.admin-table th {
+        padding: 0.75rem 1rem;
+        text-align: left;
+        font-weight: 600;
+        color: var(--text-secondary);
+        text-transform: uppercase;
+        font-size: 0.7rem;
+        letter-spacing: 0.5px;
+        border-bottom: 1px solid var(--border, rgba(255,255,255,0.06));
+        white-space: nowrap;
+    }
+    table.admin-table td {
+        padding: 0.65rem 1rem;
+        border-bottom: 1px solid var(--border, rgba(255,255,255,0.04));
+        vertical-align: middle;
+    }
+    table.admin-table tr:hover {
+        background: rgba(0,212,170,0.03);
+    }
+    table.admin-table tr.hidden-row { display: none; }
+
+    /* ── Member row elements ── */
+    .member-avatar {
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        object-fit: cover;
+        border: 2px solid #00d4aa;
+    }
+    .member-initials {
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        background: rgba(0,212,170,0.15);
+        color: #00d4aa;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 700;
+        font-size: 0.75rem;
+    }
+    .member-name-cell {
+        display: flex;
+        align-items: center;
+        gap: 0.6rem;
+    }
+    .member-name-cell a {
+        color: var(--text-primary);
+        text-decoration: none;
+        font-weight: 600;
+    }
+    .member-name-cell a:hover {
+        color: #00d4aa;
+    }
+    .member-email {
+        color: var(--text-secondary);
+        font-size: 0.75rem;
+    }
+    .badge {
+        display: inline-block;
+        padding: 0.2rem 0.6rem;
+        border-radius: 20px;
+        font-size: 0.7rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.3px;
+    }
+    .badge-confirmed { background: rgba(0,212,170,0.15); color: #00d4aa; }
+    .badge-pending { background: rgba(249,115,22,0.15); color: #f97316; }
+    .badge-entrepreneur { background: rgba(139,92,246,0.15); color: #8B5CF6; }
+    .badge-investor { background: rgba(59,130,246,0.15); color: #3B82F6; }
+    .badge-expert { background: rgba(0,212,170,0.15); color: #00d4aa; }
+    .badge-program { background: rgba(236,72,153,0.15); color: #EC4899; }
+
+    .action-btns {
+        display: flex;
+        gap: 0.4rem;
+    }
+    .action-btns button {
+        padding: 0.3rem 0.6rem;
+        border-radius: 8px;
+        border: none;
+        cursor: pointer;
+        font-size: 0.75rem;
+        font-weight: 600;
+        transition: all 0.2s;
+    }
+    .action-btns .btn-a-confirm { background: rgba(0,212,170,0.15); color: #00d4aa; }
+    .action-btns .btn-a-confirm:hover { background: #00d4aa; color: #000; }
+    .action-btns .btn-a-delete { background: rgba(239,68,68,0.1); color: #ef4444; }
+    .action-btns .btn-a-delete:hover { background: #ef4444; color: #fff; }
+
+    /* ── Responsive ── */
+    @media (max-width: 768px) {
+        .stats-grid { grid-template-columns: repeat(2, 1fr); }
+        .admin-header h1 { font-size: 1.3rem; }
+        table.admin-table { font-size: 0.78rem; }
+        table.admin-table th, table.admin-table td { padding: 0.5rem 0.6rem; }
+    }
+
+    /* ── Toast ── */
+    .admin-toast {
+        position: fixed;
+        bottom: 2rem;
+        right: 2rem;
+        background: #00d4aa;
+        color: #000;
+        padding: 0.8rem 1.5rem;
+        border-radius: 12px;
+        font-weight: 600;
+        font-size: 0.9rem;
+        z-index: 9999;
+        opacity: 0;
+        transform: translateY(10px);
+        transition: all 0.3s;
+        pointer-events: none;
+    }
+    .admin-toast.show {
+        opacity: 1;
+        transform: translateY(0);
+    }
+    .admin-toast.error { background: #ef4444; color: #fff; }
+
+    /* Checkbox */
+    .cb-cell input[type="checkbox"] {
+        width: 16px;
+        height: 16px;
+        accent-color: #00d4aa;
+        cursor: pointer;
+    }
+</style>
+
+<div class="admin-wrap">
+    <!-- Header -->
+    <div class="admin-header">
+        <h1><i class="fas fa-users-gear" style="margin-right:0.5rem;"></i>Gestion des <span>Pulsers</span></h1>
+        <div style="font-size:0.85rem;color:var(--text-secondary);">
+            Mis à jour : {{ now.strftime('%d/%m/%Y %H:%M') }}
+        </div>
+    </div>
+
+    <!-- Stats -->
+    <div class="stats-grid">
+        <div class="stat-card">
+            <div class="stat-value">{{ stats.total }}</div>
+            <div class="stat-label">Total inscrits</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-value">{{ stats.confirmed }}</div>
+            <div class="stat-label">Confirmés</div>
+        </div>
+        <div class="stat-card warn">
+            <div class="stat-value">{{ stats.pending }}</div>
+            <div class="stat-label">En attente</div>
+        </div>
+        <div class="stat-card info">
+            <div class="stat-value">{{ stats.with_photo }}</div>
+            <div class="stat-label">Avec photo</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-value">{{ stats.with_password }}</div>
+            <div class="stat-label">Mot de passe</div>
+        </div>
+        {% for role, count in stats.roles.items() %}
+        <div class="stat-card">
+            <div class="stat-value">{{ count }}</div>
+            <div class="stat-label">{{ role | capitalize }}</div>
+        </div>
+        {% endfor %}
+    </div>
+
+    <!-- Toolbar -->
+    <div class="toolbar">
+        <input type="text" id="searchInput" placeholder="Rechercher un nom, email, rôle..." oninput="filterTable()">
+        <select id="filterRole" onchange="filterTable()">
+            <option value="">Tous les rôles</option>
+            <option value="entrepreneur">Entrepreneur</option>
+            <option value="investor">Investisseur</option>
+            <option value="expert">Expert</option>
+            <option value="program">Programme</option>
+        </select>
+        <select id="filterStatus" onchange="filterTable()">
+            <option value="">Tous statuts</option>
+            <option value="confirmed">Confirmés</option>
+            <option value="pending">En attente</option>
+        </select>
+        <button class="btn-sm btn-confirm" onclick="bulkAction('confirm')">
+            <i class="fas fa-check"></i> Confirmer sélection
+        </button>
+        <button class="btn-sm btn-delete" onclick="bulkAction('delete')">
+            <i class="fas fa-trash"></i> Supprimer sélection
+        </button>
+    </div>
+
+    <!-- Table -->
+    <div class="table-wrap">
+        <table class="admin-table">
+            <thead>
+                <tr>
+                    <th class="cb-cell"><input type="checkbox" id="selectAll" onchange="toggleSelectAll(this)"></th>
+                    <th>#</th>
+                    <th>Membre</th>
+                    <th>Rôle</th>
+                    <th>Statut</th>
+                    <th>Photo</th>
+                    <th>MDP</th>
+                    <th>Inscrit le</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody id="membersTable">
+                {% for m in members %}
+                <tr data-id="{{ m.id }}"
+                    data-name="{{ m.full_name|lower }}"
+                    data-email="{{ m.email|lower }}"
+                    data-role="{{ m.role }}"
+                    data-status="{{ 'confirmed' if m.is_confirmed else 'pending' }}">
+                    <td class="cb-cell"><input type="checkbox" class="row-cb" value="{{ m.id }}"></td>
+                    <td style="color:var(--text-secondary);">{{ m.id }}</td>
+                    <td>
+                        <div class="member-name-cell">
+                            {% if m.profile_pic %}
+                                <img src="{{ m.profile_pic }}" alt="" class="member-avatar">
+                            {% else %}
+                                <div class="member-initials">{{ m.full_name[0].upper() }}</div>
+                            {% endif %}
+                            <div>
+                                <a href="{{ url_for('my_profile', member_id=m.id) }}">{{ m.full_name }}</a>
+                                <div class="member-email">{{ m.email }}</div>
+                            </div>
+                        </div>
+                    </td>
+                    <td>
+                        <span class="badge badge-{{ m.role }}">{{ m.role }}</span>
+                    </td>
+                    <td>
+                        {% if m.is_confirmed %}
+                            <span class="badge badge-confirmed"><i class="fas fa-check"></i> Confirmé</span>
+                        {% else %}
+                            <span class="badge badge-pending"><i class="fas fa-clock"></i> En attente</span>
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if m.profile_pic %}
+                            <i class="fas fa-image" style="color:#00d4aa;"></i>
+                        {% else %}
+                            <i class="fas fa-image" style="color:var(--text-secondary);opacity:0.3;"></i>
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if m.password_hash %}
+                            <i class="fas fa-lock" style="color:#00d4aa;"></i>
+                        {% else %}
+                            <i class="fas fa-lock-open" style="color:var(--text-secondary);opacity:0.3;"></i>
+                        {% endif %}
+                    </td>
+                    <td style="white-space:nowrap;color:var(--text-secondary);font-size:0.8rem;">
+                        {{ m.created_at.strftime('%d/%m/%Y %H:%M') if m.created_at else '-' }}
+                    </td>
+                    <td>
+                        <div class="action-btns">
+                            {% if not m.is_confirmed %}
+                            <button class="btn-a-confirm" onclick="confirmMember({{ m.id }}, this)" title="Confirmer">
+                                <i class="fas fa-check"></i>
+                            </button>
+                            {% endif %}
+                            <button class="btn-a-delete" onclick="deleteMember({{ m.id }}, '{{ m.full_name|e }}', this)" title="Supprimer">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- Toast -->
+<div class="admin-toast" id="adminToast"></div>
+
+<script>
+function showToast(msg, isError) {
+    const t = document.getElementById('adminToast');
+    t.textContent = msg;
+    t.className = 'admin-toast show' + (isError ? ' error' : '');
+    setTimeout(() => t.className = 'admin-toast', 3000);
+}
+
+function filterTable() {
+    const q = document.getElementById('searchInput').value.toLowerCase();
+    const role = document.getElementById('filterRole').value;
+    const status = document.getElementById('filterStatus').value;
+    document.querySelectorAll('#membersTable tr').forEach(tr => {
+        const name = tr.dataset.name || '';
+        const email = tr.dataset.email || '';
+        const r = tr.dataset.role || '';
+        const s = tr.dataset.status || '';
+        const matchSearch = !q || name.includes(q) || email.includes(q) || r.includes(q);
+        const matchRole = !role || r === role;
+        const matchStatus = !status || s === status;
+        tr.style.display = (matchSearch && matchRole && matchStatus) ? '' : 'none';
+    });
+}
+
+function toggleSelectAll(cb) {
+    document.querySelectorAll('.row-cb').forEach(c => {
+        if (c.closest('tr').style.display !== 'none') c.checked = cb.checked;
+    });
+}
+
+function getSelectedIds() {
+    return [...document.querySelectorAll('.row-cb:checked')].map(c => parseInt(c.value));
+}
+
+async function confirmMember(id, btn) {
+    try {
+        const resp = await fetch(`/admin/pulsers/confirm/${id}`, { method: 'POST' });
+        const data = await resp.json();
+        if (data.ok) {
+            const tr = btn.closest('tr');
+            tr.dataset.status = 'confirmed';
+            tr.querySelector('.badge-pending').outerHTML = '<span class="badge badge-confirmed"><i class="fas fa-check"></i> Confirmé</span>';
+            btn.remove();
+            showToast(`${data.name} confirmé !`);
+        }
+    } catch (e) {
+        showToast('Erreur: ' + e.message, true);
+    }
+}
+
+async function deleteMember(id, name, btn) {
+    if (!confirm(`Supprimer ${name} ? Cette action est irréversible.`)) return;
+    try {
+        const resp = await fetch(`/admin/pulsers/delete/${id}`, { method: 'POST' });
+        const data = await resp.json();
+        if (data.ok) {
+            btn.closest('tr').remove();
+            showToast(`${data.name} supprimé.`);
+        }
+    } catch (e) {
+        showToast('Erreur: ' + e.message, true);
+    }
+}
+
+async function bulkAction(action) {
+    const ids = getSelectedIds();
+    if (!ids.length) return showToast('Sélectionnez au moins un membre.', true);
+    const label = action === 'confirm' ? 'confirmer' : 'supprimer';
+    if (!confirm(`${label.charAt(0).toUpperCase() + label.slice(1)} ${ids.length} membre(s) ?`)) return;
+    try {
+        const resp = await fetch('/admin/pulsers/bulk', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ action, ids })
+        });
+        const data = await resp.json();
+        if (data.ok) {
+            if (action === 'delete') {
+                ids.forEach(id => {
+                    const tr = document.querySelector(`tr[data-id="${id}"]`);
+                    if (tr) tr.remove();
+                });
+            } else {
+                ids.forEach(id => {
+                    const tr = document.querySelector(`tr[data-id="${id}"]`);
+                    if (tr) {
+                        tr.dataset.status = 'confirmed';
+                        const badge = tr.querySelector('.badge-pending');
+                        if (badge) badge.outerHTML = '<span class="badge badge-confirmed"><i class="fas fa-check"></i> Confirmé</span>';
+                        const confirmBtn = tr.querySelector('.btn-a-confirm');
+                        if (confirmBtn) confirmBtn.remove();
+                    }
+                });
+            }
+            showToast(`${data.count} membre(s) ${action === 'confirm' ? 'confirmés' : 'supprimés'}.`);
+            document.getElementById('selectAll').checked = false;
+        }
+    } catch (e) {
+        showToast('Erreur: ' + e.message, true);
+    }
+}
+</script>
+{% endblock %}

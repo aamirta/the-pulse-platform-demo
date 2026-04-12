@@ -2295,5 +2295,85 @@ def inbox_reply():
     return jsonify({"ok": True})
 
 
+# ── Admin dashboard ─────────────────────────────────────────────────────
+ADMIN_EMAILS = {"mohammed.damiri@um6p.ma", "hamid.bouchikhi@um6p.ma", "simohammed.damiri@gmail.com", "damiri@thepulse.ma"}
+
+def _require_admin():
+    """Return the current member if admin, else abort 403."""
+    member_id = session.get("member_id")
+    if not member_id:
+        return None
+    m = PulseMember.query.get(member_id)
+    if not m or m.email.lower() not in ADMIN_EMAILS:
+        return None
+    return m
+
+@app.route("/admin/pulsers")
+def admin_pulsers():
+    admin = _require_admin()
+    if not admin:
+        flash("Accès réservé aux administrateurs.", "error")
+        return redirect(url_for("home"))
+    from datetime import datetime
+    members = PulseMember.query.order_by(PulseMember.created_at.desc()).all()
+    stats = {
+        "total": len(members),
+        "confirmed": sum(1 for m in members if m.is_confirmed),
+        "pending": sum(1 for m in members if not m.is_confirmed),
+        "with_photo": sum(1 for m in members if m.profile_pic),
+        "with_password": sum(1 for m in members if m.password_hash),
+        "roles": {},
+    }
+    for m in members:
+        stats["roles"][m.role] = stats["roles"].get(m.role, 0) + 1
+    return render_template("admin-pulsers.html", members=members, stats=stats, now=datetime.now())
+
+
+@app.route("/admin/pulsers/confirm/<int:member_id>", methods=["POST"])
+def admin_confirm_member(member_id):
+    admin = _require_admin()
+    if not admin:
+        return jsonify({"error": "Forbidden"}), 403
+    m = PulseMember.query.get_or_404(member_id)
+    m.is_confirmed = True
+    db.session.commit()
+    return jsonify({"ok": True, "id": m.id, "name": m.full_name})
+
+
+@app.route("/admin/pulsers/delete/<int:member_id>", methods=["POST"])
+def admin_delete_member(member_id):
+    admin = _require_admin()
+    if not admin:
+        return jsonify({"error": "Forbidden"}), 403
+    m = PulseMember.query.get_or_404(member_id)
+    db.session.delete(m)
+    db.session.commit()
+    return jsonify({"ok": True, "id": m.id, "name": m.full_name})
+
+
+@app.route("/admin/pulsers/bulk", methods=["POST"])
+def admin_bulk_action():
+    admin = _require_admin()
+    if not admin:
+        return jsonify({"error": "Forbidden"}), 403
+    data = request.get_json(silent=True) or {}
+    action = data.get("action")
+    ids = data.get("ids", [])
+    if not ids:
+        return jsonify({"error": "No IDs"}), 400
+    members = PulseMember.query.filter(PulseMember.id.in_(ids)).all()
+    if action == "confirm":
+        for m in members:
+            m.is_confirmed = True
+        db.session.commit()
+        return jsonify({"ok": True, "count": len(members)})
+    elif action == "delete":
+        for m in members:
+            db.session.delete(m)
+        db.session.commit()
+        return jsonify({"ok": True, "count": len(members)})
+    return jsonify({"error": "Unknown action"}), 400
+
+
 if __name__ == "__main__":
     app.run(debug=True, port=8080)

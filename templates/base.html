@@ -172,6 +172,11 @@
                         <span style="position:absolute;top:4px;right:4px;background:#f97316;color:#fff;font-size:0.6rem;font-weight:700;min-width:16px;height:16px;border-radius:50%;display:flex;align-items:center;justify-content:center;">{{ unread_count }}</span>
                         {% endif %}
                     </a>
+                    {% if current_member and current_member.email.lower() in ['mohammed.damiri@um6p.ma', 'hamid.bouchikhi@um6p.ma', 'simohammed.damiri@gmail.com', 'damiri@thepulse.ma'] %}
+                    <a href="{{ url_for('admin_pulsers') }}" class="member-nav-item">
+                        <i class="fas fa-users-gear"></i> Admin Pulsers
+                    </a>
+                    {% endif %}
                     <div class="member-nav-divider"></div>
                     <a href="{{ url_for('logout_member') }}" class="member-nav-item member-nav-logout">
                         <i class="fas fa-sign-out-alt"></i> Se déconnecter
