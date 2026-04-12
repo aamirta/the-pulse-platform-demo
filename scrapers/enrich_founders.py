@@ -38,9 +38,8 @@ HEADERS = {
     'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
     'Accept-Language': 'en-US,en;q=0.9',
 }
-MIN_DELAY = 5
-MAX_DELAY = 10
-STARTPAGE_URL = 'https://www.startpage.com/sp/search'
+MIN_DELAY = 4
+MAX_DELAY = 8
 
 # Domains to exclude from search results (our own platform, generic listings)
 EXCLUDED_DOMAINS = {
@@ -63,7 +62,19 @@ BLACKLIST_WORDS = {
     'association', 'foundation', 'institut', 'academy', 'leader',
     'network', 'platform', 'hub', 'club', 'center', 'centre',
     'africa', 'african', 'global', 'international', 'world',
+    'observatory', 'organization', 'organisation', 'committee', 'council',
+    'corporate', 'europe', 'european', 'national', 'regional',
     'sarl', 'sas', 'sa', 'inc', 'ltd', 'llc', 'gmbh',
+    # French job titles / common words that are not person names
+    'créateur', 'createur', 'créatrice', 'directeur', 'directrice',
+    'fondateur', 'fondatrice', 'président', 'presidente', 'présidente',
+    'gérant', 'gerante', 'gérante', 'responsable', 'manager', 'chef',
+    'coordinateur', 'coordinatrice', 'analyste', 'ingénieur', 'ingenieur',
+    'développeur', 'developpeur', 'designer', 'architecte', 'consultant',
+    'conseiller', 'conseillère', 'expert', 'spécialiste', 'specialiste',
+    'évènement', 'evenement', 'événement', 'projet', 'produit',
+    'commercial', 'technique', 'financier', 'général', 'general',
+    'adjoint', 'adjointe', 'principal', 'senior', 'junior',
 }
 
 # Generic words too common to reliably identify a specific startup
@@ -80,33 +91,21 @@ def delay():
     time.sleep(random.uniform(MIN_DELAY, MAX_DELAY))
 
 
-def search_startpage(query):
+def search_web(query):
     """
-    Search using Startpage and return structured results.
+    Search using DuckDuckGo and return structured results.
     Returns: [{'title': ..., 'url': ..., 'snippet': ...}, ...]
     """
+    from ddgs import DDGS
     try:
-        resp = requests.post(
-            STARTPAGE_URL,
-            data={'query': query, 'cat': 'web'},
-            headers=HEADERS,
-            timeout=15,
-        )
-        if resp.status_code != 200:
-            print(f"    [WARN] Startpage returned status {resp.status_code}")
-            return []
-    except requests.RequestException as e:
-        print(f"    [ERR] Request failed: {e}")
+        raw = list(DDGS().text(query, max_results=10))
+    except Exception as e:
+        print(f"    [ERR] Search failed: {e}")
         return []
 
-    soup = BeautifulSoup(resp.text, 'html.parser')
     results = []
-
-    for result_div in soup.select('.result'):
-        h2 = result_div.find('h2')
-        title = h2.get_text(strip=True) if h2 else ''
-        a = result_div.find('a', href=True)
-        url = a['href'] if a else ''
+    for r in raw:
+        url = r.get('href', '')
         if not url.startswith('http'):
             continue
 
@@ -118,14 +117,10 @@ def search_startpage(query):
         except Exception:
             pass
 
-        # Description
-        desc_el = result_div.select_one('p')
-        desc = desc_el.get_text(strip=True) if desc_el else ''
-
         results.append({
-            'title': title,
+            'title': r.get('title', ''),
             'url': url,
-            'snippet': desc,
+            'snippet': r.get('body', ''),
         })
 
     return results
@@ -161,6 +156,9 @@ def is_valid_person_name(name):
     # Remove trailing dots and commas
     name = name.strip().rstrip('.,;:')
 
+    # Strip honorifics / prefixes
+    name = re.sub(r'^(?:Mr\.?|Mrs\.?|Ms\.?|Dr\.?|Prof\.?|Mme\.?|M\.)\s+', '', name, flags=re.IGNORECASE)
+
     parts = name.strip().split()
     if len(parts) < 2 or len(parts) > 4:
         return False
@@ -173,9 +171,36 @@ def is_valid_person_name(name):
     if name == name.upper():
         return False
 
-    for part in parts:
-        if part.lower() in BLACKLIST_WORDS:
+    # Reject if any word >3 chars is fully uppercase (e.g. "Ouassim BERNOSSI")
+    for p in parts:
+        if len(p) > 3 and p == p.upper():
             return False
+
+    # Reject if any word looks like concatenated garbage (e.g. "KONTAKTYCEOEurope")
+    for part in parts:
+        # More than 2 uppercase letters in a row inside a word = garbage
+        if re.search(r'[A-Z]{3,}', part) and part != part.upper():
+            return False
+
+    # Reject common English phrases that slip through
+    name_lower = name.lower()
+    PHRASE_BLACKLIST = [
+        'who we are', 'what we do', 'about us', 'our team', 'meet the',
+        'the california', 'the company', 'la mise en', 'mise en place',
+        'reid hoffman',  # LinkedIn founder, not a Moroccan startup founder
+    ]
+    if any(phrase in name_lower for phrase in PHRASE_BLACKLIST):
+        return False
+
+    for part in parts:
+        lower_part = part.lower()
+        if lower_part in BLACKLIST_WORDS:
+            return False
+        # Check apostrophe-joined subwords (e.g. "d'évènement")
+        if "'" in lower_part or '\u2019' in lower_part:
+            subparts = re.split(r"['\u2019]", lower_part)
+            if any(sp in BLACKLIST_WORDS for sp in subparts if len(sp) > 1):
+                return False
 
     # Must contain only letters, spaces, hyphens, apostrophes (no dots)
     if not re.match(r"^[A-Za-zÀ-ÿ\s\-']+$", name):
@@ -184,6 +209,15 @@ def is_valid_person_name(name):
         return False
     if len(name) > 40:
         return False
+
+    # Each part of the name should start with an uppercase letter (proper noun check)
+    for part in parts:
+        # Skip short connectors like "el", "de", "ben", "al"
+        if len(part) <= 3 and part[0].islower():
+            continue
+        if not part[0].isupper() and not part[0] in 'ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖØÙÚÛÜÝÞß':
+            return False
+
     return True
 
 
@@ -338,7 +372,7 @@ def search_founder_for_startup(startup_name, website=None, linkedin_url=None, se
     # ---- Strategy 1: Single combined search ----
     query = f'"{startup_name}" founder OR fondateur OR CEO Morocco'
     print(f"    Search: {query[:80]}...")
-    results = search_startpage(query)
+    results = search_web(query)
     print(f"    -> {len(results)} results")
 
     for r in results:
@@ -366,28 +400,28 @@ def search_founder_for_startup(startup_name, website=None, linkedin_url=None, se
             if is_valid_person_name(name):
                 role = extract_title_from_text(combined)
                 li_url = url if 'linkedin.com/in/' in url else None
-                add_founder(name, role, li_url, 'startpage')
+                add_founder(name, role, li_url, 'google')
 
         # Also try extracting from snippet text
         names = extract_names_from_text(combined, startup_name)
         for name in names:
             role = extract_title_from_text(combined)
             li_url = url if 'linkedin.com/in/' in url else None
-            add_founder(name, role, li_url, 'startpage')
+            add_founder(name, role, li_url, 'google')
 
         # LinkedIn URL name extraction as fallback
         if 'linkedin.com/in/' in url and len(found_founders) == 0:
             ln_name = extract_linkedin_name(url)
             if ln_name and is_valid_person_name(ln_name):
                 role = extract_title_from_text(combined)
-                add_founder(ln_name, role, url, 'startpage_linkedin')
+                add_founder(ln_name, role, url, 'google_linkedin')
 
     # ---- Strategy 2: French search (only if needed) ----
     if len(found_founders) < 1:
         delay()
         query2 = f'"{startup_name}" fondateur CEO Maroc'
         print(f"    Search FR: {query2[:80]}...")
-        results2 = search_startpage(query2)
+        results2 = search_web(query2)
         print(f"    -> {len(results2)} results")
 
         for r in results2:
@@ -412,13 +446,13 @@ def search_founder_for_startup(startup_name, website=None, linkedin_url=None, se
                 if is_valid_person_name(name):
                     role = extract_title_from_text(combined)
                     li_url = url if 'linkedin.com/in/' in url else None
-                    add_founder(name, role, li_url, 'startpage_fr')
+                    add_founder(name, role, li_url, 'google_fr')
 
             names = extract_names_from_text(combined, startup_name)
             for name in names:
                 role = extract_title_from_text(combined)
                 li_url = url if 'linkedin.com/in/' in url else None
-                add_founder(name, role, li_url, 'startpage_fr')
+                add_founder(name, role, li_url, 'google_fr')
 
     # ---- Strategy 3: Try the startup website ----
     if len(found_founders) < 2 and website:
@@ -444,7 +478,11 @@ def get_startups_without_founders():
             SELECT 1 FROM "StartupFounders" sf WHERE sf."Startup Id" = s."Startup Id"
         )
         AND (s."EntrepriseContactSiteWeb" IS NOT NULL OR s.linkedin IS NOT NULL)
-        ORDER BY s."Startup name"
+        ORDER BY
+            CASE WHEN s."EntrepriseContactSiteWeb" IS NOT NULL AND s.linkedin IS NOT NULL THEN 0
+                 WHEN s."EntrepriseContactSiteWeb" IS NOT NULL THEN 1
+                 ELSE 2 END,
+            s."Startup name"
     """
     result = db.session.execute(text(sql))
     rows = result.fetchall()
@@ -464,16 +502,10 @@ def get_next_founder_id():
     """Get the next available numeric founder ID."""
     from sqlalchemy import text
     result = db.session.execute(
-        text('SELECT "Founder Id" FROM "Founders" ORDER BY "Founder Id" DESC LIMIT 100')
+        text('SELECT MAX(CAST("Founder Id" AS INTEGER)) FROM "Founders" WHERE "Founder Id" ~ \'^[0-9]+$\'')
     )
-    max_id = 100000
-    for row in result:
-        try:
-            val = int(row[0])
-            if val > max_id:
-                max_id = val
-        except (ValueError, TypeError):
-            pass
+    row = result.fetchone()
+    max_id = row[0] if row and row[0] else 100000
     return max_id + 1
 
 

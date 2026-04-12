@@ -82,57 +82,49 @@
             <a href="/founders" class="nav-link-item" role="menuitem" data-i18n="nav_founders">Fondateurs</a>
             <a href="/investors" class="nav-link-item" role="menuitem" data-i18n="nav_investors">Investisseurs</a>
             <a href="/incubators" class="nav-link-item" role="menuitem" data-i18n="nav_incubators">Incubateurs</a>
-            <a href="/ressources?category=Appels+%C3%A0+projets" class="nav-link-item" role="menuitem"><i class="fas fa-bullhorn" style="margin-right:0.3rem;"></i><span data-i18n="nav_calls_projects">Appels à projets</span></a>
+            <a href="/experts" class="nav-link-item" role="menuitem"><i class="fas fa-chalkboard-teacher" style="margin-right:0.3rem;" aria-hidden="true"></i>Experts</a>
+            <a href="/cofounders" class="nav-link-item" role="menuitem"><i class="fas fa-handshake" style="margin-right:0.3rem;" aria-hidden="true"></i>Co-Fondateurs</a>
 
-            <!-- Talents dropdown -->
+            <!-- Ressources dropdown -->
             <div class="nav-dropdown">
                 <button class="nav-dropdown-toggle" aria-expanded="false" aria-haspopup="true">
-                    <span data-i18n="sidebar_talents">Capital Humain</span>
+                    <span>Ressources</span>
                     <i class="fas fa-chevron-down" aria-hidden="true"></i>
                 </button>
                 <div class="nav-dropdown-menu" role="menu">
-                    <a href="/talents" role="menuitem">
-                        <i class="fas fa-user-tie" aria-hidden="true"></i>
-                        <span data-i18n="nav_talents">Talents</span>
+                    <a href="/ressources?category=Appels+%C3%A0+projets" role="menuitem">
+                        <i class="fas fa-bullhorn" aria-hidden="true"></i>
+                        <span>Appels à projets</span>
                     </a>
-                    <a href="/cofounders" role="menuitem">
-                        <i class="fas fa-handshake" aria-hidden="true"></i>
-                        <span data-i18n="nav_cofounders">Co-Fondateurs</span>
-                    </a>
-                    <a href="/experts" role="menuitem">
-                        <i class="fas fa-chalkboard-teacher" aria-hidden="true"></i>
-                        <span data-i18n="nav_experts">Experts</span>
-                    </a>
-                </div>
-            </div>
-
-            <!-- Ecosystem dropdown -->
-            <div class="nav-dropdown">
-                <button class="nav-dropdown-toggle" aria-expanded="false" aria-haspopup="true">
-                    <span data-i18n="sidebar_ecosystem">Écosystème</span>
-                    <i class="fas fa-chevron-down" aria-hidden="true"></i>
-                </button>
-                <div class="nav-dropdown-menu" role="menu">
                     <a href="/actualites" role="menuitem">
                         <i class="fas fa-newspaper" aria-hidden="true"></i>
-                        <span data-i18n="nav_actualites">Actualités</span>
+                        <span>Actualités</span>
                     </a>
                     <a href="/ressources" role="menuitem">
                         <i class="fas fa-book-open" aria-hidden="true"></i>
-                        <span data-i18n="nav_ressources">Ressources</span>
+                        <span>Ressources</span>
+                    </a>
+                    <a href="/toolbox" role="menuitem">
+                        <i class="fas fa-wand-magic-sparkles" aria-hidden="true"></i>
+                        <span>Toolbox IA</span>
+                    </a>
+                    <a href="/talents" role="menuitem">
+                        <i class="fas fa-user-tie" aria-hidden="true"></i>
+                        <span>Talents</span>
                     </a>
                 </div>
             </div>
-
-            <a href="/toolbox" class="nav-link-item" role="menuitem" data-i18n="nav_toolbox">Toolbox IA</a>
         </div>
 
         <!-- Right: theme toggle + join CTA -->
         <div class="nav-right">
+            <!-- Language toggle hidden for now (French only) -->
+            <!--
             <button class="lang-toggle" id="langToggle" type="button"
                     aria-label="Toggle language" title="Switch language">
                 <span id="langLabel">FR</span>
             </button>
+            -->
             <button class="theme-toggle" id="themeToggle" type="button"
                     aria-label="Toggle dark and light mode" title="Toggle theme">
                 <i class="fas fa-moon" id="themeIcon" aria-hidden="true"></i>
@@ -414,40 +406,35 @@
                 <span data-i18n="sidebar_incubators">Incubateurs</span>
             </a>
 
-            <div class="sidebar-label" data-i18n="sidebar_finance">Finance</div>
-            <a href="/ressources?category=Appels+%C3%A0+projets" class="sidebar-link">
-                <i class="fas fa-bullhorn" aria-hidden="true"></i>
-                <span data-i18n="nav_calls_projects">Appels à projets</span>
-            </a>
-
-            <div class="sidebar-label" data-i18n="sidebar_talents">Talents</div>
-            <a href="/talents" class="sidebar-link">
-                <i class="fas fa-user-tie" aria-hidden="true"></i>
-                <span data-i18n="nav_talents">Talents</span>
+            <a href="/experts" class="sidebar-link">
+                <i class="fas fa-chalkboard-teacher" aria-hidden="true"></i>
+                <span>Experts</span>
             </a>
             <a href="/cofounders" class="sidebar-link">
                 <i class="fas fa-handshake" aria-hidden="true"></i>
-                <span data-i18n="nav_cofounders">Co-Fondateurs</span>
-            </a>
-            <a href="/experts" class="sidebar-link">
-                <i class="fas fa-chalkboard-teacher" aria-hidden="true"></i>
-                <span data-i18n="nav_experts">Experts</span>
+                <span>Co-Fondateurs</span>
             </a>
 
-            <div class="sidebar-label" data-i18n="sidebar_ecosystem">Écosystème</div>
+            <div class="sidebar-label">Ressources</div>
+            <a href="/ressources?category=Appels+%C3%A0+projets" class="sidebar-link">
+                <i class="fas fa-bullhorn" aria-hidden="true"></i>
+                <span>Appels à projets</span>
+            </a>
             <a href="/actualites" class="sidebar-link">
                 <i class="fas fa-newspaper" aria-hidden="true"></i>
-                <span data-i18n="nav_actualites">Actualités</span>
+                <span>Actualités</span>
             </a>
             <a href="/ressources" class="sidebar-link">
                 <i class="fas fa-book-open" aria-hidden="true"></i>
-                <span data-i18n="nav_ressources">Ressources</span>
+                <span>Ressources</span>
             </a>
-
-            <div class="sidebar-label" data-i18n="sidebar_tools">Outils</div>
             <a href="/toolbox" class="sidebar-link">
                 <i class="fas fa-wand-magic-sparkles" aria-hidden="true"></i>
-                <span data-i18n="nav_toolbox">Toolbox IA</span>
+                <span>Toolbox IA</span>
+            </a>
+            <a href="/talents" class="sidebar-link">
+                <i class="fas fa-user-tie" aria-hidden="true"></i>
+                <span>Talents</span>
             </a>
 
             <div class="sidebar-label" data-i18n="sidebar_more">Plus</div>
