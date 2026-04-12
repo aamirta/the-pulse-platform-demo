@@ -26,35 +26,41 @@
         color: #00d4aa;
     }
 
-    /* ── Stats cards ── */
-    .stats-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-        gap: 1rem;
-        margin-bottom: 2rem;
-    }
-    .stat-card {
+    /* ── Stats bar ── */
+    .stats-bar {
+        display: flex;
+        align-items: center;
+        gap: 1.5rem;
+        flex-wrap: wrap;
+        margin-bottom: 1.5rem;
+        padding: 0.8rem 1.2rem;
         background: var(--surface, rgba(255,255,255,0.04));
         border: 1px solid var(--border, rgba(255,255,255,0.06));
-        border-radius: 14px;
-        padding: 1.2rem 1.4rem;
-        text-align: center;
+        border-radius: 12px;
     }
-    .stat-card .stat-value {
-        font-family: 'Syne', sans-serif;
-        font-size: 2rem;
-        font-weight: 800;
-        color: #00d4aa;
-    }
-    .stat-card .stat-label {
-        font-size: 0.8rem;
+    .stat-item {
+        display: flex;
+        align-items: center;
+        gap: 0.4rem;
+        font-size: 0.85rem;
         color: var(--text-secondary);
-        margin-top: 0.25rem;
-        text-transform: uppercase;
-        letter-spacing: 0.5px;
     }
-    .stat-card.warn .stat-value { color: #f97316; }
-    .stat-card.info .stat-value { color: #8B5CF6; }
+    .stat-item .stat-num {
+        font-weight: 700;
+        color: var(--text-primary);
+        font-size: 0.9rem;
+    }
+    .stat-item .stat-dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        flex-shrink: 0;
+    }
+    .stat-sep {
+        width: 1px;
+        height: 20px;
+        background: var(--border, rgba(255,255,255,0.1));
+    }
 
     /* ── Toolbar ── */
     .toolbar {
@@ -370,31 +376,23 @@
     </div>
 
     <!-- Stats -->
-    <div class="stats-grid">
-        <div class="stat-card">
-            <div class="stat-value">{{ stats.total }}</div>
-            <div class="stat-label">Total inscrits</div>
+    <div class="stats-bar">
+        <div class="stat-item">
+            <span class="stat-num">{{ stats.total }}</span> inscrits
         </div>
-        <div class="stat-card">
-            <div class="stat-value">{{ stats.confirmed }}</div>
-            <div class="stat-label">Confirmés</div>
+        <div class="stat-sep"></div>
+        <div class="stat-item">
+            <span class="stat-dot" style="background:#00d4aa;"></span>
+            <span class="stat-num">{{ stats.confirmed }}</span> confirmés
         </div>
-        <div class="stat-card warn">
-            <div class="stat-value">{{ stats.pending }}</div>
-            <div class="stat-label">En attente</div>
+        <div class="stat-item">
+            <span class="stat-dot" style="background:#f97316;"></span>
+            <span class="stat-num">{{ stats.pending }}</span> en attente
         </div>
-        <div class="stat-card info">
-            <div class="stat-value">{{ stats.with_photo }}</div>
-            <div class="stat-label">Avec photo</div>
-        </div>
-        <div class="stat-card">
-            <div class="stat-value">{{ stats.with_password }}</div>
-            <div class="stat-label">Mot de passe</div>
-        </div>
+        <div class="stat-sep"></div>
         {% for role, count in stats.roles.items() %}
-        <div class="stat-card">
-            <div class="stat-value">{{ count }}</div>
-            <div class="stat-label">{{ role | capitalize }}</div>
+        <div class="stat-item">
+            <span class="stat-num">{{ count }}</span> {{ role }}{{ 's' if count > 1 else '' }}
         </div>
         {% endfor %}
     </div>
