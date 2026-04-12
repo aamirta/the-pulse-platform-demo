@@ -1194,9 +1194,10 @@ def complete_profile(member_id):
 
 @app.route("/my-profile/<int:member_id>")
 def my_profile(member_id):
+    from datetime import datetime
     member = PulseMember.query.get_or_404(member_id)
     form_data = json.loads(member.form_data) if member.form_data else {}
-    return render_template("my-profile.html", member=member, form_data=form_data)
+    return render_template("my-profile.html", member=member, form_data=form_data, now=datetime.now())
 
 @app.route("/logout-member")
 def logout_member():
@@ -1430,8 +1431,9 @@ def cofounder_form():
 
 @app.route("/expert/<int:expert_id>")
 def expert_detail(expert_id):
+    from datetime import datetime
     expert = Expert.query.get_or_404(expert_id)
-    return render_template("expert-detail.html", expert=expert)
+    return render_template("expert-detail.html", expert=expert, now=datetime.now())
 
 
 @app.route("/experts")
@@ -1520,8 +1522,10 @@ def experts():
         unique_experts.append(proxy)
 
     all_experts = unique_experts
+    from datetime import datetime
     return render_template("experts.html", experts=all_experts, search=search,
-                         selected_domain=selected_domain, selected_availability=selected_availability)
+                         selected_domain=selected_domain, selected_availability=selected_availability,
+                         now=datetime.now())
 
 @app.route("/expert-form", methods=["GET", "POST"])
 def expert_form():
