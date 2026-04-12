@@ -756,6 +756,7 @@ class PulseMember(db.Model):
     confirmation_token = db.Column(db.String(100), unique=True)
     is_confirmed = db.Column(db.Boolean, default=False)
     profile_pic = db.Column(db.Text)
+    linkedin = db.Column(db.String(255), nullable=True)
     form_data = db.Column(db.Text)  # JSON string with role-specific fields
     password_hash = db.Column(db.String(255), nullable=True)
     created_at = db.Column(db.DateTime, default=db.func.now())

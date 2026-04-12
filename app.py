@@ -2015,6 +2015,13 @@ def _cleanup_seed_posts():
         print("[PULSE] Added to_email column to direct_messages", flush=True)
     except Exception:
         db.session.rollback()
+    # Ensure linkedin column exists on pulse_members
+    try:
+        db.session.execute(db.text("ALTER TABLE pulse_members ADD COLUMN linkedin VARCHAR(255)"))
+        db.session.commit()
+        print("[PULSE] Added linkedin column to pulse_members", flush=True)
+    except Exception:
+        db.session.rollback()
 
 
 with app.app_context():
@@ -2366,11 +2373,14 @@ def admin_update_member(member_id):
         m.role = data["role"].strip()
     if "is_confirmed" in data:
         m.is_confirmed = bool(data["is_confirmed"])
+    if "linkedin" in data:
+        m.linkedin = data["linkedin"].strip() or None
     db.session.commit()
     return jsonify({
         "ok": True, "id": m.id,
         "full_name": m.full_name, "email": m.email,
         "role": m.role, "is_confirmed": m.is_confirmed,
+        "linkedin": m.linkedin or "",
     })
 
 

@@ -431,6 +431,7 @@
                     <th>Membre</th>
                     <th>Rôle</th>
                     <th>Statut</th>
+                    <th>LinkedIn</th>
                     <th>Photo</th>
                     <th>MDP</th>
                     <th>Inscrit le</th>
@@ -470,6 +471,13 @@
                         {% endif %}
                     </td>
                     <td>
+                        {% if m.linkedin %}
+                            <a href="{{ m.linkedin }}" target="_blank" style="color:#0A66C2;" title="{{ m.linkedin }}"><i class="fab fa-linkedin"></i></a>
+                        {% else %}
+                            <i class="fab fa-linkedin" style="color:var(--text-secondary);opacity:0.2;"></i>
+                        {% endif %}
+                    </td>
+                    <td>
                         {% if m.profile_pic %}
                             <i class="fas fa-image" style="color:#00d4aa;"></i>
                         {% else %}
@@ -488,7 +496,7 @@
                     </td>
                     <td>
                         <div class="action-btns">
-                            <button class="btn-a-edit" onclick="openEditModal({{ m.id }}, '{{ m.full_name|e }}', '{{ m.email|e }}', '{{ m.role }}', {{ 'true' if m.is_confirmed else 'false' }})" title="Modifier">
+                            <button class="btn-a-edit" onclick="openEditModal({{ m.id }}, '{{ m.full_name|e }}', '{{ m.email|e }}', '{{ m.role }}', {{ 'true' if m.is_confirmed else 'false' }}, '{{ (m.linkedin or '')|e }}')" title="Modifier">
                                 <i class="fas fa-pen"></i>
                             </button>
                             {% if not m.is_confirmed %}
@@ -521,6 +529,10 @@
         <div class="form-group">
             <label>Email</label>
             <input type="email" id="editEmail">
+        </div>
+        <div class="form-group">
+            <label>LinkedIn</label>
+            <input type="url" id="editLinkedin" placeholder="https://linkedin.com/in/...">
         </div>
         <div class="form-row">
             <div class="form-group">
@@ -653,12 +665,13 @@ async function bulkAction(action) {
     }
 }
 
-function openEditModal(id, name, email, role, confirmed) {
+function openEditModal(id, name, email, role, confirmed, linkedin) {
     document.getElementById('editId').value = id;
     document.getElementById('editFullName').value = name;
     document.getElementById('editEmail').value = email;
     document.getElementById('editRole').value = role;
     document.getElementById('editConfirmed').checked = confirmed;
+    document.getElementById('editLinkedin').value = linkedin || '';
     document.getElementById('editModalName').textContent = name;
     document.getElementById('editModal').classList.add('open');
 }
@@ -684,6 +697,7 @@ async function saveEdit() {
         email: document.getElementById('editEmail').value.trim(),
         role: document.getElementById('editRole').value,
         is_confirmed: document.getElementById('editConfirmed').checked,
+        linkedin: document.getElementById('editLinkedin').value.trim(),
     };
     if (!payload.full_name || !payload.email) {
         return showToast('Nom et email requis.', true);
@@ -729,11 +743,21 @@ async function saveEdit() {
                     }
                 }
 
+                // Update LinkedIn icon
+                const liTd = tr.querySelector('td:nth-child(6)');
+                if (liTd) {
+                    if (data.linkedin) {
+                        liTd.innerHTML = `<a href="${data.linkedin}" target="_blank" style="color:#0A66C2;" title="${data.linkedin}"><i class="fab fa-linkedin"></i></a>`;
+                    } else {
+                        liTd.innerHTML = '<i class="fab fa-linkedin" style="color:var(--text-secondary);opacity:0.2;"></i>';
+                    }
+                }
+
                 // Update the edit button onclick with new data
                 const editBtn = tr.querySelector('.btn-a-edit');
                 if (editBtn) {
                     editBtn.setAttribute('onclick',
-                        `openEditModal(${id}, '${data.full_name.replace(/'/g,"\\'")}', '${data.email.replace(/'/g,"\\'")}', '${data.role}', ${data.is_confirmed})`
+                        `openEditModal(${id}, '${data.full_name.replace(/'/g,"\\'")}', '${data.email.replace(/'/g,"\\'")}', '${data.role}', ${data.is_confirmed}, '${(data.linkedin||'').replace(/'/g,"\\'")}')`
                     );
                 }
             }
