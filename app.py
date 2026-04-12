@@ -2351,6 +2351,29 @@ def admin_delete_member(member_id):
     return jsonify({"ok": True, "id": m.id, "name": m.full_name})
 
 
+@app.route("/admin/pulsers/update/<int:member_id>", methods=["POST"])
+def admin_update_member(member_id):
+    admin = _require_admin()
+    if not admin:
+        return jsonify({"error": "Forbidden"}), 403
+    m = PulseMember.query.get_or_404(member_id)
+    data = request.get_json(silent=True) or {}
+    if "full_name" in data and data["full_name"].strip():
+        m.full_name = data["full_name"].strip()
+    if "email" in data and data["email"].strip():
+        m.email = data["email"].strip().lower()
+    if "role" in data and data["role"].strip():
+        m.role = data["role"].strip()
+    if "is_confirmed" in data:
+        m.is_confirmed = bool(data["is_confirmed"])
+    db.session.commit()
+    return jsonify({
+        "ok": True, "id": m.id,
+        "full_name": m.full_name, "email": m.email,
+        "role": m.role, "is_confirmed": m.is_confirmed,
+    })
+
+
 @app.route("/admin/pulsers/bulk", methods=["POST"])
 def admin_bulk_action():
     admin = _require_admin()
