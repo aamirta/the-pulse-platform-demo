@@ -1024,17 +1024,21 @@ def join_search(role):
 
 @app.context_processor
 def inject_current_member():
-    """Make current_member available in all templates."""
+    """Make current_member and unread_count available in all templates."""
     member_id = session.get("member_id")
     if member_id:
         try:
             member = PulseMember.query.get(member_id)
             if member:
-                return {"current_member": member}
+                unread = DirectMessage.query.filter(
+                    db.func.lower(DirectMessage.to_email) == member.email.strip().lower(),
+                    DirectMessage.is_read == False
+                ).count()
+                return {"current_member": member, "unread_count": unread}
         except Exception:
             db.session.rollback()
         session.pop("member_id", None)
-    return {"current_member": None}
+    return {"current_member": None, "unread_count": 0}
 
 @app.route("/join")
 def join():
