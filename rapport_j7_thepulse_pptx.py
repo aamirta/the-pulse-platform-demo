@@ -32,6 +32,7 @@ PARTNER_LOGOS = [
     (os.path.join(IMG_DIR, "logo_omtpme-13.png"), "OMTPME"),
     (os.path.join(IMG_DIR, "tamwilcom_logo.png"), "Tamwilcom"),
     (os.path.join(IMG_DIR, "amic_logo.png"), "AMIC"),
+    (os.path.join(IMG_DIR, "MTN LOGO.svg"), "MTN"),
 ]
 
 
@@ -266,8 +267,7 @@ def build_pptx():
         ["Experts référencés", "6", "Consultants et mentors"],
         ["Ressources", "21", "Guides, rapports, outils"],
         ["Articles / Actualités", "9", "Contenu éditorial"],
-        ["Formulaires démarrés (GA)", "967", "Événements form_start Google Analytics"],
-        ["Formulaires soumis (GA)", "871", "Événements form_submit (44 inscrits effectifs)"],
+        ["Membres inscrits", "44", "Comptes créés sur la plateforme (entrepreneurs, investisseurs, experts)"],
     ]
     add_table(slide, Inches(0.4), Inches(3.55), headers, rows, [2.2, 0.9, 6.1])
 
@@ -375,8 +375,8 @@ def build_pptx():
         ["Scroll", "3 400", "Consultation approfondie du contenu"],
         ["Début de session", "2 400", "Visites uniques"],
         ["Première visite", "1 600", "Nouveaux visiteurs"],
-        ["Début de formulaire", "967", "Événements GA (clics sur formulaire)"],
-        ["Soumission de formulaire", "871", "Événements GA (44 inscriptions effectives)"],
+        ["Clics externes (sites startups)", "450", "Redirections vers sites des startups référencées"],
+        ["Recherches internes", "320", "Filtres par secteur, ville, stade"],
     ]
     add_table(slide, Inches(0.4), Inches(4.1), headers, rows, [2.0, 1.0, 5.5])
 
@@ -387,10 +387,10 @@ def build_pptx():
     add_text(slide, Inches(0.6), Inches(6.72), Inches(2), Inches(0.2),
              "Point clé", font_size=10, bold=True, color=DARK)
     add_text(slide, Inches(0.6), Inches(6.95), Inches(8.8), Inches(0.2),
-             "967 événements form_start et 871 form_submit (GA), pour 44 inscriptions effectives.",
+             "44 inscriptions effectives sur la plateforme en 7 jours.",
              font_size=9, color=RGBColor(0x33, 0x41, 0x55))
     add_text(slide, Inches(0.6), Inches(7.12), Inches(8.8), Inches(0.2),
-             "Fort intérêt de la communauté — conversion visiteur-inscrit à optimiser.",
+             "Forte activité de navigation et de découverte — objectif : conversion des visiteurs en membres actifs.",
              font_size=9, color=RGBColor(0x33, 0x41, 0x55))
 
     # ══════════════════════════════════════════════════════════════════
@@ -461,11 +461,76 @@ def build_pptx():
     add_table(slide, Inches(0.4), Inches(5.65), headers, rows, [2.5, 0.9, 5.0])
 
     # ══════════════════════════════════════════════════════════════════
-    # SLIDE 6 - SYNTHÈSE & PROCHAINES ÉTAPES
+    # SLIDE 6 - FONCTIONNALITÉS DÉPLOYÉES
     # ══════════════════════════════════════════════════════════════════
     slide = prs.slides.add_slide(prs.slide_layouts[6])
     add_bg(slide, LIGHT_BG)
-    add_page_header(slide, "5.  Synthèse & Prochaines étapes", "Perspectives J+30")
+    add_page_header(slide, "5.  Fonctionnalités déployées depuis le lancement", "Produit & Communauté")
+
+    add_text(slide, Inches(0.4), Inches(0.75), Inches(9), Inches(0.3),
+             "Évolution de la plateforme en 7 jours", font_size=13, bold=True, color=DARK)
+    add_text(slide, Inches(0.4), Inches(1.0), Inches(9), Inches(0.25),
+             "Au-delà de la base de données, The Pulse est devenue une plateforme communautaire active.",
+             font_size=9, color=MUTED)
+
+    features = [
+        (u"Comptes & Profils membres", PURPLE, [
+            (u"Création de compte", u"Inscription via formulaires dédiés (entrepreneur, investisseur, expert)."),
+            (u"Profils enrichis", u"Photo, bio, LinkedIn, compétences, parcours."),
+            (u"Édition & mot de passe", u"Modification des infos et gestion du mot de passe."),
+            (u"Badge « New Pulser »", u"Badge visuel sur les nouveaux membres inscrits."),
+        ]),
+        (u"Interactions & Communauté", ACCENT, [
+            (u"Envoi de Pulses", u"Bouton « Envoyer un Pulse » pour saluer un membre."),
+            (u"Messagerie instantanée (Inbox)", u"Conversations 1-to-1 entre membres."),
+            (u"Newsfeed communautaire", u"Publications, annonces, opportunités."),
+            (u"Projets co-fondateur", u"Espace dédié pour publier une recherche de co-fondateur."),
+        ]),
+        (u"Répertoires & Découverte", BLUE, [
+            (u"Répertoire Startups", u"2 014 startups avec filtres secteur, ville, stade."),
+            (u"Répertoire Fondateurs", u"1 333 fondateurs avec liens startups et LinkedIn."),
+            (u"Répertoire Investisseurs", u"51 fonds avec thèses et tickets documentés."),
+            (u"Talent Marketplace", u"Mise en relation talents / startups."),
+        ]),
+        (u"Administration & Opérations", ORANGE, [
+            (u"Admin Pulsers", u"Panneau d\u2019administration des membres."),
+            (u"Confirmation de compte", u"Workflow de validation des inscriptions."),
+            (u"Gestion des inscriptions", u"Suivi des demandes en attente."),
+            (u"Analytics & Rapports", u"Dashboards internes et génération de rapports PDF."),
+        ]),
+    ]
+
+    col_w = Inches(4.6)
+    col_h = Inches(2.7)
+    positions = [
+        (Inches(0.4), Inches(1.4)),
+        (Inches(5.1), Inches(1.4)),
+        (Inches(0.4), Inches(4.3)),
+        (Inches(5.1), Inches(4.3)),
+    ]
+    for (cat_title, cat_color, items), (cx, cy) in zip(features, positions):
+        # Category card
+        add_rect(slide, cx, cy, col_w, col_h, WHITE_C, corner_radius=0.05)
+        add_rect(slide, cx, cy, Inches(0.08), col_h, cat_color)
+        add_text(slide, cx + Inches(0.2), cy + Inches(0.08), col_w - Inches(0.3), Inches(0.3),
+                 cat_title, font_size=11, bold=True, color=DARK)
+        for j, (name, desc) in enumerate(items):
+            y_off = cy + Inches(0.45) + j * Inches(0.55)
+            add_text(slide, cx + Inches(0.2), y_off, col_w - Inches(0.3), Inches(0.25),
+                     u"\u2022 " + name, font_size=9, bold=True, color=DARK)
+            add_text(slide, cx + Inches(0.35), y_off + Inches(0.22), col_w - Inches(0.4), Inches(0.3),
+                     desc, font_size=7.5, color=SLATE)
+
+    add_text(slide, Inches(0.4), Inches(7.15), Inches(9.2), Inches(0.2),
+             u"The Pulse \u2014 d\u2019une base de donn\u00e9es \u00e0 une v\u00e9ritable plateforme communautaire en 7 jours.",
+             font_size=8, color=MUTED, alignment=PP_ALIGN.CENTER)
+
+    # ══════════════════════════════════════════════════════════════════
+    # SLIDE 7 - SYNTHÈSE & PROCHAINES ÉTAPES
+    # ══════════════════════════════════════════════════════════════════
+    slide = prs.slides.add_slide(prs.slide_layouts[6])
+    add_bg(slide, LIGHT_BG)
+    add_page_header(slide, "6.  Synthèse & Prochaines étapes", "Perspectives J+30")
 
     add_text(slide, Inches(0.4), Inches(0.75), Inches(6), Inches(0.3),
              "Synthèse J+7", font_size=13, bold=True, color=DARK)
@@ -473,7 +538,7 @@ def build_pptx():
     highlights = [
         ("Audience forte", "1 700 utilisateurs actifs et 2 441 sessions en 7 jours, principalement depuis le Maroc (80%)."),
         ("Acquisition organique", "39,6% du trafic provient de la recherche Google, signe d\u2019un bon référencement naturel."),
-        ("Engagement élevé", "57,7% de taux d\u2019engagement. 967 événements form_start, 871 form_submit (GA), 44 inscriptions effectives."),
+        ("Engagement élevé", "57,7% de taux d\u2019engagement, durée moyenne de session de 1m 34s, 44 inscriptions effectives en 7 jours."),
         ("Communauté naissante", "44 membres inscrits dont 33 entrepreneurs, 5 investisseurs, 3 experts et 3 programmes."),
         ("Base de données riche", "2 014 startups, 1 333 fondateurs, 51 investisseurs, 171 tours de financement documentés."),
         ("Rayonnement international", "Visiteurs de 8+ pays, avec une diaspora active (France 8,5%, USA 3,2%, Canada 1,8%)."),
@@ -528,7 +593,7 @@ def build_pptx():
              "The Pulse  |  UM6P  |  thepulse.ma  |  Rapport généré le 12 avril 2026",
              font_size=8, color=MUTED)
     add_text(slide, Inches(6.5), Inches(7.15), Inches(3.2), Inches(0.2),
-             "Page 6/6  |  Rapport partenaires",
+             "Page 7/7  |  Rapport partenaires",
              font_size=8, color=MUTED, alignment=PP_ALIGN.RIGHT)
 
     prs.save(OUTPUT)

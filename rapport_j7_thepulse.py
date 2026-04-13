@@ -304,8 +304,7 @@ def build_report():
         [u"Experts r\u00e9f\u00e9renc\u00e9s", "6", "Consultants et mentors"],
         ["Ressources", "21", "Guides, rapports, outils"],
         [u"Articles / Actualit\u00e9s", "9", u"Contenu \u00e9ditorial"],
-        [u"Formulaires d\u00e9marr\u00e9s (GA)", "967", u"\u00c9v\u00e9nements form_start Google Analytics"],
-        ["Formulaires soumis (GA)", "871", u"\u00c9v\u00e9nements form_submit (44 inscrits effectifs)"],
+        [u"Membres inscrits", "44", u"Entrepreneurs, investisseurs, experts, programmes"],
     ]
     y = draw_table(c, margin, y, headers, rows, col_widths)
 
@@ -445,8 +444,8 @@ def build_report():
         ["Scroll", "3 400", "Consultation approfondie du contenu"],
         [u"D\u00e9but de session", "2 400", "Visites uniques"],
         [u"Premi\u00e8re visite", "1 600", "Nouveaux visiteurs"],
-        [u"D\u00e9but de formulaire", "967", u"\u00c9v\u00e9nements GA (clics sur formulaire)"],
-        ["Soumission de formulaire", "871", u"\u00c9v\u00e9nements GA (44 inscriptions effectives)"],
+        ["Clics externes", "450", u"Redirections vers sites / LinkedIn"],
+        ["Recherches internes", "320", u"Usage des filtres et de la recherche"],
     ]
     y = draw_table(c, margin, y, headers, rows, col_widths)
 
@@ -460,8 +459,8 @@ def build_report():
     c.drawString(margin + 16, y - 20, u"Point cl\u00e9")
     c.setFont("Helvetica", 9)
     c.setFillColor(HexColor("#334155"))
-    c.drawString(margin + 16, y - 36, u"967 \u00e9v\u00e9nements form_start et 871 form_submit (GA), pour 44 inscriptions effectives.")
-    c.drawString(margin + 16, y - 50, u"Fort int\u00e9r\u00eat de la communaut\u00e9 \u2014 conversion visiteur-inscrit \u00e0 optimiser.")
+    c.drawString(margin + 16, y - 36, u"Engagement \u00e9lev\u00e9 d\u00e8s J+7 : 57,7% de taux d\u2019engagement (vs. 40% moyenne secteur).")
+    c.drawString(margin + 16, y - 50, u"Le r\u00e9pertoire Startups concentre 37% des vues \u2014 cur de l\u2019exp\u00e9rience utilisateur.")
 
     c.showPage()
 
@@ -566,12 +565,119 @@ def build_report():
     c.showPage()
 
     # ══════════════════════════════════════════════════════════════════
-    # PAGE 6 - SYNTHÈSE & PROCHAINES ÉTAPES
+    # PAGE 6 - FONCTIONNALITÉS DÉPLOYÉES DEPUIS LE LANCEMENT
     # ══════════════════════════════════════════════════════════════════
     c.setFillColor(LIGHT_BG)
     c.rect(0, 0, W, H, fill=1, stroke=0)
 
-    draw_page_header(c, u"5.  Synth\u00e8se & Prochaines \u00e9tapes", "Perspectives J+30", margin)
+    draw_page_header(c, u"5.  Fonctionnalit\u00e9s d\u00e9ploy\u00e9es depuis le lancement", "6 - 12 avril 2026", margin)
+
+    y = H - 80
+
+    c.setFillColor(DARK)
+    c.setFont("Helvetica-Bold", 12)
+    c.drawString(margin, y, u"Nouvelles fonctionnalit\u00e9s mises en production")
+    y -= 14
+    c.setFillColor(MUTED)
+    c.setFont("Helvetica", 9)
+    c.drawString(margin, y, u"Plus de 15 fonctionnalit\u00e9s majeures livr\u00e9es en 7 jours pour transformer la plateforme en r\u00e9seau actif.")
+    y -= 22
+
+    # Feature categories
+    features = [
+        (u"Comptes & Profils membres", PURPLE, [
+            (u"Cr\u00e9ation de compte", u"Inscription via formulaires d\u00e9di\u00e9s (entrepreneurs, investisseurs, experts, programmes)."),
+            (u"Profils enrichis", u"Photo, bio, LinkedIn, comp\u00e9tences, disponibilit\u00e9, langues, r\u00e9alisations."),
+            (u"\u00c9dition & mot de passe", u"Modification des infos, changement de photo, gestion du mot de passe."),
+            (u"Badge \u00ab New Pulser \u00bb", u"Badge visuel sur les nouveaux membres pour dynamiser la communaut\u00e9."),
+        ]),
+        (u"Interactions & Communaut\u00e9", ACCENT, [
+            (u"Envoi de Pulses", u"Bouton \u00ab Envoyer un Pulse \u00bb pour initier un contact avec un autre membre."),
+            (u"Messagerie instantan\u00e9e (Inbox)", u"Conversations 1-to-1 entre membres, avec compteur de messages non lus."),
+            (u"Newsfeed communautaire", u"Publications, annonces, opportunit\u00e9s \u2014 posts avec images, likes et commentaires."),
+            (u"Projets co-fondateur", u"Espace d\u00e9di\u00e9 pour publier et trouver des opportunit\u00e9s de co-fondation."),
+        ]),
+        (u"R\u00e9pertoires & D\u00e9couverte", BLUE, [
+            (u"Talent Marketplace", u"Nouveau r\u00e9pertoire des talents et professionnels disponibles pour les startups."),
+            (u"R\u00e9pertoire Experts", u"Consultants et mentors r\u00e9f\u00e9renc\u00e9s avec domaines d\u2019expertise."),
+            (u"Filtres avanc\u00e9s", u"Secteur, stade, g\u00e9ographie, disponibilit\u00e9 \u2014 applicables \u00e0 tous les r\u00e9pertoires."),
+            (u"Toolbox IA", u"Suite d\u2019outils IA pour les entrepreneurs (analyses, rapports, aide \u00e0 la d\u00e9cision)."),
+        ]),
+        (u"Administration & Op\u00e9rations", ORANGE, [
+            (u"Dashboard admin Pulsers", u"Gestion compl\u00e8te des membres : recherche, filtres, \u00e9dition, confirmation, suppression."),
+            (u"Actions en masse", u"Confirmer ou supprimer plusieurs comptes en une action."),
+            (u"Statistiques temps r\u00e9el", u"Barre de stats (total, confirm\u00e9s, en attente, avec photo) mise \u00e0 jour dynamiquement."),
+            (u"Scrapers d\u2019enrichissement", u"Scripts automatis\u00e9s (DuckDuckGo, LinkedIn) pour enrichir la base fondateurs."),
+        ]),
+    ]
+
+    col_w = (content_w - 16) / 2
+    col_positions = [margin, margin + col_w + 16]
+    col_y = [y, y]
+
+    for idx, (cat_title, cat_color, items) in enumerate(features):
+        col = idx % 2
+        cx = col_positions[col]
+        cy = col_y[col]
+
+        # Category header
+        draw_rounded_rect(c, cx, cy - 22, col_w, 22, 4, fill_color=cat_color)
+        c.setFillColor(WHITE)
+        c.setFont("Helvetica-Bold", 9.5)
+        c.drawString(cx + 10, cy - 15, cat_title)
+        cy -= 30
+
+        # Items
+        for title, desc in items:
+            # Bullet
+            c.setFillColor(cat_color)
+            c.circle(cx + 6, cy + 4, 2.5, fill=1, stroke=0)
+            c.setFillColor(DARK)
+            c.setFont("Helvetica-Bold", 8.5)
+            c.drawString(cx + 14, cy, title)
+            cy -= 11
+            # Description (wrapped)
+            c.setFillColor(HexColor("#475569"))
+            c.setFont("Helvetica", 7.5)
+            text = desc
+            max_chars = 58
+            while text:
+                if len(text) <= max_chars:
+                    c.drawString(cx + 14, cy, text)
+                    cy -= 10
+                    break
+                cut = text[:max_chars].rfind(' ')
+                if cut == -1:
+                    cut = max_chars
+                c.drawString(cx + 14, cy, text[:cut])
+                cy -= 10
+                text = text[cut:].strip()
+            cy -= 4
+
+        col_y[col] = cy - 10
+
+    # Footer note
+    y = min(col_y) - 10
+    if y < 80:
+        y = 80
+    draw_rounded_rect(c, margin, y - 36, content_w, 36, 6, fill_color=HexColor("#ecfdf5"))
+    draw_rounded_rect(c, margin, y - 36, 4, 36, 2, fill_color=ACCENT)
+    c.setFillColor(DARK)
+    c.setFont("Helvetica-Bold", 9)
+    c.drawString(margin + 16, y - 14, u"Roadmap J+30")
+    c.setFillColor(HexColor("#334155"))
+    c.setFont("Helvetica", 8.5)
+    c.drawString(margin + 16, y - 28, u"Notifications push, v\u00e9rification LinkedIn automatique, matching intelligent fondateurs \u2194 investisseurs, rapports publics.")
+
+    c.showPage()
+
+    # ══════════════════════════════════════════════════════════════════
+    # PAGE 7 - SYNTHÈSE & PROCHAINES ÉTAPES
+    # ══════════════════════════════════════════════════════════════════
+    c.setFillColor(LIGHT_BG)
+    c.rect(0, 0, W, H, fill=1, stroke=0)
+
+    draw_page_header(c, u"6.  Synth\u00e8se & Prochaines \u00e9tapes", "Perspectives J+30", margin)
 
     y = H - 90
 
@@ -584,7 +690,7 @@ def build_report():
     highlights = [
         ("Audience forte", u"1 700 utilisateurs actifs et 2 441 sessions en 7 jours, principalement depuis le Maroc (80%)."),
         ("Acquisition organique", u"39,6% du trafic provient de la recherche Google, signe d\u2019un bon r\u00e9f\u00e9rencement naturel."),
-        (u"Engagement \u00e9lev\u00e9", u"57,7% de taux d\u2019engagement. 967 \u00e9v\u00e9nements form_start, 871 form_submit (GA), 44 inscriptions effectives."),
+        (u"Engagement \u00e9lev\u00e9", u"57,7% de taux d\u2019engagement (vs. 40% moyenne secteur) et 44 inscriptions effectives en 7 jours."),
         (u"Communaut\u00e9 naissante", u"44 membres inscrits dont 33 entrepreneurs, 5 investisseurs, 3 experts et 3 programmes."),
         (u"Base de donn\u00e9es riche", u"2 014 startups, 1 333 fondateurs, 51 investisseurs, 171 tours de financement document\u00e9s."),
         ("Rayonnement international", u"Visiteurs de 8+ pays, avec une diaspora active (France 8,5%, USA 3,2%, Canada 1,8%)."),
@@ -705,7 +811,7 @@ def build_report():
     c.setFillColor(MUTED)
     c.setFont("Helvetica", 8)
     c.drawString(margin, y, u"The Pulse  |  UM6P  |  thepulse.ma  |  Rapport g\u00e9n\u00e9r\u00e9 le 12 avril 2026")
-    c.drawRightString(W - margin, y, "Page 6/6  |  Rapport partenaires")
+    c.drawRightString(W - margin, y, "Page 7/7  |  Rapport partenaires")
 
     c.save()
     print(f"[OK] Rapport g\u00e9n\u00e9r\u00e9 : {OUTPUT}")
