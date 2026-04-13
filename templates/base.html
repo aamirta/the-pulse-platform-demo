@@ -84,6 +84,7 @@
             <a href="/incubators" class="nav-link-item" role="menuitem" data-i18n="nav_incubators">Incubateurs</a>
             <a href="/experts" class="nav-link-item" role="menuitem"><i class="fas fa-chalkboard-teacher" style="margin-right:0.3rem;" aria-hidden="true"></i>Experts</a>
             <a href="/cofounders" class="nav-link-item" role="menuitem"><i class="fas fa-handshake" style="margin-right:0.3rem;" aria-hidden="true"></i>Co-Fondateurs</a>
+            <a href="/talents" class="nav-link-item" role="menuitem"><i class="fas fa-user-tie" style="margin-right:0.3rem;" aria-hidden="true"></i>Talent Marketplace</a>
 
             <!-- Ressources dropdown -->
             <div class="nav-dropdown">
@@ -107,10 +108,6 @@
                     <a href="/toolbox" role="menuitem">
                         <i class="fas fa-wand-magic-sparkles" aria-hidden="true"></i>
                         <span>Toolbox IA</span>
-                    </a>
-                    <a href="/talents" role="menuitem">
-                        <i class="fas fa-user-tie" aria-hidden="true"></i>
-                        <span>Talents</span>
                     </a>
                 </div>
             </div>
@@ -172,7 +169,7 @@
                         <span style="position:absolute;top:4px;right:4px;background:#f97316;color:#fff;font-size:0.6rem;font-weight:700;min-width:16px;height:16px;border-radius:50%;display:flex;align-items:center;justify-content:center;">{{ unread_count }}</span>
                         {% endif %}
                     </a>
-                    {% if current_member and current_member.email.lower() in ['mohammed.damiri@um6p.ma', 'hamid.bouchikhi@um6p.ma', 'simohammed.damiri@gmail.com', 'damiri@thepulse.ma'] %}
+                    {% if current_member and current_member.email.lower() in ['mohammed.damiri@um6p.ma', 'hamid.bouchikhi@um6p.ma', 'hamid.bouchikhi@gmail.com', 'simohammed.damiri@gmail.com', 'damiri@thepulse.ma'] %}
                     <a href="{{ url_for('admin_pulsers') }}" class="member-nav-item">
                         <i class="fas fa-users-gear"></i> Admin Pulsers
                     </a>
@@ -419,6 +416,10 @@
                 <i class="fas fa-handshake" aria-hidden="true"></i>
                 <span>Co-Fondateurs</span>
             </a>
+            <a href="/talents" class="sidebar-link">
+                <i class="fas fa-user-tie" aria-hidden="true"></i>
+                <span>Talent Marketplace</span>
+            </a>
 
             <div class="sidebar-label">Ressources</div>
             <a href="/ressources?category=Appels+%C3%A0+projets" class="sidebar-link">
@@ -436,10 +437,6 @@
             <a href="/toolbox" class="sidebar-link">
                 <i class="fas fa-wand-magic-sparkles" aria-hidden="true"></i>
                 <span>Toolbox IA</span>
-            </a>
-            <a href="/talents" class="sidebar-link">
-                <i class="fas fa-user-tie" aria-hidden="true"></i>
-                <span>Talents</span>
             </a>
 
             <div class="sidebar-label" data-i18n="sidebar_more">Plus</div>
@@ -561,7 +558,7 @@
                         <li><a href="/investors" data-i18n="nav_investors"><i class="fas fa-hand-holding-dollar"></i> Investisseurs</a></li>
                         <li><a href="/incubators" data-i18n="nav_incubators"><i class="fas fa-building-columns"></i> Incubateurs</a></li>
                         <li><a href="/ressources?category=Appels+%C3%A0+projets"><i class="fas fa-bullhorn"></i> <span data-i18n="nav_calls_projects">Appels à projets</span></a></li>
-                        <li><a href="/talents"><i class="fas fa-users"></i> Talents</a></li>
+                        <li><a href="/talents"><i class="fas fa-user-tie"></i> Talent Marketplace</a></li>
                         <li><a href="/toolbox" data-i18n="nav_toolbox"><i class="fas fa-wand-magic-sparkles"></i> Toolbox IA</a></li>
                     </ul>
                 </div>

@@ -1,0 +1,715 @@
+"""
+Rapport J+7 - The Pulse
+Bilan de lancement - Rapport partenaires
+Généré le 12 avril 2026
+"""
+import os
+from reportlab.lib.pagesizes import A4
+from reportlab.lib.units import cm, mm
+from reportlab.lib.colors import HexColor, white, black, Color
+from reportlab.pdfgen import canvas
+from reportlab.lib.utils import ImageReader
+from reportlab.pdfbase import pdfmetrics
+from reportlab.pdfbase.ttfonts import TTFont
+
+W, H = A4  # 595 x 842
+
+# ── Colors ──
+ACCENT = HexColor("#00d4aa")
+DARK = HexColor("#0f172a")
+DARK2 = HexColor("#1e293b")
+MUTED = HexColor("#64748b")
+ORANGE = HexColor("#f97316")
+PURPLE = HexColor("#8B5CF6")
+BLUE = HexColor("#3B82F6")
+RED = HexColor("#ef4444")
+GREEN = HexColor("#22c55e")
+WHITE = white
+LIGHT_BG = HexColor("#f8fafc")
+CARD_BG = HexColor("#f1f5f9")
+
+IMG_DIR = os.path.join(os.path.dirname(__file__), "static", "images")
+LOGO_DARK = os.path.join(IMG_DIR, "thepulse-noir.png")
+LOGO_WHITE = os.path.join(IMG_DIR, "thepulse-blanc.png")
+OUTPUT = os.path.join(os.path.dirname(__file__), "Rapport_J7_ThePulse_Partenaires.pdf")
+
+# Partner logos
+PARTNER_LOGOS = [
+    (os.path.join(IMG_DIR, "um6p_logo.png"), "UM6P"),
+    (os.path.join(IMG_DIR, "logo_omtpme-13.png"), "OMTPME"),
+    (os.path.join(IMG_DIR, "tamwilcom_logo.png"), "Tamwilcom"),
+    (os.path.join(IMG_DIR, "amic_logo.png"), "AMIC"),
+    (os.path.join(IMG_DIR, "MTN LOGO.svg"), "MTN"),
+]
+
+
+def draw_rounded_rect(c, x, y, w, h, r, fill_color=None, stroke_color=None):
+    """Draw a rounded rectangle."""
+    p = c.beginPath()
+    p.roundRect(x, y, w, h, r)
+    p.close()
+    if fill_color:
+        c.setFillColor(fill_color)
+    if stroke_color:
+        c.setStrokeColor(stroke_color)
+        c.setLineWidth(0.5)
+        c.drawPath(p, fill=1 if fill_color else 0, stroke=1 if stroke_color else 0)
+    else:
+        c.drawPath(p, fill=1 if fill_color else 0, stroke=0)
+
+
+def draw_kpi_card(c, x, y, w, h, value, label, color=ACCENT):
+    """Draw a KPI card. y = bottom of card."""
+    draw_rounded_rect(c, x, y, w, h, 8, fill_color=CARD_BG)
+    # Accent bar top
+    draw_rounded_rect(c, x, y + h - 4, w, 4, 2, fill_color=color)
+    # Value
+    c.setFillColor(DARK)
+    c.setFont("Helvetica-Bold", 22)
+    c.drawCentredString(x + w/2, y + h - 35, str(value))
+    # Label
+    c.setFillColor(MUTED)
+    c.setFont("Helvetica", 8.5)
+    c.drawCentredString(x + w/2, y + 10, label)
+
+
+def draw_table(c, x, y, headers, rows, col_widths, header_color=DARK):
+    """Draw a styled table. Returns y position after table."""
+    row_h = 20
+    header_h = 24
+    total_w = sum(col_widths)
+
+    # Header
+    draw_rounded_rect(c, x, y - header_h, total_w, header_h, 4, fill_color=header_color)
+    c.setFillColor(WHITE)
+    c.setFont("Helvetica-Bold", 8)
+    cx = x
+    for i, h in enumerate(headers):
+        c.drawString(cx + 6, y - header_h + 8, h)
+        cx += col_widths[i]
+
+    # Rows
+    ry = y - header_h
+    for ri, row in enumerate(rows):
+        ry -= row_h
+        if ri % 2 == 0:
+            draw_rounded_rect(c, x, ry, total_w, row_h, 0, fill_color=HexColor("#f8fafc"))
+        c.setFillColor(DARK)
+        c.setFont("Helvetica", 8)
+        cx = x
+        for i, cell in enumerate(row):
+            if i == 0:
+                c.setFont("Helvetica-Bold", 8)
+            else:
+                c.setFont("Helvetica", 8)
+            c.drawString(cx + 6, ry + 6, str(cell))
+            cx += col_widths[i]
+
+    return ry
+
+
+def draw_bar(c, x, y, w, h, pct, color=ACCENT, bg=CARD_BG):
+    """Draw a progress bar."""
+    draw_rounded_rect(c, x, y, w, h, h/2, fill_color=bg)
+    if pct > 0:
+        bar_w = max(h, w * pct)
+        draw_rounded_rect(c, x, y, bar_w, h, h/2, fill_color=color)
+
+
+def draw_page_header(c, title, right_text, margin=40):
+    """Draw standard page header with logo and title bar."""
+    # Header bar
+    c.setFillColor(DARK)
+    c.rect(0, H - 50, W, 50, fill=1, stroke=0)
+    c.setFillColor(ACCENT)
+    c.rect(0, H - 54, W, 4, fill=1, stroke=0)
+    # Small logo in header
+    try:
+        logo = ImageReader(LOGO_DARK)
+        c.drawImage(logo, margin, H - 42, width=60, height=21, mask='auto', preserveAspectRatio=True)
+    except Exception:
+        pass
+    c.setFillColor(WHITE)
+    c.setFont("Helvetica-Bold", 14)
+    c.drawString(margin + 70, H - 35, title)
+    c.setFillColor(HexColor("#94a3b8"))
+    c.setFont("Helvetica", 9)
+    c.drawRightString(W - margin, H - 35, right_text)
+
+
+def build_report():
+    c = canvas.Canvas(OUTPUT, pagesize=A4)
+    c.setTitle("The Pulse - Rapport J+7 Lancement")
+    c.setAuthor("The Pulse - UM6P")
+    c.setSubject("Bilan de lancement J+7 - Rapport partenaires")
+
+    margin = 40
+    content_w = W - 2 * margin
+
+    # ══════════════════════════════════════════════════════════════════
+    # PAGE 1 - COVER
+    # ══════════════════════════════════════════════════════════════════
+    c.setFillColor(DARK)
+    c.rect(0, 0, W, H, fill=1, stroke=0)
+
+    # Accent line top
+    c.setFillColor(ACCENT)
+    c.rect(0, H - 6, W, 6, fill=1, stroke=0)
+
+    # Logo - big centered
+    try:
+        logo = ImageReader(LOGO_WHITE)
+        logo_w, logo_h = 260, 92
+        c.drawImage(logo, (W - logo_w) / 2, H - 150, width=logo_w, height=logo_h, mask='auto', preserveAspectRatio=True)
+    except Exception:
+        pass
+
+    # Title block
+    y = H - 220
+    c.setFillColor(WHITE)
+    c.setFont("Helvetica-Bold", 36)
+    c.drawString(margin, y, "Rapport J+7")
+
+    y -= 50
+    c.setFont("Helvetica-Bold", 28)
+    c.drawString(margin, y, "Bilan de Lancement")
+
+    # Accent underline
+    y -= 20
+    c.setFillColor(ACCENT)
+    c.rect(margin, y, 80, 4, fill=1, stroke=0)
+
+    # Subtitle
+    y -= 45
+    c.setFillColor(HexColor("#94a3b8"))
+    c.setFont("Helvetica", 14)
+    c.drawString(margin, y, u"Plateforme de donn\u00e9es de l\u2019\u00e9cosyst\u00e8me startup marocain")
+
+    # Date block
+    y -= 60
+    c.setFillColor(ACCENT)
+    c.setFont("Helvetica-Bold", 13)
+    c.drawString(margin, y, u"P\u00e9riode : 6 - 12 avril 2026")
+    y -= 22
+    c.setFillColor(HexColor("#94a3b8"))
+    c.setFont("Helvetica", 11)
+    c.drawString(margin, y, u"7 jours apr\u00e8s le lancement officiel")
+
+    # ── Partner logos section ──
+    y -= 60
+    c.setFillColor(HexColor("#475569"))
+    c.setFont("Helvetica-Bold", 10)
+    c.drawString(margin, y, "Rapport partenaires")
+    y -= 10
+    c.setStrokeColor(HexColor("#1e293b"))
+    c.setLineWidth(0.5)
+    c.line(margin, y, W - margin, y)
+    y -= 55
+
+    # Draw partner logos in a row
+    n_partners = len(PARTNER_LOGOS)
+    logo_size = 40
+    total_items = n_partners + 1  # +1 for MESC
+    spacing = (content_w - total_items * logo_size) / (total_items - 1) if total_items > 1 else 0
+    for i, (logo_path, name) in enumerate(PARTNER_LOGOS):
+        lx = margin + i * (logo_size + spacing)
+        try:
+            plogo = ImageReader(logo_path)
+            c.drawImage(plogo, lx, y, width=logo_size, height=logo_size, mask='auto', preserveAspectRatio=True)
+        except Exception:
+            c.setFillColor(HexColor("#94a3b8"))
+            c.setFont("Helvetica-Bold", 7)
+            c.drawString(lx, y + 15, name)
+        c.setFillColor(HexColor("#64748b"))
+        c.setFont("Helvetica", 6.5)
+        c.drawCentredString(lx + logo_size / 2, y - 12, name)
+
+    # MESC (no logo file, draw as styled box)
+    mesc_x = margin + n_partners * (logo_size + spacing)
+    draw_rounded_rect(c, mesc_x, y, logo_size, logo_size, 6, fill_color=PURPLE)
+    c.setFillColor(WHITE)
+    c.setFont("Helvetica-Bold", 14)
+    c.drawCentredString(mesc_x + logo_size / 2, y + 14, "M")
+    c.setFillColor(HexColor("#64748b"))
+    c.setFont("Helvetica", 6.5)
+    c.drawCentredString(mesc_x + logo_size / 2, y - 12, "MESC")
+
+    # Footer on cover
+    c.setFillColor(HexColor("#475569"))
+    c.setFont("Helvetica", 9)
+    c.drawString(margin, 60, "The Pulse  |  UM6P  |  thepulse.ma")
+    c.drawString(margin, 45, "Document confidentiel - Rapport partenaires")
+
+    c.setStrokeColor(HexColor("#1e293b"))
+    c.setLineWidth(0.5)
+    c.line(margin, 80, W - margin, 80)
+
+    c.showPage()
+
+    # ══════════════════════════════════════════════════════════════════
+    # PAGE 2 - VUE D'ENSEMBLE & BASE DE DONNÉES
+    # ══════════════════════════════════════════════════════════════════
+    c.setFillColor(LIGHT_BG)
+    c.rect(0, 0, W, H, fill=1, stroke=0)
+
+    draw_page_header(c, u"1.  Vue d\u2019ensemble de la plateforme", "The Pulse  |  J+7", margin)
+
+    y = H - 72
+
+    # Section title
+    c.setFillColor(DARK)
+    c.setFont("Helvetica-Bold", 12)
+    c.drawString(margin, y, u"Base de donn\u00e9es \u00e9cosyst\u00e8me")
+    y -= 14
+    c.setFillColor(MUTED)
+    c.setFont("Helvetica", 9)
+    c.drawString(margin, y, u"Donn\u00e9es collect\u00e9es, structur\u00e9es et mises en ligne sur thepulse.ma")
+
+    y -= 20
+
+    # KPI Cards - Row 1 (y = top of cards area, cards drawn below)
+    card_w = (content_w - 3*12) / 4
+    card_h = 58
+    card_y = y - card_h  # bottom of cards
+    draw_kpi_card(c, margin, card_y, card_w, card_h, "2 014", "STARTUPS", ACCENT)
+    draw_kpi_card(c, margin + card_w + 12, card_y, card_w, card_h, "1 333", "FONDATEURS", PURPLE)
+    draw_kpi_card(c, margin + 2*(card_w+12), card_y, card_w, card_h, "51", "INVESTISSEURS", BLUE)
+    draw_kpi_card(c, margin + 3*(card_w+12), card_y, card_w, card_h, "$226.8M", u"FONDS LEV\u00c9S", ORANGE)
+
+    y = card_y - 14
+
+    # KPI Cards - Row 2
+    card_y2 = y - card_h
+    draw_kpi_card(c, margin, card_y2, card_w, card_h, "171", "TOURS DE TABLE", GREEN)
+    draw_kpi_card(c, margin + card_w + 12, card_y2, card_w, card_h, "45", "INCUBATEURS", BLUE)
+    draw_kpi_card(c, margin + 2*(card_w+12), card_y2, card_w, card_h, "1 265", "LIENS STARTUP-FONDATEUR", PURPLE)
+    draw_kpi_card(c, margin + 3*(card_w+12), card_y2, card_w, card_h, "21", "RESSOURCES", MUTED)
+
+    y = card_y2 - 25
+
+    # Section: Données détaillées
+    c.setFillColor(DARK)
+    c.setFont("Helvetica-Bold", 12)
+    c.drawString(margin, y, u"D\u00e9tail de la base de donn\u00e9es")
+    y -= 25
+
+    headers = [u"CAT\u00c9GORIE", "NOMBRE", u"D\u00c9TAIL"]
+    col_widths = [180, 80, content_w - 260]
+    rows = [
+        ["Startups", "2 014", u"R\u00e9pertoire complet des startups marocaines"],
+        ["Fondateurs", "1 333", u"948 startups avec fondateur(s) identifi\u00e9(s)"],
+        ["Investisseurs", "51", "Fonds d\u2019investissement actifs au Maroc"],
+        [u"Incubateurs / Acc\u00e9l\u00e9rateurs", "45", "Programmes d\u2019accompagnement"],
+        ["Tours de financement", "171", u"Lev\u00e9es de fonds document\u00e9es ($226.8M total)"],
+        [u"Experts r\u00e9f\u00e9renc\u00e9s", "6", "Consultants et mentors"],
+        ["Ressources", "21", "Guides, rapports, outils"],
+        [u"Articles / Actualit\u00e9s", "9", u"Contenu \u00e9ditorial"],
+        [u"Formulaires d\u00e9marr\u00e9s (GA)", "967", u"\u00c9v\u00e9nements form_start Google Analytics"],
+        ["Formulaires soumis (GA)", "871", u"\u00c9v\u00e9nements form_submit (44 inscrits effectifs)"],
+    ]
+    y = draw_table(c, margin, y, headers, rows, col_widths)
+
+    y -= 30
+    c.setFillColor(MUTED)
+    c.setFont("Helvetica-Oblique", 8.5)
+    c.drawString(margin, y, u"* Enrichissement continu : scraping multi-sources + validation manuelle. Objectif : 100% des startups avec fondateur(s) identifi\u00e9(s).")
+
+    c.showPage()
+
+    # ══════════════════════════════════════════════════════════════════
+    # PAGE 3 - ANALYTICS & TRAFIC
+    # ══════════════════════════════════════════════════════════════════
+    c.setFillColor(LIGHT_BG)
+    c.rect(0, 0, W, H, fill=1, stroke=0)
+
+    draw_page_header(c, u"2.  Trafic & Audience  (Google Analytics)", "6 - 12 avril 2026", margin)
+
+    y = H - 90
+
+    # KPI row - Traffic
+    c.setFillColor(DARK)
+    c.setFont("Helvetica-Bold", 12)
+    c.drawString(margin, y, u"Indicateurs cl\u00e9s de trafic  (7 jours)")
+    y -= 20
+
+    card_w3 = (content_w - 2*12) / 3
+    card_y = y - card_h
+    draw_kpi_card(c, margin, card_y, card_w3, card_h, "2 441", "SESSIONS", ACCENT)
+    draw_kpi_card(c, margin + card_w3 + 12, card_y, card_w3, card_h, "1 700", "UTILISATEURS ACTIFS", PURPLE)
+    draw_kpi_card(c, margin + 2*(card_w3+12), card_y, card_w3, card_h, "1 600", "NOUVEAUX UTILISATEURS", BLUE)
+
+    y = card_y - 14
+
+    card_y2 = y - card_h
+    draw_kpi_card(c, margin, card_y2, card_w3, card_h, "57,7%", "TAUX D\u2019ENGAGEMENT", GREEN)
+    draw_kpi_card(c, margin + card_w3 + 12, card_y2, card_w3, card_h, "1m 34s", u"DUR\u00c9E MOY. SESSION", ORANGE)
+    draw_kpi_card(c, margin + 2*(card_w3+12), card_y2, card_w3, card_h, "28 293", u"\u00c9V\u00c9NEMENTS", MUTED)
+
+    y = card_y2 - 25
+
+    # Sources d'acquisition
+    c.setFillColor(DARK)
+    c.setFont("Helvetica-Bold", 12)
+    c.drawString(margin, y, "Sources d\u2019acquisition")
+    y -= 25
+
+    channels = [
+        ("Direct", 1282, 52.5, ACCENT),
+        ("Recherche organique (Google)", 967, 39.6, PURPLE),
+        (u"R\u00e9seaux sociaux (LinkedIn)", 111, 4.5, BLUE),
+        ("Referrals (Medias24, etc.)", 57, 2.3, ORANGE),
+        ("Autres", 24, 1.0, MUTED),
+    ]
+    bar_w = content_w - 200
+    for label, count, pct, color in channels:
+        c.setFillColor(DARK)
+        c.setFont("Helvetica", 9)
+        c.drawString(margin, y + 2, label)
+        draw_bar(c, margin + 180, y, bar_w, 14, pct / 100, color)
+        c.setFillColor(MUTED)
+        c.setFont("Helvetica-Bold", 8)
+        c.drawRightString(W - margin, y + 2, f"{count} ({pct}%)")
+        y -= 22
+
+    y -= 20
+
+    # Géographie
+    c.setFillColor(DARK)
+    c.setFont("Helvetica-Bold", 12)
+    c.drawString(margin, y, u"R\u00e9partition g\u00e9ographique des utilisateurs")
+    y -= 25
+
+    headers = ["PAYS", "UTILISATEURS", "PART", "TAUX ENGAGEMENT", u"DUR\u00c9E MOY."]
+    col_widths = [140, 90, 70, 110, content_w - 410]
+    rows = [
+        ["Maroc", "1 320", "79,9%", "57,7%", "2m 22s"],
+        ["France", "141", "8,5%", "62,3%", "1m 45s"],
+        [u"\u00c9tats-Unis", "52", "3,2%", "36,5%", "38s"],
+        ["Canada", "29", "1,8%", "60,6%", "1m 06s"],
+        ["Pays-Bas", "15", "0,9%", "78,3%", "3m 17s"],
+        ["Royaume-Uni", "14", "0,9%", "56,3%", "33s"],
+        ["Allemagne", "11", "0,7%", "60,0%", "1m 51s"],
+        ["Belgique", "9", "0,5%", "58,3%", "29s"],
+    ]
+    y = draw_table(c, margin, y, headers, rows, col_widths)
+
+    y -= 25
+    c.setFillColor(MUTED)
+    c.setFont("Helvetica-Oblique", 8.5)
+    c.drawString(margin, y, u"Source : Google Analytics (G-9TTHWMF6L0) - P\u00e9riode du 6 au 12 avril 2026")
+
+    c.showPage()
+
+    # ══════════════════════════════════════════════════════════════════
+    # PAGE 4 - PAGES & ENGAGEMENT
+    # ══════════════════════════════════════════════════════════════════
+    c.setFillColor(LIGHT_BG)
+    c.rect(0, 0, W, H, fill=1, stroke=0)
+
+    draw_page_header(c, u"3.  Pages les plus visit\u00e9es & Engagement", "6 - 12 avril 2026", margin)
+
+    y = H - 85
+
+    # Top Pages
+    c.setFillColor(DARK)
+    c.setFont("Helvetica-Bold", 12)
+    c.drawString(margin, y, u"Pages les plus consult\u00e9es")
+    y -= 25
+
+    headers = ["PAGE", "VUES", "UTILISATEURS", "TAUX DE REBOND"]
+    col_widths = [220, 80, 100, content_w - 400]
+    rows = [
+        [u"R\u00e9pertoire Startups", "2 800", "623", "19,1%"],
+        ["Page d\u2019accueil", "1 800", "1 200", "36,5%"],
+        ["Rejoindre The Pulse", "952", "683", "18,8%"],
+        [u"R\u00e9pertoire Fondateurs", "536", "195", "11,5%"],
+        [u"R\u00e9pertoire Investisseurs", "381", "164", "10,4%"],
+        ["Ressources", "282", "216", "14,2%"],
+        ["Formulaire inscription startup", "246", "210", "6,7%"],
+    ]
+    y = draw_table(c, margin, y, headers, rows, col_widths)
+
+    y -= 35
+
+    # Événements clés
+    c.setFillColor(DARK)
+    c.setFont("Helvetica-Bold", 12)
+    c.drawString(margin, y, u"\u00c9v\u00e9nements cl\u00e9s (interactions utilisateurs)")
+    y -= 25
+
+    headers = [u"\u00c9V\u00c9NEMENT", "NOMBRE", u"INTERPR\u00c9TATION"]
+    col_widths = [160, 80, content_w - 240]
+    rows = [
+        ["Pages vues", "10 000", "Navigation active sur la plateforme"],
+        ["Engagement utilisateur", "8 000", "Interactions significatives"],
+        ["Scroll", "3 400", "Consultation approfondie du contenu"],
+        [u"D\u00e9but de session", "2 400", "Visites uniques"],
+        [u"Premi\u00e8re visite", "1 600", "Nouveaux visiteurs"],
+        [u"D\u00e9but de formulaire", "967", u"\u00c9v\u00e9nements GA (clics sur formulaire)"],
+        ["Soumission de formulaire", "871", u"\u00c9v\u00e9nements GA (44 inscriptions effectives)"],
+    ]
+    y = draw_table(c, margin, y, headers, rows, col_widths)
+
+    y -= 35
+
+    # Key insight box
+    draw_rounded_rect(c, margin, y - 60, content_w, 60, 8, fill_color=HexColor("#ecfdf5"))
+    draw_rounded_rect(c, margin, y - 60, 4, 60, 2, fill_color=ACCENT)
+    c.setFillColor(DARK)
+    c.setFont("Helvetica-Bold", 10)
+    c.drawString(margin + 16, y - 20, u"Point cl\u00e9")
+    c.setFont("Helvetica", 9)
+    c.setFillColor(HexColor("#334155"))
+    c.drawString(margin + 16, y - 36, u"967 \u00e9v\u00e9nements form_start et 871 form_submit (GA), pour 44 inscriptions effectives.")
+    c.drawString(margin + 16, y - 50, u"Fort int\u00e9r\u00eat de la communaut\u00e9 \u2014 conversion visiteur-inscrit \u00e0 optimiser.")
+
+    c.showPage()
+
+    # ══════════════════════════════════════════════════════════════════
+    # PAGE 5 - COMMUNAUTÉ & INSCRITS
+    # ══════════════════════════════════════════════════════════════════
+    c.setFillColor(LIGHT_BG)
+    c.rect(0, 0, W, H, fill=1, stroke=0)
+
+    draw_page_header(c, u"4.  Communaut\u00e9 & Membres inscrits", "Au 12 avril 2026", margin)
+
+    y = H - 90
+
+    # KPIs inscrits
+    c.setFillColor(DARK)
+    c.setFont("Helvetica-Bold", 12)
+    c.drawString(margin, y, u"Inscriptions \u00e0 la plateforme")
+    y -= 20
+
+    card_w4 = (content_w - 3*12) / 4
+    card_y = y - card_h
+    draw_kpi_card(c, margin, card_y, card_w4, card_h, "44", "INSCRITS TOTAL", ACCENT)
+    draw_kpi_card(c, margin + card_w4 + 12, card_y, card_w4, card_h, "17", u"CONFIRM\u00c9S", GREEN)
+    draw_kpi_card(c, margin + 2*(card_w4+12), card_y, card_w4, card_h, "27", "EN ATTENTE", ORANGE)
+    draw_kpi_card(c, margin + 3*(card_w4+12), card_y, card_w4, card_h, "9", "AVEC PHOTO", PURPLE)
+
+    y = card_y - 25
+
+    # Répartition par rôle
+    c.setFillColor(DARK)
+    c.setFont("Helvetica-Bold", 12)
+    c.drawString(margin, y, u"R\u00e9partition par r\u00f4le")
+    y -= 25
+
+    roles = [
+        ("Entrepreneurs", 33, 75.0, ACCENT),
+        ("Investisseurs", 5, 11.4, BLUE),
+        ("Experts", 3, 6.8, PURPLE),
+        ("Programmes / Incubateurs", 3, 6.8, ORANGE),
+    ]
+    bar_w = content_w - 220
+    for label, count, pct, color in roles:
+        c.setFillColor(DARK)
+        c.setFont("Helvetica", 9.5)
+        c.drawString(margin, y + 2, label)
+        draw_bar(c, margin + 180, y, bar_w, 14, pct / 100, color)
+        c.setFillColor(MUTED)
+        c.setFont("Helvetica-Bold", 8.5)
+        c.drawRightString(W - margin, y + 2, f"{count} ({pct}%)")
+        y -= 24
+
+    y -= 20
+
+    # Inscriptions par jour
+    c.setFillColor(DARK)
+    c.setFont("Helvetica-Bold", 12)
+    c.drawString(margin, y, "Inscriptions par jour")
+    y -= 25
+
+    days = [
+        ("6 avril (lancement)", 0),
+        ("7 avril", 0),
+        ("8 avril", 0),
+        ("9 avril", 29),
+        ("10 avril", 8),
+        ("11 avril", 4),
+        ("12 avril", 3),
+    ]
+    max_val = max(d[1] for d in days)
+    bar_w = content_w - 200
+    for label, count in days:
+        c.setFillColor(DARK)
+        c.setFont("Helvetica", 9)
+        c.drawString(margin, y + 2, label)
+        pct = count / max_val if max_val > 0 else 0
+        color = ACCENT if count > 0 else CARD_BG
+        draw_bar(c, margin + 160, y, bar_w, 14, pct, color)
+        if count > 0:
+            c.setFillColor(DARK)
+            c.setFont("Helvetica-Bold", 8.5)
+            c.drawRightString(W - margin, y + 2, str(count))
+        y -= 20
+
+    y -= 25
+
+    # Engagement communautaire
+    c.setFillColor(DARK)
+    c.setFont("Helvetica-Bold", 12)
+    c.drawString(margin, y, "Engagement communautaire")
+    y -= 25
+
+    headers = ["INDICATEUR", "VALEUR", "COMMENTAIRE"]
+    col_widths = [180, 80, content_w - 260]
+    rows = [
+        [u"Messages directs \u00e9chang\u00e9s", "9", "Messagerie interne entre membres"],
+        ["Publications newsfeed", "14", u"Posts de la communaut\u00e9"],
+        ["Projets co-fondateur", "6", "Recherches de co-fondateurs actives"],
+        ["Membres avec mot de passe", "6", u"Comptes pleinement activ\u00e9s"],
+    ]
+    y = draw_table(c, margin, y, headers, rows, col_widths)
+
+    c.showPage()
+
+    # ══════════════════════════════════════════════════════════════════
+    # PAGE 6 - SYNTHÈSE & PROCHAINES ÉTAPES
+    # ══════════════════════════════════════════════════════════════════
+    c.setFillColor(LIGHT_BG)
+    c.rect(0, 0, W, H, fill=1, stroke=0)
+
+    draw_page_header(c, u"5.  Synth\u00e8se & Prochaines \u00e9tapes", "Perspectives J+30", margin)
+
+    y = H - 90
+
+    # Synthèse
+    c.setFillColor(DARK)
+    c.setFont("Helvetica-Bold", 12)
+    c.drawString(margin, y, u"Synth\u00e8se J+7")
+    y -= 25
+
+    highlights = [
+        ("Audience forte", u"1 700 utilisateurs actifs et 2 441 sessions en 7 jours, principalement depuis le Maroc (80%)."),
+        ("Acquisition organique", u"39,6% du trafic provient de la recherche Google, signe d\u2019un bon r\u00e9f\u00e9rencement naturel."),
+        (u"Engagement \u00e9lev\u00e9", u"57,7% de taux d\u2019engagement. 967 \u00e9v\u00e9nements form_start, 871 form_submit (GA), 44 inscriptions effectives."),
+        (u"Communaut\u00e9 naissante", u"44 membres inscrits dont 33 entrepreneurs, 5 investisseurs, 3 experts et 3 programmes."),
+        (u"Base de donn\u00e9es riche", u"2 014 startups, 1 333 fondateurs, 51 investisseurs, 171 tours de financement document\u00e9s."),
+        ("Rayonnement international", u"Visiteurs de 8+ pays, avec une diaspora active (France 8,5%, USA 3,2%, Canada 1,8%)."),
+    ]
+    for title, desc in highlights:
+        c.setFillColor(ACCENT)
+        c.circle(margin + 6, y + 4, 3, fill=1, stroke=0)
+        c.setFillColor(DARK)
+        c.setFont("Helvetica-Bold", 9.5)
+        c.drawString(margin + 18, y, title)
+        c.setFillColor(HexColor("#475569"))
+        c.setFont("Helvetica", 8.5)
+        text = desc
+        max_chars = 95
+        lines = []
+        while text:
+            if len(text) <= max_chars:
+                lines.append(text)
+                break
+            idx = text[:max_chars].rfind(' ')
+            if idx == -1:
+                idx = max_chars
+            lines.append(text[:idx])
+            text = text[idx:].strip()
+        for line in lines:
+            y -= 14
+            c.drawString(margin + 18, y, line)
+        y -= 22
+
+    y -= 10
+
+    # Axes d'amélioration
+    c.setFillColor(DARK)
+    c.setFont("Helvetica-Bold", 12)
+    c.drawString(margin, y, u"Axes d\u2019am\u00e9lioration identifi\u00e9s")
+    y -= 25
+
+    improvements = [
+        u"Activation des 27 comptes en attente de confirmation (61% des inscrits)",
+        u"Enrichissement fondateurs : 1 068 startups sans fondateur identifi\u00e9 (objectif : -50% \u00e0 J+30)",
+        u"Augmentation du contenu \u00e9ditorial et des publications communautaires",
+        u"D\u00e9ploiement d\u2019une strat\u00e9gie d\u2019acquisition sur LinkedIn et les r\u00e9seaux sociaux",
+    ]
+    for imp in improvements:
+        c.setFillColor(ORANGE)
+        c.circle(margin + 6, y + 4, 3, fill=1, stroke=0)
+        c.setFillColor(HexColor("#475569"))
+        c.setFont("Helvetica", 9)
+        lines = []
+        text = imp
+        max_chars = 100
+        while text:
+            if len(text) <= max_chars:
+                lines.append(text)
+                break
+            idx = text[:max_chars].rfind(' ')
+            if idx == -1:
+                idx = max_chars
+            lines.append(text[:idx])
+            text = text[idx:].strip()
+        for i, line in enumerate(lines):
+            c.drawString(margin + 18, y - i*13, line)
+        y -= len(lines) * 13 + 10
+
+    y -= 20
+
+    # Objectifs J+30
+    c.setFillColor(DARK)
+    c.setFont("Helvetica-Bold", 12)
+    c.drawString(margin, y, "Objectifs J+30")
+    y -= 25
+
+    targets = [
+        ("Membres inscrits", "44", "200", 22),
+        ("Startups avec fondateur", "948", "1 500", 63),
+        (u"Publications communaut\u00e9", "14", "50", 28),
+        ("Sessions / semaine", "2 441", "5 000", 49),
+    ]
+    headers = ["OBJECTIF", "ACTUEL", "CIBLE J+30", "PROGRESSION"]
+    col_widths = [180, 80, 80, content_w - 340]
+
+    # Header
+    draw_rounded_rect(c, margin, y - 24, content_w, 24, 4, fill_color=DARK)
+    c.setFillColor(WHITE)
+    c.setFont("Helvetica-Bold", 8)
+    cx = margin
+    for i, h in enumerate(headers):
+        c.drawString(cx + 6, y - 16, h)
+        cx += col_widths[i]
+
+    y -= 24
+    for ri, (label, current, target, pct) in enumerate(targets):
+        y -= 28
+        if ri % 2 == 0:
+            draw_rounded_rect(c, margin, y, content_w, 28, 0, fill_color=HexColor("#f8fafc"))
+        c.setFillColor(DARK)
+        c.setFont("Helvetica-Bold", 9)
+        c.drawString(margin + 6, y + 8, label)
+        c.setFont("Helvetica", 9)
+        c.drawString(margin + 186, y + 8, current)
+        c.setFont("Helvetica-Bold", 9)
+        c.setFillColor(ACCENT)
+        c.drawString(margin + 266, y + 8, target)
+        # Progress bar
+        bar_x = margin + 346
+        bar_w = content_w - 352
+        draw_bar(c, bar_x, y + 6, bar_w, 12, pct / 100, ACCENT)
+        c.setFillColor(DARK)
+        c.setFont("Helvetica-Bold", 7.5)
+        c.drawString(bar_x + bar_w + 4, y + 8, f"{pct}%")
+
+    # Footer
+    y -= 50
+    c.setStrokeColor(HexColor("#e2e8f0"))
+    c.setLineWidth(0.5)
+    c.line(margin, y, W - margin, y)
+    y -= 18
+    c.setFillColor(MUTED)
+    c.setFont("Helvetica", 8)
+    c.drawString(margin, y, u"The Pulse  |  UM6P  |  thepulse.ma  |  Rapport g\u00e9n\u00e9r\u00e9 le 12 avril 2026")
+    c.drawRightString(W - margin, y, "Page 6/6  |  Rapport partenaires")
+
+    c.save()
+    print(f"[OK] Rapport g\u00e9n\u00e9r\u00e9 : {OUTPUT}")
+
+
+if __name__ == "__main__":
+    build_report()

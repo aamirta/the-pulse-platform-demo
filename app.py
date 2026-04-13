@@ -2303,7 +2303,7 @@ def inbox_reply():
 
 
 # ── Admin dashboard ─────────────────────────────────────────────────────
-ADMIN_EMAILS = {"mohammed.damiri@um6p.ma", "hamid.bouchikhi@um6p.ma", "simohammed.damiri@gmail.com", "damiri@thepulse.ma"}
+ADMIN_EMAILS = {"mohammed.damiri@um6p.ma", "hamid.bouchikhi@um6p.ma", "hamid.bouchikhi@gmail.com", "simohammed.damiri@gmail.com", "damiri@thepulse.ma"}
 
 def _require_admin():
     """Return the current member if admin, else abort 403."""
