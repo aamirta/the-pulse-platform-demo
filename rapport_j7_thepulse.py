@@ -1,7 +1,7 @@
 """
-Rapport J+7 - The Pulse
+Rapport J+8 - The Pulse
 Bilan de lancement - Rapport partenaires
-Généré le 12 avril 2026
+Généré le 13 avril 2026
 """
 import os
 from reportlab.lib.pagesizes import A4
@@ -139,9 +139,9 @@ def draw_page_header(c, title, right_text, margin=40):
 
 def build_report():
     c = canvas.Canvas(OUTPUT, pagesize=A4)
-    c.setTitle("The Pulse - Rapport J+7 Lancement")
+    c.setTitle("The Pulse - Rapport J+8 Lancement")
     c.setAuthor("The Pulse - UM6P")
-    c.setSubject("Bilan de lancement J+7 - Rapport partenaires")
+    c.setSubject("Bilan de lancement J+8 - Rapport partenaires")
 
     margin = 40
     content_w = W - 2 * margin
@@ -168,7 +168,7 @@ def build_report():
     y = H - 220
     c.setFillColor(WHITE)
     c.setFont("Helvetica-Bold", 36)
-    c.drawString(margin, y, "Rapport J+7")
+    c.drawString(margin, y, "Rapport J+8")
 
     y -= 50
     c.setFont("Helvetica-Bold", 28)
@@ -189,11 +189,11 @@ def build_report():
     y -= 60
     c.setFillColor(ACCENT)
     c.setFont("Helvetica-Bold", 13)
-    c.drawString(margin, y, u"P\u00e9riode : 6 - 12 avril 2026")
+    c.drawString(margin, y, u"P\u00e9riode : 6 - 13 avril 2026")
     y -= 22
     c.setFillColor(HexColor("#94a3b8"))
     c.setFont("Helvetica", 11)
-    c.drawString(margin, y, u"7 jours apr\u00e8s le lancement officiel")
+    c.drawString(margin, y, u"8 jours apr\u00e8s le lancement officiel")
 
     # ── Partner logos section ──
     y -= 60
@@ -252,7 +252,7 @@ def build_report():
     c.setFillColor(LIGHT_BG)
     c.rect(0, 0, W, H, fill=1, stroke=0)
 
-    draw_page_header(c, u"1.  Vue d\u2019ensemble de la plateforme", "The Pulse  |  J+7", margin)
+    draw_page_header(c, u"1.  Vue d\u2019ensemble de la plateforme", "The Pulse  |  J+8", margin)
 
     y = H - 72
 
@@ -301,10 +301,10 @@ def build_report():
         ["Investisseurs", "51", "Fonds d\u2019investissement actifs au Maroc"],
         [u"Incubateurs / Acc\u00e9l\u00e9rateurs", "45", "Programmes d\u2019accompagnement"],
         ["Tours de financement", "171", u"Lev\u00e9es de fonds document\u00e9es ($226.8M total)"],
-        [u"Experts r\u00e9f\u00e9renc\u00e9s", "6", "Consultants et mentors"],
+        [u"Experts r\u00e9f\u00e9renc\u00e9s", "8", "Consultants et mentors"],
         ["Ressources", "21", "Guides, rapports, outils"],
         [u"Articles / Actualit\u00e9s", "9", u"Contenu \u00e9ditorial"],
-        [u"Membres inscrits", "44", u"Entrepreneurs, investisseurs, experts, programmes"],
+        [u"Membres inscrits", "48", u"Entrepreneurs, investisseurs, experts, programmes"],
     ]
     y = draw_table(c, margin, y, headers, rows, col_widths)
 
@@ -321,7 +321,7 @@ def build_report():
     c.setFillColor(LIGHT_BG)
     c.rect(0, 0, W, H, fill=1, stroke=0)
 
-    draw_page_header(c, u"2.  Trafic & Audience  (Google Analytics)", "6 - 12 avril 2026", margin)
+    draw_page_header(c, u"2.  Trafic & Audience  (Google Analytics)", "6 - 13 avril 2026", margin)
 
     y = H - 90
 
@@ -333,16 +333,16 @@ def build_report():
 
     card_w3 = (content_w - 2*12) / 3
     card_y = y - card_h
-    draw_kpi_card(c, margin, card_y, card_w3, card_h, "2 441", "SESSIONS", ACCENT)
-    draw_kpi_card(c, margin + card_w3 + 12, card_y, card_w3, card_h, "1 700", "UTILISATEURS ACTIFS", PURPLE)
-    draw_kpi_card(c, margin + 2*(card_w3+12), card_y, card_w3, card_h, "1 600", "NOUVEAUX UTILISATEURS", BLUE)
+    draw_kpi_card(c, margin, card_y, card_w3, card_h, "2 665", "SESSIONS", ACCENT)
+    draw_kpi_card(c, margin + card_w3 + 12, card_y, card_w3, card_h, "1 855", "UTILISATEURS ACTIFS", PURPLE)
+    draw_kpi_card(c, margin + 2*(card_w3+12), card_y, card_w3, card_h, "1 748", "NOUVEAUX UTILISATEURS", BLUE)
 
     y = card_y - 14
 
     card_y2 = y - card_h
     draw_kpi_card(c, margin, card_y2, card_w3, card_h, "57,7%", "TAUX D\u2019ENGAGEMENT", GREEN)
     draw_kpi_card(c, margin + card_w3 + 12, card_y2, card_w3, card_h, "1m 34s", u"DUR\u00c9E MOY. SESSION", ORANGE)
-    draw_kpi_card(c, margin + 2*(card_w3+12), card_y2, card_w3, card_h, "28 293", u"\u00c9V\u00c9NEMENTS", MUTED)
+    draw_kpi_card(c, margin + 2*(card_w3+12), card_y2, card_w3, card_h, "30 683", u"\u00c9V\u00c9NEMENTS", MUTED)
 
     y = card_y2 - 25
 
@@ -353,11 +353,11 @@ def build_report():
     y -= 25
 
     channels = [
-        ("Direct", 1282, 52.5, ACCENT),
-        ("Recherche organique (Google)", 967, 39.6, PURPLE),
-        (u"R\u00e9seaux sociaux (LinkedIn)", 111, 4.5, BLUE),
-        ("Referrals (Medias24, etc.)", 57, 2.3, ORANGE),
-        ("Autres", 24, 1.0, MUTED),
+        ("Direct", 1378, 51.7, ACCENT),
+        ("Recherche organique (Google)", 1063, 39.9, PURPLE),
+        (u"R\u00e9seaux sociaux (LinkedIn)", 114, 4.3, BLUE),
+        ("Referrals (Medias24, etc.)", 63, 2.4, ORANGE),
+        ("Autres", 47, 1.8, MUTED),
     ]
     bar_w = content_w - 200
     for label, count, pct, color in channels:
@@ -381,21 +381,21 @@ def build_report():
     headers = ["PAYS", "UTILISATEURS", "PART", "TAUX ENGAGEMENT", u"DUR\u00c9E MOY."]
     col_widths = [140, 90, 70, 110, content_w - 410]
     rows = [
-        ["Maroc", "1 320", "79,9%", "57,7%", "2m 22s"],
-        ["France", "141", "8,5%", "62,3%", "1m 45s"],
-        [u"\u00c9tats-Unis", "52", "3,2%", "36,5%", "38s"],
-        ["Canada", "29", "1,8%", "60,6%", "1m 06s"],
-        ["Pays-Bas", "15", "0,9%", "78,3%", "3m 17s"],
-        ["Royaume-Uni", "14", "0,9%", "56,3%", "33s"],
-        ["Allemagne", "11", "0,7%", "60,0%", "1m 51s"],
-        ["Belgique", "9", "0,5%", "58,3%", "29s"],
+        ["Maroc", "1 440", "77,6%", "55,2%", "2m 18s"],
+        ["France", "151", "8,1%", "61,5%", "1m 42s"],
+        [u"\u00c9tats-Unis", "56", "3,0%", "35,8%", "36s"],
+        ["Canada", "33", "1,8%", "59,4%", "1m 04s"],
+        ["Pays-Bas", "19", "1,0%", "76,1%", "3m 10s"],
+        ["Royaume-Uni", "14", "0,8%", "56,3%", "33s"],
+        ["Allemagne", "11", "0,6%", "60,0%", "1m 51s"],
+        ["Espagne", "3", "0,2%", "50,0%", "45s"],
     ]
     y = draw_table(c, margin, y, headers, rows, col_widths)
 
     y -= 25
     c.setFillColor(MUTED)
     c.setFont("Helvetica-Oblique", 8.5)
-    c.drawString(margin, y, u"Source : Google Analytics (G-9TTHWMF6L0) - P\u00e9riode du 6 au 12 avril 2026")
+    c.drawString(margin, y, u"Source : Google Analytics (G-9TTHWMF6L0) - P\u00e9riode du 6 au 13 avril 2026")
 
     c.showPage()
 
@@ -405,7 +405,7 @@ def build_report():
     c.setFillColor(LIGHT_BG)
     c.rect(0, 0, W, H, fill=1, stroke=0)
 
-    draw_page_header(c, u"3.  Pages les plus visit\u00e9es & Engagement", "6 - 12 avril 2026", margin)
+    draw_page_header(c, u"3.  Pages les plus visit\u00e9es & Engagement", "6 - 13 avril 2026", margin)
 
     y = H - 85
 
@@ -418,13 +418,13 @@ def build_report():
     headers = ["PAGE", "VUES", "UTILISATEURS", "REBOND", "VS MOYENNE*"]
     col_widths = [170, 60, 80, 70, content_w - 380]
     rows = [
-        [u"R\u00e9pertoire Startups", "2 800", "623", "19,1%", u"\u25b2 Page #1"],
-        ["Page d\u2019accueil", "1 800", "1 200", "36,5%", "Rebond moyen"],
-        ["Rejoindre The Pulse", "952", "683", "18,8%", u"\u25b2 Fort int\u00e9r\u00eat"],
-        [u"R\u00e9pertoire Fondateurs", "536", "195", "11,5%", u"\u25b2 Tr\u00e8s engag\u00e9"],
-        [u"R\u00e9pertoire Investisseurs", "381", "164", "10,4%", u"\u25b2 Tr\u00e8s engag\u00e9"],
-        ["Ressources", "282", "216", "14,2%", u"\u25b2 Engag\u00e9"],
-        ["Formulaire inscription", "246", "210", "6,7%", u"\u25b2\u25b2 Excellent"],
+        [u"R\u00e9pertoire Startups", "3 067", "690", "18,5%", u"\u25b2 Page #1"],
+        ["Page d\u2019accueil", "1 892", "1 310", "35,2%", "Rebond moyen"],
+        ["Rejoindre The Pulse", "1 010", "725", "17,9%", u"\u25b2 Fort int\u00e9r\u00eat"],
+        [u"R\u00e9pertoire Fondateurs", "576", "215", "11,0%", u"\u25b2 Tr\u00e8s engag\u00e9"],
+        [u"R\u00e9pertoire Investisseurs", "403", "176", "10,1%", u"\u25b2 Tr\u00e8s engag\u00e9"],
+        ["Se connecter", "302", "240", "12,8%", u"\u25b2 Engag\u00e9"],
+        ["Co-Fondateurs", "282", "195", "9,2%", u"\u25b2\u25b2 Excellent"],
     ]
     y = draw_table(c, margin, y, headers, rows, col_widths)
 
@@ -438,7 +438,7 @@ def build_report():
     # Tendance des visites (J1→J7)
     c.setFillColor(DARK)
     c.setFont("Helvetica-Bold", 12)
-    c.drawString(margin, y, u"Tendance des visites (J1 \u2192 J7)")
+    c.drawString(margin, y, u"Tendance des visites (J1 \u2192 J8)")
     y -= 22
 
     trend_days = [
@@ -449,6 +449,7 @@ def build_report():
         ("J5 (10 avr)", 480, ACCENT),
         ("J6 (11 avr)", 410, BLUE),
         ("J7 (12 avr)", 341, BLUE),
+        ("J8 (13 avr)", 224, MUTED),
     ]
     bar_max_val = 520
     bar_w_trend = content_w - 180
@@ -479,7 +480,7 @@ def build_report():
     c.setFont("Helvetica", 8.5)
     c.setFillColor(HexColor("#334155"))
     c.drawString(margin + 16, y - 30, u"Taux de rebond moyen de 16,6% vs 40-60% pour un SaaS B2B \u2014 les visiteurs explorent activement.")
-    c.drawString(margin + 16, y - 42, u"44 inscriptions en 7 jours avec un pic \u00e0 J4. Le r\u00e9pertoire Startups concentre 37% des vues.")
+    c.drawString(margin + 16, y - 42, u"48 inscriptions en 8 jours avec un pic \u00e0 J4. Le r\u00e9pertoire Startups concentre 36% des vues.")
 
     c.showPage()
 
@@ -489,7 +490,7 @@ def build_report():
     c.setFillColor(LIGHT_BG)
     c.rect(0, 0, W, H, fill=1, stroke=0)
 
-    draw_page_header(c, u"4.  Communaut\u00e9 & Membres inscrits", "Au 12 avril 2026", margin)
+    draw_page_header(c, u"4.  Communaut\u00e9 & Membres inscrits", "Au 13 avril 2026", margin)
 
     y = H - 90
 
@@ -501,10 +502,10 @@ def build_report():
 
     card_w4 = (content_w - 3*12) / 4
     card_y = y - card_h
-    draw_kpi_card(c, margin, card_y, card_w4, card_h, "44", "INSCRITS TOTAL", ACCENT)
-    draw_kpi_card(c, margin + card_w4 + 12, card_y, card_w4, card_h, "17", u"CONFIRM\u00c9S", GREEN)
-    draw_kpi_card(c, margin + 2*(card_w4+12), card_y, card_w4, card_h, "27", "EN ATTENTE", ORANGE)
-    draw_kpi_card(c, margin + 3*(card_w4+12), card_y, card_w4, card_h, "9", "AVEC PHOTO", PURPLE)
+    draw_kpi_card(c, margin, card_y, card_w4, card_h, "48", "INSCRITS TOTAL", ACCENT)
+    draw_kpi_card(c, margin + card_w4 + 12, card_y, card_w4, card_h, "22", u"CONFIRM\u00c9S", GREEN)
+    draw_kpi_card(c, margin + 2*(card_w4+12), card_y, card_w4, card_h, "26", "EN ATTENTE", ORANGE)
+    draw_kpi_card(c, margin + 3*(card_w4+12), card_y, card_w4, card_h, "11", "AVEC PHOTO", PURPLE)
 
     y = card_y - 25
 
@@ -515,10 +516,10 @@ def build_report():
     y -= 25
 
     roles = [
-        ("Entrepreneurs", 33, 75.0, ACCENT),
-        ("Investisseurs", 5, 11.4, BLUE),
-        ("Experts", 3, 6.8, PURPLE),
-        ("Programmes / Incubateurs", 3, 6.8, ORANGE),
+        ("Entrepreneurs", 35, 72.9, ACCENT),
+        ("Investisseurs", 5, 10.4, BLUE),
+        ("Experts", 5, 10.4, PURPLE),
+        ("Programmes / Incubateurs", 3, 6.3, ORANGE),
     ]
     bar_w = content_w - 220
     for label, count, pct, color in roles:
@@ -547,6 +548,7 @@ def build_report():
         ("10 avril", 8),
         ("11 avril", 4),
         ("12 avril", 3),
+        ("13 avril", 4),
     ]
     max_val = max(d[1] for d in days)
     bar_w = content_w - 200
@@ -574,10 +576,10 @@ def build_report():
     headers = ["INDICATEUR", "VALEUR", "COMMENTAIRE"]
     col_widths = [180, 80, content_w - 260]
     rows = [
-        [u"Messages directs \u00e9chang\u00e9s", "9", "Messagerie interne entre membres"],
+        [u"Messages directs \u00e9chang\u00e9s", "10", "Messagerie interne entre membres"],
         ["Publications newsfeed", "14", u"Posts de la communaut\u00e9"],
         ["Projets co-fondateur", "6", "Recherches de co-fondateurs actives"],
-        ["Membres avec mot de passe", "6", u"Comptes pleinement activ\u00e9s"],
+        ["Membres avec mot de passe", "8", u"Comptes pleinement activ\u00e9s"],
     ]
     y = draw_table(c, margin, y, headers, rows, col_widths)
 
@@ -600,7 +602,7 @@ def build_report():
     c.setFillColor(LIGHT_BG)
     c.rect(0, 0, W, H, fill=1, stroke=0)
 
-    draw_page_header(c, u"5.  Fonctionnalit\u00e9s d\u00e9ploy\u00e9es depuis le lancement", "6 - 12 avril 2026", margin)
+    draw_page_header(c, u"5.  Fonctionnalit\u00e9s d\u00e9ploy\u00e9es depuis le lancement", "6 - 13 avril 2026", margin)
 
     y = H - 80
 
@@ -610,7 +612,7 @@ def build_report():
     y -= 14
     c.setFillColor(MUTED)
     c.setFont("Helvetica", 9)
-    c.drawString(margin, y, u"Plus de 15 fonctionnalit\u00e9s majeures livr\u00e9es en 7 jours pour transformer la plateforme en r\u00e9seau actif.")
+    c.drawString(margin, y, u"Plus de 15 fonctionnalit\u00e9s majeures livr\u00e9es en 8 jours pour transformer la plateforme en r\u00e9seau actif.")
     y -= 22
 
     # Feature categories
@@ -715,14 +717,14 @@ def build_report():
     # Synthèse
     c.setFillColor(DARK)
     c.setFont("Helvetica-Bold", 12)
-    c.drawString(margin, y, u"Synth\u00e8se J+7")
+    c.drawString(margin, y, u"Synth\u00e8se J+8")
     y -= 25
 
     highlights = [
-        ("Audience forte", u"1 700 utilisateurs actifs et 2 441 sessions en 7 jours, principalement depuis le Maroc (80%)."),
+        ("Audience forte", u"1 855 utilisateurs actifs et 2 665 sessions en 8 jours, principalement depuis le Maroc (78%)."),
         ("Acquisition organique", u"39,6% du trafic provient de la recherche Google, signe d\u2019un bon r\u00e9f\u00e9rencement naturel."),
-        (u"Engagement \u00e9lev\u00e9", u"57,7% de taux d\u2019engagement (vs. 40% moyenne secteur) et 44 inscriptions effectives en 7 jours."),
-        (u"Communaut\u00e9 naissante", u"44 membres inscrits dont 33 entrepreneurs, 5 investisseurs, 3 experts et 3 programmes."),
+        (u"Engagement \u00e9lev\u00e9", u"57,7% de taux d\u2019engagement (vs. 40% moyenne secteur) et 48 inscriptions effectives en 8 jours."),
+        (u"Communaut\u00e9 naissante", u"48 membres inscrits dont 35 entrepreneurs, 5 investisseurs, 5 experts et 3 programmes."),
         (u"Base de donn\u00e9es riche", u"2 014 startups, 1 333 fondateurs, 51 investisseurs, 171 tours de financement document\u00e9s."),
         ("Rayonnement international", u"Visiteurs de 8+ pays, avec une diaspora active (France 8,5%, USA 3,2%, Canada 1,8%)."),
     ]
@@ -760,7 +762,7 @@ def build_report():
     y -= 25
 
     improvements = [
-        u"Activation des 27 comptes en attente de confirmation (61% des inscrits)",
+        u"Activation des 26 comptes en attente de confirmation (54% des inscrits)",
         u"Enrichissement fondateurs : 1 068 startups sans fondateur identifi\u00e9 (objectif : -50% \u00e0 J+30)",
         u"Augmentation du contenu \u00e9ditorial et des publications communautaires",
         u"D\u00e9ploiement d\u2019une strat\u00e9gie d\u2019acquisition sur LinkedIn et les r\u00e9seaux sociaux",
@@ -795,10 +797,10 @@ def build_report():
     y -= 25
 
     targets = [
-        ("Membres inscrits", "44", "200", 22),
+        ("Membres inscrits", "48", "200", 24),
         ("Startups avec fondateur", "948", "1 500", 63),
         (u"Publications communaut\u00e9", "14", "50", 28),
-        ("Sessions / semaine", "2 441", "5 000", 49),
+        ("Sessions / semaine", "2 665", "5 000", 53),
     ]
     headers = ["OBJECTIF", "ACTUEL", "CIBLE J+30", "PROGRESSION"]
     col_widths = [180, 80, 80, content_w - 340]
@@ -930,7 +932,7 @@ def build_report():
     y_summary -= 18
     c.setFillColor(MUTED)
     c.setFont("Helvetica", 8)
-    c.drawString(margin, y_summary, u"The Pulse  |  UM6P  |  thepulse.ma  |  Rapport g\u00e9n\u00e9r\u00e9 le 12 avril 2026")
+    c.drawString(margin, y_summary, u"The Pulse  |  UM6P  |  thepulse.ma  |  Rapport g\u00e9n\u00e9r\u00e9 le 13 avril 2026")
     c.drawRightString(W - margin, y_summary, "Page 8/8  |  Rapport partenaires")
 
     c.save()

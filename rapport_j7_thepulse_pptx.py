@@ -1,5 +1,5 @@
 """
-Rapport J+7 - The Pulse  (PowerPoint version)
+Rapport J+8 - The Pulse  (PowerPoint version)
 Génère un fichier .pptx éditable
 """
 import os
@@ -167,7 +167,7 @@ def build_pptx():
         pass
 
     # Title
-    add_text(slide, Inches(0.5), Inches(1.8), Inches(9), Inches(0.7), "Rapport J+7",
+    add_text(slide, Inches(0.5), Inches(1.8), Inches(9), Inches(0.7), "Rapport J+8",
              font_size=40, bold=True, color=WHITE_C)
     add_text(slide, Inches(0.5), Inches(2.5), Inches(9), Inches(0.6), "Bilan de Lancement",
              font_size=30, bold=True, color=WHITE_C)
@@ -182,9 +182,9 @@ def build_pptx():
 
     # Date
     add_text(slide, Inches(0.5), Inches(4.1), Inches(5), Inches(0.3),
-             "Période : 6 - 12 avril 2026", font_size=13, bold=True, color=ACCENT)
+             "Période : 6 - 13 avril 2026", font_size=13, bold=True, color=ACCENT)
     add_text(slide, Inches(0.5), Inches(4.4), Inches(5), Inches(0.3),
-             "7 jours après le lancement officiel", font_size=11, color=RGBColor(0x94, 0xa3, 0xb8))
+             "8 jours après le lancement officiel", font_size=11, color=RGBColor(0x94, 0xa3, 0xb8))
 
     # Partner logos label
     add_text(slide, Inches(0.5), Inches(5.1), Inches(3), Inches(0.3),
@@ -220,7 +220,7 @@ def build_pptx():
     # ══════════════════════════════════════════════════════════════════
     slide = prs.slides.add_slide(prs.slide_layouts[6])
     add_bg(slide, LIGHT_BG)
-    add_page_header(slide, "1.  Vue d\u2019ensemble de la plateforme", "The Pulse  |  J+7")
+    add_page_header(slide, "1.  Vue d\u2019ensemble de la plateforme", "The Pulse  |  J+8")
 
     add_text(slide, Inches(0.4), Inches(0.75), Inches(6), Inches(0.3),
              "Base de données écosystème", font_size=13, bold=True, color=DARK)
@@ -280,7 +280,7 @@ def build_pptx():
     # ══════════════════════════════════════════════════════════════════
     slide = prs.slides.add_slide(prs.slide_layouts[6])
     add_bg(slide, LIGHT_BG)
-    add_page_header(slide, "2.  Trafic & Audience  (Google Analytics)", "6 - 12 avril 2026")
+    add_page_header(slide, "2.  Trafic & Audience  (Google Analytics)", "6 - 13 avril 2026")
 
     add_text(slide, Inches(0.4), Inches(0.75), Inches(6), Inches(0.3),
              "Indicateurs clés de trafic  (7 jours)", font_size=13, bold=True, color=DARK)
@@ -289,9 +289,9 @@ def build_pptx():
     kpi_w3 = Inches(3.0)
     kpi_y = Inches(1.1)
     kpis = [
-        ("2 441", "SESSIONS", ACCENT),
-        ("1 700", "UTILISATEURS ACTIFS", PURPLE),
-        ("1 600", "NOUVEAUX UTILISATEURS", BLUE),
+        ("2 665", "SESSIONS", ACCENT),
+        ("1 855", "UTILISATEURS ACTIFS", PURPLE),
+        ("1 748", "NOUVEAUX UTILISATEURS", BLUE),
     ]
     for i, (val, lbl, clr) in enumerate(kpis):
         add_kpi_card(slide, Inches(0.4) + i * (kpi_w3 + kpi_gap), kpi_y, kpi_w3, kpi_h, val, lbl, clr)
@@ -300,7 +300,7 @@ def build_pptx():
     kpis2 = [
         ("57,7%", "TAUX D\u2019ENGAGEMENT", GREEN),
         ("1m 34s", "DURÉE MOY. SESSION", ORANGE),
-        ("28 293", "ÉVÉNEMENTS", MUTED),
+        ("30 683", "ÉVÉNEMENTS", MUTED),
     ]
     for i, (val, lbl, clr) in enumerate(kpis2):
         add_kpi_card(slide, Inches(0.4) + i * (kpi_w3 + kpi_gap), kpi_y2, kpi_w3, kpi_h, val, lbl, clr)
@@ -310,11 +310,11 @@ def build_pptx():
              "Sources d\u2019acquisition", font_size=13, bold=True, color=DARK)
 
     channels = [
-        ("Direct", "1 282 (52,5%)"),
-        ("Recherche organique (Google)", "967 (39,6%)"),
-        ("Réseaux sociaux (LinkedIn)", "111 (4,5%)"),
-        ("Referrals (Medias24, etc.)", "57 (2,3%)"),
-        ("Autres", "24 (1,0%)"),
+        ("Direct", "1 378 (51,7%)"),
+        ("Recherche organique (Google)", "1 063 (39,9%)"),
+        ("Réseaux sociaux (LinkedIn)", "114 (4,3%)"),
+        ("Referrals (Medias24, etc.)", "63 (2,4%)"),
+        ("Autres", "47 (1,8%)"),
     ]
     for i, (label, val) in enumerate(channels):
         y_pos = Inches(3.3) + i * Inches(0.22)
@@ -327,19 +327,19 @@ def build_pptx():
 
     headers = ["PAYS", "UTILISATEURS", "PART", "TAUX ENGAGEMENT", "DURÉE MOY."]
     rows = [
-        ["Maroc", "1 320", "79,9%", "57,7%", "2m 22s"],
-        ["France", "141", "8,5%", "62,3%", "1m 45s"],
-        ["États-Unis", "52", "3,2%", "36,5%", "38s"],
-        ["Canada", "29", "1,8%", "60,6%", "1m 06s"],
-        ["Pays-Bas", "15", "0,9%", "78,3%", "3m 17s"],
-        ["Royaume-Uni", "14", "0,9%", "56,3%", "33s"],
-        ["Allemagne", "11", "0,7%", "60,0%", "1m 51s"],
-        ["Belgique", "9", "0,5%", "58,3%", "29s"],
+        ["Maroc", "1 440", "77,6%", "55,2%", "2m 18s"],
+        ["France", "151", "8,1%", "61,5%", "1m 42s"],
+        ["États-Unis", "56", "3,0%", "35,8%", "36s"],
+        ["Canada", "33", "1,8%", "59,4%", "1m 04s"],
+        ["Pays-Bas", "19", "1,0%", "76,1%", "3m 10s"],
+        ["Royaume-Uni", "14", "0,8%", "56,3%", "33s"],
+        ["Allemagne", "11", "0,6%", "60,0%", "1m 51s"],
+        ["Espagne", "3", "0,2%", "50,0%", "45s"],
     ]
     add_table(slide, Inches(0.4), Inches(4.9), headers, rows, [1.6, 1.1, 0.8, 1.3, 1.1])
 
     add_text(slide, Inches(0.4), Inches(7.2), Inches(9), Inches(0.2),
-             "Source : Google Analytics (G-9TTHWMF6L0) - Période du 6 au 12 avril 2026",
+             "Source : Google Analytics (G-9TTHWMF6L0) - Période du 6 au 13 avril 2026",
              font_size=8, color=MUTED)
 
     # ══════════════════════════════════════════════════════════════════
@@ -347,20 +347,20 @@ def build_pptx():
     # ══════════════════════════════════════════════════════════════════
     slide = prs.slides.add_slide(prs.slide_layouts[6])
     add_bg(slide, LIGHT_BG)
-    add_page_header(slide, "3.  Pages les plus visitées & Engagement", "6 - 12 avril 2026")
+    add_page_header(slide, "3.  Pages les plus visitées & Engagement", "6 - 13 avril 2026")
 
     add_text(slide, Inches(0.4), Inches(0.75), Inches(6), Inches(0.3),
              "Pages les plus consultées", font_size=13, bold=True, color=DARK)
 
     headers = ["PAGE", "VUES", "UTILISATEURS", "REBOND", "VS MOYENNE*"]
     rows = [
-        ["Répertoire Startups", "2 800", "623", "19,1%", "\u25b2 Page #1"],
-        ["Page d\u2019accueil", "1 800", "1 200", "36,5%", "Rebond moyen"],
-        ["Rejoindre The Pulse", "952", "683", "18,8%", "\u25b2 Fort intérêt"],
-        ["Répertoire Fondateurs", "536", "195", "11,5%", "\u25b2 Très engagé"],
-        ["Répertoire Investisseurs", "381", "164", "10,4%", "\u25b2 Très engagé"],
-        ["Ressources", "282", "216", "14,2%", "\u25b2 Engagé"],
-        ["Formulaire inscription startup", "246", "210", "6,7%", "\u25b2\u25b2 Excellent"],
+        ["Répertoire Startups", "3 067", "690", "18,5%", "\u25b2 Page #1"],
+        ["Page d\u2019accueil", "1 892", "1 310", "35,2%", "Rebond moyen"],
+        ["Rejoindre The Pulse", "1 010", "725", "17,9%", "\u25b2 Fort intérêt"],
+        ["Répertoire Fondateurs", "576", "215", "11,0%", "\u25b2 Très engagé"],
+        ["Répertoire Investisseurs", "403", "176", "10,1%", "\u25b2 Très engagé"],
+        ["Se connecter", "302", "240", "12,8%", "\u25b2 Engagé"],
+        ["Co-Fondateurs", "282", "195", "9,2%", "\u25b2\u25b2 Excellent"],
     ]
     add_table(slide, Inches(0.4), Inches(1.1), headers, rows, [2.4, 0.8, 1.1, 1.0, 1.5])
 
@@ -370,7 +370,7 @@ def build_pptx():
 
     # Tendance des visites (J1→J7)
     add_text(slide, Inches(0.4), Inches(3.85), Inches(6), Inches(0.3),
-             "Tendance des visites (J1 \u2192 J7)", font_size=13, bold=True, color=DARK)
+             "Tendance des visites (J1 \u2192 J8)", font_size=13, bold=True, color=DARK)
 
     trend_days = [
         ("J1 (6 avr)", "180", MUTED),
@@ -380,6 +380,7 @@ def build_pptx():
         ("J5 (10 avr)", "480", ACCENT),
         ("J6 (11 avr)", "410", BLUE),
         ("J7 (12 avr)", "341", BLUE),
+        ("J8 (13 avr)", "224", MUTED),
     ]
     bar_max = 520
     bar_x = Inches(0.5)
@@ -408,7 +409,7 @@ def build_pptx():
     add_text(slide, Inches(0.6), Inches(6.82), Inches(2), Inches(0.2),
              "Point clé", font_size=10, bold=True, color=DARK)
     add_text(slide, Inches(0.6), Inches(7.02), Inches(8.8), Inches(0.35),
-             "Taux de rebond moyen de 16,6% vs 40-60% pour un SaaS B2B \u2014 les visiteurs explorent activement la plateforme. 44 inscriptions en 7 jours avec un pic à J4.",
+             "Taux de rebond moyen de 16,6% vs 40-60% pour un SaaS B2B \u2014 les visiteurs explorent activement la plateforme. 44 inscriptions en 8 jours avec un pic à J4.",
              font_size=8.5, color=RGBColor(0x33, 0x41, 0x55))
 
     # ══════════════════════════════════════════════════════════════════
@@ -416,17 +417,17 @@ def build_pptx():
     # ══════════════════════════════════════════════════════════════════
     slide = prs.slides.add_slide(prs.slide_layouts[6])
     add_bg(slide, LIGHT_BG)
-    add_page_header(slide, "4.  Communauté & Membres inscrits", "Au 12 avril 2026")
+    add_page_header(slide, "4.  Communauté & Membres inscrits", "Au 13 avril 2026")
 
     add_text(slide, Inches(0.4), Inches(0.75), Inches(6), Inches(0.3),
              "Inscriptions à la plateforme", font_size=13, bold=True, color=DARK)
 
     kpi_y = Inches(1.1)
     kpis = [
-        ("44", "INSCRITS TOTAL", ACCENT),
-        ("17", "CONFIRMÉS", GREEN),
-        ("27", "EN ATTENTE", ORANGE),
-        ("9", "AVEC PHOTO", PURPLE),
+        ("48", "INSCRITS TOTAL", ACCENT),
+        ("22", "CONFIRMÉS", GREEN),
+        ("26", "EN ATTENTE", ORANGE),
+        ("11", "AVEC PHOTO", PURPLE),
     ]
     for i, (val, lbl, clr) in enumerate(kpis):
         add_kpi_card(slide, Inches(0.4) + i * (kpi_w + kpi_gap), kpi_y, kpi_w, kpi_h, val, lbl, clr)
@@ -436,10 +437,10 @@ def build_pptx():
              "Répartition par rôle", font_size=13, bold=True, color=DARK)
 
     roles = [
-        ("Entrepreneurs", "33 (75,0%)"),
-        ("Investisseurs", "5 (11,4%)"),
-        ("Experts", "3 (6,8%)"),
-        ("Programmes / Incubateurs", "3 (6,8%)"),
+        ("Entrepreneurs", "35 (72,9%)"),
+        ("Investisseurs", "5 (10,4%)"),
+        ("Experts", "5 (10,4%)"),
+        ("Programmes / Incubateurs", "3 (6,3%)"),
     ]
     for i, (label, val) in enumerate(roles):
         y_pos = Inches(2.4) + i * Inches(0.22)
@@ -458,6 +459,7 @@ def build_pptx():
         ("10 avril", "8"),
         ("11 avril", "4"),
         ("12 avril", "3"),
+        ("13 avril", "4"),
     ]
     for i, (day, count) in enumerate(days):
         y_pos = Inches(3.75) + i * Inches(0.2)
@@ -471,10 +473,10 @@ def build_pptx():
 
     headers = ["INDICATEUR", "VALEUR", "COMMENTAIRE"]
     rows = [
-        ["Messages directs échangés", "9", "Messagerie interne entre membres"],
+        ["Messages directs échangés", "10", "Messagerie interne entre membres"],
         ["Publications newsfeed", "14", "Posts de la communauté"],
         ["Projets co-fondateur", "6", "Recherches de co-fondateurs actives"],
-        ["Membres avec mot de passe", "6", "Comptes pleinement activés"],
+        ["Membres avec mot de passe", "8", "Comptes pleinement activés"],
     ]
     add_table(slide, Inches(0.4), Inches(5.65), headers, rows, [2.5, 0.9, 5.0])
 
@@ -495,7 +497,7 @@ def build_pptx():
     add_page_header(slide, "5.  Fonctionnalités déployées depuis le lancement", "Produit & Communauté")
 
     add_text(slide, Inches(0.4), Inches(0.75), Inches(9), Inches(0.3),
-             "Évolution de la plateforme en 7 jours", font_size=13, bold=True, color=DARK)
+             "Évolution de la plateforme en 8 jours", font_size=13, bold=True, color=DARK)
     add_text(slide, Inches(0.4), Inches(1.0), Inches(9), Inches(0.25),
              "Au-delà de la base de données, The Pulse est devenue une plateforme communautaire active.",
              font_size=9, color=MUTED)
@@ -549,7 +551,7 @@ def build_pptx():
                      desc, font_size=7.5, color=SLATE)
 
     add_text(slide, Inches(0.4), Inches(7.15), Inches(9.2), Inches(0.2),
-             u"The Pulse \u2014 d\u2019une base de donn\u00e9es \u00e0 une v\u00e9ritable plateforme communautaire en 7 jours.",
+             u"The Pulse \u2014 d\u2019une base de donn\u00e9es \u00e0 une v\u00e9ritable plateforme communautaire en 8 jours.",
              font_size=8, color=MUTED, alignment=PP_ALIGN.CENTER)
 
     # ══════════════════════════════════════════════════════════════════
@@ -560,13 +562,13 @@ def build_pptx():
     add_page_header(slide, "6.  Synthèse & Prochaines étapes", "Perspectives J+30")
 
     add_text(slide, Inches(0.4), Inches(0.75), Inches(6), Inches(0.3),
-             "Synthèse J+7", font_size=13, bold=True, color=DARK)
+             "Synthèse J+8", font_size=13, bold=True, color=DARK)
 
     highlights = [
-        ("Audience forte", "1 700 utilisateurs actifs et 2 441 sessions en 7 jours, principalement depuis le Maroc (80%)."),
+        ("Audience forte", "1 855 utilisateurs actifs et 2 665 sessions en 8 jours, principalement depuis le Maroc (78%)."),
         ("Acquisition organique", "39,6% du trafic provient de la recherche Google, signe d\u2019un bon référencement naturel."),
-        ("Engagement élevé", "57,7% de taux d\u2019engagement, durée moyenne de session de 1m 34s, 44 inscriptions effectives en 7 jours."),
-        ("Communauté naissante", "44 membres inscrits dont 33 entrepreneurs, 5 investisseurs, 3 experts et 3 programmes."),
+        ("Engagement élevé", "57,7% de taux d\u2019engagement, durée moyenne de session de 1m 34s, 48 inscriptions effectives en 8 jours."),
+        ("Communauté naissante", "48 membres inscrits dont 35 entrepreneurs, 5 investisseurs, 5 experts et 3 programmes."),
         ("Base de données riche", "2 014 startups, 1 333 fondateurs, 51 investisseurs, 171 tours de financement documentés."),
         ("Rayonnement international", "Visiteurs de 8+ pays, avec une diaspora active (France 8,5%, USA 3,2%, Canada 1,8%)."),
     ]
@@ -592,7 +594,7 @@ def build_pptx():
              "Axes d\u2019amélioration identifiés", font_size=13, bold=True, color=DARK)
 
     improvements = [
-        "Activation des 27 comptes en attente de confirmation (61% des inscrits)",
+        "Activation des 26 comptes en attente de confirmation (54% des inscrits)",
         "Enrichissement fondateurs : 1 068 startups sans fondateur identifié (objectif : -50% à J+30)",
         "Augmentation du contenu éditorial et des publications communautaires",
         "Déploiement d\u2019une stratégie d\u2019acquisition sur LinkedIn et les réseaux sociaux",
@@ -608,10 +610,10 @@ def build_pptx():
 
     headers = ["OBJECTIF", "ACTUEL", "CIBLE J+30", "PROGRESSION"]
     rows = [
-        ["Membres inscrits", "44", "200", "22%"],
+        ["Membres inscrits", "48", "200", "24%"],
         ["Startups avec fondateur", "948", "1 500", "63%"],
         ["Publications communauté", "14", "50", "28%"],
-        ["Sessions / semaine", "2 441", "5 000", "49%"],
+        ["Sessions / semaine", "2 665", "5 000", "53%"],
     ]
     add_table(slide, Inches(0.4), Inches(5.3), headers, rows, [2.5, 1.0, 1.0, 1.5])
 
@@ -686,7 +688,7 @@ def build_pptx():
 
     # Footer
     add_text(slide, Inches(0.4), Inches(7.15), Inches(6), Inches(0.2),
-             "The Pulse  |  UM6P  |  thepulse.ma  |  Rapport généré le 12 avril 2026",
+             "The Pulse  |  UM6P  |  thepulse.ma  |  Rapport généré le 13 avril 2026",
              font_size=8, color=MUTED)
     add_text(slide, Inches(6.5), Inches(7.15), Inches(3.2), Inches(0.2),
              "Page 8/8  |  Rapport partenaires",
