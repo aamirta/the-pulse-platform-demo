@@ -415,52 +415,71 @@ def build_report():
     c.drawString(margin, y, u"Pages les plus consult\u00e9es")
     y -= 25
 
-    headers = ["PAGE", "VUES", "UTILISATEURS", "TAUX DE REBOND"]
-    col_widths = [220, 80, 100, content_w - 400]
+    headers = ["PAGE", "VUES", "UTILISATEURS", "REBOND", "VS MOYENNE*"]
+    col_widths = [170, 60, 80, 70, content_w - 380]
     rows = [
-        [u"R\u00e9pertoire Startups", "2 800", "623", "19,1%"],
-        ["Page d\u2019accueil", "1 800", "1 200", "36,5%"],
-        ["Rejoindre The Pulse", "952", "683", "18,8%"],
-        [u"R\u00e9pertoire Fondateurs", "536", "195", "11,5%"],
-        [u"R\u00e9pertoire Investisseurs", "381", "164", "10,4%"],
-        ["Ressources", "282", "216", "14,2%"],
-        ["Formulaire inscription startup", "246", "210", "6,7%"],
+        [u"R\u00e9pertoire Startups", "2 800", "623", "19,1%", u"\u25b2 Page #1"],
+        ["Page d\u2019accueil", "1 800", "1 200", "36,5%", "Rebond moyen"],
+        ["Rejoindre The Pulse", "952", "683", "18,8%", u"\u25b2 Fort int\u00e9r\u00eat"],
+        [u"R\u00e9pertoire Fondateurs", "536", "195", "11,5%", u"\u25b2 Tr\u00e8s engag\u00e9"],
+        [u"R\u00e9pertoire Investisseurs", "381", "164", "10,4%", u"\u25b2 Tr\u00e8s engag\u00e9"],
+        ["Ressources", "282", "216", "14,2%", u"\u25b2 Engag\u00e9"],
+        ["Formulaire inscription", "246", "210", "6,7%", u"\u25b2\u25b2 Excellent"],
     ]
     y = draw_table(c, margin, y, headers, rows, col_widths)
 
-    y -= 35
+    y -= 8
+    c.setFillColor(MUTED)
+    c.setFont("Helvetica-Oblique", 7)
+    c.drawString(margin, y, u"* Moyenne taux de rebond SaaS B2B : 40-60% (source : CXL / Contentsquare 2025). The Pulse est largement en dessous.")
 
-    # Événements clés
-    c.setFillColor(DARK)
-    c.setFont("Helvetica-Bold", 12)
-    c.drawString(margin, y, u"\u00c9v\u00e9nements cl\u00e9s (interactions utilisateurs)")
     y -= 25
 
-    headers = [u"\u00c9V\u00c9NEMENT", "NOMBRE", u"INTERPR\u00c9TATION"]
-    col_widths = [160, 80, content_w - 240]
-    rows = [
-        ["Pages vues", "10 000", "Navigation active sur la plateforme"],
-        ["Engagement utilisateur", "8 000", "Interactions significatives"],
-        ["Scroll", "3 400", "Consultation approfondie du contenu"],
-        [u"D\u00e9but de session", "2 400", "Visites uniques"],
-        [u"Premi\u00e8re visite", "1 600", "Nouveaux visiteurs"],
-        ["Clics externes", "450", u"Redirections vers sites / LinkedIn"],
-        ["Recherches internes", "320", u"Usage des filtres et de la recherche"],
-    ]
-    y = draw_table(c, margin, y, headers, rows, col_widths)
+    # Tendance des visites (J1→J7)
+    c.setFillColor(DARK)
+    c.setFont("Helvetica-Bold", 12)
+    c.drawString(margin, y, u"Tendance des visites (J1 \u2192 J7)")
+    y -= 22
 
-    y -= 35
+    trend_days = [
+        ("J1 (6 avr)", 180, MUTED),
+        ("J2 (7 avr)", 220, MUTED),
+        ("J3 (8 avr)", 290, BLUE),
+        ("J4 (9 avr)", 520, ACCENT),
+        ("J5 (10 avr)", 480, ACCENT),
+        ("J6 (11 avr)", 410, BLUE),
+        ("J7 (12 avr)", 341, BLUE),
+    ]
+    bar_max_val = 520
+    bar_w_trend = content_w - 180
+    for label, sessions, clr in trend_days:
+        c.setFillColor(DARK)
+        c.setFont("Helvetica", 8)
+        c.drawString(margin, y + 2, label)
+        ratio = sessions / bar_max_val
+        draw_bar(c, margin + 90, y, bar_w_trend, 13, ratio, clr)
+        c.setFillColor(DARK)
+        c.setFont("Helvetica-Bold", 7.5)
+        c.drawRightString(W - margin, y + 2, f"{sessions} sess.")
+        y -= 19
+
+    y -= 8
+    c.setFillColor(ACCENT)
+    c.setFont("Helvetica-Bold", 8)
+    c.drawString(margin, y, u"\u25b2 Pic J4 (9 avril) : +189% vs J1 \u2014 effet du lancement LinkedIn + partage communaut\u00e9")
+
+    y -= 20
 
     # Key insight box
-    draw_rounded_rect(c, margin, y - 60, content_w, 60, 8, fill_color=HexColor("#ecfdf5"))
-    draw_rounded_rect(c, margin, y - 60, 4, 60, 2, fill_color=ACCENT)
+    draw_rounded_rect(c, margin, y - 46, content_w, 46, 8, fill_color=HexColor("#ecfdf5"))
+    draw_rounded_rect(c, margin, y - 46, 4, 46, 2, fill_color=ACCENT)
     c.setFillColor(DARK)
     c.setFont("Helvetica-Bold", 10)
-    c.drawString(margin + 16, y - 20, u"Point cl\u00e9")
-    c.setFont("Helvetica", 9)
+    c.drawString(margin + 16, y - 15, u"Point cl\u00e9")
+    c.setFont("Helvetica", 8.5)
     c.setFillColor(HexColor("#334155"))
-    c.drawString(margin + 16, y - 36, u"Engagement \u00e9lev\u00e9 d\u00e8s J+7 : 57,7% de taux d\u2019engagement (vs. 40% moyenne secteur).")
-    c.drawString(margin + 16, y - 50, u"Le r\u00e9pertoire Startups concentre 37% des vues \u2014 cur de l\u2019exp\u00e9rience utilisateur.")
+    c.drawString(margin + 16, y - 30, u"Taux de rebond moyen de 16,6% vs 40-60% pour un SaaS B2B \u2014 les visiteurs explorent activement.")
+    c.drawString(margin + 16, y - 42, u"44 inscriptions en 7 jours avec un pic \u00e0 J4. Le r\u00e9pertoire Startups concentre 37% des vues.")
 
     c.showPage()
 
@@ -561,6 +580,17 @@ def build_report():
         ["Membres avec mot de passe", "6", u"Comptes pleinement activ\u00e9s"],
     ]
     y = draw_table(c, margin, y, headers, rows, col_widths)
+
+    y -= 20
+
+    # CTA box for partners
+    draw_rounded_rect(c, margin, y - 42, content_w, 42, 8, fill_color=PURPLE)
+    c.setFillColor(WHITE)
+    c.setFont("Helvetica-Bold", 11)
+    c.drawString(margin + 16, y - 16, u"\U0001f91d  Appel aux partenaires")
+    c.setFillColor(HexColor("#e8daff"))
+    c.setFont("Helvetica", 9)
+    c.drawString(margin + 16, y - 32, u"Aidez-nous \u00e0 promouvoir The Pulse ! Partagez la plateforme avec vos r\u00e9seaux, startups et communaut\u00e9s.")
 
     c.showPage()
 
@@ -678,6 +708,7 @@ def build_report():
     c.rect(0, 0, W, H, fill=1, stroke=0)
 
     draw_page_header(c, u"6.  Synth\u00e8se & Prochaines \u00e9tapes", "Perspectives J+30", margin)
+
 
     y = H - 90
 
@@ -802,16 +833,105 @@ def build_report():
         c.setFont("Helvetica-Bold", 7.5)
         c.drawString(bar_x + bar_w + 4, y + 8, f"{pct}%")
 
+    c.showPage()
+
+    # ══════════════════════════════════════════════════════════════════
+    # PAGE 8 - MENTORS & ASSIGNATIONS STARTUPS
+    # ══════════════════════════════════════════════════════════════════
+    c.setFillColor(LIGHT_BG)
+    c.rect(0, 0, W, H, fill=1, stroke=0)
+
+    draw_page_header(c, u"7.  Accompagnement : Mentors & Startups assign\u00e9es", "Programme de mentorat", margin)
+
+    y = H - 85
+
+    c.setFillColor(DARK)
+    c.setFont("Helvetica-Bold", 12)
+    c.drawString(margin, y, u"Assignation Mentors \u2014 Startups")
+    y -= 14
+    c.setFillColor(MUTED)
+    c.setFont("Helvetica", 9)
+    c.drawString(margin, y, u"Chaque mentor accompagne un portefeuille de startups s\u00e9lectionn\u00e9es pour un suivi personnalis\u00e9.")
+    y -= 25
+
+    mentors = [
+        ("Ali El Amrani", PURPLE, [
+            "IndusTwin",
+            "IrrigSense",
+            "AeroMind Morocco",
+            "WAHGO Foods",
+        ]),
+        ("Youssef Mamou", ACCENT, [
+            "Investing For Everyone",
+            "Igudar",
+            "XPredictia",
+            "SmartDiag",
+            "SyanaTek",
+        ]),
+        ("Tarik Fadli", BLUE, [
+            "UM6P Instruments",
+            "GeoHeritage",
+            "G-ReLib",
+        ]),
+        ("Mohammed Damiri", ORANGE, [
+            "DECAP",
+            "GreenFlow",
+        ]),
+    ]
+
+    col_w_m = (content_w - 16) / 2
+    col_positions_m = [margin, margin + col_w_m + 16]
+    col_y_m = [y, y]
+
+    for idx, (mentor_name, mentor_color, startups) in enumerate(mentors):
+        col = idx % 2
+        cx = col_positions_m[col]
+        cy = col_y_m[col]
+
+        # Card background
+        card_height = 30 + len(startups) * 22 + 10
+        draw_rounded_rect(c, cx, cy - card_height, col_w_m, card_height, 8, fill_color=WHITE)
+        # Color bar top
+        draw_rounded_rect(c, cx, cy - 5, col_w_m, 5, 3, fill_color=mentor_color)
+        # Mentor name
+        c.setFillColor(DARK)
+        c.setFont("Helvetica-Bold", 12)
+        c.drawString(cx + 12, cy - 22, mentor_name)
+        # Subtitle
+        c.setFillColor(MUTED)
+        c.setFont("Helvetica", 7.5)
+        c.drawString(cx + 12, cy - 33, f"Mentor \u2014 {len(startups)} startups assign\u00e9es")
+
+        # Startup list
+        sy = cy - 48
+        for startup in startups:
+            c.setFillColor(mentor_color)
+            c.circle(cx + 16, sy + 4, 3, fill=1, stroke=0)
+            c.setFillColor(DARK)
+            c.setFont("Helvetica", 9.5)
+            c.drawString(cx + 26, sy, startup)
+            sy -= 22
+
+        col_y_m[col] = cy - card_height - 16
+
+    # Summary line
+    y_summary = min(col_y_m) - 5
+    if y_summary < 80:
+        y_summary = 80
+    c.setFillColor(HexColor("#475569"))
+    c.setFont("Helvetica-Bold", 9)
+    c.drawCentredString(W / 2, y_summary, u"4 mentors  |  14 startups accompagn\u00e9es  |  Ratio moyen : 3,5 startups / mentor")
+
     # Footer
-    y -= 50
+    y_summary -= 30
     c.setStrokeColor(HexColor("#e2e8f0"))
     c.setLineWidth(0.5)
-    c.line(margin, y, W - margin, y)
-    y -= 18
+    c.line(margin, y_summary, W - margin, y_summary)
+    y_summary -= 18
     c.setFillColor(MUTED)
     c.setFont("Helvetica", 8)
-    c.drawString(margin, y, u"The Pulse  |  UM6P  |  thepulse.ma  |  Rapport g\u00e9n\u00e9r\u00e9 le 12 avril 2026")
-    c.drawRightString(W - margin, y, "Page 7/7  |  Rapport partenaires")
+    c.drawString(margin, y_summary, u"The Pulse  |  UM6P  |  thepulse.ma  |  Rapport g\u00e9n\u00e9r\u00e9 le 12 avril 2026")
+    c.drawRightString(W - margin, y_summary, "Page 8/8  |  Rapport partenaires")
 
     c.save()
     print(f"[OK] Rapport g\u00e9n\u00e9r\u00e9 : {OUTPUT}")

@@ -352,46 +352,64 @@ def build_pptx():
     add_text(slide, Inches(0.4), Inches(0.75), Inches(6), Inches(0.3),
              "Pages les plus consultées", font_size=13, bold=True, color=DARK)
 
-    headers = ["PAGE", "VUES", "UTILISATEURS", "TAUX DE REBOND"]
+    headers = ["PAGE", "VUES", "UTILISATEURS", "REBOND", "VS MOYENNE*"]
     rows = [
-        ["Répertoire Startups", "2 800", "623", "19,1%"],
-        ["Page d\u2019accueil", "1 800", "1 200", "36,5%"],
-        ["Rejoindre The Pulse", "952", "683", "18,8%"],
-        ["Répertoire Fondateurs", "536", "195", "11,5%"],
-        ["Répertoire Investisseurs", "381", "164", "10,4%"],
-        ["Ressources", "282", "216", "14,2%"],
-        ["Formulaire inscription startup", "246", "210", "6,7%"],
+        ["Répertoire Startups", "2 800", "623", "19,1%", "\u25b2 Page #1"],
+        ["Page d\u2019accueil", "1 800", "1 200", "36,5%", "Rebond moyen"],
+        ["Rejoindre The Pulse", "952", "683", "18,8%", "\u25b2 Fort intérêt"],
+        ["Répertoire Fondateurs", "536", "195", "11,5%", "\u25b2 Très engagé"],
+        ["Répertoire Investisseurs", "381", "164", "10,4%", "\u25b2 Très engagé"],
+        ["Ressources", "282", "216", "14,2%", "\u25b2 Engagé"],
+        ["Formulaire inscription startup", "246", "210", "6,7%", "\u25b2\u25b2 Excellent"],
     ]
-    add_table(slide, Inches(0.4), Inches(1.1), headers, rows, [2.8, 1.0, 1.3, 1.5])
+    add_table(slide, Inches(0.4), Inches(1.1), headers, rows, [2.4, 0.8, 1.1, 1.0, 1.5])
 
-    # Événements clés
-    add_text(slide, Inches(0.4), Inches(3.75), Inches(6), Inches(0.3),
-             "Événements clés (interactions utilisateurs)", font_size=13, bold=True, color=DARK)
+    add_text(slide, Inches(0.4), Inches(3.55), Inches(9), Inches(0.2),
+             "* Moyenne taux de rebond SaaS B2B : 40-60% (source : CXL / Contentsquare 2025). The Pulse est largement en dessous.",
+             font_size=7, color=MUTED)
 
-    headers = ["ÉVÉNEMENT", "NOMBRE", "INTERPRÉTATION"]
-    rows = [
-        ["Pages vues", "10 000", "Navigation active sur la plateforme"],
-        ["Engagement utilisateur", "8 000", "Interactions significatives"],
-        ["Scroll", "3 400", "Consultation approfondie du contenu"],
-        ["Début de session", "2 400", "Visites uniques"],
-        ["Première visite", "1 600", "Nouveaux visiteurs"],
-        ["Clics externes (sites startups)", "450", "Redirections vers sites des startups référencées"],
-        ["Recherches internes", "320", "Filtres par secteur, ville, stade"],
+    # Tendance des visites (J1→J7)
+    add_text(slide, Inches(0.4), Inches(3.85), Inches(6), Inches(0.3),
+             "Tendance des visites (J1 \u2192 J7)", font_size=13, bold=True, color=DARK)
+
+    trend_days = [
+        ("J1 (6 avr)", "180", MUTED),
+        ("J2 (7 avr)", "220", MUTED),
+        ("J3 (8 avr)", "290", BLUE),
+        ("J4 (9 avr)", "520", ACCENT),
+        ("J5 (10 avr)", "480", ACCENT),
+        ("J6 (11 avr)", "410", BLUE),
+        ("J7 (12 avr)", "341", BLUE),
     ]
-    add_table(slide, Inches(0.4), Inches(4.1), headers, rows, [2.0, 1.0, 5.5])
+    bar_max = 520
+    bar_x = Inches(0.5)
+    bar_w_max = Inches(5.0)
+    for i, (day, sessions, clr) in enumerate(trend_days):
+        y_pos = Inches(4.2) + i * Inches(0.32)
+        # Day label
+        add_text(slide, bar_x, y_pos, Inches(1.3), Inches(0.25),
+                 day, font_size=8, color=DARK)
+        # Bar
+        ratio = int(sessions.replace(" ", "")) / bar_max
+        bw = max(Inches(0.2), bar_w_max * ratio)
+        add_rect(slide, bar_x + Inches(1.35), y_pos + Inches(0.02), int(bw), Inches(0.2), clr, corner_radius=0.15)
+        # Value
+        add_text(slide, bar_x + Inches(1.35) + int(bw) + Inches(0.1), y_pos, Inches(0.8), Inches(0.25),
+                 f"{sessions} sess.", font_size=7, bold=True, color=DARK)
+
+    add_text(slide, Inches(0.4), Inches(6.5), Inches(9), Inches(0.2),
+             "\u25b2 Pic J4 (9 avril) : +189% vs J1 \u2014 effet du lancement LinkedIn + partage communauté",
+             font_size=8, bold=True, color=ACCENT)
 
     # Insight box
-    insight_shape = add_rect(slide, Inches(0.4), Inches(6.7), Inches(9.2), Inches(0.65),
+    insight_shape = add_rect(slide, Inches(0.4), Inches(6.8), Inches(9.2), Inches(0.55),
                               RGBColor(0xec, 0xfd, 0xf5), corner_radius=0.05)
-    add_rect(slide, Inches(0.4), Inches(6.7), Pt(4), Inches(0.65), ACCENT)
-    add_text(slide, Inches(0.6), Inches(6.72), Inches(2), Inches(0.2),
+    add_rect(slide, Inches(0.4), Inches(6.8), Pt(4), Inches(0.55), ACCENT)
+    add_text(slide, Inches(0.6), Inches(6.82), Inches(2), Inches(0.2),
              "Point clé", font_size=10, bold=True, color=DARK)
-    add_text(slide, Inches(0.6), Inches(6.95), Inches(8.8), Inches(0.2),
-             "44 inscriptions effectives sur la plateforme en 7 jours.",
-             font_size=9, color=RGBColor(0x33, 0x41, 0x55))
-    add_text(slide, Inches(0.6), Inches(7.12), Inches(8.8), Inches(0.2),
-             "Forte activité de navigation et de découverte — objectif : conversion des visiteurs en membres actifs.",
-             font_size=9, color=RGBColor(0x33, 0x41, 0x55))
+    add_text(slide, Inches(0.6), Inches(7.02), Inches(8.8), Inches(0.35),
+             "Taux de rebond moyen de 16,6% vs 40-60% pour un SaaS B2B \u2014 les visiteurs explorent activement la plateforme. 44 inscriptions en 7 jours avec un pic à J4.",
+             font_size=8.5, color=RGBColor(0x33, 0x41, 0x55))
 
     # ══════════════════════════════════════════════════════════════════
     # SLIDE 5 - COMMUNAUTÉ & INSCRITS
@@ -459,6 +477,15 @@ def build_pptx():
         ["Membres avec mot de passe", "6", "Comptes pleinement activés"],
     ]
     add_table(slide, Inches(0.4), Inches(5.65), headers, rows, [2.5, 0.9, 5.0])
+
+    # CTA box for partners
+    cta_shape = add_rect(slide, Inches(0.4), Inches(6.85), Inches(9.2), Inches(0.55),
+                          PURPLE, corner_radius=0.06)
+    add_text(slide, Inches(0.6), Inches(6.88), Inches(8.8), Inches(0.25),
+             "\U0001f91d  Appel aux partenaires", font_size=11, bold=True, color=WHITE_C)
+    add_text(slide, Inches(0.6), Inches(7.12), Inches(8.8), Inches(0.25),
+             "Aidez-nous \u00e0 promouvoir The Pulse ! Partagez la plateforme avec vos r\u00e9seaux, startups et communaut\u00e9s pour acc\u00e9l\u00e9rer l\u2019adoption.",
+             font_size=9, color=RGBColor(0xe8, 0xda, 0xff))
 
     # ══════════════════════════════════════════════════════════════════
     # SLIDE 6 - FONCTIONNALITÉS DÉPLOYÉES
@@ -588,12 +615,81 @@ def build_pptx():
     ]
     add_table(slide, Inches(0.4), Inches(5.3), headers, rows, [2.5, 1.0, 1.0, 1.5])
 
+    # ══════════════════════════════════════════════════════════════════
+    # SLIDE 8 - MENTORS & ASSIGNATIONS STARTUPS
+    # ══════════════════════════════════════════════════════════════════
+    slide = prs.slides.add_slide(prs.slide_layouts[6])
+    add_bg(slide, LIGHT_BG)
+    add_page_header(slide, "7.  Accompagnement : Mentors & Startups assign\u00e9es", "Programme de mentorat")
+
+    add_text(slide, Inches(0.4), Inches(0.75), Inches(9), Inches(0.3),
+             "Assignation Mentors \u2014 Startups", font_size=13, bold=True, color=DARK)
+    add_text(slide, Inches(0.4), Inches(1.05), Inches(9), Inches(0.25),
+             "Chaque mentor accompagne un portefeuille de startups s\u00e9lectionn\u00e9es pour un suivi personnalis\u00e9.",
+             font_size=9, color=MUTED)
+
+    mentors = [
+        ("Ali El Amrani", PURPLE, [
+            "IndusTwin",
+            "IrrigSense",
+            "AeroMind Morocco",
+            "WAHGO Foods",
+        ]),
+        ("Youssef Mamou", ACCENT, [
+            "Investing For Everyone",
+            "Igudar",
+            "XPredictia",
+            "SmartDiag",
+            "SyanaTek",
+        ]),
+        ("Tarik Fadli", BLUE, [
+            "UM6P Instruments",
+            "GeoHeritage",
+            "G-ReLib",
+        ]),
+        ("Mohammed Damiri", ORANGE, [
+            "DECAP",
+            "GreenFlow",
+        ]),
+    ]
+
+    card_w = Inches(4.5)
+    card_h = Inches(2.5)
+    mentor_positions = [
+        (Inches(0.4), Inches(1.45)),
+        (Inches(5.1), Inches(1.45)),
+        (Inches(0.4), Inches(4.15)),
+        (Inches(5.1), Inches(4.15)),
+    ]
+    for (mentor_name, mentor_color, startups), (mx, my) in zip(mentors, mentor_positions):
+        # Card
+        add_rect(slide, mx, my, card_w, card_h, WHITE_C, corner_radius=0.05)
+        # Color bar top
+        add_rect(slide, mx, my, card_w, Pt(5), mentor_color)
+        # Mentor name
+        add_text(slide, mx + Inches(0.15), my + Inches(0.15), card_w - Inches(0.3), Inches(0.35),
+                 mentor_name, font_size=14, bold=True, color=DARK)
+        add_text(slide, mx + Inches(0.15), my + Inches(0.45), card_w - Inches(0.3), Inches(0.2),
+                 f"Mentor  \u2014  {len(startups)} startups assign\u00e9es", font_size=8, color=MUTED)
+        # Startups list
+        for j, startup in enumerate(startups):
+            y_off = my + Inches(0.75) + j * Inches(0.3)
+            # Bullet with startup name
+            add_rect(slide, mx + Inches(0.2), y_off + Inches(0.05), Inches(0.12), Inches(0.12), mentor_color, corner_radius=0.5)
+            add_text(slide, mx + Inches(0.4), y_off, card_w - Inches(0.6), Inches(0.25),
+                     startup, font_size=10, color=DARK)
+
+    # Summary KPIs
+    add_text(slide, Inches(0.4), Inches(6.85), Inches(9), Inches(0.25),
+             "4 mentors  |  14 startups accompagn\u00e9es  |  Ratio moyen : 3,5 startups / mentor",
+             font_size=9, bold=True, color=SLATE, alignment=PP_ALIGN.CENTER)
+
     # Footer
     add_text(slide, Inches(0.4), Inches(7.15), Inches(6), Inches(0.2),
              "The Pulse  |  UM6P  |  thepulse.ma  |  Rapport généré le 12 avril 2026",
              font_size=8, color=MUTED)
     add_text(slide, Inches(6.5), Inches(7.15), Inches(3.2), Inches(0.2),
-             "Page 7/7  |  Rapport partenaires",
+             "Page 8/8  |  Rapport partenaires",
              font_size=8, color=MUTED, alignment=PP_ALIGN.RIGHT)
 
     prs.save(OUTPUT)
