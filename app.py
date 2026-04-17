@@ -301,7 +301,20 @@ def startups():
     if selected_sectors:
             conditions = []
             for sector in selected_sectors:
-                conditions.append(Startup.sector.ilike(f"%{sector}%"))
+                s = sector.strip()
+                # Match sector token exactly within comma-separated list
+                # (avoids false positives like "AI" matching "RetailTech")
+                conditions.append(or_(
+                    Startup.sector == s,
+                    Startup.sector.ilike(f"{s},%"),
+                    Startup.sector.ilike(f"{s}, %"),
+                    Startup.sector.ilike(f"%,{s}"),
+                    Startup.sector.ilike(f"%, {s}"),
+                    Startup.sector.ilike(f"%,{s},%"),
+                    Startup.sector.ilike(f"%, {s},%"),
+                    Startup.sector.ilike(f"%,{s}, %"),
+                    Startup.sector.ilike(f"%, {s}, %"),
+                ))
             query = query.filter(or_(*conditions))
     if selected_status:
         query = query.filter(Startup.status_startup.in_(selected_status))
@@ -1811,7 +1824,18 @@ def startups_export():
     if selected_sectors:
         conditions = []
         for sector in selected_sectors:
-            conditions.append(Startup.sector.ilike(f"%{sector}%"))
+            s = sector.strip()
+            conditions.append(or_(
+                Startup.sector == s,
+                Startup.sector.ilike(f"{s},%"),
+                Startup.sector.ilike(f"{s}, %"),
+                Startup.sector.ilike(f"%,{s}"),
+                Startup.sector.ilike(f"%, {s}"),
+                Startup.sector.ilike(f"%,{s},%"),
+                Startup.sector.ilike(f"%, {s},%"),
+                Startup.sector.ilike(f"%,{s}, %"),
+                Startup.sector.ilike(f"%, {s}, %"),
+            ))
         query = query.filter(or_(*conditions))
     if selected_status:
         query = query.filter(Startup.status_startup.in_(selected_status))
