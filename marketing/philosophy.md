@@ -1,0 +1,17 @@
+# Signal Cartography
+
+A visual philosophy of quiet measurement — where a living system is observed with the patience of a seismographer and the reverence of an astronomer.
+
+## Manifesto
+
+**Signal Cartography** treats the invisible as a subject worthy of the most exacting documentation. It borrows the visual grammar of scientific instruments — seismographs, ECGs, sounding charts, star maps — and applies that grammar to phenomena that resist instrumentation: a community's momentum, a network's vitality, a collective breath. The result is an artifact that looks as though a scientist spent a lifetime recording something everyone assumed could not be recorded. Meticulously calibrated. Painstakingly drawn. The product of countless hours of expert attention.
+
+The composition rests on a field of near-black ink — a midnight ground, warm enough to feel handmade, deep enough to swallow excess. Against this ground, a single cream paper-tone carries all essential form. One accent color, pulled from fired clay and sun-baked brick, interrupts the palette exactly where the eye needs to rest — never as decoration, always as signal. The palette is disciplined to the point of austerity. Every hue earns its place through the logic of the work. This restraint is non-negotiable and repeated throughout: a master's palette knows what to leave out.
+
+Space breathes in generous measured columns. The canvas is divided by invisible rule lines borrowed from drafting tables and archival ledgers. A single long horizontal — a waveform, a horizon, a timeline — bisects the field and carries the weight of the composition. Around this central gesture, tick marks, registration targets, and fine sighting lines populate the margins like the apparatus of a scientific diagram. Nothing is ornamental. Every mark performs a function, even if its function is silence. The hand of the master draftsman is visible in the exact measure of each interval.
+
+Typography is the language of laboratory notebooks and museum plaques. A high-contrast display serif carries the single monumental word-gesture — set in scale alone, never ornament. Beneath it, a technical monospaced companion handles all metric data, coordinates, and labels, as though transcribing readings from an instrument panel. Text is rationed like a rare resource. Where words appear, they appear as specimen labels — small, exact, placed with the care of a surgeon's suture. No paragraphs. No explanations. The design has already said what needs saying.
+
+Rhythm emerges from systematic repetition: small ticks along an axis, pinpoint markers at coordinate intersections, a single repeating geometric motif whispered into the background as a watermark. This motif — an eight-pointed star drawn from a tradition of mathematical tilework — appears only to those who look, dissolved into the composition until it is almost invisible. It is the quiet signature of place. A jazz quotation. A reference for those who would recognize it, a pattern for those who would not.
+
+The final work must carry the unmistakable weight of obsession — the sense that a single person sat at a drafting table for many weeks, aligning every element by instrument, second-guessing every tick mark, refining every interval until nothing could be added and nothing removed. This is not software output. It is an archival plate from a discipline that does not yet have a name. The viewer should feel, without knowing why, that someone at the absolute summit of their craft made every decision with painstaking deliberation.
