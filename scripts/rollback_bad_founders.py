@@ -18,13 +18,16 @@ from sqlalchemy import create_engine, text
 
 engine = create_engine(os.environ['DATABASE_URL'])
 
-# Phase 1: obvious garbage — phrase fragments, newspaper prefixes, company names
+# Obvious garbage — phrase fragments, newspaper prefixes, company names,
+# or rows with a LinkedIn URL that belongs to someone else.
 GARBAGE_IDS = [
+    '100251',   # Douja Gharbi — wrongly linked to Patricia del Rio's LinkedIn
     '100270',   # The Hindu Suchana Seth
     '100274',   # Ajit Anand- Co
     '100275',   # Fashion Forward We are
     '100278',   # as the Co
-    '100280',   # Magenta Mobility
+    '100279',   # Maxson Lewis — discovery garbage at BIRDEV
+    '100280',   # Magenta Mobility — company name, not a person
     '100287',   # Replit Tournament Tasneem Sabri
 ]
 
@@ -54,20 +57,31 @@ with engine.connect() as conn:
         print("\n(dry-run — no changes applied. Run with --apply to execute.)")
         sys.exit(0)
 
-    # Execute in a transaction
-    with conn.begin():
-        # 1. Remove join rows
-        r1 = conn.execute(
-            text('DELETE FROM "StartupFounders" WHERE "Founder Id" = ANY(:ids)'),
-            {'ids': GARBAGE_IDS}
-        )
-        print(f"\nDeleted {r1.rowcount} rows from StartupFounders")
+with engine.begin() as tx:
+    r1 = tx.execute(
+        text('DELETE FROM "StartupFounders" WHERE "Founder Id" = ANY(:ids)'),
+        {'ids': GARBAGE_IDS}
+    )
+    print(f"\nDeleted {r1.rowcount} rows from StartupFounders")
+    r2 = tx.execute(
+        text('DELETE FROM "IncubatorFounders" WHERE "Founder Id" = ANY(:ids)'),
+        {'ids': GARBAGE_IDS}
+    )
+    print(f"Deleted {r2.rowcount} rows from IncubatorFounders")
+    r3 = tx.execute(
+        text('DELETE FROM "Education" WHERE "Founder Id" = ANY(:ids)'),
+        {'ids': GARBAGE_IDS}
+    )
+    print(f"Deleted {r3.rowcount} rows from Education")
+    r4 = tx.execute(
+        text('DELETE FROM "Experiences" WHERE "Founder Id" = ANY(:ids)'),
+        {'ids': GARBAGE_IDS}
+    )
+    print(f"Deleted {r4.rowcount} rows from Experiences")
+    r5 = tx.execute(
+        text('DELETE FROM "Founders" WHERE "Founder Id" = ANY(:ids)'),
+        {'ids': GARBAGE_IDS}
+    )
+    print(f"Deleted {r5.rowcount} rows from Founders")
 
-        # 2. Remove founders
-        r2 = conn.execute(
-            text('DELETE FROM "Founders" WHERE "Founder Id" = ANY(:ids)'),
-            {'ids': GARBAGE_IDS}
-        )
-        print(f"Deleted {r2.rowcount} rows from Founders")
-
-    print("\n=== DONE ===")
+print("\n=== DONE ===")
