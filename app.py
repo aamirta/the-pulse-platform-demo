@@ -748,6 +748,10 @@ def founders():
         pulse_member_emails = []
     query = Founder.query.filter(
         Founder.name.isnot(None), Founder.name != '',
+        # Must be linked to at least one startup — excludes ecosystem-org
+        # employees (incubator/cluster/university staff) wrongly imported
+        # into the Founders table.
+        Founder.startups.any(),
         db.or_(
             Founder.current_title.isnot(None),
             Founder.profile_pic.isnot(None),
@@ -1917,7 +1921,19 @@ def investors_export():
 
 @app.route("/founders/export")
 def founders_export():
-    query = Founder.query
+    # Mirror the /founders listing filter: real founders only
+    # (linked to at least one startup + some metadata).
+    query = Founder.query.filter(
+        Founder.name.isnot(None), Founder.name != '',
+        Founder.startups.any(),
+        db.or_(
+            Founder.current_title.isnot(None),
+            Founder.profile_pic.isnot(None),
+            Founder.location.isnot(None),
+            Founder.company_details_name.isnot(None),
+            Founder.linkedin_url.isnot(None)
+        )
+    )
     selected_cities = request.args.getlist("city")
     selected_startups = request.args.getlist("startup")
 
