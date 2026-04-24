@@ -255,12 +255,13 @@
     <div class="badge-card">
       {# Map pulse_members.role → our category slug #}
       {% set role_to_cat = {
-          'entrepreneur': 'entrepreneur',
-          'investor':     'investisseur',
-          'program':      'programme',
-          'incubator':    'incubateur',
-          'talent':       'talent',
-          'expert':       'expert'
+          'entrepreneur':    'entrepreneur',
+          'investor':        'investisseur',
+          'venture_studio':  'venture_studio',
+          'program':         'programme',
+          'incubator':       'incubateur',
+          'talent':          'talent',
+          'expert':          'expert'
       } %}
       {% set prefill_name = current_member.full_name if current_member else '' %}
       {% set prefill_cat  = role_to_cat.get(current_member.role, 'entrepreneur') if current_member else 'entrepreneur' %}

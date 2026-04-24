@@ -1212,6 +1212,21 @@ def investor_form():
         return render_template("email-sent.html", email=email)
     return render_template("investor-form.html", investor=existing)
 
+
+@app.route("/venture-studio-form", methods=["GET", "POST"])
+def venture_studio_form():
+    """Venture Studios use the investor form template but are saved with
+    role='venture_studio' so we can filter / colour them separately."""
+    if request.method == "POST":
+        email = request.form.get("email", "").strip()
+        full_name = request.form.get("full_name", "").strip()
+        form_data = {k: v for k, v in request.form.items() if k not in ('email', 'full_name')}
+        member, error = register_pulse_member(email, full_name, "venture_studio", form_data)
+        if error:
+            return render_template("investor-form.html", error=error, is_studio=True)
+        return render_template("email-sent.html", email=email)
+    return render_template("investor-form.html", is_studio=True)
+
 @app.route("/program-form", methods=["GET", "POST"])
 def program_form():
     inc_id = request.args.get("incubator_id")
@@ -2451,7 +2466,7 @@ def inbox_reply():
 
 
 # ── Admin dashboard ─────────────────────────────────────────────────────
-ADMIN_EMAILS = {"mohammed.damiri@um6p.ma", "hamid.bouchikhi@um6p.ma", "hamid.bouchikhi@gmail.com", "simohammed.damiri@gmail.com", "damiri@thepulse.ma"}
+ADMIN_EMAILS = {"mohammed.damiri@um6p.ma", "hamid.bouchikhi@um6p.ma", "hamid.bouchikhi@gmail.com", "simohammed.damiri@gmail.com", "damiri@thepulse.ma", "s.d@aeom.uk"}
 
 def _require_admin():
     """Return the current member if admin, else abort 403."""

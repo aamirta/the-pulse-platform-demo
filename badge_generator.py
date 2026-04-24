@@ -56,15 +56,19 @@ CATEGORY_COLORS = {
     'professionnel':(139, 92, 246),
     'expert':       (234, 88, 12),     # dark orange
     'mentor':       (234, 88, 12),
+    'venture_studio': (20, 184, 166),  # teal #14B8A6
+    'venture studio': (20, 184, 166),
+    'studio':       (20, 184, 166),
 }
 
 CATEGORIES = [
-    ('entrepreneur', 'Entrepreneur / Startup'),
-    ('investisseur', 'Investisseur / VC'),
-    ('programme',    "Programme d'accompagnement"),
-    ('incubateur',   'Incubateur / Accélérateur'),
-    ('talent',       'Talent / Professionnel'),
-    ('expert',       'Expert / Mentor'),
+    ('entrepreneur',    'Entrepreneur / Startup'),
+    ('investisseur',    'Investisseur / VC'),
+    ('venture_studio',  'Venture Studio'),
+    ('programme',       "Programme d'accompagnement"),
+    ('incubateur',      'Incubateur / Accélérateur'),
+    ('talent',          'Talent / Professionnel'),
+    ('expert',          'Expert / Mentor'),
 ]
 
 
