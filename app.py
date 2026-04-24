@@ -893,12 +893,12 @@ def badge_generate():
     if photo_src is None:
         return ("Photo requise", 400)
 
-    # Viral referral URL embedded as a QR on the badge (only for logged-in
-    # members — anonymous badges don't carry attribution).
-    ref_url = None
+    # Viral referral URL embedded as a QR on every badge.
     mid = session.get('member_id')
     if mid:
-        ref_url = f'https://thepulse.ma/badge?ref={mid}'
+        ref_url = f'https://www.thepulse.ma/badge?ref={mid}'
+    else:
+        ref_url = 'https://www.thepulse.ma/badge'
 
     try:
         buf = _badge_generate(photo_src, full_name, role_label,
