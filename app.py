@@ -832,7 +832,21 @@ def funds():
 #  - POST /badge/generate   composes the PNG and streams it back
 # ============================================================
 import io as _badge_io, base64 as _badge_b64, re as _badge_re
-from badge_generator import generate as _badge_generate, CATEGORIES as _BADGE_CATS
+try:
+    from badge_generator import generate as _badge_generate, CATEGORIES as _BADGE_CATS
+    _BADGE_AVAILABLE = True
+except Exception as _badge_err:
+    print(f"[BADGE] generator unavailable — badge routes disabled ({_badge_err})", flush=True)
+    _BADGE_AVAILABLE = False
+    _BADGE_CATS = [
+        ('entrepreneur',    'Entrepreneur / Startup'),
+        ('investisseur',    'Investisseur / VC'),
+        ('venture_studio',  'Venture Studio'),
+        ('programme',       "Programme d'accompagnement"),
+        ('incubateur',      'Incubateur / Accélérateur'),
+        ('talent',          'Talent / Professionnel'),
+        ('expert',          'Expert / Mentor'),
+    ]
 
 
 def _badge_prefill():
@@ -900,6 +914,8 @@ def badge_generate():
     else:
         ref_url = 'https://www.thepulse.ma/badge'
 
+    if not _BADGE_AVAILABLE:
+        return ("Badge generator temporarily unavailable — missing PIL on the server.", 503)
     try:
         buf = _badge_generate(photo_src, full_name, role_label,
                               category=category, ref_url=ref_url)
