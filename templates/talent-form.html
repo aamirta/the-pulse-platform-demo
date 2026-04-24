@@ -426,28 +426,28 @@
     <i class="fas fa-exclamation-circle"></i> {{ error | safe }}
 </div>
 {% endif %}
-        <form method="POST" action="/talent-form" enctype="multipart/form-data">
+        <form method="POST" action="/talent-form" enctype="multipart/form-data" id="talent-form">
                 <!-- Personal Information -->
                 <div class="form-section">
                     <h2 data-i18n="personal_info">Personal Information</h2>
                     <div class="form-grid two-col">
                         <div class="form-group">
                             <label for="fullName"><span data-i18n="full_name">Full Name</span> *</label>
-                            <input type="text" id="fullName" placeholder="Enter your full name" required>
+                            <input type="text" id="fullName" name="full_name" placeholder="Enter your full name" required>
                         </div>
                         <div class="form-group">
                             <label for="email"><span data-i18n="email_address">Email Address</span> *</label>
-                            <input type="email" id="email" placeholder="your.email@example.com" required>
+                            <input type="email" id="email" name="email" placeholder="your.email@example.com" required>
                         </div>
                     </div>
                     <div class="form-grid two-col">
                         <div class="form-group">
                             <label for="location" data-i18n="location_filter">Location</label>
-                            <input type="text" id="location" placeholder="Casablanca, Morocco">
+                            <input type="text" id="location" name="location" placeholder="Casablanca, Morocco">
                         </div>
                         <div class="form-group">
                             <label for="phone" data-i18n="phone_number">Phone Number *</label>
-                            <input type="tel" id="phone" placeholder="+212 6XX XXX XXX" required>
+                            <input type="tel" id="phone" name="phone" placeholder="+212 6XX XXX XXX" required>
                         </div>
                     </div>
                 </div>
@@ -458,11 +458,11 @@
                     <div class="form-grid two-col">
                         <div class="form-group">
                             <label for="currentTitle" data-i18n="current_title_role">Current Title/Role</label>
-                            <input type="text" id="currentTitle" placeholder="e.g., Senior Software Engineer, Product Manager">
+                            <input type="text" id="currentTitle" name="current_title" placeholder="e.g., Senior Software Engineer, Product Manager">
                         </div>
                         <div class="form-group">
                             <label for="experience" data-i18n="years_experience">Years of Experience</label>
-                            <select id="experience">
+                            <select id="experience" name="years_experience">
                                 <option value="">Select range</option>
                                 <option value="0-1">0-1 years</option>
                                 <option value="2-3">2-3 years</option>
@@ -475,7 +475,7 @@
 
                     <div class="form-group">
                         <label for="bio" data-i18n="professional_bio">Professional Bio *</label>
-                        <textarea id="bio" placeholder="Brief description of your background, expertise, and career highlights" style="min-height: 120px;" required></textarea>
+                        <textarea id="bio" name="professional_bio" placeholder="Brief description of your background, expertise, and career highlights" style="min-height: 120px;" required></textarea>
                     </div>
 
                     <div class="form-group">
@@ -510,7 +510,7 @@
                     <div class="form-grid two-col">
                         <div class="form-group">
                             <label for="roleType" data-i18n="role_type">Preferred Role Type</label>
-                            <select id="roleType">
+                            <select id="roleType" name="role_type">
                                 <option value="">Select preference</option>
                                 <option value="full-time">Full-time Employee</option>
                                 <option value="contract">Contract/Freelance</option>
@@ -521,7 +521,7 @@
                         </div>
                         <div class="form-group">
                             <label for="workFormat" data-i18n="work_format">Work Format</label>
-                            <select id="workFormat">
+                            <select id="workFormat" name="work_format">
                                 <option value="">Select preference</option>
                                 <option value="remote">Remote</option>
                                 <option value="on-site">On-site</option>
@@ -534,11 +534,11 @@
                     <div class="form-grid two-col">
                         <div class="form-group">
                             <label for="salaryRange" data-i18n="salary_range">Expected Salary Range (Optional)</label>
-                            <input type="text" id="salaryRange" placeholder="e.g., 15,000-25,000 MAD/month">
+                            <input type="text" id="salaryRange" name="salary_range" placeholder="e.g., 15,000-25,000 MAD/month">
                         </div>
                         <div class="form-group">
                             <label for="availability" data-i18n="availability">Availability</label>
-                            <select id="availability">
+                            <select id="availability" name="availability">
                                 <option value="">Select availability</option>
                                 <option value="immediate">Immediately</option>
                                 <option value="2-weeks">2 weeks notice</option>
@@ -551,7 +551,7 @@
 
                     <div class="form-group">
                         <label for="lookingFor" data-i18n="looking_for">What are you looking for?</label>
-                        <textarea id="lookingFor" placeholder="Describe your ideal role, company culture, growth opportunities, etc." style="min-height: 100px;"></textarea>
+                        <textarea id="lookingFor" name="looking_for" placeholder="Describe your ideal role, company culture, growth opportunities, etc." style="min-height: 100px;"></textarea>
                     </div>
                 </div>
 
@@ -561,21 +561,21 @@
                     <div class="form-grid two-col">
                         <div class="form-group">
                             <label for="linkedinProfile"><span data-i18n="linkedin_profile">LinkedIn Profile</span> *</label>
-                            <input type="url" id="linkedinProfile" placeholder="https://linkedin.com/in/..." required>
+                            <input type="url" id="linkedinProfile" name="linkedin_url" placeholder="https://linkedin.com/in/..." required>
                         </div>
                         <div class="form-group">
                             <label for="portfolioWebsite" data-i18n="portfolio_website">Portfolio/Website</label>
-                            <input type="url" id="portfolioWebsite" placeholder="https://your-portfolio.com">
+                            <input type="url" id="portfolioWebsite" name="portfolio_website" placeholder="https://your-portfolio.com">
                         </div>
                     </div>
                     <div class="form-grid two-col">
                         <div class="form-group">
                             <label for="githubProfile">GitHub Profile</label>
-                            <input type="url" id="githubProfile" placeholder="https://github.com/username">
+                            <input type="url" id="githubProfile" name="github_profile" placeholder="https://github.com/username">
                         </div>
                         <div class="form-group">
                             <label for="otherProfile" data-i18n="other_profile">Other Profile</label>
-                            <input type="url" id="otherProfile" placeholder="Dribbble, Behance, Twitter, etc.">
+                            <input type="url" id="otherProfile" name="other_profile" placeholder="Dribbble, Behance, Twitter, etc.">
                         </div>
                     </div>
                 </div>
@@ -585,17 +585,21 @@
                     <h2 data-i18n="additional_info">Additional Information</h2>
                     <div class="form-group">
                         <label for="education" data-i18n="education_optional">Education (Optional)</label>
-                        <textarea id="education" placeholder="Your educational background, degrees, certifications" style="min-height: 80px;"></textarea>
+                        <textarea id="education" name="education" placeholder="Your educational background, degrees, certifications" style="min-height: 80px;"></textarea>
                     </div>
                     <div class="form-group">
                         <label for="achievements" data-i18n="achievements">Notable Achievements (Optional)</label>
-                        <textarea id="achievements" placeholder="Awards, recognitions, successful projects, publications, etc." style="min-height: 80px;"></textarea>
+                        <textarea id="achievements" name="achievements" placeholder="Awards, recognitions, successful projects, publications, etc." style="min-height: 80px;"></textarea>
                     </div>
                     <div class="form-group">
                         <label for="languages" data-i18n="languages">Languages</label>
-                        <input type="text" id="languages" placeholder="e.g., Arabic (Native), French (Fluent), English (Advanced)">
+                        <input type="text" id="languages" name="languages" placeholder="e.g., Arabic (Native), French (Fluent), English (Advanced)">
                     </div>
                 </div>
+
+                <!-- Hidden inputs populated from the tag containers on submit -->
+                <input type="hidden" id="skills_hidden" name="skills">
+                <input type="hidden" id="industries_hidden" name="industries_of_interest">
 
             <button type="submit" class="btn-submit" data-i18n="submit_profile">Submit Profile</button>
 
@@ -636,5 +640,21 @@
             }
         }
     });
+
+    // On submit, serialize the tag containers into the hidden inputs
+    // so the Flask route actually receives skills + industries.
+    function serializeTags(containerId) {
+        return Array.from(
+            document.querySelectorAll('#' + containerId + ' .tag')
+        ).map(t => t.childNodes[0].textContent.trim()).filter(Boolean).join(', ');
+    }
+
+    const talentForm = document.getElementById('talent-form');
+    if (talentForm) {
+        talentForm.addEventListener('submit', function() {
+            document.getElementById('skills_hidden').value = serializeTags('skillsContainer');
+            document.getElementById('industries_hidden').value = serializeTags('industriesContainer');
+        });
+    }
 </script>
 {% endblock %}
