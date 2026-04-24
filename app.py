@@ -922,6 +922,23 @@ def badge_generate():
     except Exception as e:
         return (f"Erreur: {e}", 500)
 
+    # Audit log — fire and forget, never block the response on a logging error
+    try:
+        log = BadgeGeneration(
+            member_id=mid,
+            full_name=full_name[:150] if full_name else None,
+            category=category[:50] if category else None,
+            role_label=role_label[:255] if role_label else None,
+            ref_url=ref_url[:255] if ref_url else None,
+            ip=(request.headers.get('X-Forwarded-For', request.remote_addr) or '')[:45],
+            user_agent=(request.headers.get('User-Agent') or '')[:255],
+        )
+        db.session.add(log)
+        db.session.commit()
+    except Exception as e:
+        db.session.rollback()
+        print(f"[BADGE_LOG] failed: {e}", flush=True)
+
     buf.seek(0)
     return send_file(buf, mimetype='image/png',
                      as_attachment=False, download_name='the-pulse-badge.png')
@@ -2493,6 +2510,69 @@ def _require_admin():
     if not m or m.email.lower() not in ADMIN_EMAILS:
         return None
     return m
+
+@app.route("/admin/badges")
+def admin_badges():
+    """Audit trail of every /badge/generate hit. Admin-only."""
+    admin = _require_admin()
+    if not admin:
+        flash("Accès réservé aux administrateurs.", "error")
+        return redirect(url_for("home"))
+
+    from datetime import datetime, timedelta
+    today = datetime.utcnow().date()
+    today_start = datetime.combine(today, datetime.min.time())
+    last_7d = datetime.utcnow() - timedelta(days=7)
+
+    total      = db.session.query(BadgeGeneration).count()
+    today_n    = db.session.query(BadgeGeneration).filter(BadgeGeneration.created_at >= today_start).count()
+    last_7d_n  = db.session.query(BadgeGeneration).filter(BadgeGeneration.created_at >= last_7d).count()
+
+    rows = (BadgeGeneration.query
+            .order_by(BadgeGeneration.created_at.desc())
+            .limit(200).all())
+
+    # Render a tiny inline page (no template needed)
+    items = []
+    for r in rows:
+        items.append(
+            f"<tr><td>{r.created_at.strftime('%Y-%m-%d %H:%M') if r.created_at else ''}</td>"
+            f"<td>{r.full_name or ''}</td>"
+            f"<td>{r.category or ''}</td>"
+            f"<td>{r.role_label or ''}</td>"
+            f"<td>{'#' + str(r.member_id) if r.member_id else 'anon'}</td>"
+            f"<td>{r.ip or ''}</td></tr>"
+        )
+    html = f"""
+    <!DOCTYPE html><html><head><meta charset="utf-8">
+    <title>Badge generations</title>
+    <style>
+      body {{ font-family:system-ui,sans-serif; padding:32px; background:#070B12; color:#EEF2FF; }}
+      h1   {{ font-size:1.6rem; margin:0 0 4px; }}
+      .stats {{ display:flex; gap:24px; margin:18px 0 28px; }}
+      .stat  {{ background:#0D1420; padding:14px 22px; border-radius:10px; border:1px solid #1A2535; }}
+      .stat strong {{ font-size:1.6rem; color:#00D68F; display:block; }}
+      .stat span   {{ font-size:.8rem; color:#7A90B0; text-transform:uppercase; letter-spacing:.05em; }}
+      table {{ border-collapse:collapse; width:100%; }}
+      th, td {{ padding:8px 10px; text-align:left; border-bottom:1px solid #1A2535; font-size:.88rem; }}
+      th {{ color:#7A90B0; text-transform:uppercase; font-size:.72rem; letter-spacing:.05em; }}
+      tr:hover td {{ background:#0D1420; }}
+    </style></head><body>
+      <h1>Badge generations</h1>
+      <div style="color:#7A90B0;margin-bottom:18px">Showing the most recent 200 events.</div>
+      <div class="stats">
+        <div class="stat"><strong>{today_n}</strong><span>Today</span></div>
+        <div class="stat"><strong>{last_7d_n}</strong><span>Last 7 days</span></div>
+        <div class="stat"><strong>{total}</strong><span>All-time</span></div>
+      </div>
+      <table>
+        <tr><th>When (UTC)</th><th>Name</th><th>Category</th><th>Role</th><th>Member</th><th>IP</th></tr>
+        {''.join(items) or '<tr><td colspan="6" style="padding:32px;text-align:center;color:#7A90B0">Aucune génération encore.</td></tr>'}
+      </table>
+    </body></html>
+    """
+    return html
+
 
 @app.route("/admin/pulsers")
 def admin_pulsers():

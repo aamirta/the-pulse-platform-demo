@@ -764,6 +764,21 @@ class PulseMember(db.Model):
     referred_by_id = db.Column(db.Integer, db.ForeignKey('pulse_members.id', ondelete='SET NULL'), nullable=True)
 
 
+class BadgeGeneration(db.Model):
+    """Audit trail for every /badge/generate hit — used for analytics
+    and to track viral spread."""
+    __tablename__ = 'badge_generations'
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    member_id = db.Column(db.Integer, db.ForeignKey('pulse_members.id', ondelete='SET NULL'), nullable=True)
+    full_name = db.Column(db.String(150))
+    category = db.Column(db.String(50))
+    role_label = db.Column(db.String(255))
+    ref_url = db.Column(db.String(255))
+    ip = db.Column(db.String(45))
+    user_agent = db.Column(db.String(255))
+    created_at = db.Column(db.DateTime, default=db.func.now(), index=True)
+
+
 class DirectMessage(db.Model):
     __tablename__ = 'direct_messages'
     id          = db.Column(db.Integer, primary_key=True, autoincrement=True)
