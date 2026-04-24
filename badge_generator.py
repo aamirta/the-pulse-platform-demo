@@ -203,7 +203,7 @@ def generate(photo_src, full_name, role, out=None, category=None, ref_url=None):
             draw = ImageDraw.Draw(img)
             draw.text((qr_x + 130, qr_y + 12), 'SCAN',
                       font=qr_label_font, fill=(122, 144, 176, 255))
-            draw.text((qr_x + 130, qr_y + 40), 'POUR VOTRE',
+            draw.text((qr_x + 130, qr_y + 40), 'FOR YOUR',
                       font=qr_label_font, fill=(122, 144, 176, 255))
             draw.text((qr_x + 130, qr_y + 68), 'BADGE →',
                       font=qr_label_font, fill=accent_rgba)
