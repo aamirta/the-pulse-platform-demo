@@ -760,6 +760,8 @@ class PulseMember(db.Model):
     form_data = db.Column(db.Text)  # JSON string with role-specific fields
     password_hash = db.Column(db.String(255), nullable=True)
     created_at = db.Column(db.DateTime, default=db.func.now())
+    # Viral loop: who referred this member (via ?ref=<id> on /join or /badge)
+    referred_by_id = db.Column(db.Integer, db.ForeignKey('pulse_members.id', ondelete='SET NULL'), nullable=True)
 
 
 class DirectMessage(db.Model):

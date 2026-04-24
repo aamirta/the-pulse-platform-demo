@@ -10,19 +10,19 @@
     <link rel="icon" type="image/png" href="{{ url_for('static', filename='images/thepulse-noir.png') }}">
     <link rel="apple-touch-icon" href="{{ url_for('static', filename='images/thepulse-noir.png') }}">
 
-    <!-- Open Graph (LinkedIn, WhatsApp, Facebook) -->
-    <meta property="og:title" content="The Pulse — Morocco's Startup Ecosystem Platform">
-    <meta property="og:description" content="2,000+ startups. 1,200+ founders. 50+ investors. 170+ funding rounds. Morocco's startup ecosystem, finally mapped.">
-    <meta property="og:image" content="https://www.thepulse.ma/static/images/thepulse-og.png">
-    <meta property="og:url" content="https://www.thepulse.ma">
+    <!-- Open Graph (LinkedIn, WhatsApp, Facebook) — overridable per page -->
+    <meta property="og:title" content="{% block og_title %}The Pulse — Morocco's Startup Ecosystem Platform{% endblock %}">
+    <meta property="og:description" content="{% block og_description %}2,000+ startups. 1,200+ founders. 50+ investors. 170+ funding rounds. Morocco's startup ecosystem, finally mapped.{% endblock %}">
+    <meta property="og:image" content="{% block og_image %}https://www.thepulse.ma/static/images/thepulse-og.png{% endblock %}">
+    <meta property="og:url" content="{% block og_url %}https://www.thepulse.ma{% endblock %}">
     <meta property="og:type" content="website">
     <meta property="og:site_name" content="The Pulse">
 
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="The Pulse — Morocco's Startup Ecosystem Platform">
-    <meta name="twitter:description" content="2,000+ startups. 1,200+ founders. 50+ investors. 170+ funding rounds. Morocco's startup ecosystem, finally mapped.">
-    <meta name="twitter:image" content="https://www.thepulse.ma/static/images/thepulse-og.png">
+    <meta name="twitter:title" content="{{ self.og_title() }}">
+    <meta name="twitter:description" content="{{ self.og_description() }}">
+    <meta name="twitter:image" content="{{ self.og_image() }}">
 
     <!-- Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-9TTHWMF6L0"></script>

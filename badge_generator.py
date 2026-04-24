@@ -7,6 +7,11 @@ Public API:
 """
 import os, io, re
 from PIL import Image, ImageDraw, ImageFilter, ImageFont
+try:
+    import qrcode
+    _HAS_QR = True
+except ImportError:
+    _HAS_QR = False
 
 ROOT = os.path.dirname(os.path.abspath(__file__))
 TEMPLATE = os.path.join(ROOT, 'static', 'badge', 'template.png')
@@ -100,7 +105,18 @@ def _pad_to(img, W, H, x, y):
     return canvas
 
 
-def generate(photo_src, full_name, role, out=None, category=None):
+def _render_qr(url, size=140):
+    """Return a PIL image of a QR code with the pulse accent colour."""
+    if not _HAS_QR:
+        return None
+    qr = qrcode.QRCode(box_size=10, border=1, error_correction=qrcode.constants.ERROR_CORRECT_Q)
+    qr.add_data(url)
+    qr.make(fit=True)
+    img = qr.make_image(fill_color=(238, 242, 255), back_color=(7, 11, 18)).convert('RGBA')
+    return img.resize((size, size), Image.NEAREST)
+
+
+def generate(photo_src, full_name, role, out=None, category=None, ref_url=None):
     """
     photo_src:  path to file OR a file-like object (e.g. Flask's FileStorage).
     full_name:  person's display name.
@@ -175,6 +191,22 @@ def generate(photo_src, full_name, role, out=None, category=None):
     draw.text((name_x, name_y), full_name, font=name_font,
               fill=(238, 242, 255, 255))
     draw.text((role_x, role_y), role, font=role_font, fill=accent_rgba)
+
+    # 5. Optional QR code (bottom-left, above the stats bar)
+    if ref_url:
+        qr_img = _render_qr(ref_url, size=120)
+        if qr_img is not None:
+            qr_x, qr_y = 80, 870
+            img.paste(qr_img, (qr_x, qr_y), qr_img)
+            # Small "SCAN" caption beside it
+            qr_label_font = _fit_font('SCAN ↓', FONT_REG, 300, start=20, min_size=12)
+            draw = ImageDraw.Draw(img)
+            draw.text((qr_x + 130, qr_y + 12), 'SCAN',
+                      font=qr_label_font, fill=(122, 144, 176, 255))
+            draw.text((qr_x + 130, qr_y + 40), 'POUR VOTRE',
+                      font=qr_label_font, fill=(122, 144, 176, 255))
+            draw.text((qr_x + 130, qr_y + 68), 'BADGE →',
+                      font=qr_label_font, fill=accent_rgba)
 
     # Output
     final = img.convert('RGB')

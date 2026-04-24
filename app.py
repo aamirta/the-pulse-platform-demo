@@ -893,8 +893,16 @@ def badge_generate():
     if photo_src is None:
         return ("Photo requise", 400)
 
+    # Viral referral URL embedded as a QR on the badge (only for logged-in
+    # members — anonymous badges don't carry attribution).
+    ref_url = None
+    mid = session.get('member_id')
+    if mid:
+        ref_url = f'https://thepulse.ma/badge?ref={mid}'
+
     try:
-        buf = _badge_generate(photo_src, full_name, role_label, category=category)
+        buf = _badge_generate(photo_src, full_name, role_label,
+                              category=category, ref_url=ref_url)
     except Exception as e:
         return (f"Erreur: {e}", 500)
 
@@ -1061,18 +1069,27 @@ def register_pulse_member(email, full_name, role, form_data_dict):
         session["member_id"] = existing.id
         return existing, None
 
+    # Viral attribution: ?ref=<id> captured earlier is stored in session.
+    ref_id = session.get("ref_by")
+    try:
+        ref_id = int(ref_id) if ref_id else None
+    except (TypeError, ValueError):
+        ref_id = None
+
     member = PulseMember(
         email=email,
         full_name=full_name,
         role=role,
         confirmation_token=str(uuid.uuid4()),
         is_confirmed=True,
-        form_data=json.dumps(form_data_dict, ensure_ascii=False)
+        form_data=json.dumps(form_data_dict, ensure_ascii=False),
+        referred_by_id=ref_id,
     )
     db.session.add(member)
     db.session.commit()
     send_confirmation_email(member)
     session["member_id"] = member.id
+    session.pop("ref_by", None)  # consumed
     return member, None
 
 ## ============================================
@@ -1115,6 +1132,20 @@ def join_search(role):
     if not config:
         return redirect(url_for("join"))
     return render_template("join-search.html", role=role, config=config)
+
+@app.before_request
+def _capture_referral():
+    """Store a ?ref=<id> param in session so we can attribute new signups."""
+    ref = request.args.get("ref")
+    if ref and ref.isdigit():
+        # Only store if referrer exists and referrer != current user
+        try:
+            current = session.get("member_id")
+            if str(current) != ref and PulseMember.query.get(int(ref)):
+                session["ref_by"] = ref
+        except Exception:
+            db.session.rollback()
+
 
 @app.context_processor
 def inject_current_member():
