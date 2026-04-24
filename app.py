@@ -1,4 +1,4 @@
-from flask import Flask, request, redirect, render_template_string, session, url_for, render_template, jsonify, Response, flash
+from flask import Flask, request, redirect, render_template_string, session, url_for, render_template, jsonify, Response, flash, send_file
 import csv
 import io
 import json
@@ -824,6 +824,83 @@ def founders():
 @app.route("/funds")
 def funds():
     return redirect(url_for('investors', view='funds'))
+
+
+# ============================================================
+#  "I'm in the pulse" BADGE GENERATOR
+#  - GET  /badge            shows the form (prefills if logged in)
+#  - POST /badge/generate   composes the PNG and streams it back
+# ============================================================
+import io as _badge_io, base64 as _badge_b64, re as _badge_re
+from badge_generator import generate as _badge_generate, CATEGORIES as _BADGE_CATS
+
+
+def _badge_prefill():
+    """Populate form defaults from the logged-in pulse member, if any."""
+    pf = {'name': '', 'category': 'entrepreneur', 'role_detail': '', 'has_photo': False}
+    mid = session.get('member_id')
+    if mid:
+        m = PulseMember.query.get(mid)
+        if m:
+            pf['name'] = m.full_name or ''
+            if m.role:
+                role_map = {
+                    'entrepreneur': 'entrepreneur',
+                    'investor':     'investisseur',
+                    'program':      'programme',
+                    'incubator':    'incubateur',
+                    'talent':       'talent',
+                    'expert':       'expert',
+                }
+                pf['category'] = role_map.get(m.role, 'entrepreneur')
+            pf['has_photo'] = bool(m.profile_pic)
+    return pf
+
+
+@app.route('/badge')
+def badge_page():
+    return render_template('badge.html',
+                           categories=_BADGE_CATS,
+                           prefill=_badge_prefill())
+
+
+@app.route('/badge/generate', methods=['POST'])
+def badge_generate():
+    full_name = (request.form.get('full_name') or '').strip()
+    category  = (request.form.get('category') or 'entrepreneur').strip().lower()
+    detail    = (request.form.get('role_detail') or '').strip()
+    if not full_name:
+        return ("Nom requis", 400)
+
+    # Compose role label: custom detail wins; otherwise category label.
+    cat_lookup = dict(_BADGE_CATS)
+    role_label = detail if detail else cat_lookup.get(category, 'Entrepreneur / Startup')
+
+    # Find a photo — uploaded > logged-in pulse member's profile_pic.
+    photo_src = None
+    file = request.files.get('photo')
+    if file and file.filename:
+        photo_src = file.stream
+    else:
+        mid = session.get('member_id')
+        if mid:
+            m = PulseMember.query.get(mid)
+            if m and m.profile_pic:
+                mo = _badge_re.match(r'data:image/[^;]+;base64,(.+)', m.profile_pic, _badge_re.DOTALL)
+                if mo:
+                    photo_src = _badge_io.BytesIO(_badge_b64.b64decode(mo.group(1)))
+
+    if photo_src is None:
+        return ("Photo requise", 400)
+
+    try:
+        buf = _badge_generate(photo_src, full_name, role_label, category=category)
+    except Exception as e:
+        return (f"Erreur: {e}", 500)
+
+    buf.seek(0)
+    return send_file(buf, mimetype='image/png',
+                     as_attachment=False, download_name='the-pulse-badge.png')
 
 @app.route("/funding-rounds", methods=["GET"])
 def funding_rounds():

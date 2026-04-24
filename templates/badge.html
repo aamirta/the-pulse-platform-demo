@@ -1,0 +1,418 @@
+{% extends "base.html" %}
+{% block title %}I'm in the pulse — Generate your badge{% endblock %}
+
+{% block content %}
+<style>
+  .badge-hero {
+    max-width: 980px;
+    margin: 40px auto;
+    padding: 0 20px;
+  }
+  .badge-hero h1 {
+    /* Use DM Sans (body font) bold — more neutral than Syne's expressive cut */
+    font-family: 'DM Sans', 'Space Grotesk', sans-serif;
+    font-weight: 700;
+    font-style: normal;
+    font-size: clamp(2rem, 4vw, 3rem);
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    margin-bottom: 12px;
+    color: var(--text-primary);
+  }
+  .badge-hero h1 .accent {
+    color: var(--accent);
+    font-style: normal;
+  }
+  .badge-hero p.lead {
+    color: var(--text-secondary);
+    font-size: 1.05rem;
+    margin-bottom: 28px;
+    max-width: 620px;
+  }
+
+  .badge-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: 28px;
+    align-items: start;
+  }
+  @media (max-width: 880px) { .badge-grid { grid-template-columns: 1fr; } }
+
+  .badge-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border-primary);
+    border-radius: var(--radius-xl);
+    padding: 28px;
+  }
+  .badge-card label {
+    display: block;
+    font-size: var(--text-xs);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--text-secondary);
+    margin-bottom: 8px;
+  }
+  .badge-card input[type=text],
+  .badge-card select,
+  .badge-card input[type=file] {
+    width: 100%;
+    padding: 12px 14px;
+    background: var(--bg-primary);
+    border: 1px solid var(--border-primary);
+    border-radius: var(--radius-md);
+    color: var(--text-primary);
+    font-size: 0.95rem;
+    font-family: inherit;
+    margin-bottom: 18px;
+  }
+  .badge-card input:focus, .badge-card select:focus {
+    outline: none;
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px var(--accent-subtle);
+  }
+  .badge-card .file-hint {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    margin-top: -14px;
+    margin-bottom: 18px;
+  }
+
+  .btn-pulse {
+    width: 100%;
+    padding: 14px;
+    background: var(--accent);
+    color: var(--bg-primary);
+    border: none;
+    border-radius: var(--radius-md);
+    font-weight: 700;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: var(--transition-base);
+  }
+  .btn-pulse:hover { background: var(--accent-hover); }
+  .btn-pulse:disabled { opacity: 0.5; cursor: not-allowed; }
+
+  .preview-wrap {
+    background: var(--bg-card);
+    border: 1px solid var(--border-primary);
+    border-radius: var(--radius-xl);
+    padding: 18px;
+    text-align: center;
+    min-height: 400px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .preview-wrap img { width: 100%; max-width: 560px; border-radius: var(--radius-md); display: block; }
+  .preview-wrap .placeholder {
+    color: var(--text-muted);
+    font-size: 0.95rem;
+    padding: 60px 20px;
+  }
+
+  .share-row {
+    display: flex;
+    gap: 10px;
+    margin-top: 16px;
+    flex-wrap: wrap;
+  }
+  /* Uniform styling for every share-row item — links AND buttons share
+     the same font / weight / size so they look identical. */
+  .share-row a,
+  .share-row button {
+    flex: 1;
+    min-width: 140px;
+    padding: 12px 14px;
+    text-align: center;
+    border: 1px solid var(--border-primary);
+    border-radius: var(--radius-md);
+    background: var(--bg-card);
+    color: var(--text-primary);
+    text-decoration: none;
+    font-family: 'DM Sans', 'Space Grotesk', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 500;
+    font-style: normal;
+    line-height: 1.2;
+    cursor: pointer;
+  }
+  .share-row a:hover,
+  .share-row button:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+  }
+  .share-row a.download {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: var(--bg-primary);
+  }
+  .share-row a.download:hover {
+    background: var(--accent-hover);
+    color: var(--bg-primary);
+  }
+  .share-row button.done {
+    background: var(--accent-subtle);
+    border-color: var(--accent);
+    color: var(--accent);
+  }
+  .share-caption-box {
+    margin-top: 14px;
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+  }
+  .share-caption-box summary { cursor: pointer; padding: 4px 0; }
+  .share-caption-box textarea {
+    width: 100%;
+    margin-top: 8px;
+    padding: 10px 12px;
+    background: var(--bg-primary);
+    color: var(--text-primary);
+    border: 1px solid var(--border-primary);
+    border-radius: var(--radius-md);
+    font-family: monospace;
+    font-size: 0.82rem;
+    resize: vertical;
+  }
+
+  .spinner {
+    border: 3px solid var(--border-primary);
+    border-top-color: var(--accent);
+    border-radius: 50%;
+    width: 34px; height: 34px;
+    animation: spin 0.9s linear infinite;
+    margin: 0 auto;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  .signup-cta {
+    margin-top: 40px;
+    padding: 28px;
+    border: 1px solid var(--border-primary);
+    border-radius: var(--radius-xl);
+    background: var(--bg-card);
+    text-align: center;
+  }
+  .signup-cta h3 {
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 700;
+    font-size: 1.3rem;
+    color: var(--text-primary);
+    margin: 0 0 8px;
+  }
+  .signup-cta p {
+    color: var(--text-secondary);
+    margin: 0 0 18px;
+    font-size: 0.95rem;
+  }
+  .btn-power {
+    display: inline-block;
+    padding: 14px 32px;
+    background: var(--accent);
+    color: var(--bg-primary);
+    border: none;
+    border-radius: var(--radius-md);
+    font-weight: 700;
+    font-size: 1rem;
+    text-decoration: none;
+    transition: var(--transition-base);
+  }
+  .btn-power:hover { background: var(--accent-hover); color: var(--bg-primary); }
+
+  .toast {
+    position: fixed;
+    bottom: 28px; left: 50%;
+    transform: translateX(-50%) translateY(20px);
+    background: var(--bg-card);
+    color: var(--text-primary);
+    padding: 12px 20px;
+    border-radius: var(--radius-md);
+    border: 1px solid var(--accent);
+    font-size: 0.9rem;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s, transform 0.2s;
+    z-index: 9999;
+  }
+  .toast.show {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+</style>
+
+<div id="main-content" class="badge-hero">
+  <h1>Montrez que vous êtes <span class="accent">dans The Pulse</span></h1>
+  <p class="lead">
+    Créez votre badge officiel en 20 secondes. Partagez-le sur LinkedIn pour
+    marquer votre place dans l'écosystème startup marocain.
+  </p>
+
+  <div class="badge-grid">
+    <!-- ===== FORM ===== -->
+    <div class="badge-card">
+      {# Map pulse_members.role → our category slug #}
+      {% set role_to_cat = {
+          'entrepreneur': 'entrepreneur',
+          'investor':     'investisseur',
+          'program':      'programme',
+          'incubator':    'incubateur',
+          'talent':       'talent',
+          'expert':       'expert'
+      } %}
+      {% set prefill_name = current_member.full_name if current_member else '' %}
+      {% set prefill_cat  = role_to_cat.get(current_member.role, 'entrepreneur') if current_member else 'entrepreneur' %}
+      {% set has_photo    = current_member and current_member.profile_pic %}
+
+      <form id="badge-form" enctype="multipart/form-data">
+        <label>Nom complet</label>
+        <input type="text" name="full_name" id="full_name"
+               value="{{ prefill_name }}" required placeholder="Prénom Nom" />
+
+        <label>Catégorie</label>
+        <select name="category" id="category" required>
+          {% for slug, label in categories %}
+            <option value="{{ slug }}" {% if prefill_cat == slug %}selected{% endif %}>{{ label }}</option>
+          {% endfor %}
+        </select>
+
+        <label>Rôle / fonction (facultatif)</label>
+        <input type="text" name="role_detail" id="role_detail"
+               placeholder="Ex: Co-Founder, Chari" value="" />
+        <div class="file-hint">Laissez vide pour afficher juste la catégorie.</div>
+
+        <label>Photo de profil</label>
+        <input type="file" name="photo" id="photo" accept="image/*"
+               {% if not has_photo %}required{% endif %} />
+        {% if has_photo %}
+          <div class="file-hint">
+            ✓ Photo de profil déjà associée — laissez vide pour l'utiliser.
+          </div>
+        {% else %}
+          <div class="file-hint">JPG / PNG, carré de préférence.</div>
+        {% endif %}
+
+        <button type="submit" class="btn-pulse" id="submit-btn">
+          {% if current_member %}Générer mon badge{% else %}Générer{% endif %}
+        </button>
+      </form>
+    </div>
+
+    <!-- ===== PREVIEW ===== -->
+    <div>
+      <div class="preview-wrap" id="preview">
+        <div class="placeholder">
+          Votre badge apparaîtra ici.<br>
+          <small>Format 1250×1250 — prêt pour LinkedIn, Instagram, Twitter.</small>
+        </div>
+      </div>
+      <div id="share-actions" style="display:none">
+        <div class="share-row">
+          <a href="#" id="download-btn" class="download" download="the-pulse-badge.png">Télécharger mon badge</a>
+          <button type="button" id="copy-caption-btn">Copier la légende</button>
+          <a href="#" id="share-linkedin" target="_blank" rel="noopener">Partager sur LinkedIn</a>
+        </div>
+
+        <details class="share-caption-box">
+          <summary>Voir / éditer la légende</summary>
+          <textarea id="caption-ta" rows="5">I'm in The Pulse 🇲🇦
+Morocco's startup ecosystem, mapped.
+Join me!
+https://thepulse.ma/badge</textarea>
+        </details>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== Signup CTA ===== -->
+  <div class="signup-cta">
+    <h3>Pas encore dans The Pulse ? Inscrivez-vous.</h3>
+    <p>Rejoignez l'écosystème startup marocain cartographié — founders, startups, investisseurs, experts.</p>
+    <a href="/join" class="btn-power">Power The Pulse</a>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+(function() {
+  const form = document.getElementById('badge-form');
+  const btn  = document.getElementById('submit-btn');
+  const preview = document.getElementById('preview');
+  const share = document.getElementById('share-actions');
+  const dl    = document.getElementById('download-btn');
+  const liBtn = document.getElementById('share-linkedin');
+  const toast = document.getElementById('toast');
+
+  const pageUrl = 'https://thepulse.ma/badge';
+  // Default caption lives in the textarea — read it fresh every time so
+  // the user can edit it before sharing.
+  const captionTA = document.getElementById('caption-ta');
+  function currentCaption() {
+    return (captionTA.value || '').trim();
+  }
+
+  function showToast(msg) {
+    toast.textContent = msg;
+    toast.classList.add('show');
+    setTimeout(() => toast.classList.remove('show'), 3000);
+  }
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    btn.disabled = true;
+    btn.textContent = 'Génération…';
+    preview.innerHTML = '<div class="spinner"></div>';
+    share.style.display = 'none';
+
+    const data = new FormData(form);
+    try {
+      const r = await fetch('/badge/generate', { method: 'POST', body: data });
+      if (!r.ok) {
+        const err = await r.text();
+        throw new Error(err || 'Erreur génération');
+      }
+      const blob = await r.blob();
+      const url = URL.createObjectURL(blob);
+      preview.innerHTML = '<img src="' + url + '" alt="Badge" />';
+      dl.href = url;
+      share.style.display = 'block';
+    } catch (err) {
+      preview.innerHTML = '<div class="placeholder" style="color:#EF4444">' + err.message + '</div>';
+    } finally {
+      btn.disabled = false;
+      btn.textContent = 'Régénérer';
+    }
+  });
+
+  const copyBtn = document.getElementById('copy-caption-btn');
+
+  async function copyCaption() {
+    try {
+      await navigator.clipboard.writeText(currentCaption());
+      copyBtn.classList.add('done');
+      copyBtn.textContent = 'Légende copiée ✓';
+      showToast('Légende copiée — colle-la dans LinkedIn (Cmd+V).');
+      return true;
+    } catch (_) {
+      // Fallback: select the textarea so user can Cmd+C manually
+      const ta = document.getElementById('caption-ta');
+      ta.focus(); ta.select();
+      showToast('Sélectionné — appuie sur Cmd+C pour copier.');
+      return false;
+    }
+  }
+
+  copyBtn.addEventListener('click', copyCaption);
+
+  // LinkedIn: 1) copy caption, 2) open composer. User has to paste manually
+  // (LinkedIn removed URL-pre-fill in 2022).
+  liBtn.addEventListener('click', async (e) => {
+    e.preventDefault();
+    await copyCaption();
+    const shareUrl = 'https://www.linkedin.com/sharing/share-offsite/?url=' +
+                     encodeURIComponent(pageUrl);
+    window.open(shareUrl, '_blank', 'width=700,height=640');
+  });
+
+})();
+</script>
+{% endblock %}
