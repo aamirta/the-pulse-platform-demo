@@ -1,0 +1,120 @@
+{% extends "base.html" %}
+
+{% block title %}Venture Studios — The Pulse{% endblock %}
+
+{% block content %}
+<style>
+  .vs-wrap {
+    max-width: 1200px; margin: 32px auto; padding: 0 20px;
+  }
+  .vs-header {
+    display: flex; align-items: flex-end; justify-content: space-between;
+    flex-wrap: wrap; gap: 16px; margin-bottom: 28px;
+  }
+  .vs-header h1 {
+    font-family: 'DM Sans', sans-serif; font-weight: 700;
+    font-size: clamp(1.8rem, 3.5vw, 2.4rem);
+    color: var(--text-primary); margin: 0;
+  }
+  .vs-header .vs-count { color: var(--text-secondary); font-size: 0.95rem; }
+  .vs-header .accent { color: #14b8a6; }
+  .vs-header .vs-cta {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 10px 18px; background: #14b8a6; color: #fff;
+    border-radius: 10px; font-weight: 600; text-decoration: none;
+    font-size: 0.92rem;
+  }
+  .vs-header .vs-cta:hover { background: #0d9488; color: #fff; }
+
+  .vs-grid {
+    display: grid; gap: 18px;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  }
+  .vs-card {
+    background: var(--bg-card); border: 1px solid var(--border-primary);
+    border-radius: 14px; padding: 20px; display: flex; flex-direction: column;
+    gap: 10px; transition: transform 0.15s, border-color 0.15s;
+  }
+  .vs-card:hover { border-color: #14b8a6; transform: translateY(-2px); }
+  .vs-card-head { display: flex; align-items: center; gap: 12px; }
+  .vs-card-pic, .vs-card-init {
+    width: 48px; height: 48px; border-radius: 50%; flex-shrink: 0;
+    background: rgba(20, 184, 166, 0.12); color: #14b8a6;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 700; overflow: hidden;
+  }
+  .vs-card-pic img { width: 100%; height: 100%; object-fit: cover; }
+  .vs-card-name { font-weight: 700; color: var(--text-primary); font-size: 1.05rem; }
+  .vs-card-loc  { color: var(--text-secondary); font-size: 0.85rem; }
+  .vs-card-desc { color: var(--text-secondary); font-size: 0.92rem; line-height: 1.5; }
+  .vs-card-foot {
+    display: flex; gap: 10px; margin-top: auto; padding-top: 12px;
+    border-top: 1px solid var(--border-primary);
+  }
+  .vs-card-foot a {
+    color: var(--text-secondary); font-size: 0.85rem; text-decoration: none;
+  }
+  .vs-card-foot a:hover { color: #14b8a6; }
+
+  .vs-empty {
+    background: var(--bg-card); border: 1px dashed var(--border-primary);
+    border-radius: 14px; padding: 56px 24px; text-align: center;
+  }
+  .vs-empty h2 {
+    font-family: 'DM Sans', sans-serif; font-weight: 700;
+    color: var(--text-primary); margin: 0 0 8px; font-size: 1.3rem;
+  }
+  .vs-empty p { color: var(--text-secondary); margin: 0 0 20px; }
+</style>
+
+<div class="vs-wrap">
+  <div class="vs-header">
+    <div>
+      <h1><span class="accent">Venture Studios</span> du Maroc</h1>
+      <div class="vs-count">{{ studios|length }} venture studio{{ 's' if studios|length != 1 else '' }} référencé{{ 's' if studios|length != 1 else '' }}.</div>
+    </div>
+    <a href="/venture-studio-form" class="vs-cta">
+      <i class="fas fa-flask-vial"></i> Inscrire un venture studio
+    </a>
+  </div>
+
+  {% if studios %}
+    <div class="vs-grid">
+      {% for s in studios %}
+      <div class="vs-card">
+        <div class="vs-card-head">
+          {% if s.profile_pic %}
+            <div class="vs-card-pic"><img src="{{ s.profile_pic }}" alt="{{ s.name }}"></div>
+          {% else %}
+            <div class="vs-card-init">{{ (s.name[0]|upper) if s.name else '?' }}</div>
+          {% endif %}
+          <div>
+            <div class="vs-card-name">{{ s.investor_name or s.name }}</div>
+            {% if s.location %}<div class="vs-card-loc">{{ s.location }}</div>{% endif %}
+          </div>
+        </div>
+
+        {% if s.description %}
+          <p class="vs-card-desc">{{ s.description[:160] }}{% if s.description|length > 160 %}…{% endif %}</p>
+        {% endif %}
+
+        <div class="vs-card-foot">
+          {% if s.website %}
+            <a href="{{ s.website }}" target="_blank" rel="noopener"><i class="fas fa-globe"></i> Site</a>
+          {% endif %}
+          {% if s.linkedin %}
+            <a href="{{ s.linkedin }}" target="_blank" rel="noopener"><i class="fab fa-linkedin"></i> LinkedIn</a>
+          {% endif %}
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  {% else %}
+    <div class="vs-empty">
+      <h2>Aucun venture studio référencé pour l'instant.</h2>
+      <p>Soyez le premier à inscrire le vôtre.</p>
+      <a href="/venture-studio-form" class="vs-cta"><i class="fas fa-flask-vial"></i> Inscrire mon venture studio</a>
+    </div>
+  {% endif %}
+</div>
+{% endblock %}

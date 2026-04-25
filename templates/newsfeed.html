@@ -698,8 +698,10 @@
                         required
                     ></textarea>
                     <div class="nf-create-meta">
+                        {% if not current_member %}
                         <input type="text" name="author_name" placeholder="Your name" maxlength="100">
                         <input type="text" name="author_role" placeholder="Your role / startup" maxlength="100">
+                        {% endif %}
                         <input type="text" name="tags" placeholder="Tags (e.g. fintech,rabat)" maxlength="255">
                         <select class="nf-type-select" name="post_type">
                             <option value="post">Post</option>

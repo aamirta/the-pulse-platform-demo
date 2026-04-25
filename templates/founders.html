@@ -53,8 +53,8 @@
                             <div class="accordion-body">
                                 {% for city in distinct_cities %}
                                 <div class="filter-option">
-                                    <input type="checkbox" class="filter-checkbox" name="cities" id="city_{{ loop.index }}" value="{{ city }}"
-                                        {% if selected and selected.cities and city in selected.cities %}checked{% endif %}
+                                    <input type="checkbox" class="filter-checkbox" name="city" id="city_{{ loop.index }}" value="{{ city }}"
+                                        {% if selected and city in selected.getlist('city') %}checked{% endif %}
                                         onchange="document.getElementById('filterForm').submit()">
                                     <label class="filter-label" for="city_{{ loop.index }}">{{ city }}</label>
                                 </div>
@@ -73,8 +73,8 @@
                             <div class="accordion-body">
                                 {% for startup_id, startup_name, _sector in distinct_startups %}
                                 <div class="filter-option">
-                                    <input type="checkbox" class="filter-checkbox" name="startups" id="startup_{{ loop.index }}" value="{{ startup_id }}"
-                                        {% if selected and selected.startups and startup_id|string in selected.startups %}checked{% endif %}
+                                    <input type="checkbox" class="filter-checkbox" name="startup" id="startup_{{ loop.index }}" value="{{ startup_id }}"
+                                        {% if selected and startup_id|string in selected.getlist('startup') %}checked{% endif %}
                                         onchange="document.getElementById('filterForm').submit()">
                                     <label class="filter-label" for="startup_{{ loop.index }}">{{ startup_name }}</label>
                                 </div>

@@ -1618,6 +1618,39 @@ def expert_detail(expert_id):
     return render_template("expert-detail.html", expert=expert, now=datetime.now())
 
 
+@app.route("/venture-studios")
+def venture_studios():
+    """List pulse members with role='venture_studio'."""
+    studios = (PulseMember.query
+               .filter(PulseMember.role == 'venture_studio',
+                       PulseMember.is_confirmed.is_(True))
+               .order_by(PulseMember.created_at.desc())
+               .all())
+    # Parse form_data JSON so the template can show studio details
+    rows = []
+    for s in studios:
+        data = {}
+        try:
+            if s.form_data:
+                data = json.loads(s.form_data)
+        except Exception:
+            data = {}
+        rows.append({
+            'id':           s.id,
+            'name':         s.full_name,
+            'email':        s.email,
+            'linkedin':     s.linkedin,
+            'profile_pic':  s.profile_pic,
+            'investor_name': data.get('investor_name') or s.full_name,
+            'investor_type': data.get('investor_type', ''),
+            'description':  data.get('description', '') or data.get('about', ''),
+            'location':     data.get('location', '') or data.get('hq_location', ''),
+            'website':      data.get('website', '') or data.get('homepage_url', ''),
+            'created_at':   s.created_at,
+        })
+    return render_template("venture-studios.html", studios=rows)
+
+
 @app.route("/experts")
 def experts():
     query = Expert.query
@@ -2285,8 +2318,6 @@ def newsfeed():
 
 @app.route("/newsfeed/post", methods=["POST"])
 def create_post():
-    author_name = request.form.get("author_name", "").strip()
-    author_role = request.form.get("author_role", "").strip()
     content = request.form.get("content", "").strip()
     post_type = request.form.get("post_type", "post").strip()
     tags = request.form.get("tags", "").strip()
@@ -2294,15 +2325,35 @@ def create_post():
     if not content:
         return redirect(url_for("newsfeed"))
 
+    # If the user is logged in, identify them automatically — no need to
+    # re-type their name/email/role on every post.
+    member_id = session.get("member_id")
+    member = PulseMember.query.get(member_id) if member_id else None
+
+    if member:
+        author_name = member.full_name or "Pulser"
+        author_role = (member.role or "").capitalize() or "Membre de l'écosystème"
+        author_pic  = member.profile_pic
+        author_founder_id = None
+    else:
+        author_name = (request.form.get("author_name", "").strip()
+                       or "Membre anonyme")
+        author_role = (request.form.get("author_role", "").strip()
+                       or "Membre de l'écosystème")
+        author_pic  = None
+        author_founder_id = None
+
     post = Post(
-        author_name=author_name or "Membre anonyme",
-        author_role=author_role or "Membre de l'écosystème",
+        author_name=author_name,
+        author_role=author_role,
         content=content,
         post_type=post_type,
         tags=tags,
         likes_count=0,
         comments_count=0,
         is_published=False,
+        author_pic=author_pic,
+        author_founder_id=author_founder_id,
     )
     db.session.add(post)
     db.session.commit()
