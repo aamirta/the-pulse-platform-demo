@@ -133,7 +133,7 @@
                     {% if current_member.profile_pic %}
                         <img src="{{ current_member.profile_pic }}" alt="{{ current_member.full_name }}" class="member-nav-avatar">
                     {% else %}
-                        <div class="member-nav-avatar-placeholder">{{ current_member.full_name[0].upper() }}</div>
+                        <div class="member-nav-avatar-placeholder">{{ (current_member.full_name[0]|upper) if current_member.full_name else '?' }}</div>
                     {% endif %}
                     <span class="member-nav-name">{{ current_member.full_name.split()[0] }}</span>
                     <i class="fas fa-chevron-down member-nav-chevron"></i>
@@ -143,7 +143,7 @@
                         {% if current_member.profile_pic %}
                             <img src="{{ current_member.profile_pic }}" alt="{{ current_member.full_name }}" class="member-nav-menu-avatar">
                         {% else %}
-                            <div class="member-nav-menu-avatar-placeholder">{{ current_member.full_name[0].upper() }}</div>
+                            <div class="member-nav-menu-avatar-placeholder">{{ (current_member.full_name[0]|upper) if current_member.full_name else '?' }}</div>
                         {% endif %}
                         <div>
                             <div class="member-nav-menu-name">{{ current_member.full_name }}</div>

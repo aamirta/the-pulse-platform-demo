@@ -1088,6 +1088,15 @@ def send_confirmation_email(member):
 
 def register_pulse_member(email, full_name, role, form_data_dict):
     """Create a PulseMember, auto-confirm, and try to send email. Returns (member, error)."""
+    # Guard against empty email / name (otherwise admin pages can blow up
+    # later when iterating .full_name[0] etc.)
+    email = (email or "").strip().lower()
+    full_name = (full_name or "").strip()
+    if not email or not full_name:
+        return None, "Email et nom complet requis."
+    if "@" not in email or "." not in email.split("@")[-1]:
+        return None, "Adresse email invalide."
+
     existing = PulseMember.query.filter_by(email=email).first()
     if existing and existing.is_confirmed:
         return existing, "Cette adresse email est déjà utilisée. <a href='/member-login'>Connectez-vous</a> pour accéder à votre profil."
