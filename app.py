@@ -2583,6 +2583,48 @@ def admin_badges():
     return html
 
 
+@app.route("/admin/pulsers/export")
+def admin_pulsers_export():
+    """Download every pulse_member as a CSV. Admin only."""
+    admin = _require_admin()
+    if not admin:
+        flash("Accès réservé aux administrateurs.", "error")
+        return redirect(url_for("home"))
+
+    members = PulseMember.query.order_by(PulseMember.created_at.desc()).all()
+
+    si = io.StringIO()
+    # UTF-8 BOM so Excel opens accents correctly
+    si.write('\ufeff')
+    writer = csv.writer(si, quoting=csv.QUOTE_ALL)
+    writer.writerow([
+        'id', 'full_name', 'email', 'role', 'is_confirmed',
+        'has_password', 'has_profile_pic', 'linkedin',
+        'referred_by_id', 'created_at',
+    ])
+    for m in members:
+        writer.writerow([
+            m.id,
+            m.full_name or '',
+            m.email or '',
+            m.role or '',
+            'yes' if m.is_confirmed else 'no',
+            'yes' if m.password_hash else 'no',
+            'yes' if m.profile_pic else 'no',
+            m.linkedin or '',
+            getattr(m, 'referred_by_id', '') or '',
+            m.created_at.strftime('%Y-%m-%d %H:%M') if m.created_at else '',
+        ])
+
+    from datetime import datetime as _dt
+    fname = f"pulsers_{_dt.utcnow().strftime('%Y%m%d_%H%M')}.csv"
+    return Response(
+        si.getvalue(),
+        mimetype='text/csv; charset=utf-8',
+        headers={'Content-Disposition': f'attachment; filename={fname}'},
+    )
+
+
 @app.route("/admin/pulsers")
 def admin_pulsers():
     admin = _require_admin()

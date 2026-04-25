@@ -371,8 +371,12 @@
     <!-- Header -->
     <div class="admin-header">
         <h1><i class="fas fa-users-gear" style="margin-right:0.5rem;"></i>Gestion des <span>Pulsers</span></h1>
-        <div style="font-size:0.85rem;color:var(--text-secondary);">
-            Mis à jour : {{ now.strftime('%d/%m/%Y %H:%M') }}
+        <div style="display:flex;align-items:center;gap:1rem;font-size:0.85rem;color:var(--text-secondary);">
+            <a href="{{ url_for('admin_pulsers_export') }}"
+               style="display:inline-flex;align-items:center;gap:0.4rem;padding:0.5rem 0.9rem;background:var(--accent,#00D68F);color:#070B12;border-radius:8px;font-weight:600;text-decoration:none;font-size:0.82rem;">
+                <i class="fas fa-file-csv"></i> Export CSV
+            </a>
+            <span>Mis à jour : {{ now.strftime('%d/%m/%Y %H:%M') }}</span>
         </div>
     </div>
 
