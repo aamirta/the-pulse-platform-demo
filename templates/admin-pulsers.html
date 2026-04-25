@@ -597,6 +597,16 @@ function toggleSelectAll(cb) {
     });
 }
 
+// Belt-and-suspenders: bind via addEventListener too, in case the inline
+// onchange got stripped (CSP, mutation, etc.).
+document.addEventListener('DOMContentLoaded', function() {
+    var master = document.getElementById('selectAll');
+    if (master) {
+        master.addEventListener('change', function() { toggleSelectAll(master); });
+        master.addEventListener('click',  function() { toggleSelectAll(master); });
+    }
+});
+
 function getSelectedIds() {
     return [...document.querySelectorAll('.row-cb:checked')].map(c => parseInt(c.value));
 }
