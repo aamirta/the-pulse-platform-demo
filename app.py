@@ -1615,7 +1615,56 @@ def cofounder_form():
 def expert_detail(expert_id):
     from datetime import datetime
     expert = Expert.query.get_or_404(expert_id)
+    # If the Expert row has no profile_pic, look for a matching pulse_member
+    # by email and borrow their photo (same trick as /experts listing).
+    if not expert.profile_pic and expert.email:
+        pm = (PulseMember.query
+              .filter(db.func.lower(PulseMember.email) == expert.email.strip().lower(),
+                      PulseMember.profile_pic.isnot(None))
+              .first())
+        if pm:
+            db.session.expunge(expert)
+            expert.profile_pic = pm.profile_pic
     return render_template("expert-detail.html", expert=expert, now=datetime.now())
+
+
+def _build_studio_row(s):
+    """Helper: pulse_member row → dict for the listing/detail templates."""
+    data = {}
+    try:
+        if s.form_data:
+            data = json.loads(s.form_data)
+    except Exception:
+        data = {}
+    ceo = None
+    ceo_id = data.get('ceo_member_id')
+    if ceo_id:
+        m = PulseMember.query.get(int(ceo_id)) if str(ceo_id).isdigit() else None
+        if m:
+            ceo = {
+                'id': m.id, 'name': m.full_name,
+                'email': m.email, 'linkedin': m.linkedin,
+                'profile_pic': m.profile_pic,
+            }
+    if not ceo and data.get('ceo'):
+        ceo = {'id': None, 'name': data['ceo'],
+               'email': None, 'linkedin': None, 'profile_pic': None}
+    return {
+        'id':            s.id,
+        'name':          s.full_name,
+        'email':         s.email,
+        'linkedin':      s.linkedin,
+        'profile_pic':   s.profile_pic,
+        'investor_name': data.get('investor_name') or s.full_name,
+        'description':   data.get('description', '') or data.get('about', ''),
+        'tagline':       data.get('tagline', ''),
+        'portfolio':     data.get('portfolio', ''),
+        'sectors':       data.get('sectors', ''),
+        'location':      data.get('location', '') or data.get('hq_location', ''),
+        'website':       data.get('website', '') or data.get('homepage_url', ''),
+        'ceo':           ceo,
+        'created_at':    s.created_at,
+    }
 
 
 @app.route("/venture-studios")
@@ -1626,29 +1675,16 @@ def venture_studios():
                        PulseMember.is_confirmed.is_(True))
                .order_by(PulseMember.created_at.desc())
                .all())
-    # Parse form_data JSON so the template can show studio details
-    rows = []
-    for s in studios:
-        data = {}
-        try:
-            if s.form_data:
-                data = json.loads(s.form_data)
-        except Exception:
-            data = {}
-        rows.append({
-            'id':           s.id,
-            'name':         s.full_name,
-            'email':        s.email,
-            'linkedin':     s.linkedin,
-            'profile_pic':  s.profile_pic,
-            'investor_name': data.get('investor_name') or s.full_name,
-            'investor_type': data.get('investor_type', ''),
-            'description':  data.get('description', '') or data.get('about', ''),
-            'location':     data.get('location', '') or data.get('hq_location', ''),
-            'website':      data.get('website', '') or data.get('homepage_url', ''),
-            'created_at':   s.created_at,
-        })
+    rows = [_build_studio_row(s) for s in studios]
     return render_template("venture-studios.html", studios=rows)
+
+
+@app.route("/venture-studio/<int:studio_id>")
+def venture_studio_detail(studio_id):
+    """Detail page for a single venture studio."""
+    s = PulseMember.query.filter_by(id=studio_id, role='venture_studio').first_or_404()
+    studio = _build_studio_row(s)
+    return render_template("venture-studio-detail.html", studio=studio)
 
 
 @app.route("/experts")
