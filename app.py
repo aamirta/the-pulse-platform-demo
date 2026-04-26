@@ -1674,6 +1674,15 @@ def experts():
         query = query.filter(Expert.availability == selected_availability)
 
     all_experts = query.order_by(Expert.created_at.desc()).all()
+
+    # Build a lookup of pulse_member profile pictures indexed by email so
+    # Expert rows (which have no profile_pic) can borrow the pulse_member's.
+    _pulse_pics = {}
+    for pm in PulseMember.query.filter(PulseMember.role == "expert",
+                                       PulseMember.profile_pic.isnot(None)).all():
+        if pm.email:
+            _pulse_pics[pm.email.strip().lower()] = pm.profile_pic
+
     # Deduplicate by email — keep only the most recent entry per email
     seen_emails = set()
     unique_experts = []
@@ -1683,6 +1692,12 @@ def experts():
             continue
         if key:
             seen_emails.add(key)
+        # Borrow pulse_member's profile_pic if Expert has none.
+        # Detach from the session first so the mutation doesn't trigger an
+        # UPDATE (Expert.profile_pic is varchar(255) and base64 is bigger).
+        if (not expert.profile_pic) and key in _pulse_pics:
+            db.session.expunge(expert)
+            expert.profile_pic = _pulse_pics[key]
         unique_experts.append(expert)
 
     # Also include PulseMembers with role "expert" who are NOT already in experts table
