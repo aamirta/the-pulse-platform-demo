@@ -105,7 +105,7 @@
 
   {% if studio.ceo %}
   <div class="vsd-section">
-    <h2><i class="fas fa-user-tie"></i> CEO</h2>
+    <h2><i class="fas fa-user-tie"></i> {{ studio.ceo.title or 'CEO' }}</h2>
     {% if studio.ceo.id %}
       <a href="/my-profile/{{ studio.ceo.id }}" class="vsd-ceo-card">
     {% else %}
@@ -117,7 +117,7 @@
           <div class="init">{{ (studio.ceo.name[0]|upper) if studio.ceo.name else '?' }}</div>
         {% endif %}
         <div class="ceo-info">
-          <small>Chief Executive Officer</small>
+          <small>{{ studio.ceo.title or 'Chief Executive Officer' }}</small>
           <strong>{{ studio.ceo.name }}</strong>
           {% if studio.ceo.linkedin %}
             <span><a href="{{ studio.ceo.linkedin }}" target="_blank" rel="noopener" onclick="event.stopPropagation();" style="color:#14b8a6;text-decoration:none;"><i class="fab fa-linkedin"></i> Profil LinkedIn</a></span>

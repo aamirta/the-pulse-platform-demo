@@ -117,7 +117,7 @@
             <div class="ceo-init">{{ (s.ceo.name[0]|upper) if s.ceo.name else '?' }}</div>
           {% endif %}
           <div class="ceo-text">
-            <small>CEO</small>
+            <small>{{ s.ceo.title or 'CEO' }}</small>
             <strong>{{ s.ceo.name }}</strong>
           </div>
         </div>

@@ -1649,6 +1649,8 @@ def _build_studio_row(s):
     if not ceo and data.get('ceo'):
         ceo = {'id': None, 'name': data['ceo'],
                'email': None, 'linkedin': None, 'profile_pic': None}
+    if ceo:
+        ceo['title'] = data.get('ceo_title', 'CEO')
     return {
         'id':            s.id,
         'name':          s.full_name,
