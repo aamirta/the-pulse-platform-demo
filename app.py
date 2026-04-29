@@ -62,6 +62,10 @@ if RESEND_API_KEY and resend:
 UPLOAD_FOLDER = os.path.join(os.path.abspath(os.path.dirname(__file__)), 'static', 'uploads')
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif', 'webp'}
 
+# Admin emails — used both for /admin/* routes and for editing other
+# people's profiles. Defined early so any helper can read it.
+ADMIN_EMAILS = {"mohammed.damiri@um6p.ma", "hamid.bouchikhi@um6p.ma", "hamid.bouchikhi@gmail.com", "simohammed.damiri@gmail.com", "damiri@thepulse.ma", "s.d@aeom.uk"}
+
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
@@ -1346,11 +1350,30 @@ def confirm_email(token):
         return render_template("email-sent.html", error="Lien de confirmation invalide ou expire.")
     member.is_confirmed = True
     db.session.commit()
+    # Auto-log them in after confirmation so the auth gate on
+    # /complete-profile/<id> doesn't block them.
+    session["member_id"] = member.id
     return redirect(url_for("complete_profile", member_id=member.id))
+
+
+def _can_edit_member(member_id):
+    """Caller must be the profile owner OR an admin. Returns (member, ok)."""
+    member = PulseMember.query.get_or_404(member_id)
+    cur_id = session.get("member_id")
+    if cur_id and int(cur_id) == int(member_id):
+        return member, True
+    if cur_id:
+        cur = PulseMember.query.get(cur_id)
+        if cur and cur.email and cur.email.strip().lower() in ADMIN_EMAILS:
+            return member, True
+    return member, False
 
 @app.route("/complete-profile/<int:member_id>", methods=["GET", "POST"])
 def complete_profile(member_id):
-    member = PulseMember.query.get_or_404(member_id)
+    member, ok = _can_edit_member(member_id)
+    if not ok:
+        flash("Vous devez être connecté à ce compte pour modifier ce profil.", "error")
+        return redirect(url_for("member_login"))
     if not member.is_confirmed:
         return redirect(url_for("join"))
     if request.method == "POST":
@@ -1404,7 +1427,10 @@ def member_login():
 
 @app.route("/edit-profile/<int:member_id>", methods=["GET", "POST"])
 def edit_profile(member_id):
-    member = PulseMember.query.get_or_404(member_id)
+    member, ok = _can_edit_member(member_id)
+    if not ok:
+        flash("Vous devez être connecté à ce compte pour modifier ce profil.", "error")
+        return redirect(url_for("member_login"))
     form_data = json.loads(member.form_data) if member.form_data else {}
     if request.method == "POST":
         try:
@@ -1433,7 +1459,10 @@ def edit_profile(member_id):
 
 @app.route("/set-password/<int:member_id>", methods=["GET", "POST"])
 def set_password(member_id):
-    member = PulseMember.query.get_or_404(member_id)
+    member, ok = _can_edit_member(member_id)
+    if not ok:
+        flash("Vous devez être connecté à ce compte pour modifier ce mot de passe.", "error")
+        return redirect(url_for("member_login"))
     error = None
     success = None
     if request.method == "POST":
@@ -1451,10 +1480,14 @@ def set_password(member_id):
 
 @app.route("/delete-account/<int:member_id>", methods=["POST"])
 def delete_account(member_id):
-    member = PulseMember.query.get_or_404(member_id)
+    member, ok = _can_edit_member(member_id)
+    if not ok:
+        flash("Vous devez être connecté à ce compte pour le supprimer.", "error")
+        return redirect(url_for("member_login"))
     db.session.delete(member)
     db.session.commit()
-    session.pop("member_id", None)
+    if session.get("member_id") == member_id:
+        session.pop("member_id", None)
     return redirect(url_for("home"))
 
 @app.route("/forgot-password", methods=["GET", "POST"])
@@ -2612,8 +2645,6 @@ def inbox_reply():
 
 
 # ── Admin dashboard ─────────────────────────────────────────────────────
-ADMIN_EMAILS = {"mohammed.damiri@um6p.ma", "hamid.bouchikhi@um6p.ma", "hamid.bouchikhi@gmail.com", "simohammed.damiri@gmail.com", "damiri@thepulse.ma", "s.d@aeom.uk"}
-
 def _require_admin():
     """Return the current member if admin, else abort 403."""
     member_id = session.get("member_id")

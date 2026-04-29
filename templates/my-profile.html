@@ -291,6 +291,17 @@
                     {% endif %}
                 </div>
                 <p class="hero-email"><i class="fas fa-envelope"></i> {{ member.email }}</p>
+                {# Edit / photo / delete only visible to the profile owner
+                   or to admins. Backend routes also enforce this. #}
+                {% set _can_edit = current_member and (
+                    current_member.id == member.id
+                    or (current_member.email and current_member.email.lower() in [
+                        'mohammed.damiri@um6p.ma','hamid.bouchikhi@um6p.ma',
+                        'hamid.bouchikhi@gmail.com','simohammed.damiri@gmail.com',
+                        'damiri@thepulse.ma','s.d@aeom.uk'
+                    ])
+                ) %}
+                {% if _can_edit %}
                 <div class="hero-actions">
                     <a href="{{ url_for('edit_profile', member_id=member.id) }}" class="btn-edit-photo" style="background:rgba(0,214,143,0.08);border-color:var(--accent);color:var(--accent);">
                         <i class="fas fa-pen"></i> Modifier le profil
@@ -299,6 +310,7 @@
                         <i class="fas fa-camera"></i> Modifier la photo
                     </a>
                 </div>
+                {% endif %}
             </div>
         </div>
     </div>
@@ -328,6 +340,7 @@
     </div>
     {% endif %}
 
+    {% if _can_edit %}
     <!-- Danger Zone -->
     <div class="detail-card" style="border-color: rgba(248,113,113,0.2);">
         <h3 class="card-heading" style="color:#f87171;">
@@ -340,6 +353,7 @@
             </button>
         </form>
     </div>
+    {% endif %}
 
 </div>
 {% endblock %}
