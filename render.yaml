@@ -3,7 +3,11 @@ services:
     name: thepulse
     runtime: python
     buildCommand: "pip install -r requirements.txt"
-    startCommand: "gunicorn --bind=0.0.0.0:$PORT --timeout 600 app:app"
+    # Single worker + max-requests to recycle workers and free memory.
+    # The 512MB Starter plan can't safely run multiple concurrent badge
+    # renders (each peaks ~50MB). One worker + 4 threads handles
+    # concurrency cooperatively without duplicating the Pillow heap.
+    startCommand: "gunicorn --bind=0.0.0.0:$PORT --timeout 600 --workers 1 --threads 4 --max-requests 200 --max-requests-jitter 50 app:app"
     envVars:
       - key: PYTHON_VERSION
         value: "3.11.6"

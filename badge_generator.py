@@ -5,13 +5,24 @@ Public API:
     generate(photo_stream_or_path, full_name, role, *, out=None) -> BytesIO
         Returns an in-memory PNG (or writes to `out` if given).
 """
-import os, io, re
+import os, io, re, gc
 from PIL import Image, ImageDraw, ImageFilter, ImageFont
 try:
     import qrcode
     _HAS_QR = True
 except ImportError:
     _HAS_QR = False
+
+# In-memory cache of the static template — avoids re-reading the 1250×1250
+# RGBA file on every request (saves ~6MB allocations + I/O per badge).
+_TEMPLATE_CACHE = None
+
+def _get_template():
+    global _TEMPLATE_CACHE
+    if _TEMPLATE_CACHE is None:
+        _TEMPLATE_CACHE = Image.open(TEMPLATE).convert('RGBA')
+        _TEMPLATE_CACHE.load()
+    return _TEMPLATE_CACHE.copy()  # cheap, no decode
 
 ROOT = os.path.dirname(os.path.abspath(__file__))
 TEMPLATE = os.path.join(ROOT, 'static', 'badge', 'template.png')
@@ -136,7 +147,7 @@ def generate(photo_src, full_name, role, out=None, category=None, ref_url=None):
         accent = accent_for(role)
     accent_rgba = accent + (255,)
 
-    template = Image.open(TEMPLATE).convert('RGBA')
+    template = _get_template()
     W, H = template.size
     cx, cy, r = _detect_circle(template)
     ORIG_CX, ORIG_CY, ORIG_R = 796, 627, 363
@@ -216,8 +227,18 @@ def generate(photo_src, full_name, role, out=None, category=None, ref_url=None):
     final = img.convert('RGB')
     if out:
         final.save(out, 'PNG', optimize=True)
+        # Free intermediate buffers — important on the 512MB Render plan
+        del img, final, template
+        try: del photo, photo_layer, mask, ring, cover  # noqa
+        except NameError: pass
+        gc.collect()
         return out
     buf = io.BytesIO()
     final.save(buf, 'PNG', optimize=True)
     buf.seek(0)
+    # Free intermediate buffers — important on the 512MB Render plan
+    del img, final, template
+    try: del photo, photo_layer, mask, ring, cover  # noqa
+    except NameError: pass
+    gc.collect()
     return buf
