@@ -40,9 +40,12 @@ if database_url:
     app.config['SQLALCHEMY_ENGINE_OPTIONS'] = {
         'pool_pre_ping': True,
         'pool_recycle': 300,
+        'pool_size': 5,
+        'max_overflow': 5,
+        'pool_timeout': 5,
         'connect_args': {
-            'connect_timeout': 10,
-            'options': '-c statement_timeout=60000 -c client_encoding=UTF8'
+            'connect_timeout': 5,
+            'options': '-c statement_timeout=8000 -c client_encoding=UTF8'
         }
     }
 else:
@@ -116,13 +119,18 @@ def _build_home_data():
         def __iter__(self):
             return iter([])
 
+    core_ok = True
     try:
         startup_count = db.session.query(db.func.count(Startup.startup_id)).scalar() or 0
         founder_count = db.session.query(db.func.count(Founder.founder_id)).scalar() or 0
         investor_count = db.session.query(db.func.count(Investor.investor_id)).scalar() or 0
         incubator_count = db.session.query(db.func.count(Incubator.incubator_id)).scalar() or 0
-    except Exception:
+    except Exception as e:
+        print(f"[PULSE] DB error in _build_home_data core counts: {e}", flush=True)
         startup_count = founder_count = investor_count = incubator_count = 0
+        core_ok = False
+    if core_ok and startup_count == 0 and founder_count == 0:
+        core_ok = False  # treat empty result as failure — don't cache it
 
     try:
         from sqlalchemy.orm import joinedload as jl
@@ -229,7 +237,7 @@ def _build_home_data():
     except Exception:
         home_appels_sidebar = []
 
-    return dict(
+    result = dict(
         startups=CountObj(startup_count), founders=CountObj(founder_count),
         investors=CountObj(investor_count), incubators=CountObj(incubator_count),
         deals=deals, total_funding=total_funding_millions,
@@ -243,6 +251,22 @@ def _build_home_data():
         home_trending_tags=home_trending_tags, home_recent_rounds=home_recent_rounds,
         home_appels_sidebar=home_appels_sidebar,
     )
+    result['_core_ok'] = core_ok
+    return result
+
+@app.route("/healthz")
+def healthz():
+    """Liveness probe — does NOT touch DB, always 200 if process is alive."""
+    return "ok", 200
+
+@app.route("/readyz")
+def readyz():
+    """Readiness probe — verifies DB is reachable."""
+    try:
+        db.session.execute(db.text("SELECT 1")).scalar()
+        return "ready", 200
+    except Exception as e:
+        return f"db unreachable: {e}", 503
 
 @app.route("/")
 def home():
@@ -255,9 +279,18 @@ def home():
             return render_template("home.html", **_home_cache['data'])
         try:
             data = _build_home_data()
-            _home_cache['data'] = data
-            _home_cache['expires'] = time.time() + 600  # 10 min cache
-        except Exception:
+            if data.get('_core_ok'):
+                _home_cache['data'] = data
+                _home_cache['expires'] = time.time() + 600  # 10 min cache
+            else:
+                # DB failed or returned empty — serve stale cache if present, never cache zeros
+                print("[PULSE] _build_home_data returned bad data, NOT caching", flush=True)
+                if _home_cache['data'] is not None:
+                    return render_template("home.html", **_home_cache['data'])
+                # No stale cache → serve fresh (possibly empty) but DON'T cache it
+                return render_template("home.html", **data)
+        except Exception as e:
+            print(f"[PULSE] _build_home_data raised: {e}", flush=True)
             if _home_cache['data'] is not None:
                 return render_template("home.html", **_home_cache['data'])
             raise
