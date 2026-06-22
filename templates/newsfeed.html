@@ -690,6 +690,7 @@
                     <div class="nf-avatar-placeholder">Share something with the ecosystem</div>
                 </div>
                 <form method="POST" action="/newsfeed/post">
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
                     <textarea
                         class="nf-create-textarea"
                         name="content"
@@ -1104,7 +1105,7 @@ function likePost(btn, postId) {
     btn.classList.add('liked');
     fetch('/newsfeed/like/' + postId, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json', 'X-Requested-With': 'XMLHttpRequest' }
+        headers: { 'Content-Type': 'application/json', 'X-Requested-With': 'XMLHttpRequest', 'X-CSRF-Token': '{{ csrf_token }}' }
     })
     .then(function(r) { return r.json(); })
     .then(function(data) {
@@ -1144,7 +1145,7 @@ function sendDM() {
     body.append('from_name',  document.getElementById('dmFromName').value.trim()  || 'Anonyme');
     body.append('from_email', document.getElementById('dmFromEmail').value.trim());
     body.append('message',    msg);
-    fetch('/newsfeed/message/' + _dmPostId, { method: 'POST', body: body })
+    fetch('/newsfeed/message/' + _dmPostId, { method: 'POST', headers: { 'X-CSRF-Token': '{{ csrf_token }}' }, body: body })
     .then(function(r){ return r.json(); })
     .then(function(data){
         if (data.ok) {

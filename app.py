@@ -66,6 +66,77 @@ ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif', 'webp'}
 # people's profiles. Defined early so any helper can read it.
 ADMIN_EMAILS = {"mohammed.damiri@um6p.ma", "hamid.bouchikhi@um6p.ma", "hamid.bouchikhi@gmail.com", "simohammed.damiri@gmail.com", "damiri@thepulse.ma", "s.d@aeom.uk"}
 
+# ============================================================================
+# SECURITY HELPERS — CSRF + Rate Limiting + Security Headers (Phase 1)
+# ============================================================================
+import secrets
+
+_rate_limit_store = {}
+_RATE_LIMIT_WINDOW = 60  # seconds
+
+
+def _client_ip():
+    """Get the real client IP behind proxies."""
+    forwarded = request.headers.get("X-Forwarded-For", "")
+    if forwarded:
+        return forwarded.split(",")[0].strip()
+    return request.remote_addr or "unknown"
+
+
+def _rate_limited(key, limit, window=_RATE_LIMIT_WINDOW):
+    """Simple in-memory rate limiter. Returns True if limit exceeded."""
+    now = time.time()
+    bucket = _rate_limit_store.setdefault(key, [])
+    # purge old timestamps
+    bucket[:] = [ts for ts in bucket if now - ts < window]
+    if len(bucket) >= limit:
+        return True
+    bucket.append(now)
+    return False
+
+
+def generate_csrf_token():
+    """Create or reuse a CSRF token stored in the session."""
+    token = session.get("_csrf_token")
+    if not token:
+        token = secrets.token_urlsafe(32)
+        session["_csrf_token"] = token
+    return token
+
+
+def validate_csrf():
+    """Validate CSRF token from form body or JSON header. Abort 403 on mismatch."""
+    token = (
+        request.form.get("csrf_token")
+        or request.headers.get("X-CSRF-Token")
+        or (request.get_json(silent=True) or {}).get("csrf_token")
+    )
+    if not token or token != session.get("_csrf_token"):
+        return False
+    return True
+
+
+@app.after_request
+def _security_headers(response):
+    """Add baseline security headers to every response."""
+    response.headers["X-Frame-Options"] = "DENY"
+    response.headers["X-Content-Type-Options"] = "nosniff"
+    response.headers["Referrer-Policy"] = "strict-origin-when-cross-origin"
+    response.headers["Permissions-Policy"] = "geolocation=(), microphone=(), camera=()"
+    response.headers["Strict-Transport-Security"] = "max-age=63072000; includeSubDomains"
+    csp = (
+        "default-src 'self'; "
+        "script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://cdn.jsdelivr.net; "
+        "style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://fonts.googleapis.com; "
+        "font-src 'self' https://fonts.gstatic.com; "
+        "img-src 'self' data: https:; "
+        "connect-src 'self' https://www.google-analytics.com; "
+        "frame-ancestors 'none';"
+    )
+    response.headers["Content-Security-Policy"] = csp
+    return response
+
+
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
@@ -1195,8 +1266,9 @@ def _capture_referral():
 
 @app.context_processor
 def inject_current_member():
-    """Make current_member and unread_count available in all templates."""
+    """Make current_member, unread_count, and csrf_token available in all templates."""
     member_id = session.get("member_id")
+    ctx = {"csrf_token": generate_csrf_token(), "current_member": None, "unread_count": 0}
     if member_id:
         try:
             member = PulseMember.query.get(member_id)
@@ -1205,11 +1277,13 @@ def inject_current_member():
                     db.func.lower(DirectMessage.to_email) == member.email.strip().lower(),
                     DirectMessage.is_read == False
                 ).count()
-                return {"current_member": member, "unread_count": unread}
+                ctx["current_member"] = member
+                ctx["unread_count"] = unread
+                return ctx
         except Exception:
             db.session.rollback()
         session.pop("member_id", None)
-    return {"current_member": None, "unread_count": 0}
+    return ctx
 
 @app.route("/join")
 def join():
@@ -1413,6 +1487,13 @@ def logout_member():
 def member_login():
     error = None
     if request.method == "POST":
+        if not validate_csrf():
+            error = "Session invalide. Veuillez rafraîchir la page et réessayer."
+            return render_template("member-login.html", error=error)
+        # Rate-limit login attempts per IP
+        if _rate_limited(f"login:{_client_ip()}", limit=5, window=300):
+            error = "Trop de tentatives. Veuillez réessayer dans 5 minutes."
+            return render_template("member-login.html", error=error)
         email = request.form.get("email", "").strip().lower()
         password = request.form.get("password", "")
         member = PulseMember.query.filter_by(email=email).first()
@@ -1494,6 +1575,13 @@ def delete_account(member_id):
 def forgot_password():
     message = None
     if request.method == "POST":
+        if not validate_csrf():
+            message = "Session invalide. Veuillez rafraîchir la page et réessayer."
+            return render_template("forgot-password.html", message=message)
+        # Rate-limit password-reset requests per IP
+        if _rate_limited(f"forgot:{_client_ip()}", limit=3, window=3600):
+            message = "Trop de demandes. Veuillez réessayer dans une heure."
+            return render_template("forgot-password.html", message=message)
         email = request.form.get("email", "").strip().lower()
         member = PulseMember.query.filter_by(email=email).first()
         if member:
@@ -2404,6 +2492,15 @@ def newsfeed():
 
 @app.route("/newsfeed/post", methods=["POST"])
 def create_post():
+    # CSRF validation for post creation
+    if not validate_csrf():
+        flash("Session invalide. Veuillez rafraîchir la page.", "error")
+        return redirect(url_for("newsfeed"))
+    # Rate-limit posts per IP (even anonymous)
+    if _rate_limited(f"post:{_client_ip()}", limit=5, window=300):
+        flash("Trop de publications. Veuillez ralentir.", "error")
+        return redirect(url_for("newsfeed"))
+
     content = request.form.get("content", "").strip()
     post_type = request.form.get("post_type", "post").strip()
     tags = request.form.get("tags", "").strip()
@@ -2448,6 +2545,16 @@ def create_post():
 
 @app.route("/newsfeed/like/<int:post_id>", methods=["POST"])
 def like_post(post_id):
+    # Require authenticated member
+    member_id = session.get("member_id")
+    if not member_id:
+        return jsonify({"error": "Authentification requise."}), 401
+    # CSRF validation
+    if not validate_csrf():
+        return jsonify({"error": "CSRF invalide."}), 403
+    # Rate-limit likes per user
+    if _rate_limited(f"like:{member_id}:{post_id}", limit=1, window=10):
+        return jsonify({"error": "Trop rapide."}), 429
     post = Post.query.get_or_404(post_id)
     post.likes_count = (post.likes_count or 0) + 1
     db.session.commit()
@@ -2456,9 +2563,19 @@ def like_post(post_id):
 
 @app.route("/newsfeed/message/<int:post_id>", methods=["POST"])
 def send_message(post_id):
+    member_id = session.get("member_id")
+    if not member_id:
+        return jsonify({"ok": False, "error": "Authentification requise."}), 401
+    # CSRF validation
+    if not validate_csrf():
+        return jsonify({"ok": False, "error": "CSRF invalide."}), 403
+    # Rate-limit messages per user
+    if _rate_limited(f"msg:{member_id}", limit=10, window=300):
+        return jsonify({"ok": False, "error": "Trop de messages. Réessayez plus tard."}), 429
     post = Post.query.get_or_404(post_id)
-    from_name  = request.form.get("from_name", "").strip() or "Anonyme"
-    from_email = request.form.get("from_email", "").strip()
+    member = PulseMember.query.get(member_id)
+    from_name  = member.full_name if member else "Membre"
+    from_email = member.email if member else ""
     message    = request.form.get("message", "").strip()
     if not message:
         return jsonify({"ok": False, "error": "Message vide"}), 400
@@ -2476,11 +2593,21 @@ def send_message(post_id):
 
 @app.route("/send-pulse", methods=["POST"])
 def send_pulse():
+    member_id = session.get("member_id")
+    if not member_id:
+        return jsonify({"ok": False, "error": "Authentification requise."}), 401
+    # CSRF validation
+    if not validate_csrf():
+        return jsonify({"ok": False, "error": "CSRF invalide."}), 403
+    # Rate-limit pulses per user
+    if _rate_limited(f"pulse:{member_id}", limit=10, window=300):
+        return jsonify({"ok": False, "error": "Trop de messages. Réessayez plus tard."}), 429
     data = request.get_json(silent=True) or {}
     to_name    = data.get("to_name", "").strip()
     to_email   = data.get("to_email", "").strip()
-    from_name  = data.get("from_name", "").strip() or "Anonyme"
-    from_email = data.get("from_email", "").strip()
+    member = PulseMember.query.get(member_id)
+    from_name  = member.full_name if member else "Membre"
+    from_email = member.email if member else ""
     message    = data.get("message", "").strip()
     if not message:
         return jsonify({"ok": False, "error": "Message vide"}), 400
@@ -2626,6 +2753,12 @@ def inbox_reply():
     member = PulseMember.query.get(member_id)
     if not member:
         return jsonify({"error": "Not found"}), 404
+    # CSRF validation
+    if not validate_csrf():
+        return jsonify({"ok": False, "error": "CSRF invalide."}), 403
+    # Rate-limit replies per user
+    if _rate_limited(f"reply:{member_id}", limit=20, window=300):
+        return jsonify({"ok": False, "error": "Trop de messages. Réessayez plus tard."}), 429
     data = request.get_json(silent=True) or {}
     to_email = data.get("to_email", "").strip()
     to_name = data.get("to_name", "").strip()
@@ -2786,6 +2919,8 @@ def admin_confirm_member(member_id):
     admin = _require_admin()
     if not admin:
         return jsonify({"error": "Forbidden"}), 403
+    if not validate_csrf():
+        return jsonify({"error": "CSRF invalide."}), 403
     m = PulseMember.query.get_or_404(member_id)
     m.is_confirmed = True
     db.session.commit()
@@ -2797,6 +2932,8 @@ def admin_delete_member(member_id):
     admin = _require_admin()
     if not admin:
         return jsonify({"error": "Forbidden"}), 403
+    if not validate_csrf():
+        return jsonify({"error": "CSRF invalide."}), 403
     m = PulseMember.query.get_or_404(member_id)
     db.session.delete(m)
     db.session.commit()
@@ -2808,6 +2945,8 @@ def admin_update_member(member_id):
     admin = _require_admin()
     if not admin:
         return jsonify({"error": "Forbidden"}), 403
+    if not validate_csrf():
+        return jsonify({"error": "CSRF invalide."}), 403
     m = PulseMember.query.get_or_404(member_id)
     data = request.get_json(silent=True) or {}
     if "full_name" in data and data["full_name"].strip():
@@ -2834,6 +2973,8 @@ def admin_bulk_action():
     admin = _require_admin()
     if not admin:
         return jsonify({"error": "Forbidden"}), 403
+    if not validate_csrf():
+        return jsonify({"error": "CSRF invalide."}), 403
     data = request.get_json(silent=True) or {}
     action = data.get("action")
     ids = data.get("ids", [])

@@ -800,9 +800,13 @@
                     <div class="contact-icon contact-icon-email"><i class="fas fa-envelope"></i></div>
                     <div class="contact-text">
                         <span class="contact-text-label" data-i18n="email">E-mail</span>
-                        {% for email in founder.teaser_emails.split('|') %}
-                            <a href="mailto:{{ email.strip() }}" style="display:block;">{{ email.strip() }}</a>
-                        {% endfor %}
+                        {% if current_member %}
+                            {% for email in founder.teaser_emails.split('|') %}
+                                <a href="mailto:{{ email.strip() }}" style="display:block;">{{ email.strip() }}</a>
+                            {% endfor %}
+                        {% else %}
+                            <span style="color:var(--text-muted);font-size:0.85rem;">Connectez-vous pour voir le contact</span>
+                        {% endif %}
                     </div>
                 </div>
                 {% endif %}
@@ -811,9 +815,13 @@
                     <div class="contact-icon contact-icon-email"><i class="fas fa-envelope-open"></i></div>
                     <div class="contact-text">
                         <span class="contact-text-label" data-i18n="personal_email">E-mail personnel</span>
-                        {% for email in founder.teaser_personal_emails.split('|') %}
-                            <a href="mailto:{{ email.strip() }}" style="display:block;">{{ email.strip() }}</a>
-                        {% endfor %}
+                        {% if current_member %}
+                            {% for email in founder.teaser_personal_emails.split('|') %}
+                                <a href="mailto:{{ email.strip() }}" style="display:block;">{{ email.strip() }}</a>
+                            {% endfor %}
+                        {% else %}
+                            <span style="color:var(--text-muted);font-size:0.85rem;">Connectez-vous pour voir le contact</span>
+                        {% endif %}
                     </div>
                 </div>
                 {% endif %}
@@ -822,9 +830,13 @@
                     <div class="contact-icon contact-icon-email"><i class="fas fa-at"></i></div>
                     <div class="contact-text">
                         <span class="contact-text-label" data-i18n="professional_email">E-mail professionnel</span>
-                        {% for email in founder.teaser_professional_emails.split('|') %}
-                            <a href="mailto:{{ email.strip() }}" style="display:block;">{{ email.strip() }}</a>
-                        {% endfor %}
+                        {% if current_member %}
+                            {% for email in founder.teaser_professional_emails.split('|') %}
+                                <a href="mailto:{{ email.strip() }}" style="display:block;">{{ email.strip() }}</a>
+                            {% endfor %}
+                        {% else %}
+                            <span style="color:var(--text-muted);font-size:0.85rem;">Connectez-vous pour voir le contact</span>
+                        {% endif %}
                     </div>
                 </div>
                 {% endif %}

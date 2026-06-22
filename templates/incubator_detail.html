@@ -726,9 +726,13 @@
 
                 <div class="contact-links">
                     {% if incubator.email %}
-                    <a href="mailto:{{ incubator.email }}" class="contact-item">
+                    <a href="{% if current_member %}mailto:{{ incubator.email }}{% else %}#{% endif %}" class="contact-item">
                         <i class="fas fa-envelope icon-email"></i>
-                        <span>{{ incubator.email }}</span>
+                        {% if current_member %}
+                            <span>{{ incubator.email }}</span>
+                        {% else %}
+                            <span style="color:var(--text-muted);font-size:0.85rem;">Connectez-vous pour voir le contact</span>
+                        {% endif %}
                     </a>
                     {% endif %}
 

@@ -806,8 +806,12 @@
                     <div class="contact-icon contact-icon-email"><i class="fas fa-envelope"></i></div>
                     <div class="contact-text">
                         <span class="contact-text-label" data-i18n="email">E-mail</span>
-                        {% set display_email = 'contact@chari.ma' if startup.startup_id == 117 else startup.contact_email %}
-                        <a href="mailto:{{ display_email }}">{{ display_email }}</a>
+                        {% if current_member %}
+                            {% set display_email = 'contact@chari.ma' if startup.startup_id == 117 else startup.contact_email %}
+                            <a href="mailto:{{ display_email }}">{{ display_email }}</a>
+                        {% else %}
+                            <span style="color:var(--text-muted);font-size:0.85rem;">Connectez-vous pour voir le contact</span>
+                        {% endif %}
                     </div>
                 </div>
                 {% endif %}
