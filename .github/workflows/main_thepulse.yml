@@ -7,10 +7,11 @@ on:
   workflow_dispatch:
 
 jobs:
-  build:
+  build-and-deploy:
     runs-on: ubuntu-latest
     permissions:
-      contents: read 
+      contents: read
+      id-token: write
 
     steps:
       - uses: actions/checkout@v4
@@ -25,32 +26,7 @@ jobs:
           python -m venv antenv
           source antenv/bin/activate
           pip install -r requirements.txt
-                
-      
-      - name: Upload artifact for deployment jobs
-        uses: actions/upload-artifact@v4
-        with:
-          name: python-app
-          path: |
-            .
-            !antenv/
 
-     
-      
-
-  deploy:
-    runs-on: ubuntu-latest
-    needs: build
-    permissions:
-      id-token: write 
-      contents: read 
-
-    steps:
-      - name: Download artifact from build job
-        uses: actions/download-artifact@v4
-        with:
-          name: python-app
-      
       - name: Login to Azure
         uses: azure/login@v2
         with:
@@ -64,4 +40,3 @@ jobs:
         with:
           app-name: 'thepulse'
           slot-name: 'Production'
-          
