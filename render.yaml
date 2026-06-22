@@ -4,10 +4,13 @@ services:
     runtime: python
     buildCommand: "pip install -r requirements.txt"
     # Single worker + max-requests to recycle workers and free memory.
-    # The 512MB Starter plan can't safely run multiple concurrent badge
-    # renders (each peaks ~50MB). One worker + 4 threads handles
-    # concurrency cooperatively without duplicating the Pillow heap.
-    startCommand: "gunicorn --bind=0.0.0.0:$PORT --timeout 600 --workers 1 --threads 4 --max-requests 200 --max-requests-jitter 50 app:app"
+    # 512MB Starter plan can't run multiple concurrent badge renders
+    # (each peaks ~50MB). 1 worker + 8 threads handles concurrency
+    # cooperatively without duplicating the Pillow heap.
+    # --timeout 45: kill workers blocked >45s (DB hangs no longer wedge the site).
+    # --graceful-timeout 20: give in-flight requests time to finish on restart.
+    startCommand: "gunicorn --bind=0.0.0.0:$PORT --timeout 45 --graceful-timeout 20 --workers 1 --threads 8 --max-requests 200 --max-requests-jitter 50 app:app"
+    healthCheckPath: /healthz
     envVars:
       - key: PYTHON_VERSION
         value: "3.11.6"

@@ -300,6 +300,7 @@
                             <label for="investorType"><span data-i18n="investor_type_label">Investor Type</span> *</label>
                             <select id="investorType" name="investor_type" required>
                                 <option value="">Select type</option>
+                                <option value="venture-studio" {% if is_studio %}selected{% endif %}>Venture Studio</option>
                                 <option value="vc">Venture Capital</option>
                                 <option value="angel">Angel Investor</option>
                                 <option value="pe">Private Equity</option>
