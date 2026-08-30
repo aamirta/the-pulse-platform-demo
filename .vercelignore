@@ -1,0 +1,47 @@
+# Development virtual environments and node modules (Vercel installs its own)
+venv/
+node_modules/
+new_design/node_modules/
+
+# Local databases and caches
+*.db
+*.db-journal
+.mypy_cache/
+.pytest_cache/
+.ruff_cache/
+.coverage
+__pycache__/
+
+# Backups and archives
+backups/
+v1-backup/
+datab/
+demo-output/
+private_storage/
+
+# Reports and slide decks living at the repo root.
+# NOTE: these patterns are anchored with a leading "/" on purpose. An unanchored
+# "*.png" would also drop new_design/public/**, whose 40 images are copied into
+# the Vite build, leaving every avatar and hero image broken in production.
+/*.pdf
+/*.pptx
+/*.png
+/*.jpg
+/*.jpeg
+/*.md
+/filename.json
+/.admin_password_rotated.txt
+
+# One-off scripts and tests that the serverless function never imports.
+# badge_generator.py is deliberately NOT listed: backend/api/routes/members.py
+# imports it at module load, so excluding it breaks the whole API.
+scrapers/
+tests/
+scripts/
+marketing/
+generate_security_report.py
+migrate_to_supabase.py
+import_data.py
+record_demo_video.js
+rapport_j7_thepulse.py
+rapport_j7_thepulse_pptx.py
