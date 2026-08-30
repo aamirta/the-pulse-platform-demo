@@ -3,9 +3,7 @@ venv/
 node_modules/
 new_design/node_modules/
 
-# Local databases and caches
-*.db
-*.db-journal
+
 .mypy_cache/
 .pytest_cache/
 .ruff_cache/
