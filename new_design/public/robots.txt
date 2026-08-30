@@ -1,0 +1,5 @@
+# The Pulse — public ecosystem directory
+User-agent: *
+Allow: /
+
+Sitemap: https://thepulse.ma/sitemap.xml

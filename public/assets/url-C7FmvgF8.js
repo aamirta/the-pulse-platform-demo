@@ -1,0 +1,1 @@
+function r(n){if(!n)return null;const t=n.trim();return!t||t==="-"?null:/^[a-z][a-z0-9+.-]*:/i.test(t)?/^(https?|mailto|tel):/i.test(t)?t:null:t.startsWith("//")?`https:${t}`:/^[^\s/]+\.[^\s/]{2,}/.test(t)?`https://${t}`:null}function e(n){const t=r(n);t&&window.open(t,"_blank","noopener,noreferrer")}export{e as o};

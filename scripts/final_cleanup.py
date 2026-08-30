@@ -14,10 +14,8 @@ Usage:
 """
 import os, sys, argparse, re
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..'))
-os.environ['DATABASE_URL'] = (
-    'postgresql://postgres.lianafeunaxlzqfvslob:'
-    'Habiba456!!!!@aws-0-eu-west-1.pooler.supabase.com:5432/postgres'
-)
+if not os.environ.get("DATABASE_URL"):
+    raise RuntimeError("DATABASE_URL environment variable is required")
 from sqlalchemy import create_engine, text
 
 engine = create_engine(os.environ['DATABASE_URL'])

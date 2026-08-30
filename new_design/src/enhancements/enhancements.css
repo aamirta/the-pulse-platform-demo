@@ -1,0 +1,222 @@
+/**
+ * Visual Enhancement Layer — stylesheet.
+ *
+ * EVERY rule in this file is scoped under `html[data-ve="on"]`. When the
+ * enhancement flag is off (see ./flags.ts), the attribute is absent and this
+ * entire file is inert — the platform looks and behaves exactly as before.
+ *
+ * Design constraints respected here:
+ *  - No color, typography, spacing or layout changes.
+ *  - Motion uses only `transform` and `opacity` (GPU-friendly).
+ *  - Durations stay in the 150–500 ms range; nothing loops except the very
+ *    subtle empty-state float and skeleton shimmer.
+ *  - `prefers-reduced-motion: reduce` disables all of it.
+ */
+
+/* ------------------------------------------------------------------ */
+/* Card hover elevation — additive on top of the existing flat cards. */
+/* The global `*` rule in index.css already transitions transform and */
+/* box-shadow over 200 ms, so no transition is declared here.         */
+/* ------------------------------------------------------------------ */
+html[data-ve='on'] .ve-card-lift {
+  will-change: transform;
+}
+html[data-ve='on'] .ve-card-lift:hover {
+  transform: translateY(-2px);
+  box-shadow:
+    0 10px 30px -6px rgba(15, 23, 42, 0.1),
+    0 4px 12px -3px rgba(15, 23, 42, 0.05);
+}
+html[data-ve='on'].dark .ve-card-lift:hover,
+.dark html[data-ve='on'] .ve-card-lift:hover {
+  box-shadow: 0 12px 36px -6px rgba(0, 0, 0, 0.5);
+}
+
+/* ------------------------------------------------------------------ */
+/* Image reveal — fade + tiny scale settle once the image has loaded. */
+/* ------------------------------------------------------------------ */
+html[data-ve='on'] .ve-img {
+  opacity: 0;
+  transform: scale(1.03);
+  transition:
+    opacity 0.4s ease-out,
+    transform 0.45s ease-out;
+}
+html[data-ve='on'] .ve-img.ve-img-loaded {
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* ------------------------------------------------------------------ */
+/* View / tab transitions — short fade-rise keyed on mount.           */
+/* ------------------------------------------------------------------ */
+@keyframes ve-view-enter {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+html[data-ve='on'] .ve-view-enter {
+  animation: ve-view-enter 0.25s ease-out both;
+}
+
+/* ------------------------------------------------------------------ */
+/* Message bubbles — gentle appearance for incoming/sent messages.    */
+/* ------------------------------------------------------------------ */
+@keyframes ve-msg-in {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+html[data-ve='on'] .ve-msg-in {
+  animation: ve-msg-in 0.25s ease-out both;
+}
+
+/* ------------------------------------------------------------------ */
+/* Unread badges — one-shot pop when the badge mounts.                */
+/* ------------------------------------------------------------------ */
+@keyframes ve-badge-pop {
+  0% {
+    opacity: 0;
+    transform: scale(0.5);
+  }
+  70% {
+    opacity: 1;
+    transform: scale(1.08);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+html[data-ve='on'] .ve-badge-pop {
+  animation: ve-badge-pop 0.3s ease-out both;
+}
+
+/* ------------------------------------------------------------------ */
+/* Centered card entrance (login / onboarding style cards).           */
+/* ------------------------------------------------------------------ */
+@keyframes ve-scale-in {
+  from {
+    opacity: 0;
+    transform: scale(0.97) translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+html[data-ve='on'] .ve-scale-in {
+  animation: ve-scale-in 0.35s ease-out both;
+}
+
+/* ------------------------------------------------------------------ */
+/* Skeleton shimmer — soft highlight sweep over loading placeholders. */
+/* ------------------------------------------------------------------ */
+html[data-ve='on'] .ve-shimmer {
+  position: relative;
+  overflow: hidden;
+}
+html[data-ve='on'] .ve-shimmer::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  transform: translateX(-100%);
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.08),
+    transparent
+  );
+  animation: ve-shimmer-sweep 1.8s ease-in-out infinite;
+}
+@keyframes ve-shimmer-sweep {
+  to {
+    transform: translateX(100%);
+  }
+}
+
+/* ------------------------------------------------------------------ */
+/* Empty-state icon float — very subtle, slow, easy to miss on purpose*/
+/* ------------------------------------------------------------------ */
+@keyframes ve-float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-4px);
+  }
+}
+html[data-ve='on'] .ve-float {
+  animation: ve-float 5s ease-in-out infinite;
+}
+
+/* ------------------------------------------------------------------ */
+/* Hero backdrop image — sits behind existing hero content, no layout */
+/* change: absolutely positioned inside the existing relative hero.   */
+/* ------------------------------------------------------------------ */
+html[data-ve='on'] .ve-hero-backdrop {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  border-radius: inherit;
+  pointer-events: none;
+}
+html[data-ve='on'] .ve-hero-backdrop img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  opacity: 0.08;
+  mask-image: linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0.9),
+    rgba(0, 0, 0, 0.25) 70%,
+    transparent
+  );
+  -webkit-mask-image: linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0.9),
+    rgba(0, 0, 0, 0.25) 70%,
+    transparent
+  );
+}
+.dark html[data-ve='on'] .ve-hero-backdrop img,
+html[data-ve='on'].dark .ve-hero-backdrop img {
+  opacity: 0.18;
+}
+
+/* ------------------------------------------------------------------ */
+/* Accessibility — honor reduced-motion for everything in this layer. */
+/* ------------------------------------------------------------------ */
+@media (prefers-reduced-motion: reduce) {
+  html[data-ve='on'] .ve-card-lift:hover {
+    transform: none;
+  }
+  html[data-ve='on'] .ve-img {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+  html[data-ve='on'] .ve-view-enter,
+  html[data-ve='on'] .ve-msg-in,
+  html[data-ve='on'] .ve-badge-pop,
+  html[data-ve='on'] .ve-scale-in,
+  html[data-ve='on'] .ve-float {
+    animation: none;
+  }
+  html[data-ve='on'] .ve-shimmer::after {
+    animation: none;
+    display: none;
+  }
+}

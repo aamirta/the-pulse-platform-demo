@@ -1,0 +1,137 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* Soft Ivory / Off-White Light Mode (No pure #FFFFFF or #000000) */
+    --background: 40 20% 98%;
+    --foreground: 220 20% 16%;
+    --card: 40 25% 99%;
+    --card-foreground: 220 20% 16%;
+    --popover: 40 25% 99%;
+    --popover-foreground: 220 20% 16%;
+    --primary: 22 62% 48%;
+    --primary-foreground: 40 20% 98%;
+    --secondary: 220 14% 94%;
+    --secondary-foreground: 220 20% 20%;
+    --muted: 220 12% 94%;
+    --muted-foreground: 220 10% 48%;
+    --accent: 220 14% 93%;
+    --accent-foreground: 220 20% 20%;
+    --destructive: 0 65% 55%;
+    --destructive-foreground: 40 20% 98%;
+    --border: 220 12% 90%;
+    --input: 220 12% 90%;
+    --ring: 22 62% 48%;
+    --radius: 0.75rem;
+    --sidebar-background: 40 18% 97%;
+    --sidebar-foreground: 220 15% 30%;
+    --sidebar-primary: 22 62% 48%;
+    --sidebar-primary-foreground: 40 20% 98%;
+    --sidebar-accent: 220 12% 93%;
+    --sidebar-accent-foreground: 220 20% 20%;
+    --sidebar-border: 220 12% 89%;
+    --sidebar-ring: 22 62% 48%;
+  }
+
+  .dark {
+    /* Soft Charcoal / Rich Slate Dark Mode (No pure #000000 or #FFFFFF) */
+    --background: 222 16% 12%;
+    --foreground: 210 20% 92%;
+    --card: 220 15% 15%;
+    --card-foreground: 210 20% 92%;
+    --popover: 220 15% 15%;
+    --popover-foreground: 210 20% 92%;
+    --primary: 22 65% 54%;
+    --primary-foreground: 222 16% 12%;
+    --secondary: 220 14% 20%;
+    --secondary-foreground: 210 20% 92%;
+    --muted: 220 14% 19%;
+    --muted-foreground: 215 15% 65%;
+    --accent: 220 14% 20%;
+    --accent-foreground: 210 20% 92%;
+    --destructive: 0 55% 42%;
+    --destructive-foreground: 210 20% 92%;
+    --border: 220 14% 22%;
+    --input: 220 14% 22%;
+    --ring: 22 65% 54%;
+    --sidebar-background: 222 16% 11%;
+    --sidebar-foreground: 215 15% 75%;
+    --sidebar-primary: 22 65% 54%;
+    --sidebar-primary-foreground: 222 16% 12%;
+    --sidebar-accent: 220 14% 19%;
+    --sidebar-accent-foreground: 210 20% 92%;
+    --sidebar-border: 220 14% 20%;
+    --sidebar-ring: 22 65% 54%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+    transition-property: color, background-color, border-color, box-shadow, transform, opacity;
+    transition-duration: 200ms;
+    transition-timing-function: ease-in-out;
+  }
+  body {
+    @apply bg-background text-foreground;
+    font-family: 'Plus Jakarta Sans', 'Inter', system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  h1, h2, h3, h4, h5, h6, button, input, select, textarea {
+    font-family: 'Plus Jakarta Sans', 'Inter', system-ui, sans-serif;
+  }
+  html {
+    scroll-behavior: smooth;
+  }
+
+  /* Soft, non-blinding link and button focus states */
+  a, button {
+    transition: all 200ms ease-in-out;
+  }
+}
+
+@layer utilities {
+  /* Subtle, diffused soft drop shadow utilities */
+  .shadow-soft-sm {
+    box-shadow: 0 2px 8px -2px rgba(15, 23, 42, 0.04), 0 1px 4px -1px rgba(15, 23, 42, 0.02);
+  }
+  .shadow-soft-md {
+    box-shadow: 0 4px 20px -4px rgba(15, 23, 42, 0.06), 0 2px 8px -2px rgba(15, 23, 42, 0.03);
+  }
+  .shadow-soft-lg {
+    box-shadow: 0 10px 30px -6px rgba(15, 23, 42, 0.08), 0 4px 12px -3px rgba(15, 23, 42, 0.04);
+  }
+  .dark .shadow-soft-sm {
+    box-shadow: 0 2px 10px -2px rgba(0, 0, 0, 0.25);
+  }
+  .dark .shadow-soft-md {
+    box-shadow: 0 6px 24px -4px rgba(0, 0, 0, 0.35);
+  }
+  .dark .shadow-soft-lg {
+    box-shadow: 0 12px 36px -6px rgba(0, 0, 0, 0.45);
+  }
+
+  .animate-fade-in-up {
+    animation: fadeInUp 0.5s ease-out forwards;
+  }
+  .animate-fade-in {
+    animation: fadeIn 0.3s ease-out forwards;
+  }
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+}
