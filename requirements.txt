@@ -1,16 +1,39 @@
-Flask
-Flask-SQLAlchemy
-SQLAlchemy
-gunicorn
-Werkzeug
-itsdangerous
-Jinja2
-MarkupSafe
+# Runtime dependencies. This file is what Vercel installs for the serverless
+# function in api/index.py, so it must stay limited to what the app imports at
+# runtime. Test and lint tooling lives in requirements-dev.txt.
+
+# Web framework
+fastapi
+uvicorn
+pydantic
+pydantic-settings
+python-multipart
+
+# Database
+SQLAlchemy>=2.0.0
 psycopg2-binary
-python-dotenv
-openpyxl
-beautifulsoup4
-requests
-resend
+alembic
+
+# Auth and security
+python-jose[cryptography]
+passlib[argon2]
+itsdangerous
+slowapi
+limits
+
+# Deal Room document watermarking (backend/core/watermark.py)
+pypdf
+reportlab
+
+# Badge generation (badge_generator.py, imported by backend/api/routes/members.py)
 Pillow
 qrcode
+
+# Email, config and data import helpers
+python-dotenv
+resend
+requests
+openpyxl
+beautifulsoup4
+
+
