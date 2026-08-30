@@ -4,5 +4,8 @@
   "private": true,
   "scripts": {
     "build": "VITE_API_BASE_URL=/api/v1 npm --prefix new_design install && VITE_API_BASE_URL=/api/v1 npm --prefix new_design run build && mkdir -p public && cp -r new_design/dist/* public/"
+  },
+  "engines": {
+    "node": "20.x"
   }
 }
