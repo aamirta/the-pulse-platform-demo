@@ -16,14 +16,24 @@
     --secondary: 220 14% 94%;
     --secondary-foreground: 220 20% 20%;
     --muted: 220 12% 94%;
-    --muted-foreground: 220 10% 48%;
+    /* Was 48% lightness, which measured 4.46:1 on this background -- under the
+       4.5:1 needed for body text, and this token carries most of the small
+       copy on the platform. At 38% it reads 6.0:1. */
+    --muted-foreground: 220 12% 38%;
     --accent: 220 14% 93%;
     --accent-foreground: 220 20% 20%;
-    --destructive: 0 65% 55%;
+    --destructive: 0 68% 42%;
     --destructive-foreground: 40 20% 98%;
-    --border: 220 12% 90%;
-    --input: 220 12% 90%;
-    --ring: 22 62% 48%;
+    --border: 220 12% 86%;
+    --input: 220 12% 84%;
+    --ring: 21 70% 49%;
+    /* Brand terracotta, unchanged: #D56426 with #B8521C on hover -- the exact
+       original values, stored as RGB channels so the hex round-trips exactly
+       (an HSL approximation landed a unit off). Same in both themes.
+       For the record: as *small text* on the light surface this measures
+       ~3.6:1, under the 4.5:1 AA asks for. That is a brand decision. */
+    --pulse-orange: 213 100 38;
+    --pulse-orange-hover: 184 82 28;
     --radius: 0.75rem;
     --sidebar-background: 40 18% 97%;
     --sidebar-foreground: 220 15% 30%;
@@ -48,14 +58,19 @@
     --secondary: 220 14% 20%;
     --secondary-foreground: 210 20% 92%;
     --muted: 220 14% 19%;
-    --muted-foreground: 215 15% 65%;
+    /* 65% already cleared AA; 72% gives the small copy more room to breathe. */
+    --muted-foreground: 215 16% 72%;
     --accent: 220 14% 20%;
     --accent-foreground: 210 20% 92%;
-    --destructive: 0 55% 42%;
-    --destructive-foreground: 210 20% 92%;
-    --border: 220 14% 22%;
-    --input: 220 14% 22%;
-    --ring: 22 65% 54%;
+    --destructive: 0 62% 58%;
+    --destructive-foreground: 222 16% 12%;
+    --border: 220 14% 26%;
+    --input: 220 14% 28%;
+    --ring: 21 70% 49%;
+    /* Same brand terracotta as light mode -- the original single value. On
+       charcoal it reads ~4.6:1 as text, which clears AA on its own. */
+    --pulse-orange: 213 100 38;
+    --pulse-orange-hover: 184 82 28;
     --sidebar-background: 222 16% 11%;
     --sidebar-foreground: 215 15% 75%;
     --sidebar-primary: 22 65% 54%;
@@ -79,9 +94,25 @@
     font-family: 'Plus Jakarta Sans', 'Inter', system-ui, sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    /* Roomier default leading: much of the interface is dense French copy at
+       small sizes, where 1.5 runs tight. */
+    line-height: 1.6;
+    text-rendering: optimizeLegibility;
   }
   h1, h2, h3, h4, h5, h6, button, input, select, textarea {
     font-family: 'Plus Jakarta Sans', 'Inter', system-ui, sans-serif;
+  }
+  /* Headings stay tight and are the one place negative tracking helps. */
+  h1, h2, h3 {
+    line-height: 1.2;
+    letter-spacing: -0.015em;
+  }
+  /* Lining tabular figures so KPI counters and funding amounts line up column
+     to column instead of drifting with proportional digits. */
+  .tabular-nums,
+  [class*='font-black'],
+  [class*='font-extrabold'] {
+    font-variant-numeric: tabular-nums lining-nums;
   }
   html {
     scroll-behavior: smooth;
@@ -90,6 +121,30 @@
   /* Soft, non-blinding link and button focus states */
   a, button {
     transition: all 200ms ease-in-out;
+  }
+}
+
+@layer utilities {
+  /* Keyboard focus, guaranteed.
+     Buttons carry Tailwind's `outline-none`, which is a *transparent* 2px
+     outline rather than no outline, so the only focus signal was a translucent
+     ring that composited to 2.87:1 -- under the 3:1 that a focus indicator
+     needs. Links had no outline at all. These element-level selectors outrank
+     `.outline-none` inside the same layer, so every interactive control gets an
+     opaque, brand-coloured ring while any existing ring stays on top of it. */
+  a:focus-visible,
+  button:focus-visible,
+  summary:focus-visible,
+  input:focus-visible,
+  select:focus-visible,
+  textarea:focus-visible,
+  [role='button']:focus-visible,
+  [role='tab']:focus-visible,
+  [role='link']:focus-visible,
+  [tabindex]:not([tabindex='-1']):focus-visible {
+    outline: 2px solid hsl(var(--ring));
+    outline-offset: 2px;
+    border-radius: inherit;
   }
 }
 

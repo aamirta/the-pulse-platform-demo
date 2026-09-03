@@ -30,6 +30,14 @@ export interface AuthTokens {
   token_type: string;
 }
 
+/** Response of the unified `/auth/signin` endpoint. */
+export interface SignInResponse extends AuthTokens {
+  account_type: 'admin' | 'member';
+  member_id?: number | null;
+  full_name?: string | null;
+  role?: string | null;
+}
+
 /** Roles the dashboard understands, always derived from the authenticated identity. */
 export type DashboardRole = 'startup' | 'investor' | 'partner' | 'admin';
 
@@ -43,6 +51,8 @@ interface AuthContextType {
   isBootstrapping: boolean;
   /** Server-derived role; null when signed out. */
   role: DashboardRole | null;
+  /** Single entry point: the server resolves admin vs member. */
+  signIn: (identifier: string, password: string) => Promise<boolean>;
   login: (username: string, password: string) => Promise<boolean>;
   memberLogin: (email: string, password: string) => Promise<boolean>;
   logout: () => void;
@@ -115,6 +125,49 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       setUser(profile);
       setMember(null);
       localStorage.removeItem(MEMBER_KEY);
+      toast.success('Connexion réussie');
+      return true;
+    } catch (err) {
+      const message = err instanceof Error ? err.message : 'Échec de la connexion';
+      toast.error(message);
+      return false;
+    } finally {
+      setIsLoading(false);
+    }
+  }, [updateTokens]);
+
+  /**
+   * Single sign-in: the server decides which account the credentials belong to.
+   *
+   * The form used to make the person choose "Admin" or "Member" up front and
+   * called a different endpoint for each. Both stores live on the server, so it
+   * resolves the identifier and tells us which kind of session came back.
+   */
+  const signIn = useCallback(async (identifier: string, password: string): Promise<boolean> => {
+    setIsLoading(true);
+    try {
+      const res = await apiPost<SignInResponse>('/auth/signin', { identifier, password });
+      const { access_token, refresh_token, token_type } = res;
+      updateTokens({ access_token, refresh_token, token_type });
+
+      if (res.account_type === 'member') {
+        const profile = {
+          member_id: res.member_id as number,
+          full_name: res.full_name ?? '',
+          role: res.role ?? '',
+          email: identifier.trim().toLowerCase(),
+        };
+        setMember(profile);
+        localStorage.setItem(MEMBER_KEY, JSON.stringify(profile));
+        setUser(null);
+      } else {
+        // Identity still comes from the server: a row in the User table is not
+        // automatically the administrator.
+        const profile = await apiGet<User>('/auth/me');
+        setUser(profile);
+        setMember(null);
+        localStorage.removeItem(MEMBER_KEY);
+      }
       toast.success('Connexion réussie');
       return true;
     } catch (err) {
@@ -280,6 +333,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     isLoading,
     isBootstrapping,
     role: user ? 'admin' : member ? roleToDashboardRole(member.role) : null,
+    signIn,
     login,
     memberLogin,
     logout,

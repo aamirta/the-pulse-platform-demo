@@ -246,7 +246,7 @@ export default function OpportunityDetail({
   if (error || !post) {
     return (
       <div className="text-center py-16">
-        <p className="text-sm text-zinc-500 dark:text-zinc-400">
+        <p className="text-sm text-zinc-600 dark:text-zinc-300">
           {error || (en ? 'Opportunity not found' : 'Opportunité introuvable')}
         </p>
         <Button variant="outline" size="sm" className="mt-4" onClick={onClose}>
@@ -309,7 +309,7 @@ export default function OpportunityDetail({
               {en ? 'Under review' : 'En examen'}
             </Chip>
           )}
-          <span className="ml-auto text-[11px] text-zinc-400">
+          <span className="ml-auto text-[11px] text-zinc-500 dark:text-zinc-400">
             {relativeTime(post.published_at ?? post.created_at, language)}
           </span>
         </div>
@@ -334,7 +334,7 @@ export default function OpportunityDetail({
             <p className="text-sm font-medium text-zinc-900 dark:text-white truncate">
               {displayName}
             </p>
-            <p className="text-[11px] text-zinc-400 truncate">
+            <p className="text-[11px] text-zinc-500 dark:text-zinc-400 truncate">
               {author.entity_name && author.full_name
                 ? `${author.full_name}${author.role ? ` · ${author.role}` : ''}`
                 : author.role || ''}
@@ -359,7 +359,7 @@ export default function OpportunityDetail({
               key={fact.label}
               className="bg-white dark:bg-zinc-900 rounded-lg border border-zinc-100 dark:border-zinc-800 px-3 py-2"
             >
-              <p className="text-[10px] uppercase tracking-wide text-zinc-400">{fact.label}</p>
+              <p className="text-[11px] uppercase tracking-wide text-zinc-500 dark:text-zinc-400">{fact.label}</p>
               <p className="text-xs font-semibold text-zinc-900 dark:text-white mt-0.5 truncate">
                 {fact.value}
               </p>
@@ -370,7 +370,7 @@ export default function OpportunityDetail({
 
       {/* The full ask */}
       <section className="bg-white dark:bg-zinc-900 rounded-xl border border-zinc-100 dark:border-zinc-800 p-5">
-        <h3 className="text-xs font-semibold uppercase tracking-wide text-zinc-400 mb-2.5">
+        <h3 className="text-xs font-semibold uppercase tracking-wide text-zinc-500 dark:text-zinc-400 mb-2.5">
           {en ? 'About this opportunity' : 'À propos de cette opportunité'}
         </h3>
         <p className="text-sm text-zinc-700 dark:text-zinc-300 leading-relaxed whitespace-pre-wrap">
@@ -408,14 +408,14 @@ export default function OpportunityDetail({
       {!post.can_manage && (
         <div className="flex items-center gap-2 flex-wrap">
           {post.responded_by_me ? (
-            <div className="flex items-center gap-2 text-xs text-emerald-600 dark:text-emerald-400 font-medium">
+            <div className="flex items-center gap-2 text-xs text-emerald-700 dark:text-emerald-400 font-medium">
               <Check className="w-4 h-4" />
               {en ? 'You have responded' : 'Vous avez répondu'}
             </div>
           ) : post.status === 'published' ? (
             <Button
               size="sm"
-              className="bg-pulse-orange hover:bg-pulse-orange-hover text-white"
+              className="bg-pulse-orange hover:bg-pulse-orange-hover text-primary-foreground"
               onClick={() => {
                 if (!signedIn) {
                   toast.info(en ? 'Sign in to respond' : 'Connectez-vous pour répondre');
@@ -429,7 +429,7 @@ export default function OpportunityDetail({
               {en ? 'Respond' : 'Répondre'}
             </Button>
           ) : (
-            <p className="text-xs text-zinc-400">
+            <p className="text-xs text-zinc-500 dark:text-zinc-400">
               {en
                 ? 'This opportunity is closed and is no longer taking responses.'
                 : "Cette opportunité est clôturée et n'accepte plus de réponses."}
@@ -440,7 +440,7 @@ export default function OpportunityDetail({
             <Button
               variant="ghost"
               size="sm"
-              className="text-zinc-400 hover:text-red-600"
+              className="text-zinc-500 dark:text-zinc-400 hover:text-red-600"
               onClick={() => setReportOpen(true)}
             >
               <Flag className="w-3.5 h-3.5 mr-1.5" />
@@ -453,7 +453,7 @@ export default function OpportunityDetail({
       {/* Author actions */}
       {post.can_manage && (
         <section className="bg-white dark:bg-zinc-900 rounded-xl border border-zinc-100 dark:border-zinc-800 p-4 space-y-3">
-          <div className="flex items-center gap-3 text-[11px] text-zinc-400">
+          <div className="flex items-center gap-3 text-[11px] text-zinc-500 dark:text-zinc-400">
             <span className="inline-flex items-center gap-1">
               <Eye className="w-3.5 h-3.5" />
               {post.view_count} {en ? 'views' : 'vues'}
@@ -480,7 +480,7 @@ export default function OpportunityDetail({
             {post.status === 'draft' && (
               <Button
                 size="sm"
-                className="bg-pulse-orange hover:bg-pulse-orange-hover text-white"
+                className="bg-pulse-orange hover:bg-pulse-orange-hover text-primary-foreground"
                 onClick={() => changeStatus('published')}
                 disabled={busy}
               >
@@ -511,7 +511,7 @@ export default function OpportunityDetail({
               <Button
                 variant="ghost"
                 size="sm"
-                className="text-zinc-400 hover:text-red-600 ml-auto"
+                className="text-zinc-500 dark:text-zinc-400 hover:text-red-600 ml-auto"
                 onClick={remove}
                 disabled={busy}
               >
@@ -539,11 +539,11 @@ export default function OpportunityDetail({
       {/* Responders — author only */}
       {post.can_manage && responses !== null && (
         <section className="bg-white dark:bg-zinc-900 rounded-xl border border-zinc-100 dark:border-zinc-800 p-4">
-          <h3 className="text-xs font-semibold uppercase tracking-wide text-zinc-400 mb-3">
+          <h3 className="text-xs font-semibold uppercase tracking-wide text-zinc-500 dark:text-zinc-400 mb-3">
             {en ? 'Who responded' : 'Qui a répondu'} ({responses.length})
           </h3>
           {responses.length === 0 ? (
-            <p className="text-xs text-zinc-400 py-2">
+            <p className="text-xs text-zinc-500 dark:text-zinc-400 py-2">
               {en
                 ? 'Nobody has responded yet. Responses arrive here and in your inbox.'
                 : "Personne n'a encore répondu. Les réponses arrivent ici et dans votre boîte."}
@@ -555,7 +555,7 @@ export default function OpportunityDetail({
                   key={response.id}
                   className="flex items-start gap-2.5 p-2.5 rounded-lg bg-zinc-50 dark:bg-zinc-800/50 border border-zinc-100 dark:border-zinc-800"
                 >
-                  <span className="w-7 h-7 rounded-full bg-pulse-orange/10 text-pulse-orange text-[9px] font-bold grid place-items-center flex-shrink-0 mt-0.5">
+                  <span className="w-7 h-7 rounded-full bg-pulse-orange/10 text-pulse-orange text-[11px] font-bold grid place-items-center flex-shrink-0 mt-0.5">
                     {initials(response.responder.full_name)}
                   </span>
                   <div className="min-w-0 flex-1">
@@ -567,7 +567,7 @@ export default function OpportunityDetail({
                         <Chip
                           className={
                             response.status === 'accepted'
-                              ? 'bg-emerald-500/10 text-emerald-600 border-emerald-500/20'
+                              ? 'bg-emerald-500/10 text-emerald-700 dark:text-emerald-400 border-emerald-500/20'
                               : 'bg-zinc-500/10 text-zinc-500 border-zinc-500/20'
                           }
                         >
@@ -580,7 +580,7 @@ export default function OpportunityDetail({
                               : 'Décliné'}
                         </Chip>
                       )}
-                      <span className="text-[10px] text-zinc-400 ml-auto">
+                      <span className="text-[11px] text-zinc-500 dark:text-zinc-400 ml-auto">
                         {relativeTime(response.created_at, language)}
                       </span>
                     </div>
@@ -591,7 +591,7 @@ export default function OpportunityDetail({
                       <Button
                         variant="ghost"
                         size="sm"
-                        className="h-6 px-2 text-[10px]"
+                        className="h-6 px-2 text-[11px]"
                         onClick={() => navigate('/inbox')}
                       >
                         <MessagesSquare className="w-3 h-3 mr-1" />
@@ -602,7 +602,7 @@ export default function OpportunityDetail({
                           <Button
                             variant="ghost"
                             size="sm"
-                            className="h-6 px-2 text-[10px] text-emerald-600"
+                            className="h-6 px-2 text-[11px] text-emerald-700 dark:text-emerald-400"
                             onClick={() => decideResponse(response.id, 'accepted')}
                           >
                             <Check className="w-3 h-3 mr-1" />
@@ -611,7 +611,7 @@ export default function OpportunityDetail({
                           <Button
                             variant="ghost"
                             size="sm"
-                            className="h-6 px-2 text-[10px] text-zinc-400"
+                            className="h-6 px-2 text-[11px] text-zinc-500 dark:text-zinc-400"
                             onClick={() => decideResponse(response.id, 'declined')}
                           >
                             <X className="w-3 h-3 mr-1" />
@@ -656,7 +656,7 @@ export default function OpportunityDetail({
                 }
                 className="text-sm resize-none"
               />
-              <p className="text-[11px] text-zinc-400 mt-1 text-right">
+              <p className="text-[11px] text-zinc-500 dark:text-zinc-400 mt-1 text-right">
                 {responseBody.trim().length}/2000
                 {responseBody.trim().length < 10 && responseBody.length > 0 && (
                   <span className="text-amber-600 ml-2">
@@ -673,7 +673,7 @@ export default function OpportunityDetail({
                 type="submit"
                 size="sm"
                 disabled={responseBody.trim().length < 10 || sending}
-                className="bg-pulse-orange hover:bg-pulse-orange-hover text-white"
+                className="bg-pulse-orange hover:bg-pulse-orange-hover text-primary-foreground"
               >
                 {sending && <Loader2 className="w-3.5 h-3.5 mr-1.5 animate-spin" />}
                 {en ? 'Send response' : 'Envoyer'}

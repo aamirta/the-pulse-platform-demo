@@ -2,7 +2,20 @@ import { Navigate } from 'react-router-dom';
 import { useAuth } from '@/context/AuthContext';
 import type { ReactNode } from 'react';
 
-export function ProtectedRoute({ children }: { children: ReactNode }) {
+interface ProtectedRouteProps {
+  children: ReactNode;
+  /**
+   * Rendered instead of bouncing to /login when there is no session.
+   *
+   * Sending a visitor straight to a sign-in form tells them nothing about what
+   * they were trying to reach -- the review raised this for the Deal Room. The
+   * access check itself is unchanged: `children` still render only for an
+   * authenticated user.
+   */
+  fallback?: ReactNode;
+}
+
+export function ProtectedRoute({ children, fallback }: ProtectedRouteProps) {
   const { isAuthenticated, isLoading, isBootstrapping } = useAuth();
 
   // Wait for the stored session to be restored before deciding, otherwise a
@@ -16,7 +29,7 @@ export function ProtectedRoute({ children }: { children: ReactNode }) {
   }
 
   if (!isAuthenticated) {
-    return <Navigate to="/login" replace />;
+    return fallback ? <>{fallback}</> : <Navigate to="/login" replace />;
   }
 
   return <>{children}</>;

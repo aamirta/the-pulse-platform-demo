@@ -7,7 +7,7 @@ SQLAlchemy 2.0 models in ``backend/models.py``.
 
 from datetime import datetime
 from decimal import Decimal
-from typing import Any, Generic, TypeVar
+from typing import Any, Generic, Literal, TypeVar
 
 from pydantic import BaseModel, ConfigDict, Field, field_serializer, field_validator
 
@@ -134,6 +134,33 @@ class MemberToken(BaseModel):
     member_id: int
     full_name: str
     role: str
+
+
+class SignInRequest(BaseModel):
+    """Credentials for the single sign-in entry point.
+
+    The identifier is whatever the person types: an administrator username or
+    a member's email address. Which one it is, is the server's job to work out.
+    """
+
+    identifier: str = Field(..., min_length=1, max_length=255)
+    password: str = Field(..., min_length=1)
+
+
+class SignInResponse(BaseModel):
+    """Token pair plus the account the server resolved the credentials to.
+
+    `account_type` tells the client which kind of session it now holds; the
+    member fields are populated only for a member sign-in.
+    """
+
+    access_token: str
+    refresh_token: str
+    token_type: str = "bearer"
+    account_type: Literal["admin", "member"]
+    member_id: int | None = None
+    full_name: str | None = None
+    role: str | None = None
 
 
 # ---------------------------------------------------------------------------
@@ -594,6 +621,7 @@ class StatsResponse(BaseModel):
     topSectors: ChartSeries
     topFundedStartups: ChartSeries | None = None
     fundingBySector: ChartSeries | None = None
+    startupsByCity: ChartSeries | None = None
 
 
 # ---------------------------------------------------------------------------
@@ -1362,4 +1390,41 @@ class CofounderProjectDetail(CofounderProjectListItem):
     """Co-founder search posting detail response."""
 
     contactInfo: str | None = None
+    createdAt: datetime | None = None
+
+
+class TalentListItem(BaseModel):
+    """Talent marketplace list item.
+
+    The `talents` table holds people offering their skills to the ecosystem,
+    not job adverts, so the payload is profile-shaped. Contact details are
+    deliberately kept out of the list response.
+    """
+
+    model_config = ConfigDict(from_attributes=True)
+
+    id: str
+    name: str
+    title: str | None = None
+    location: str | None = None
+    yearsExperience: str | None = None
+    roleType: str | None = None
+    workFormat: str | None = None
+    availability: str | None = None
+    skills: list[str] = []
+    industries: list[str] = []
+    profilePic: str | None = None
+
+
+class TalentDetail(TalentListItem):
+    """Talent marketplace detail response."""
+
+    professionalBio: str | None = None
+    lookingFor: str | None = None
+    education: str | None = None
+    achievements: str | None = None
+    languages: str | None = None
+    linkedin: str | None = None
+    portfolioWebsite: str | None = None
+    githubProfile: str | None = None
     createdAt: datetime | None = None

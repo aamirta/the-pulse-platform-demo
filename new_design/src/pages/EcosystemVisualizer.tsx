@@ -19,7 +19,9 @@ import { Badge } from '@/components/ui/badge';
 import { useTheme } from '@/hooks/useTheme';
 import { useLanguage } from '@/context/LanguageContext';
 import { useEcosystemGraph } from '@/hooks/useEcosystemGraph';
+import { describeError } from '@/lib/errors';
 import type { GraphLinkType, GraphNodeType } from '@/types';
+import { formatCount } from '@/lib/utils';
 
 interface SimNode {
   id: string;
@@ -94,7 +96,8 @@ export default function EcosystemVisualizer() {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const { theme } = useTheme();
-  const { t, language } = useLanguage();
+  const { language } = useLanguage();
+  const fmt = (n: number) => formatCount(n, language);
   const isFr = language === 'fr';
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
@@ -729,17 +732,17 @@ export default function EcosystemVisualizer() {
             <span className="p-2 rounded-xl bg-orange-500/10 text-pulse-orange">
               <Network className="w-5 h-5" />
             </span>
-            <span className="text-xs font-mono font-bold uppercase tracking-wider text-pulse-orange">
-              INTERACTIVE ECOSYSTEM GRAPH
+            <span className="text-xs font-bold tracking-wide text-pulse-orange">
+              {isFr ? 'Cartographie' : 'Ecosystem map'}
             </span>
           </div>
           <h1 className="text-2xl sm:text-3xl font-extrabold text-zinc-900 dark:text-white tracking-tight">
-            {isFr ? "Carte des Relations de l'Écosystème" : 'Ecosystem Relationship Visualizer'}
+            {isFr ? 'Qui a investi dans qui' : 'Who invested in whom'}
           </h1>
-          <p className="text-xs sm:text-sm text-zinc-500 dark:text-zinc-400 max-w-2xl mt-1">
+          <p className="text-xs sm:text-sm text-zinc-600 dark:text-zinc-300 max-w-2xl mt-1">
             {isFr
-              ? 'Chaque lien affiché provient d’un enregistrement vérifié : équipes fondatrices, tours de financement et programmes d’incubation.'
-              : 'Every link shown comes from a verified record: founding teams, funding rounds, and incubation programmes.'}
+              ? 'Chaque lien correspond à une relation référencée : équipe fondatrice, tour de financement, programme d’incubation.'
+              : 'Each link is a referenced relationship: founding team, funding round, incubation programme.'}
           </p>
         </div>
 
@@ -749,15 +752,15 @@ export default function EcosystemVisualizer() {
             <span className="w-2.5 h-2.5 rounded-full bg-pulse-orange" />
             Startups ({displayedCounts.startup})
           </span>
-          <span className="flex items-center gap-1.5 px-2.5 py-1 rounded-xl bg-blue-500/10 text-blue-500">
+          <span className="flex items-center gap-1.5 px-2.5 py-1 rounded-xl bg-blue-500/10 text-blue-700 dark:text-blue-400">
             <span className="w-2.5 h-2.5 rounded-full bg-blue-500" />
             {isFr ? 'Fondateurs' : 'Founders'} ({displayedCounts.founder})
           </span>
-          <span className="flex items-center gap-1.5 px-2.5 py-1 rounded-xl bg-emerald-500/10 text-emerald-500">
+          <span className="flex items-center gap-1.5 px-2.5 py-1 rounded-xl bg-emerald-500/10 text-emerald-700 dark:text-emerald-400">
             <span className="w-2.5 h-2.5 rounded-full bg-emerald-500" />
             {isFr ? 'Investisseurs' : 'Investors'} ({displayedCounts.investor})
           </span>
-          <span className="flex items-center gap-1.5 px-2.5 py-1 rounded-xl bg-purple-500/10 text-purple-500">
+          <span className="flex items-center gap-1.5 px-2.5 py-1 rounded-xl bg-purple-500/10 text-purple-700 dark:text-purple-400">
             <span className="w-2.5 h-2.5 rounded-full bg-purple-500" />
             {isFr ? 'Incubateurs' : 'Incubators'} ({displayedCounts.incubator})
           </span>
@@ -766,12 +769,12 @@ export default function EcosystemVisualizer() {
 
       {/* Truncation notice — the API returns the densest slice, not everything. */}
       {graph?.truncated && totals && (
-        <div className="flex items-start gap-2 text-[11px] text-amber-700 dark:text-amber-400 bg-amber-500/10 border border-amber-500/20 rounded-xl px-3 py-2">
+        <div className="flex items-start gap-2 text-[11px] text-amber-800 dark:text-amber-300 bg-amber-500/10 border border-amber-500/20 rounded-xl px-3 py-2">
           <AlertTriangle className="w-3.5 h-3.5 mt-0.5 shrink-0" />
           <span>
             {isFr
-              ? `Affichage des ${displayedTotal} entités les plus connectées. L'écosystème complet compte ${totals.startups} startups, ${totals.founders} fondateurs, ${totals.investors} investisseurs et ${totals.incubators} incubateurs, pour ${totals.founded + totals.invested + totals.incubated + totals.supported} relations vérifiées.`
-              : `Showing the ${displayedTotal} most connected entities. The full ecosystem holds ${totals.startups} startups, ${totals.founders} founders, ${totals.investors} investors and ${totals.incubators} incubators across ${totals.founded + totals.invested + totals.incubated + totals.supported} verified relationships.`}
+              ? `Affichage des ${fmt(displayedTotal)} entités les plus connectées. L'écosystème complet compte ${fmt(totals.startups)} startups, ${fmt(totals.founders)} fondateurs, ${fmt(totals.investors)} investisseurs et ${fmt(totals.incubators)} incubateurs, pour ${fmt(totals.founded + totals.invested + totals.incubated + totals.supported)} relations vérifiées.`
+              : `Showing the ${fmt(displayedTotal)} most connected entities. The full ecosystem holds ${fmt(totals.startups)} startups, ${fmt(totals.founders)} founders, ${fmt(totals.investors)} investors and ${fmt(totals.incubators)} incubators across ${fmt(totals.founded + totals.invested + totals.incubated + totals.supported)} verified relationships.`}
           </span>
         </div>
       )}
@@ -782,16 +785,17 @@ export default function EcosystemVisualizer() {
         <div className="space-y-4 lg:col-span-4">
           <div className="bg-white dark:bg-zinc-900 p-4 rounded-2xl border border-zinc-200 dark:border-zinc-800 space-y-3">
             <div className="flex items-center justify-between">
-              <span className="text-xs font-extrabold uppercase tracking-wider text-zinc-500 dark:text-zinc-400 flex items-center gap-1.5">
+              <span className="text-xs font-extrabold tracking-wide text-zinc-600 dark:text-zinc-300 flex items-center gap-1.5">
                 <Filter className="w-3.5 h-3.5 text-pulse-orange" />
-                {isFr ? 'Filtrer par catégorie' : 'Filter by category'}
+                {isFr ? 'Filtrer' : 'Filter'}
               </span>
               <button
                 onClick={resetView}
-                className="inline-flex items-center gap-1 min-h-11 px-1 text-[11px] text-zinc-500 dark:text-zinc-400 hover:text-pulse-orange transition-colors rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pulse-orange/60"
+                aria-label={isFr ? 'Réinitialiser la vue' : 'Reset the view'}
+                className="inline-flex items-center gap-1 min-h-11 px-1 text-[11px] text-zinc-600 dark:text-zinc-300 hover:text-pulse-orange transition-colors rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pulse-orange/60"
               >
                 <RotateCcw className="w-3 h-3" />
-                {t('seeAll')}
+                {isFr ? 'Réinitialiser' : 'Reset'}
               </button>
             </div>
 
@@ -810,7 +814,7 @@ export default function EcosystemVisualizer() {
                   onClick={() => setActiveFilter(tab.id)}
                   className={`px-3 py-2 text-xs font-bold rounded-xl transition-all text-left ${
                     activeFilter === tab.id
-                      ? 'bg-pulse-orange text-white shadow-sm'
+                      ? 'bg-pulse-orange text-primary-foreground shadow-sm'
                       : 'bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-300 hover:bg-zinc-200 dark:hover:bg-zinc-700'
                   }`}
                 >
@@ -820,7 +824,7 @@ export default function EcosystemVisualizer() {
             </div>
 
             <div className="relative pt-1">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-zinc-400" />
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-zinc-500 dark:text-zinc-400" />
               <Input
                 placeholder={isFr ? 'Rechercher une entité...' : 'Search an entity...'}
                 value={searchQuery}
@@ -837,12 +841,12 @@ export default function EcosystemVisualizer() {
                 <div className="space-y-2">
                   <div className="flex items-center justify-between">
                     <Badge
-                      className="text-[10px] font-extrabold px-2.5 py-0.5 rounded-full border-none text-white"
+                      className="text-[11px] font-extrabold px-2.5 py-0.5 rounded-full border-none text-white"
                       style={{ backgroundColor: selectedNode.color }}
                     >
                       {typeLabel(selectedNode.type).toUpperCase()}
                     </Badge>
-                    <span className="text-[10px] font-mono font-bold text-zinc-400 dark:text-zinc-500">
+                    <span className="text-[11px] font-mono font-bold text-zinc-500 dark:text-zinc-400">
                       {selectedNode.connectionsCount} {isFr ? 'relation(s)' : 'connection(s)'}
                     </span>
                   </div>
@@ -852,14 +856,14 @@ export default function EcosystemVisualizer() {
                   </h3>
 
                   {selectedNode.sector && (
-                    <span className="block text-[11px] font-semibold text-zinc-500 dark:text-zinc-400">
+                    <span className="block text-[11px] font-semibold text-zinc-600 dark:text-zinc-300">
                       {selectedNode.type === 'founder'
                         ? selectedNode.sector
                         : `${isFr ? 'Secteur' : 'Sector'}: ${selectedNode.sector}`}
                     </span>
                   )}
                   {selectedNode.location && (
-                    <span className="block text-[11px] text-zinc-500 dark:text-zinc-400">
+                    <span className="block text-[11px] text-zinc-600 dark:text-zinc-300">
                       {selectedNode.location}
                     </span>
                   )}
@@ -867,11 +871,11 @@ export default function EcosystemVisualizer() {
 
                 {/* The actual verified relationships for this node. */}
                 <div className="flex-1">
-                  <span className="text-[10px] font-extrabold uppercase tracking-wider text-zinc-400 dark:text-zinc-500">
+                  <span className="text-[11px] font-extrabold uppercase tracking-wider text-zinc-500 dark:text-zinc-400">
                     {isFr ? 'Relations vérifiées' : 'Verified relationships'}
                   </span>
                   {selectedNeighbours.length === 0 ? (
-                    <p className="text-xs text-zinc-500 dark:text-zinc-400 mt-2">
+                    <p className="text-xs text-zinc-600 dark:text-zinc-300 mt-2">
                       {isFr ? 'Aucune relation enregistrée.' : 'No recorded relationships.'}
                     </p>
                   ) : (
@@ -889,7 +893,7 @@ export default function EcosystemVisualizer() {
                             <span className="text-[11px] font-semibold text-zinc-800 dark:text-zinc-200 truncate flex-1">
                               {node.name}
                             </span>
-                            <span className="text-[9px] font-bold uppercase text-zinc-400 dark:text-zinc-500 shrink-0">
+                            <span className="text-[11px] font-bold uppercase text-zinc-500 dark:text-zinc-400 shrink-0">
                               {relationLabel(type, node)}
                             </span>
                           </button>
@@ -902,7 +906,7 @@ export default function EcosystemVisualizer() {
                 {canNavigate(selectedNode) && (
                   <Button
                     onClick={() => handleNodeClickNavigate(selectedNode)}
-                    className="w-full text-xs h-10 bg-pulse-orange hover:bg-pulse-orange-hover text-white font-bold rounded-xl flex items-center justify-center gap-1.5 mt-2"
+                    className="w-full text-xs h-10 bg-pulse-orange hover:bg-pulse-orange-hover text-primary-foreground font-bold rounded-xl flex items-center justify-center gap-1.5 mt-2"
                   >
                     {isFr ? 'Voir la fiche complète' : 'View full profile'}
                     <ArrowRight className="w-4 h-4" />
@@ -910,7 +914,7 @@ export default function EcosystemVisualizer() {
                 )}
               </div>
             ) : (
-              <div className="flex-1 flex flex-col items-center justify-center text-center text-xs text-zinc-500 dark:text-zinc-400 py-8 space-y-3">
+              <div className="flex-1 flex flex-col items-center justify-center text-center text-xs text-zinc-600 dark:text-zinc-300 py-8 space-y-3">
                 <div className="w-12 h-12 rounded-2xl bg-orange-500/10 text-pulse-orange flex items-center justify-center">
                   <Info className="w-6 h-6" />
                 </div>
@@ -918,9 +922,9 @@ export default function EcosystemVisualizer() {
                   <span className="font-bold text-zinc-900 dark:text-white block text-sm">
                     {isFr ? 'Sélectionnez un nœud' : 'Select a Node'}
                   </span>
-                  <p className="text-xs text-zinc-500 dark:text-zinc-400">
+                  <p className="text-xs text-zinc-600 dark:text-zinc-300">
                     {isFr
-                      ? 'Cliquez sur une entité du graphe pour inspecter ses relations réelles.'
+                      ? 'Cliquez sur une startup, un fondateur ou un investisseur pour voir ses relations.'
                       : 'Click any entity in the network graph to inspect its real relationships.'}
                   </p>
                 </div>
@@ -964,7 +968,7 @@ export default function EcosystemVisualizer() {
           </div>
 
           {/* Relationship-type legend */}
-          <div className="absolute top-4 right-4 z-10 bg-white/90 dark:bg-zinc-950/90 backdrop-blur-md border border-zinc-200 dark:border-zinc-800 px-3 py-1.5 rounded-full text-[10px] text-zinc-500 dark:text-zinc-400 font-semibold flex items-center gap-2.5 shadow-sm">
+          <div className="absolute top-4 right-4 z-10 bg-white/90 dark:bg-zinc-950/90 backdrop-blur-md border border-zinc-200 dark:border-zinc-800 px-3 py-1.5 rounded-full text-[11px] text-zinc-600 dark:text-zinc-300 font-semibold flex items-center gap-2.5 shadow-sm">
             <Sparkles className="w-3.5 h-3.5 text-pulse-orange" />
             <span className="flex items-center gap-1">
               <span className="w-3 h-0.5 rounded" style={{ backgroundColor: LINK_COLORS.founded }} />
@@ -1003,25 +1007,27 @@ export default function EcosystemVisualizer() {
                     <Skeleton className="w-24 h-3 rounded" />
                   </div>
                 </div>
-                <span className="text-xs font-semibold text-zinc-500 dark:text-zinc-400">
+                <span className="text-xs font-semibold text-zinc-600 dark:text-zinc-300">
                   {isFr ? 'Chargement du graphe...' : 'Loading graph...'}
                 </span>
               </div>
             )}
 
             {!isLoading && error && (
-              <div className="absolute inset-0 z-20 flex flex-col items-center justify-center gap-2 text-center px-6">
+              <div
+                className="absolute inset-0 z-20 flex flex-col items-center justify-center gap-3 text-center px-6"
+                role="alert"
+              >
                 <AlertTriangle className="w-8 h-8 text-amber-500" />
-                <span className="text-sm font-bold text-zinc-900 dark:text-white">
-                  {isFr ? 'Impossible de charger le graphe' : 'Could not load the graph'}
+                <span className="text-sm text-zinc-600 dark:text-zinc-300 max-w-sm">
+                  {describeError(error, language, 'map')}
                 </span>
-                <span className="text-xs text-zinc-500 dark:text-zinc-400">{error.message}</span>
               </div>
             )}
 
             {!isLoading && !error && graph && graph.nodes.length === 0 && (
               <div className="absolute inset-0 z-20 flex flex-col items-center justify-center gap-2 text-center px-6">
-                <Network className="w-8 h-8 text-zinc-400" />
+                <Network className="w-8 h-8 text-zinc-500 dark:text-zinc-400" />
                 <span className="text-sm font-bold text-zinc-900 dark:text-white">
                   {isFr ? 'Aucune relation enregistrée' : 'No recorded relationships'}
                 </span>

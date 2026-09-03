@@ -318,10 +318,10 @@ export default function DealRoom() {
                   <PermissionBadge permission={room.viewer_permission} language={language} />
                 )}
               </div>
-              <p className="text-[11px] text-zinc-500 dark:text-zinc-400 mt-1 flex items-center gap-3 flex-wrap">
+              <p className="text-[11px] text-zinc-600 dark:text-zinc-300 mt-1 flex items-center gap-3 flex-wrap">
                 {room.watermark_enabled && (
                   <span className="inline-flex items-center gap-1">
-                    <ShieldCheck className="w-3 h-3 text-emerald-600 dark:text-emerald-400" />
+                    <ShieldCheck className="w-3 h-3 text-emerald-700 dark:text-emerald-400" />
                     {en ? 'Watermarking on' : 'Filigrane activé'}
                   </span>
                 )}
@@ -355,13 +355,13 @@ export default function DealRoom() {
                 className={`flex items-center gap-1.5 px-3 py-2 text-xs font-medium whitespace-nowrap border-b-2 transition-colors ${
                   tab === key
                     ? 'border-pulse-orange text-pulse-orange'
-                    : 'border-transparent text-zinc-500 dark:text-zinc-400 hover:text-zinc-800 dark:hover:text-zinc-200'
+                    : 'border-transparent text-zinc-600 dark:text-zinc-300 hover:text-zinc-800 dark:hover:text-zinc-200'
                 }`}
               >
                 <Icon className="w-3.5 h-3.5" />
                 {label}
                 {badge ? (
-                  <span className="ml-0.5 bg-pulse-orange text-white text-[9px] font-bold min-w-[16px] h-4 px-1 rounded-full grid place-items-center">
+                  <span className="ml-0.5 bg-pulse-orange text-primary-foreground text-[11px] font-bold min-w-[16px] h-4 px-1 rounded-full grid place-items-center">
                     {badge}
                   </span>
                 ) : null}
@@ -421,7 +421,7 @@ function Fact({ label, children }: { label: string; children: React.ReactNode })
   if (children === null || children === undefined || children === '') return null;
   return (
     <div className="min-w-0">
-      <dt className="text-[10px] font-semibold text-zinc-400 uppercase tracking-wide">{label}</dt>
+      <dt className="text-[11px] font-semibold text-zinc-500 dark:text-zinc-400 uppercase tracking-wide">{label}</dt>
       <dd className="text-[13px] text-zinc-800 dark:text-zinc-100 mt-0.5 truncate">{children}</dd>
     </div>
   );
@@ -467,7 +467,7 @@ function CompanyPanel({ company, language }: { company: StartupSnapshot; languag
             {sectors.map((sector) => (
               <span
                 key={sector}
-                className="text-[10px] font-medium px-2 py-0.5 rounded-full bg-pulse-orange-50 dark:bg-zinc-800 text-pulse-orange"
+                className="text-[11px] font-medium px-2 py-0.5 rounded-full bg-pulse-orange-50 dark:bg-zinc-800 text-pulse-orange"
               >
                 {sector}
               </span>
@@ -537,7 +537,7 @@ function PageShell({
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-zinc-150 dark:border-zinc-800">
         <div className="min-w-0">
           <h1 className="text-2xl font-bold text-zinc-900 dark:text-white">Deal Room</h1>
-          <p className="text-sm text-zinc-500 dark:text-zinc-400">
+          <p className="text-sm text-zinc-600 dark:text-zinc-300">
             {marketplace
               ? en
                 ? 'Find the people you need, and let them find you.'
@@ -569,7 +569,7 @@ function PageShell({
                 className={`inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-md transition-colors ${
                   mode === key
                     ? 'bg-white dark:bg-zinc-900 text-pulse-orange shadow-sm'
-                    : 'text-zinc-500 dark:text-zinc-400 hover:text-zinc-800 dark:hover:text-zinc-200'
+                    : 'text-zinc-600 dark:text-zinc-300 hover:text-zinc-800 dark:hover:text-zinc-200'
                 }`}
               >
                 <Icon className="w-3.5 h-3.5" />
@@ -644,7 +644,7 @@ function OverviewTab({
                   <p className="text-sm font-medium text-zinc-900 dark:text-white">
                     {en ? 'Review the materials' : 'Consultez les documents'}
                   </p>
-                  <p className="text-xs text-zinc-500 dark:text-zinc-400 mt-0.5">
+                  <p className="text-xs text-zinc-600 dark:text-zinc-300 mt-0.5">
                     {en
                       ? 'Everything the startup has shared with you, in one place.'
                       : 'Tout ce que la startup a partagé avec vous, au même endroit.'}
@@ -652,7 +652,7 @@ function OverviewTab({
                 </div>
                 <Button
                   size="sm"
-                  className="h-9 text-xs bg-pulse-orange hover:bg-pulse-orange-hover text-white"
+                  className="h-9 text-xs bg-pulse-orange hover:bg-pulse-orange-hover text-primary-foreground"
                   onClick={onOpenDocuments}
                 >
                   <FileText className="w-3.5 h-3.5 mr-1.5" />
@@ -670,7 +670,7 @@ function OverviewTab({
     return (
       <Panel>
         <div className="p-6 flex justify-center">
-          <Loader2 className="w-5 h-5 animate-spin text-zinc-400" />
+          <Loader2 className="w-5 h-5 animate-spin text-zinc-500 dark:text-zinc-400" />
         </div>
       </Panel>
     );
@@ -751,11 +751,11 @@ function OverviewTab({
                       >
                         {auditActionLabel(event.action, language)}
                       </span>
-                      <span className="text-zinc-400 mx-1.5">·</span>
-                      <span className="text-zinc-500 dark:text-zinc-400">{event.actor_email}</span>
+                      <span className="text-zinc-500 dark:text-zinc-400 mx-1.5">·</span>
+                      <span className="text-zinc-600 dark:text-zinc-300">{event.actor_email}</span>
                     </p>
                   </div>
-                  <span className="text-[11px] text-zinc-400 flex-shrink-0">
+                  <span className="text-[11px] text-zinc-500 dark:text-zinc-400 flex-shrink-0">
                     {formatDateTime(event.created_at, language)}
                   </span>
                 </li>

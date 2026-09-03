@@ -184,7 +184,7 @@ export default function DealRoomDocuments({ room, language, onChanged }: Props) 
       {/* Filters */}
       <div className="flex flex-col lg:flex-row gap-2 lg:items-center">
         <div className="relative flex-1 min-w-0">
-          <Search className="w-3.5 h-3.5 absolute left-3 top-1/2 -translate-y-1/2 text-zinc-400" />
+          <Search className="w-3.5 h-3.5 absolute left-3 top-1/2 -translate-y-1/2 text-zinc-500 dark:text-zinc-400" />
           <Input
             value={search}
             onChange={(e) => {
@@ -264,7 +264,7 @@ export default function DealRoomDocuments({ room, language, onChanged }: Props) 
               </Button>
               <Button
                 size="sm"
-                className="h-9 text-xs bg-pulse-orange hover:bg-pulse-orange-hover text-white"
+                className="h-9 text-xs bg-pulse-orange hover:bg-pulse-orange-hover text-primary-foreground"
                 onClick={() => setUploadOpen(true)}
               >
                 <Upload className="w-3.5 h-3.5 mr-1.5" />
@@ -297,7 +297,7 @@ export default function DealRoomDocuments({ room, language, onChanged }: Props) 
               isManager ? (
                 <Button
                   size="sm"
-                  className="h-8 text-xs bg-pulse-orange hover:bg-pulse-orange-hover text-white"
+                  className="h-8 text-xs bg-pulse-orange hover:bg-pulse-orange-hover text-primary-foreground"
                   onClick={() => setUploadOpen(true)}
                 >
                   <Upload className="w-3.5 h-3.5 mr-1.5" />
@@ -322,7 +322,7 @@ export default function DealRoomDocuments({ room, language, onChanged }: Props) 
                     {isManager && <StatusPill status={doc.status} language={language} />}
                     {doc.watermarked && (
                       <span
-                        className="inline-flex items-center gap-1 text-[10px] text-emerald-700 dark:text-emerald-400"
+                        className="inline-flex items-center gap-1 text-[11px] text-emerald-700 dark:text-emerald-400"
                         title={en ? 'Watermarked with your identity when opened' : 'Filigrané à votre identité'}
                       >
                         <ShieldCheck className="w-3 h-3" />
@@ -330,7 +330,7 @@ export default function DealRoomDocuments({ room, language, onChanged }: Props) 
                       </span>
                     )}
                   </div>
-                  <p className="text-[11px] text-zinc-500 dark:text-zinc-400 mt-0.5 truncate">
+                  <p className="text-[11px] text-zinc-600 dark:text-zinc-300 mt-0.5 truncate">
                     {categoryLabel(doc.category, language)}
                     {doc.current_version && ` · ${formatBytes(doc.current_version.byte_size)}`}
                     {doc.version_count > 1 && ` · v${doc.current_version?.version_no ?? doc.version_count}`}
@@ -415,7 +415,7 @@ export default function DealRoomDocuments({ room, language, onChanged }: Props) 
 
         {documents && documents.pages > 1 && (
           <footer className="px-4 py-3 border-t border-zinc-100 dark:border-zinc-800 flex items-center justify-between">
-            <span className="text-[11px] text-zinc-500 dark:text-zinc-400">
+            <span className="text-[11px] text-zinc-600 dark:text-zinc-300">
               {en
                 ? `Page ${documents.page} of ${documents.pages} · ${documents.total} documents`
                 : `Page ${documents.page} sur ${documents.pages} · ${documents.total} documents`}
@@ -506,7 +506,7 @@ function PreviewDialog({
           <div className="min-w-0">
             <DialogTitle className="text-sm truncate">{preview.title}</DialogTitle>
             <DialogDescription className="text-[11px] flex items-center gap-1 mt-0.5">
-              <ShieldCheck className="w-3 h-3 text-emerald-600 dark:text-emerald-400" />
+              <ShieldCheck className="w-3 h-3 text-emerald-700 dark:text-emerald-400" />
               {en
                 ? 'Confidential — this rendition is traceable to you.'
                 : 'Confidentiel — cette version vous est attribuable.'}
@@ -686,7 +686,7 @@ function UploadDialog({
               type="submit"
               size="sm"
               disabled={busy}
-              className="h-9 text-xs bg-pulse-orange hover:bg-pulse-orange-hover text-white"
+              className="h-9 text-xs bg-pulse-orange hover:bg-pulse-orange-hover text-primary-foreground"
             >
               {busy && <Loader2 className="w-3.5 h-3.5 mr-1.5 animate-spin" />}
               {en ? 'Upload' : 'Téléverser'}
@@ -773,7 +773,7 @@ function FolderDialog({
               type="submit"
               size="sm"
               disabled={busy || !name.trim()}
-              className="h-9 text-xs bg-pulse-orange hover:bg-pulse-orange-hover text-white"
+              className="h-9 text-xs bg-pulse-orange hover:bg-pulse-orange-hover text-primary-foreground"
             >
               {busy && <Loader2 className="w-3.5 h-3.5 mr-1.5 animate-spin" />}
               {en ? 'Create' : 'Créer'}

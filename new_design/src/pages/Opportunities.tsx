@@ -61,7 +61,7 @@ export default function Opportunities() {
     <div className="space-y-6">
       <div>
         <h1 className="text-2xl font-bold text-zinc-900 dark:text-white mb-1 font-serif">{t('oppsTitle')}</h1>
-        <p className="text-sm text-zinc-500 dark:text-zinc-400">
+        <p className="text-sm text-zinc-600 dark:text-zinc-300">
           {t('oppsSubtitle')}
         </p>
       </div>
@@ -81,7 +81,7 @@ export default function Opportunities() {
                 <div className="flex items-center gap-2">
                   <Badge
                     variant="outline"
-                    className="text-[10px] font-semibold border-pulse-orange/30 text-pulse-orange bg-pulse-orange-50/50 dark:bg-pulse-orange/10 dark:text-orange-400"
+                    className="text-[11px] font-semibold border-pulse-orange/30 text-pulse-orange bg-pulse-orange-50/50 dark:bg-pulse-orange/10 dark:text-orange-400"
                   >
                     {opp.category}
                   </Badge>
@@ -97,12 +97,12 @@ export default function Opportunities() {
                 {opp.title}
               </h3>
 
-              <p className="text-sm text-zinc-500 dark:text-zinc-400 mb-4 leading-relaxed">
+              <p className="text-sm text-zinc-600 dark:text-zinc-300 mb-4 leading-relaxed">
                 {opp.description}
               </p>
 
               <div className="flex items-center justify-between pt-3 border-t border-zinc-50 dark:border-zinc-800/80">
-                <div className="flex items-center gap-3 text-xs text-zinc-500 dark:text-zinc-400">
+                <div className="flex items-center gap-3 text-xs text-zinc-600 dark:text-zinc-300">
                   <span className="flex items-center gap-1.5">
                     <Building2 className="w-3.5 h-3.5" />
                     {opp.organization}
@@ -116,7 +116,7 @@ export default function Opportunities() {
                 <Button
                   size="sm"
                   onClick={() => setSelectedOpp(opp)}
-                  className="h-8 px-4 bg-pulse-orange hover:bg-pulse-orange-hover text-white text-xs font-semibold rounded-lg border-none"
+                  className="h-8 px-4 bg-pulse-orange hover:bg-pulse-orange-hover text-primary-foreground text-xs font-semibold rounded-lg border-none"
                 >
                   {t('applyButton')}
                 </Button>
@@ -141,9 +141,9 @@ export default function Opportunities() {
 
           {successApply ? (
             <div className="py-8 flex flex-col items-center justify-center text-center space-y-3">
-              <CheckCircle className="w-12 h-12 text-emerald-500 animate-bounce" />
+              <CheckCircle className="w-12 h-12 text-emerald-700 dark:text-emerald-400 animate-bounce" />
               <h4 className="text-sm font-bold text-zinc-900 dark:text-white">{t('applySuccessTitle')}</h4>
-              <p className="text-xs text-zinc-500 dark:text-zinc-400">{t('applySuccessSub')}</p>
+              <p className="text-xs text-zinc-600 dark:text-zinc-300">{t('applySuccessSub')}</p>
             </div>
           ) : (
             <form onSubmit={handleApply} className="space-y-4 pt-3">
@@ -153,7 +153,7 @@ export default function Opportunities() {
               </div>
 
               <div className="space-y-1">
-                <label htmlFor="opportunity-motivation" className="text-[11px] font-bold text-zinc-400 dark:text-zinc-500 uppercase">{t('motivationLabel')}</label>
+                <label htmlFor="opportunity-motivation" className="text-[11px] font-bold text-zinc-500 dark:text-zinc-400 uppercase">{t('motivationLabel')}</label>
                 <textarea
                   id="opportunity-motivation"
                   value={motivation}
@@ -177,7 +177,7 @@ export default function Opportunities() {
                 <Button
                   type="submit"
                   disabled={submitting}
-                  className="h-9 text-xs bg-pulse-orange hover:bg-pulse-orange-hover text-white rounded-lg border-none disabled:opacity-60"
+                  className="h-9 text-xs bg-pulse-orange hover:bg-pulse-orange-hover text-primary-foreground rounded-lg border-none disabled:opacity-60"
                 >
                   {submitting ? (language === 'en' ? 'Sending…' : 'Envoi…') : t('confirmApplyButton')}
                 </Button>

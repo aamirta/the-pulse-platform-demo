@@ -51,15 +51,15 @@ export function StatCard({
     tone === 'warning'
       ? 'text-amber-600 dark:text-amber-400'
       : tone === 'success'
-        ? 'text-emerald-600 dark:text-emerald-400'
+        ? 'text-emerald-700 dark:text-emerald-400'
         : 'text-zinc-900 dark:text-white';
   return (
     <div className="bg-white dark:bg-zinc-900 p-5 rounded-xl border border-zinc-100 dark:border-zinc-800 flex items-center justify-between gap-3 ve-card-lift">
       <div className="min-w-0">
-        <span className="text-xs text-zinc-500 dark:text-zinc-400 block mb-1">{label}</span>
+        <span className="text-xs text-zinc-600 dark:text-zinc-300 block mb-1">{label}</span>
         <span className={`text-2xl font-bold ${toneClass}`}>{value}</span>
         {hint && (
-          <span className="text-[10px] text-zinc-500 dark:text-zinc-400 block mt-0.5 truncate">
+          <span className="text-[11px] text-zinc-600 dark:text-zinc-300 block mt-0.5 truncate">
             {hint}
           </span>
         )}
@@ -86,7 +86,7 @@ export function EmptyState({
       <Icon className="w-8 h-8 text-zinc-200 dark:text-zinc-700 mx-auto mb-3 ve-float" />
       <p className="text-sm font-medium text-zinc-700 dark:text-zinc-200">{title}</p>
       {description && (
-        <p className="text-xs text-zinc-500 dark:text-zinc-400 mt-1 max-w-sm mx-auto leading-relaxed">
+        <p className="text-xs text-zinc-600 dark:text-zinc-300 mt-1 max-w-sm mx-auto leading-relaxed">
           {description}
         </p>
       )}
@@ -161,8 +161,8 @@ export function PermissionBadge({
   return (
     <Badge
       variant="secondary"
-      className={`text-[10px] font-medium gap-1 ${
-        muted ? 'text-zinc-400' : 'text-zinc-600 dark:text-zinc-300'
+      className={`text-[11px] font-medium gap-1 ${
+        muted ? 'text-zinc-500 dark:text-zinc-400' : 'text-zinc-600 dark:text-zinc-300'
       } ${className}`}
     >
       <Icon className="w-2.5 h-2.5" />
@@ -206,7 +206,7 @@ export function StatusPill({ status, language }: { status: string; language: str
     className: 'bg-zinc-100 text-zinc-600 dark:bg-zinc-800 dark:text-zinc-300',
   };
   return (
-    <span className={`inline-flex items-center px-2 py-0.5 rounded-md text-[10px] font-semibold ${meta.className}`}>
+    <span className={`inline-flex items-center px-2 py-0.5 rounded-md text-[11px] font-semibold ${meta.className}`}>
       {language === 'en' ? meta.en : meta.fr}
     </span>
   );

@@ -59,14 +59,14 @@ export default function ResetPassword() {
       <div className="w-full max-w-md p-8 bg-white dark:bg-zinc-900 rounded-2xl border border-zinc-100 dark:border-zinc-800 shadow-soft-lg">
         <div className="text-center mb-6">
           <h1 className="text-2xl font-bold text-zinc-900 dark:text-white">Set new password</h1>
-          <p className="text-sm text-zinc-500 dark:text-zinc-400 mt-1">
+          <p className="text-sm text-zinc-600 dark:text-zinc-300 mt-1">
             Enter a new password for your account.
           </p>
         </div>
 
         {done ? (
           <div className="text-center space-y-4">
-            <CheckCircle2 className="w-12 h-12 text-emerald-500 mx-auto" />
+            <CheckCircle2 className="w-12 h-12 text-emerald-700 dark:text-emerald-400 mx-auto" />
             <p className="text-sm text-zinc-700 dark:text-zinc-300">Your password has been updated. Redirecting to sign in...</p>
           </div>
         ) : (
@@ -74,7 +74,7 @@ export default function ResetPassword() {
             <div className="space-y-1">
               <Label className="text-xs font-semibold text-zinc-600 dark:text-zinc-300">New password</Label>
               <div className="relative">
-                <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-zinc-400" />
+                <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-zinc-500 dark:text-zinc-400" />
                 <Input
                   type="password"
                   value={password}
@@ -88,7 +88,7 @@ export default function ResetPassword() {
             <div className="space-y-1">
               <Label className="text-xs font-semibold text-zinc-600 dark:text-zinc-300">Confirm password</Label>
               <div className="relative">
-                <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-zinc-400" />
+                <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-zinc-500 dark:text-zinc-400" />
                 <Input
                   type="password"
                   value={confirm}
@@ -102,7 +102,7 @@ export default function ResetPassword() {
             <Button
               type="submit"
               disabled={loading}
-              className="w-full bg-pulse-orange hover:bg-pulse-orange-hover text-white"
+              className="w-full bg-pulse-orange hover:bg-pulse-orange-hover text-primary-foreground"
             >
               {loading ? 'Updating...' : 'Reset password'}
             </Button>

@@ -54,7 +54,7 @@ export class ErrorBoundary extends Component<Props, State> {
           <div className="flex items-center justify-center gap-2">
             <button
               onClick={() => this.setState({ error: null })}
-              className="inline-flex items-center min-h-11 px-4 rounded-lg bg-pulse-orange text-white text-sm font-semibold hover:bg-pulse-orange-hover transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pulse-orange/60"
+              className="inline-flex items-center min-h-11 px-4 rounded-lg bg-pulse-orange text-primary-foreground text-sm font-semibold hover:bg-pulse-orange-hover transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pulse-orange/60"
             >
               Réessayer / Retry
             </button>

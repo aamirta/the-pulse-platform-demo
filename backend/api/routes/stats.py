@@ -116,7 +116,34 @@ def charts(request: Request, db: Session = Depends(get_db)) -> StatsResponse:
         ),
         topFundedStartups=_top_funded_startups(db),
         fundingBySector=_funding_by_sector(db),
+        startupsByCity=_startups_by_city(db),
     )
+
+
+# `location` mostly holds a city, but a few rows carry a country instead. Those
+# would sit at the top of a "startups by city" chart without naming a city.
+_NON_CITY_LOCATIONS = {"morocco", "maroc"}
+
+
+def _startups_by_city(db: Session, limit: int = 5) -> ChartSeries:
+    """Top cities by startup count, with the remainder grouped together."""
+    counts: Counter[str] = Counter()
+    for (location,) in db.query(Startup.location).filter(Startup.location.isnot(None)).all():
+        city = (location or "").strip()
+        if not city or city.lower() in _NON_CITY_LOCATIONS:
+            continue
+        counts[city] += 1
+
+    top = counts.most_common(limit)
+    labels = [city for city, _ in top]
+    values: list[float] = [float(count) for _, count in top]
+
+    remainder = sum(counts.values()) - sum(int(v) for v in values)
+    if remainder > 0:
+        labels.append("Autres")
+        values.append(float(remainder))
+
+    return ChartSeries(labels=labels, values=values)
 
 
 # Aggregate roll-ups that distort the per-startup chart; excluded by name.

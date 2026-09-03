@@ -34,7 +34,7 @@ export default function FounderProfile() {
     return (
       <div className="text-center py-12">
         <h2 className="text-xl font-semibold text-zinc-900 dark:text-white">{t('founderNotFound')}</h2>
-        <Button onClick={() => navigate('/founders')} className="mt-4 bg-pulse-orange hover:bg-pulse-orange-hover text-white">
+        <Button onClick={() => navigate('/founders')} className="mt-4 bg-pulse-orange hover:bg-pulse-orange-hover text-primary-foreground">
           {t('backToFounders')}
         </Button>
       </div>
@@ -71,7 +71,7 @@ export default function FounderProfile() {
               <div className="space-y-1">
                 <div className="flex items-center gap-2 flex-wrap">
                   <h1 className="text-2xl font-bold text-zinc-900 dark:text-white">{founder.name}</h1>
-                  <Badge className="bg-pulse-orange/15 dark:bg-pulse-orange/20 text-pulse-orange dark:text-orange-400 font-semibold border-none text-[10px]">
+                  <Badge className="bg-pulse-orange/15 dark:bg-pulse-orange/20 text-pulse-orange dark:text-orange-400 font-semibold border-none text-[11px]">
                     Top Founder
                   </Badge>
                 </div>
@@ -84,7 +84,7 @@ export default function FounderProfile() {
                     <Building className="w-3.5 h-3.5 inline" /> {founder.startup}
                   </button>
                 </p>
-                <div className="flex items-center gap-3 text-xs text-zinc-500 dark:text-zinc-400 pt-1">
+                <div className="flex items-center gap-3 text-xs text-zinc-600 dark:text-zinc-300 pt-1">
                   <span className="flex items-center gap-1">
                     <MapPin className="w-3.5 h-3.5" />
                     {founder.location || 'Casablanca, Morocco'}
@@ -161,14 +161,14 @@ export default function FounderProfile() {
                   .map((skill) => (
                     <span
                       key={skill}
-                      className="text-[10px] px-2 py-1 bg-zinc-50 dark:bg-zinc-800/40 border border-zinc-100 dark:border-zinc-800 rounded text-zinc-700 dark:text-zinc-300"
+                      className="text-[11px] px-2 py-1 bg-zinc-50 dark:bg-zinc-800/40 border border-zinc-100 dark:border-zinc-800 rounded text-zinc-700 dark:text-zinc-300"
                     >
                       {skill}
                     </span>
                   ))}
               </div>
             ) : (
-              <p className="text-xs text-zinc-500 dark:text-zinc-400">
+              <p className="text-xs text-zinc-600 dark:text-zinc-300">
                 {language === 'en' ? 'No expertise listed yet.' : 'Aucune expertise renseignée.'}
               </p>
             )}

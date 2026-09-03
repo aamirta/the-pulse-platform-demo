@@ -15,30 +15,41 @@ export default function FAQSection() {
   const faqs = [
     {
       id: 'faq-1',
-      question: language === 'fr' 
-        ? "Comment référencer ma startup sur The Pulse ?" 
-        : "How to list my startup on The Pulse?",
+      question: language === 'fr'
+        ? 'Comment référencer ma startup ?'
+        : 'How do I list my startup?',
       answer: language === 'fr'
-        ? "Pour référencer votre entreprise, cliquez sur 'Power the Pulse' dans la barre supérieure ou créez un compte Startup. Après validation de nos équipes sous 24 à 48 heures, votre fiche sera publiée et visible par les investisseurs qualifiés du réseau."
-        : "To list your startup, click 'Power the Pulse' in the top header or create a Startup account. After team validation within 24-48h, your profile will be published to the verified investors in the network.",
+        ? "Cliquez sur « Power the Pulse » dans la barre supérieure, ou créez un compte. Vous renseignez votre fiche, nous la relisons avant publication."
+        : 'Click "Power the Pulse" in the top bar, or create an account. You fill in your profile and we review it before publishing.',
     },
     {
       id: 'faq-2',
       question: language === 'fr'
-        ? "Comment les investisseurs accèdent-ils aux opportunités de dealflow ?"
-        : "How do investors access dealflow opportunities?",
+        ? "Comment accéder au dealflow en tant qu'investisseur ?"
+        : 'How do I access the dealflow as an investor?',
       answer: language === 'fr'
-        ? "Les fonds de VC et Business Angels certifiés disposent d'un tableau de bord 'Investisseur' dédié leur permettant de filtrer les levées de fonds par secteur, ticket cible, MRR et niveau de maturité."
-        : "Certified VC funds and Business Angels get access to a dedicated Investor Workspace with granular filters by sector, check size, MRR, and maturity level.",
+        ? "Créez un compte investisseur et demandez l'accès à la Deal Room. Vous y voyez les startups qui lèvent et pouvez filtrer par secteur, stade et montant recherché."
+        : 'Create an investor account and request access to the Deal Room. You will see the startups that are raising, filterable by sector, stage and target amount.',
     },
     {
+      id: 'faq-3',
+      question: language === 'fr'
+        ? "D'où viennent les données de l'Assistant IA ?"
+        : 'Where does the AI Assistant get its data?',
+      answer: language === 'fr'
+        ? "De la base The Pulse : startups, fondateurs, investisseurs, levées et programmes référencés sur la plateforme. L'assistant répond à partir de ces fiches, pas d'une source extérieure."
+        : 'From The Pulse database: the startups, founders, investors, funding rounds and programmes listed on the platform. The assistant answers from those records, not from an outside source.',
+    },
+    {
+      // Added at the review's request: the live site carries an MVP banner, and
+      // the platform should say plainly how complete its data is.
       id: 'faq-4',
       question: language === 'fr'
-        ? "Comment l'Assistant IA analyse-t-il les opportunités du marché marocain ?"
-        : "How does the AI Assistant analyze Moroccan market opportunities?",
+        ? 'Les données sont-elles fiables ?'
+        : 'Is the data reliable?',
       answer: language === 'fr'
-        ? "Notre IA exploite la base de données certifiée The Pulse, synchronisée avec les rapports officiels de l'AMIC et des ministères de tutelle. Les données sensibles des startups restent confidentielles et protégées."
-        : "Our AI model draws directly from The Pulse's verified dataset, cross-referenced with official AMIC reports. Sensitive startup data remains completely confidential.",
+        ? "The Pulse est un MVP en cours d'évolution. Les fiches proviennent de sources publiques et des contributions de l'écosystème : certaines sont incomplètes ou datées. Si vous repérez une erreur sur votre fiche, signalez-la, nous la corrigeons."
+        : 'The Pulse is an MVP still evolving. Records come from public sources and from the ecosystem itself, so some are incomplete or out of date. If you spot an error on your profile, tell us and we will correct it.',
     },
   ];
 
@@ -46,7 +57,7 @@ export default function FAQSection() {
     <ScrollReveal variants={fadeUp} className="w-full py-8 space-y-6 max-w-4xl mx-auto">
       {/* Header */}
       <div className="text-center space-y-2">
-        <span className="text-xs font-extrabold uppercase tracking-widest text-pulse-orange flex items-center justify-center gap-1.5">
+        <span className="text-xs font-extrabold tracking-wide text-pulse-orange flex items-center justify-center gap-1.5">
           <HelpCircle className="w-3.5 h-3.5" />
           {t('faqTag')}
         </span>

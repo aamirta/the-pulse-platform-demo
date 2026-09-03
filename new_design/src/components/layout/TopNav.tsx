@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Search, Moon, Sun, Menu, ChevronDown, User, Shield, Sparkles, Building, Landmark, Check, Globe, ArrowLeft, Rocket, GraduationCap, Users, BookOpen, Award, LayoutDashboard, LogOut, MessageSquare, Lock } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import BrandLogo from '@/components/BrandLogo';
 import { useNavigate } from 'react-router-dom';
 import { useTheme } from '@/hooks/useTheme';
 import { useLanguage } from '@/context/LanguageContext';
@@ -83,7 +84,7 @@ export default function TopNav({ onMenuToggle, mobileMenuOpen = false }: TopNavP
   const getRoleIcon = (role: string) => {
     switch (role) {
       case 'startup': return <Building className="w-4 h-4 mr-2 text-pulse-orange" />;
-      case 'investor': return <Landmark className="w-4 h-4 mr-2 text-emerald-600" />;
+      case 'investor': return <Landmark className="w-4 h-4 mr-2 text-emerald-700 dark:text-emerald-400" />;
       case 'partner': return <Sparkles className="w-4 h-4 mr-2 text-purple-600" />;
       case 'admin': return <Shield className="w-4 h-4 mr-2 text-blue-600" />;
       default: return <User className="w-4 h-4 mr-2" />;
@@ -162,7 +163,7 @@ export default function TopNav({ onMenuToggle, mobileMenuOpen = false }: TopNavP
               transition={{ duration: 0.2 }}
               className="flex flex-col items-center justify-center py-8 text-center my-auto"
             >
-              <div className="w-16 h-16 bg-emerald-500/10 dark:bg-emerald-500/20 text-emerald-500 rounded-full flex items-center justify-center mb-4 border border-emerald-500/30">
+              <div className="w-16 h-16 bg-emerald-500/10 dark:bg-emerald-500/20 text-emerald-700 dark:text-emerald-400 rounded-full flex items-center justify-center mb-4 border border-emerald-500/30">
                 <motion.div
                   initial={{ scale: 0 }}
                   animate={{ scale: 1 }}
@@ -221,7 +222,7 @@ export default function TopNav({ onMenuToggle, mobileMenuOpen = false }: TopNavP
                           {language === 'fr' ? role.titleFr : role.titleEn}
                         </h4>
                       </div>
-                      <p className="text-[10px] text-muted-foreground leading-relaxed">
+                      <p className="text-[11px] text-muted-foreground leading-relaxed">
                         {language === 'fr' ? role.descFr : role.descEn}
                       </p>
                     </motion.div>
@@ -249,7 +250,7 @@ export default function TopNav({ onMenuToggle, mobileMenuOpen = false }: TopNavP
                       <ArrowLeft className="w-3.5 h-3.5" />
                       {language === 'fr' ? 'Retour' : 'Back'}
                     </button>
-                    <span className="text-[10px] uppercase font-bold tracking-wider text-pulse-orange bg-pulse-orange/10 px-2 py-0.5 rounded">
+                    <span className="text-[11px] uppercase font-bold tracking-wider text-pulse-orange bg-pulse-orange/10 px-2 py-0.5 rounded">
                       {selectedRole}
                     </span>
                   </div>
@@ -463,7 +464,7 @@ export default function TopNav({ onMenuToggle, mobileMenuOpen = false }: TopNavP
       <div className="flex items-center justify-between h-full w-full">
         
         {/* Left: Logo + Mobile Menu */}
-        <div className="flex items-center gap-3 min-w-[200px] lg:w-[240px]">
+        <div className="flex items-center gap-3 shrink-0 lg:w-[240px]">
           <button
             onClick={onMenuToggle}
             aria-label={mobileMenuOpen ? 'Fermer le menu' : 'Ouvrir le menu'}
@@ -475,32 +476,15 @@ export default function TopNav({ onMenuToggle, mobileMenuOpen = false }: TopNavP
           </button>
           <button
             onClick={() => navigate('/')}
-            className="flex items-center gap-2 hover:opacity-85 transition-all duration-200 ease-in-out"
+            aria-label={language === 'fr' ? "The Pulse, retour à l'accueil" : 'The Pulse, back to home'}
+            className="flex items-center hover:opacity-85 transition-all duration-200 ease-in-out"
           >
-            <span className="text-xl font-bold text-foreground tracking-tight">
-              the pulse
-            </span>
-            <svg
-              width="24"
-              height="16"
-              viewBox="0 0 24 16"
-              fill="none"
-              className="text-pulse-orange"
-            >
-              <path
-                d="M1 8h3l2-5 3 10 3-8 3 6 2-3h3"
-                stroke="currentColor"
-                strokeWidth="2.5"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                fill="none"
-              />
-            </svg>
+            <BrandLogo className="h-6 sm:h-7" alt="" />
           </button>
         </div>
 
         {/* Center: Search Bar */}
-        <div className="hidden md:flex flex-1 max-w-xl mx-8">
+        <div className="hidden lg:flex flex-1 min-w-0 max-w-xl mx-4 lg:mx-8">
           <div className="relative w-full">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
             <input
@@ -510,14 +494,14 @@ export default function TopNav({ onMenuToggle, mobileMenuOpen = false }: TopNavP
               onClick={() => navigate('/search')}
               readOnly
             />
-            <kbd className="absolute right-3 top-1/2 -translate-y-1/2 hidden lg:inline-flex items-center gap-0.5 px-1.5 py-0.5 text-[10px] font-medium text-muted-foreground bg-muted/80 rounded">
+            <kbd className="absolute right-3 top-1/2 -translate-y-1/2 hidden lg:inline-flex items-center gap-0.5 px-1.5 py-0.5 text-[11px] font-medium text-muted-foreground bg-muted/80 rounded">
               <span>⌘</span>K
             </kbd>
           </div>
         </div>
 
         {/* Right: Actions */}
-        <div className="flex items-center gap-2 lg:gap-3">
+        <div className="flex items-center gap-1.5 sm:gap-2 lg:gap-3">
           
           {/* Global Language Switcher */}
           <button
@@ -626,7 +610,7 @@ export default function TopNav({ onMenuToggle, mobileMenuOpen = false }: TopNavP
                     {language === 'fr' ? 'Messagerie' : 'Messages'}
                   </span>
                   {unread > 0 && (
-                    <span className="bg-pulse-orange text-white text-[10px] font-bold min-w-[18px] h-[18px] px-1 rounded-full grid place-items-center">
+                    <span className="bg-pulse-orange text-primary-foreground text-[11px] font-bold min-w-[18px] h-[18px] px-1 rounded-full grid place-items-center">
                       {unread > 99 ? '99+' : unread}
                     </span>
                   )}

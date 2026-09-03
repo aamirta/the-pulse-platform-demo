@@ -23,7 +23,7 @@ export function LoadMore({ loaded, total, hasMore, isLoading, onLoadMore }: Load
 
   return (
     <div className="flex flex-col items-center gap-3 pt-2">
-      <p className="text-xs text-zinc-500 dark:text-zinc-400" aria-live="polite">
+      <p className="text-xs text-zinc-600 dark:text-zinc-300" aria-live="polite">
         {language === 'en' ? `Showing ${loaded} of ${total}` : `${loaded} sur ${total} affichés`}
       </p>
       {hasMore && (

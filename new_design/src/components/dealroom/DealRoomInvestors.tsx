@@ -115,7 +115,7 @@ export default function DealRoomInvestors({ room, language, onChanged }: Props) 
       action={
         <Button
           size="sm"
-          className="h-8 text-xs bg-pulse-orange hover:bg-pulse-orange-hover text-white"
+          className="h-8 text-xs bg-pulse-orange hover:bg-pulse-orange-hover text-primary-foreground"
           onClick={() => setInviteOpen(true)}
         >
           <UserPlus className="w-3.5 h-3.5 mr-1.5" />
@@ -139,7 +139,7 @@ export default function DealRoomInvestors({ room, language, onChanged }: Props) 
           action={
             <Button
               size="sm"
-              className="h-8 text-xs bg-pulse-orange hover:bg-pulse-orange-hover text-white"
+              className="h-8 text-xs bg-pulse-orange hover:bg-pulse-orange-hover text-primary-foreground"
               onClick={() => setInviteOpen(true)}
             >
               <UserPlus className="w-3.5 h-3.5 mr-1.5" />
@@ -151,7 +151,7 @@ export default function DealRoomInvestors({ room, language, onChanged }: Props) 
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
-              <tr className="text-left text-[11px] uppercase tracking-wide text-zinc-400 border-b border-zinc-100 dark:border-zinc-800">
+              <tr className="text-left text-[11px] uppercase tracking-wide text-zinc-500 dark:text-zinc-400 border-b border-zinc-100 dark:border-zinc-800">
                 <th className="font-semibold px-4 py-2">{en ? 'Investor' : 'Investisseur'}</th>
                 <th className="font-semibold px-3 py-2">{en ? 'Status' : 'Statut'}</th>
                 <th className="font-semibold px-3 py-2">{en ? 'Access' : 'Accès'}</th>
@@ -168,7 +168,7 @@ export default function DealRoomInvestors({ room, language, onChanged }: Props) 
                       <p className="font-medium text-zinc-900 dark:text-white truncate text-[13px]">
                         {investor.full_name || investor.email}
                       </p>
-                      <p className="text-[11px] text-zinc-500 dark:text-zinc-400 truncate">
+                      <p className="text-[11px] text-zinc-600 dark:text-zinc-300 truncate">
                         {investor.email}
                       </p>
                     </div>
@@ -178,9 +178,9 @@ export default function DealRoomInvestors({ room, language, onChanged }: Props) 
                       <StatusPill status={investor.status} language={language} />
                       {room.nda_required && (
                         <span
-                          className={`text-[10px] ${
+                          className={`text-[11px] ${
                             investor.nda_accepted_at
-                              ? 'text-emerald-600 dark:text-emerald-400'
+                              ? 'text-emerald-700 dark:text-emerald-400'
                               : 'text-amber-600 dark:text-amber-400'
                           }`}
                         >
@@ -224,14 +224,14 @@ export default function DealRoomInvestors({ room, language, onChanged }: Props) 
                     </span>
                   </td>
                   <td className="px-3 py-3 whitespace-nowrap">
-                    <span className="text-[11px] text-zinc-500 dark:text-zinc-400">
+                    <span className="text-[11px] text-zinc-600 dark:text-zinc-300">
                       {formatDateTime(investor.last_activity_at, language)}
                     </span>
                   </td>
                   <td className="px-4 py-3">
                     <div className="flex items-center gap-1 justify-end">
                       {busyId === investor.id && (
-                        <Loader2 className="w-3.5 h-3.5 animate-spin text-zinc-400" />
+                        <Loader2 className="w-3.5 h-3.5 animate-spin text-zinc-500 dark:text-zinc-400" />
                       )}
                       {investor.status === 'active' ? (
                         <Button
@@ -254,7 +254,7 @@ export default function DealRoomInvestors({ room, language, onChanged }: Props) 
                         <Button
                           size="sm"
                           variant="ghost"
-                          className="h-7 px-2 text-[11px] text-emerald-600 hover:text-emerald-700"
+                          className="h-7 px-2 text-[11px] text-emerald-700 dark:text-emerald-400 hover:text-emerald-700"
                           onClick={() =>
                             void update(
                               investor,
@@ -385,7 +385,7 @@ function InviteDialog({
                 ))}
               </SelectContent>
             </Select>
-            <p className="text-[10px] text-zinc-500 dark:text-zinc-400">
+            <p className="text-[11px] text-zinc-600 dark:text-zinc-300">
               {en
                 ? 'Watermarked renditions carry the viewer’s email, making leaks traceable.'
                 : "Les versions filigranées portent l'e-mail du lecteur, rendant les fuites traçables."}
@@ -411,7 +411,7 @@ function InviteDialog({
               type="submit"
               size="sm"
               disabled={busy || !email.trim()}
-              className="h-9 text-xs bg-pulse-orange hover:bg-pulse-orange-hover text-white"
+              className="h-9 text-xs bg-pulse-orange hover:bg-pulse-orange-hover text-primary-foreground"
             >
               {busy && <Loader2 className="w-3.5 h-3.5 mr-1.5 animate-spin" />}
               {en ? 'Send invite' : "Envoyer l'invitation"}

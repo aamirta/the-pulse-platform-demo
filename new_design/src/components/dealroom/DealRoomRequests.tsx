@@ -112,7 +112,7 @@ export default function DealRoomRequests({ room, language, onChanged }: Props) {
                       </span>
                       <StatusPill status={request.status} language={language} />
                     </div>
-                    <p className="text-[11px] text-zinc-500 dark:text-zinc-400 mt-0.5">
+                    <p className="text-[11px] text-zinc-600 dark:text-zinc-300 mt-0.5">
                       {request.email} · {formatDateTime(request.created_at, language)}
                     </p>
                     {request.message && (
@@ -146,7 +146,7 @@ export default function DealRoomRequests({ room, language, onChanged }: Props) {
 
                     <Button
                       size="sm"
-                      className="h-8 text-[11px] bg-pulse-orange hover:bg-pulse-orange-hover text-white"
+                      className="h-8 text-[11px] bg-pulse-orange hover:bg-pulse-orange-hover text-primary-foreground"
                       onClick={() => void decide(request, 'approve')}
                       disabled={busyId === request.id}
                     >
@@ -194,7 +194,7 @@ export default function DealRoomRequests({ room, language, onChanged }: Props) {
                   <p className="text-[13px] text-zinc-900 dark:text-white truncate">
                     {request.full_name || request.email}
                   </p>
-                  <p className="text-[11px] text-zinc-500 dark:text-zinc-400">
+                  <p className="text-[11px] text-zinc-600 dark:text-zinc-300">
                     {formatDateTime(request.decided_at, language)}
                   </p>
                 </div>

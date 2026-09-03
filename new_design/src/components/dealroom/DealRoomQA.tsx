@@ -142,7 +142,7 @@ export default function DealRoomQA({ room, language, documents = [], onChanged }
                 type="submit"
                 size="sm"
                 disabled={asking || !newQuestion.trim()}
-                className="h-8 text-xs bg-pulse-orange hover:bg-pulse-orange-hover text-white sm:ml-auto"
+                className="h-8 text-xs bg-pulse-orange hover:bg-pulse-orange-hover text-primary-foreground sm:ml-auto"
               >
                 {asking ? (
                   <Loader2 className="w-3.5 h-3.5 mr-1.5 animate-spin" />
@@ -152,7 +152,7 @@ export default function DealRoomQA({ room, language, documents = [], onChanged }
                 {en ? 'Send' : 'Envoyer'}
               </Button>
             </div>
-            <p className="text-[10px] text-zinc-500 dark:text-zinc-400">
+            <p className="text-[11px] text-zinc-600 dark:text-zinc-300">
               {en
                 ? 'Only you and the startup can see your questions.'
                 : 'Vous seul et la startup pouvez voir vos questions.'}
@@ -195,7 +195,7 @@ export default function DealRoomQA({ room, language, documents = [], onChanged }
                     <p className="text-sm text-zinc-900 dark:text-white leading-relaxed">
                       {question.question}
                     </p>
-                    <p className="text-[11px] text-zinc-500 dark:text-zinc-400 mt-1">
+                    <p className="text-[11px] text-zinc-600 dark:text-zinc-300 mt-1">
                       {isManager && question.asked_by_name && `${question.asked_by_name} · `}
                       {formatDateTime(question.created_at, language)}
                       {question.document_title && ` · ${question.document_title}`}
@@ -211,7 +211,7 @@ export default function DealRoomQA({ room, language, documents = [], onChanged }
                         <p className="text-[13px] text-zinc-700 dark:text-zinc-200 leading-relaxed whitespace-pre-wrap">
                           {item.answer}
                         </p>
-                        <p className="text-[10px] text-zinc-500 dark:text-zinc-400 mt-0.5">
+                        <p className="text-[11px] text-zinc-600 dark:text-zinc-300 mt-0.5">
                           {item.answered_by_name} · {formatDateTime(item.created_at, language)}
                         </p>
                       </div>
@@ -233,7 +233,7 @@ export default function DealRoomQA({ room, language, documents = [], onChanged }
                     />
                     <Button
                       size="sm"
-                      className="h-9 text-xs bg-pulse-orange hover:bg-pulse-orange-hover text-white flex-shrink-0"
+                      className="h-9 text-xs bg-pulse-orange hover:bg-pulse-orange-hover text-primary-foreground flex-shrink-0"
                       onClick={() => void answer(question)}
                       disabled={busyId === question.id || !(drafts[question.id] ?? '').trim()}
                     >

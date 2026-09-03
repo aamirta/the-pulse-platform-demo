@@ -19,7 +19,7 @@ export default function News() {
   const badgeConfig: Record<string, { text: string; className: string }> = {
     blog: { text: language === 'en' ? 'BLOG' : 'BLOG', className: 'bg-emerald-100 dark:bg-emerald-950/40 text-emerald-700 dark:text-emerald-400 hover:bg-emerald-100' },
     funding: { text: language === 'en' ? 'FUNDRAISING' : 'LEVÉE DE FONDS', className: 'bg-amber-100 dark:bg-amber-950/40 text-amber-700 dark:text-amber-450 hover:bg-amber-100' },
-    news: { text: language === 'en' ? 'NEWS' : 'ACTUALITÉ', className: 'bg-blue-100 dark:bg-blue-950/40 text-blue-600 dark:text-blue-400 hover:bg-blue-100' },
+    news: { text: language === 'en' ? 'NEWS' : 'ACTUALITÉ', className: 'bg-blue-100 dark:bg-blue-950/40 text-blue-700 dark:text-blue-400 hover:bg-blue-100' },
     event: { text: language === 'en' ? 'EVENT' : 'ÉVÉNEMENT', className: 'bg-purple-100 dark:bg-purple-950/40 text-purple-650 dark:text-purple-400 hover:bg-purple-100' },
   };
 
@@ -29,7 +29,7 @@ export default function News() {
         <h1 className="text-2xl font-bold text-zinc-900 dark:text-white mb-1 font-serif">
           {typeFilter === 'blog' ? t('blogTitle') : t('newsTitle')}
         </h1>
-        <p className="text-sm text-zinc-500 dark:text-zinc-400">
+        <p className="text-sm text-zinc-600 dark:text-zinc-300">
           {typeFilter === 'blog' ? t('blogSubtitle') : t('newsSubtitle')}
         </p>
       </div>
@@ -56,7 +56,7 @@ export default function News() {
             <p className="text-sm font-medium text-zinc-700 dark:text-zinc-300">
               {typeFilter === 'blog' ? t('blogEmptyTitle') : t('newsEmptyTitle')}
             </p>
-            <p className="text-xs text-zinc-500 dark:text-zinc-400 mt-1">{t('newsEmptyHint')}</p>
+            <p className="text-xs text-zinc-600 dark:text-zinc-300 mt-1">{t('newsEmptyHint')}</p>
           </div>
         ) : (
           newsItems.map((item) => {
@@ -75,7 +75,7 @@ export default function News() {
                 </div>
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2 mb-2">
-                    <Badge className={`text-[10px] font-semibold px-1.5 py-0.5 ${badge.className}`}>
+                    <Badge className={`text-[11px] font-semibold px-1.5 py-0.5 ${badge.className}`}>
                       {badge.text}
                     </Badge>
                   </div>
@@ -89,7 +89,7 @@ export default function News() {
                     <div className="flex items-center gap-3">
                       <div className="flex items-center gap-1.5">
                         <div className="w-5 h-5 rounded-full bg-gradient-to-br from-pulse-orange-50 to-orange-100 dark:from-orange-950/40 dark:to-orange-900/10 flex items-center justify-center">
-                          <span className="text-[9px] font-bold text-pulse-orange">
+                          <span className="text-[11px] font-bold text-pulse-orange">
                             {item.source[0]}
                           </span>
                         </div>
@@ -97,7 +97,7 @@ export default function News() {
                           {item.source}
                         </span>
                       </div>
-                      <div className="flex items-center gap-1 text-zinc-400 dark:text-zinc-500">
+                      <div className="flex items-center gap-1 text-zinc-500 dark:text-zinc-400">
                         <Clock className="w-3 h-3" />
                         <span className="text-[11px]">
                           {item.publishedAt

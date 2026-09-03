@@ -19,14 +19,36 @@ export function setSessionExpiredHandler(handler: (() => void) | null) {
   onSessionExpired = handler;
 }
 
+/** Coarse failure class, so the UI can choose wording without reading status codes. */
+export type ApiErrorKind = 'server' | 'notFound' | 'auth' | 'validation' | 'rateLimit' | 'network';
+
 export interface ApiError extends Error {
   status?: number;
   data?: unknown;
+  kind?: ApiErrorKind;
 }
 
-/** Human-readable message from a FastAPI error body, falling back to the status line. */
-function errorMessage(status: number, statusText: string, data: unknown): string {
-  if (data && typeof data === 'object' && 'detail' in data) {
+function classify(status: number): ApiErrorKind {
+  if (status >= 500) return 'server';
+  if (status === 404) return 'notFound';
+  if (status === 401 || status === 403) return 'auth';
+  if (status === 429) return 'rateLimit';
+  if (status === 422 || status === 400) return 'validation';
+  return 'server';
+}
+
+/**
+ * Message safe to put in front of a user.
+ *
+ * A server-authored `detail` is only trusted for 4xx, where it is written for
+ * the person filling the form ("Invalid credentials"). For 5xx the body is a
+ * crash description -- it used to fall through to `HTTP ${status}:
+ * ${statusText}`, which is exactly the "Impossible de charger les incubateurs -
+ * HTTP 500:" the review flagged. Callers render `describeError()` instead; this
+ * sentinel is only the last-resort fallback.
+ */
+function errorMessage(status: number, data: unknown): string {
+  if (status < 500 && data && typeof data === 'object' && 'detail' in data) {
     const detail = (data as { detail: unknown }).detail;
     if (typeof detail === 'string') return detail;
     // 422 validation errors arrive as a list of {loc, msg, type}.
@@ -41,7 +63,7 @@ function errorMessage(status: number, statusText: string, data: unknown): string
       if (messages.length) return messages.join(', ');
     }
   }
-  return `HTTP ${status}: ${statusText}`;
+  return 'REQUEST_FAILED';
 }
 
 async function buildError(response: Response): Promise<ApiError> {
@@ -51,9 +73,14 @@ async function buildError(response: Response): Promise<ApiError> {
   } catch {
     data = null;
   }
-  const error: ApiError = new Error(errorMessage(response.status, response.statusText, data));
+  const error: ApiError = new Error(errorMessage(response.status, data));
   error.status = response.status;
   error.data = data;
+  error.kind = classify(response.status);
+  // The status line and body stay available for debugging, but only here.
+  if (import.meta.env.DEV) {
+    console.error(`[api] ${response.status} ${response.url}`, data);
+  }
   return error;
 }
 

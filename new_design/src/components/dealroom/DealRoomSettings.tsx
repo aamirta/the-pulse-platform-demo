@@ -182,7 +182,7 @@ export default function DealRoomSettings({ room, language, onChanged }: Props) {
               <Label htmlFor="dr-nda-body" className="text-xs">
                 {en ? 'Agreement text' : "Texte de l'accord"}
                 {room.nda_version && (
-                  <span className="ml-2 text-[10px] text-zinc-400">v{room.nda_version}</span>
+                  <span className="ml-2 text-[11px] text-zinc-500 dark:text-zinc-400">v{room.nda_version}</span>
                 )}
               </Label>
               <Textarea
@@ -205,7 +205,7 @@ export default function DealRoomSettings({ room, language, onChanged }: Props) {
               type="submit"
               size="sm"
               disabled={saving}
-              className="h-9 text-xs bg-pulse-orange hover:bg-pulse-orange-hover text-white"
+              className="h-9 text-xs bg-pulse-orange hover:bg-pulse-orange-hover text-primary-foreground"
             >
               {saving ? (
                 <Loader2 className="w-3.5 h-3.5 mr-1.5 animate-spin" />
@@ -238,13 +238,13 @@ export default function DealRoomSettings({ room, language, onChanged }: Props) {
                     <p className="text-[13px] text-zinc-900 dark:text-white truncate">
                       {item.full_name || item.email}
                     </p>
-                    <p className="text-[11px] text-zinc-500 dark:text-zinc-400">
+                    <p className="text-[11px] text-zinc-600 dark:text-zinc-300">
                       {en ? 'Signed' : 'Signé'} “{item.signature_name}” · v{item.nda_version} ·{' '}
                       {formatDateTime(item.accepted_at, language)}
                       {item.ip && ` · ${item.ip}`}
                     </p>
                   </div>
-                  <ShieldCheck className="w-4 h-4 text-emerald-600 dark:text-emerald-400 flex-shrink-0" />
+                  <ShieldCheck className="w-4 h-4 text-emerald-700 dark:text-emerald-400 flex-shrink-0" />
                 </li>
               ))}
             </ul>
@@ -274,7 +274,7 @@ function SettingToggle({
         <Label htmlFor={id} className="text-[13px] font-medium cursor-pointer">
           {title}
         </Label>
-        <p className="text-[11px] text-zinc-500 dark:text-zinc-400 mt-0.5 leading-relaxed">
+        <p className="text-[11px] text-zinc-600 dark:text-zinc-300 mt-0.5 leading-relaxed">
           {description}
         </p>
       </div>
@@ -340,7 +340,7 @@ export function NdaGate({
           <h2 className="text-base font-semibold text-zinc-900 dark:text-white">
             {en ? 'Confidentiality agreement' : 'Accord de confidentialité'}
           </h2>
-          <p className="text-xs text-zinc-500 dark:text-zinc-400 mt-1">
+          <p className="text-xs text-zinc-600 dark:text-zinc-300 mt-1">
             {en
               ? `${room.startup_name ?? 'This startup'} requires an NDA before you can open any document.`
               : `${room.startup_name ?? 'Cette startup'} exige un NDA avant toute consultation.`}
@@ -365,7 +365,7 @@ export function NdaGate({
               className="h-9 text-sm dark:bg-zinc-950"
             />
           </div>
-          <p className="text-[10px] text-zinc-500 dark:text-zinc-400">
+          <p className="text-[11px] text-zinc-600 dark:text-zinc-300">
             {en
               ? 'Your name, the agreement version, the time and your IP address are recorded.'
               : "Votre nom, la version de l'accord, l'heure et votre adresse IP sont enregistrés."}
@@ -373,7 +373,7 @@ export function NdaGate({
           <Button
             type="submit"
             disabled={busy || signature.trim().length < 2}
-            className="w-full h-10 text-xs bg-pulse-orange hover:bg-pulse-orange-hover text-white"
+            className="w-full h-10 text-xs bg-pulse-orange hover:bg-pulse-orange-hover text-primary-foreground"
           >
             {busy && <Loader2 className="w-3.5 h-3.5 mr-1.5 animate-spin" />}
             {en ? 'Accept and continue' : 'Accepter et continuer'}

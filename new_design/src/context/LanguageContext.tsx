@@ -29,7 +29,12 @@ export const LanguageProvider: React.FC<{ children: React.ReactNode }> = ({ chil
 
   const t = (key: keyof typeof translations.fr): string => {
     const dict = translations[language] || translations.fr;
-    return dict[key] || translations.fr[key] || key;
+    // Compared against undefined, not truthiness: several entries are
+    // deliberately empty (kickers and taglines the review asked to drop), and
+    // an `||` chain treated "" as missing and rendered the key name itself --
+    // which is how "heroTitleHighlight" ended up in the hero headline.
+    const value = dict[key] ?? translations.fr[key];
+    return value === undefined ? key : value;
   };
 
   return (

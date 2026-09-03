@@ -39,13 +39,13 @@ export default function Search() {
       <div>
         <h1 className="text-2xl font-bold text-zinc-900 dark:text-white mb-4">{t('searchTitle')}</h1>
         <div className="relative max-w-2xl">
-          <SearchIcon className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-zinc-400" />
+          <SearchIcon className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-zinc-500 dark:text-zinc-400" />
           <input
             type="text"
             placeholder={t('searchBoxPlaceholder')}
             value={query}
             onChange={(e) => setQuery(e.target.value)}
-            className="w-full h-12 pl-12 pr-4 bg-white dark:bg-zinc-900 border border-zinc-250 dark:border-zinc-800 rounded-xl text-base text-zinc-900 dark:text-white placeholder:text-zinc-400 focus:outline-none focus:border-pulse-orange/40 dark:focus:border-pulse-orange/40 focus:ring-2 focus:ring-pulse-orange/10 transition-all"
+            className="w-full h-12 pl-12 pr-4 bg-white dark:bg-zinc-900 border border-zinc-250 dark:border-zinc-800 rounded-xl text-base text-zinc-900 dark:text-white placeholder:text-zinc-500 dark:text-zinc-400 focus:outline-none focus:border-pulse-orange/40 dark:focus:border-pulse-orange/40 focus:ring-2 focus:ring-pulse-orange/10 transition-all"
             autoFocus
           />
         </div>
@@ -71,7 +71,7 @@ export default function Search() {
 
       {/* Results */}
       {query && !isLoading && (
-        <p className="text-sm text-zinc-500 dark:text-zinc-400">
+        <p className="text-sm text-zinc-600 dark:text-zinc-300">
           {totalResults} {t('resultsFor')} "{query}"
         </p>
       )}
@@ -87,7 +87,7 @@ export default function Search() {
             {showStartups && groupedResults.startup.length > 0 && (
               <div>
                 <h3 className="text-sm font-semibold text-zinc-900 dark:text-zinc-300 mb-3 flex items-center gap-2">
-                  <Building2 className="w-4 h-4 text-zinc-400" />
+                  <Building2 className="w-4 h-4 text-zinc-500 dark:text-zinc-400" />
                   {t('tabStartups')} ({groupedResults.startup.length})
                 </h3>
                 <div className="space-y-2">
@@ -104,11 +104,11 @@ export default function Search() {
                       </div>
                       <div className="flex-1">
                         <h4 className="text-sm font-semibold text-zinc-900 dark:text-white group-hover:text-pulse-orange transition-colors">{s.title}</h4>
-                        <p className="text-xs text-zinc-500 dark:text-zinc-400 mt-0.5">
+                        <p className="text-xs text-zinc-600 dark:text-zinc-300 mt-0.5">
                           {s.subtitle}
                         </p>
                       </div>
-                      <span className="text-xs text-zinc-500 dark:text-zinc-400">{t('tabStartups')}</span>
+                      <span className="text-xs text-zinc-600 dark:text-zinc-300">{t('tabStartups')}</span>
                     </div>
                   ))}
                 </div>
@@ -119,7 +119,7 @@ export default function Search() {
             {showFounders && groupedResults.founder.length > 0 && (
               <div>
                 <h3 className="text-sm font-semibold text-zinc-900 dark:text-zinc-300 mb-3 flex items-center gap-2">
-                  <Users className="w-4 h-4 text-zinc-400" />
+                  <Users className="w-4 h-4 text-zinc-500 dark:text-zinc-400" />
                   {t('tabFounders')} ({groupedResults.founder.length})
                 </h3>
                 <div className="space-y-2">
@@ -136,11 +136,11 @@ export default function Search() {
                       </div>
                       <div className="flex-1">
                         <h4 className="text-sm font-semibold text-zinc-900 dark:text-white group-hover:text-pulse-orange transition-colors">{f.title}</h4>
-                        <p className="text-xs text-zinc-500 dark:text-zinc-400 mt-0.5">
+                        <p className="text-xs text-zinc-600 dark:text-zinc-300 mt-0.5">
                           {f.subtitle}
                         </p>
                       </div>
-                      <span className="text-xs text-zinc-500 dark:text-zinc-400">{t('tabFounders')}</span>
+                      <span className="text-xs text-zinc-600 dark:text-zinc-300">{t('tabFounders')}</span>
                     </div>
                   ))}
                 </div>
@@ -151,7 +151,7 @@ export default function Search() {
             {showInvestors && groupedResults.investor.length > 0 && (
               <div>
                 <h3 className="text-sm font-semibold text-zinc-900 dark:text-zinc-300 mb-3 flex items-center gap-2">
-                  <Landmark className="w-4 h-4 text-zinc-400" />
+                  <Landmark className="w-4 h-4 text-zinc-500 dark:text-zinc-400" />
                   {t('tabInvestors')} ({groupedResults.investor.length})
                 </h3>
                 <div className="space-y-2">
@@ -163,16 +163,16 @@ export default function Search() {
                     >
                       <div className="w-10 h-10 rounded-lg overflow-hidden flex items-center justify-center flex-shrink-0 bg-white dark:bg-zinc-800 border border-zinc-150 dark:border-zinc-700/50">
                         <div className="w-full h-full bg-gradient-to-br from-emerald-100 to-emerald-100 dark:from-emerald-950/40 dark:to-emerald-950/20 flex items-center justify-center">
-                          <Landmark className="w-5 h-5 text-emerald-600 dark:text-emerald-455" />
+                          <Landmark className="w-5 h-5 text-emerald-700 dark:text-emerald-400 dark:text-emerald-450" />
                         </div>
                       </div>
                       <div className="flex-1">
                         <h4 className="text-sm font-semibold text-zinc-900 dark:text-white group-hover:text-pulse-orange transition-colors">{i.title}</h4>
-                        <p className="text-xs text-zinc-500 dark:text-zinc-400 mt-0.5">
+                        <p className="text-xs text-zinc-600 dark:text-zinc-300 mt-0.5">
                           {i.subtitle}
                         </p>
                       </div>
-                      <span className="text-xs text-zinc-500 dark:text-zinc-400">{t('tabInvestors')}</span>
+                      <span className="text-xs text-zinc-600 dark:text-zinc-300">{t('tabInvestors')}</span>
                     </div>
                   ))}
                 </div>
@@ -182,7 +182,7 @@ export default function Search() {
             {query && totalResults === 0 && !isLoading && (
               <div className="text-center py-12">
                 <SearchIcon className="w-12 h-12 text-zinc-300 dark:text-zinc-750 mx-auto mb-3" />
-                <p className="text-zinc-500 dark:text-zinc-400">{t('noResults')} "{query}"</p>
+                <p className="text-zinc-600 dark:text-zinc-300">{t('noResults')} "{query}"</p>
               </div>
             )}
           </>

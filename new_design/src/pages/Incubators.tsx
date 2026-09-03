@@ -2,14 +2,16 @@ import { useMemo, useState } from 'react';
 import { FlaskConical, MapPin, Search, Linkedin, AlertTriangle } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
 import { Skeleton } from '@/components/ui/skeleton';
 import { useLanguage } from '@/context/LanguageContext';
 import { useIncubators } from '@/hooks/useIncubators';
+import { describeError } from '@/lib/errors';
 
 export default function Incubators() {
   const { language } = useLanguage();
   const isFr = language === 'fr';
-  const { data: incubators, total, isLoading, error } = useIncubators();
+  const { data: incubators, total, isLoading, error, refetch } = useIncubators();
 
   const [search, setSearch] = useState('');
   const [activeType, setActiveType] = useState<string>('all');
@@ -40,23 +42,27 @@ export default function Incubators() {
           <span className="p-2 rounded-xl bg-pulse-orange/10 text-pulse-orange">
             <FlaskConical className="w-5 h-5" />
           </span>
-          <span className="text-xs font-mono font-bold uppercase tracking-wider text-pulse-orange">
-            {isFr ? 'ANNUAIRE DES INCUBATEURS' : 'INCUBATOR DIRECTORY'}
-          </span>
         </div>
         <h1 className="text-2xl sm:text-3xl font-extrabold text-zinc-900 dark:text-white tracking-tight">
-          {isFr ? 'Incubateurs & Accélérateurs' : 'Incubators & Accelerators'}
+          {isFr ? 'Incubateurs & accélérateurs' : 'Incubators & accelerators'}
         </h1>
-        <p className="text-xs sm:text-sm text-zinc-500 dark:text-zinc-400 mt-1">
-          {isFr
-            ? `${total} structures d'accompagnement référencées au Maroc.`
-            : `${total} support organisations indexed across Morocco.`}
+        <p className="text-xs sm:text-sm text-zinc-600 dark:text-zinc-300 mt-1">
+          {/* The count comes from the API. While it is still in flight it is
+              left out entirely rather than rendered as a "0 structures"
+              headline, which is what the review saw. */}
+          {isLoading || error
+            ? isFr
+              ? "Structures d'accompagnement au Maroc."
+              : 'Support organisations across Morocco.'
+            : isFr
+              ? `${total} structures d'accompagnement au Maroc.`
+              : `${total} support organisations across Morocco.`}
         </p>
       </div>
 
       <div className="bg-white dark:bg-zinc-900 p-4 rounded-2xl border border-zinc-200 dark:border-zinc-800 space-y-3">
         <div className="relative">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-zinc-400" />
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-zinc-500 dark:text-zinc-400" />
           <Input
             placeholder={isFr ? 'Rechercher un incubateur...' : 'Search an incubator...'}
             value={search}
@@ -71,7 +77,7 @@ export default function Incubators() {
               onClick={() => setActiveType(type)}
               className={`px-3 py-1.5 text-xs font-bold rounded-xl transition-all ${
                 activeType === type
-                  ? 'bg-pulse-orange text-white shadow-sm'
+                  ? 'bg-pulse-orange text-primary-foreground shadow-sm'
                   : 'bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-300 hover:bg-zinc-200 dark:hover:bg-zinc-700'
               }`}
             >
@@ -90,18 +96,20 @@ export default function Incubators() {
       )}
 
       {!isLoading && error && (
-        <div className="flex flex-col items-center gap-2 py-16 text-center">
+        <div className="flex flex-col items-center gap-3 py-16 text-center" role="alert">
           <AlertTriangle className="w-8 h-8 text-amber-500" />
-          <span className="text-sm font-bold text-zinc-900 dark:text-white">
-            {isFr ? 'Impossible de charger les incubateurs' : 'Could not load incubators'}
+          <span className="text-sm text-zinc-600 dark:text-zinc-300 max-w-sm">
+            {describeError(error, language)}
           </span>
-          <span className="text-xs text-zinc-500 dark:text-zinc-400">{error.message}</span>
+          <Button variant="outline" size="sm" onClick={refetch}>
+            {isFr ? 'Réessayer' : 'Try again'}
+          </Button>
         </div>
       )}
 
       {!isLoading && !error && (
         <>
-          <span className="block text-xs text-zinc-500 dark:text-zinc-400">
+          <span className="block text-xs text-zinc-600 dark:text-zinc-300">
             {visible.length} / {total}
           </span>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -115,13 +123,13 @@ export default function Incubators() {
                     {item.name}
                   </h3>
                   {item.status && (
-                    <Badge className="text-[9px] font-extrabold px-2 py-0.5 rounded-full border-none bg-pulse-orange/10 text-pulse-orange shrink-0">
+                    <Badge className="text-[11px] font-extrabold px-2 py-0.5 rounded-full border-none bg-pulse-orange/10 text-pulse-orange shrink-0">
                       {item.status}
                     </Badge>
                   )}
                 </div>
 
-                <div className="flex flex-wrap items-center gap-2 text-[11px] text-zinc-500 dark:text-zinc-400">
+                <div className="flex flex-wrap items-center gap-2 text-[11px] text-zinc-600 dark:text-zinc-300">
                   {item.type && <span className="font-semibold">{item.type}</span>}
                   {item.city && (
                     <span className="flex items-center gap-1">
@@ -136,13 +144,13 @@ export default function Incubators() {
                     {item.sectors.slice(0, 4).map((sector) => (
                       <span
                         key={sector}
-                        className="text-[10px] px-2 py-0.5 rounded-full bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-300"
+                        className="text-[11px] px-2 py-0.5 rounded-full bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-300"
                       >
                         {sector}
                       </span>
                     ))}
                     {item.sectors.length > 4 && (
-                      <span className="text-[10px] px-2 py-0.5 text-zinc-400">
+                      <span className="text-[11px] px-2 py-0.5 text-zinc-500 dark:text-zinc-400">
                         +{item.sectors.length - 4}
                       </span>
                     )}
@@ -150,7 +158,7 @@ export default function Incubators() {
                 )}
 
                 {item.investmentPhases.length > 0 && (
-                  <span className="text-[10px] text-zinc-500 dark:text-zinc-400">
+                  <span className="text-[11px] text-zinc-600 dark:text-zinc-300">
                     {isFr ? 'Phases : ' : 'Phases: '}
                     {item.investmentPhases.join(', ')}
                   </span>
@@ -172,7 +180,7 @@ export default function Incubators() {
           </div>
 
           {visible.length === 0 && (
-            <div className="py-16 text-center text-sm text-zinc-500 dark:text-zinc-400">
+            <div className="py-16 text-center text-sm text-zinc-600 dark:text-zinc-300">
               {isFr ? 'Aucun incubateur ne correspond.' : 'No incubator matches.'}
             </div>
           )}

@@ -51,7 +51,7 @@ export default function StartupProfile() {
     return (
       <div className="text-center py-12">
         <h2 className="text-xl font-semibold text-zinc-900 dark:text-white">{t('startupNotFound')}</h2>
-        <Button onClick={() => navigate('/startups')} className="mt-4 bg-pulse-orange hover:bg-pulse-orange-hover text-white">
+        <Button onClick={() => navigate('/startups')} className="mt-4 bg-pulse-orange hover:bg-pulse-orange-hover text-primary-foreground">
           {t('backToStartups')}
         </Button>
       </div>
@@ -91,7 +91,7 @@ export default function StartupProfile() {
                   <Badge
                     key={s}
                     variant="outline"
-                    className="text-[10px] font-medium border-zinc-200 dark:border-zinc-800 text-zinc-600 dark:text-zinc-400"
+                    className="text-[11px] font-medium border-zinc-200 dark:border-zinc-800 text-zinc-600 dark:text-zinc-400"
                   >
                     {s}
                   </Badge>
@@ -114,22 +114,22 @@ export default function StartupProfile() {
           </div>
         </div>
 
-        <div className="flex flex-wrap items-center gap-4 text-xs text-zinc-500 dark:text-zinc-400 mb-4">
+        <div className="flex flex-wrap items-center gap-4 text-xs text-zinc-600 dark:text-zinc-300 mb-4">
           <span className="flex items-center gap-1.5">
-            <MapPin className="w-4 h-4 text-zinc-400" />
+            <MapPin className="w-4 h-4 text-zinc-500 dark:text-zinc-400" />
             {startup.location}
           </span>
           <span className="flex items-center gap-1.5">
-            <Calendar className="w-4 h-4 text-zinc-400" />
+            <Calendar className="w-4 h-4 text-zinc-500 dark:text-zinc-400" />
             {t('foundedInLabel')} {startup.yearFounded}
           </span>
           <span className="flex items-center gap-1.5">
-            <Users className="w-4 h-4 text-zinc-400" />
+            <Users className="w-4 h-4 text-zinc-500 dark:text-zinc-400" />
             {startup.teamSize} {t('employeesLabel')}
           </span>
           {startup.funding > 0 && (
             <span className="flex items-center gap-1.5">
-              <DollarSign className="w-4 h-4 text-zinc-400" />
+              <DollarSign className="w-4 h-4 text-zinc-500 dark:text-zinc-400" />
               {startup.fundingCurrency}{(startup.funding / 1000000).toFixed(1)}M {t('raisedLabel')}
             </span>
           )}
@@ -170,7 +170,7 @@ export default function StartupProfile() {
             </Button>
           )}
           <Button
-            className="h-8 text-xs bg-pulse-orange hover:bg-pulse-orange-hover text-white rounded-lg ml-auto border-none"
+            className="h-8 text-xs bg-pulse-orange hover:bg-pulse-orange-hover text-primary-foreground rounded-lg ml-auto border-none"
             onClick={() => navigate(`/visualizer?highlight=${startup.id}`)}
           >
             {t('viewNetworkMap')}
@@ -205,12 +205,12 @@ export default function StartupProfile() {
                     <div className="flex-1 min-w-0">
                       <h4 className="text-xs font-bold text-zinc-900 dark:text-white group-hover:text-pulse-orange transition-colors flex items-center justify-between">
                         {founder.name}
-                        <ChevronRight className="w-3 h-3 text-zinc-400 group-hover:text-pulse-orange transition-colors" />
+                        <ChevronRight className="w-3 h-3 text-zinc-500 dark:text-zinc-400 group-hover:text-pulse-orange transition-colors" />
                       </h4>
-                      <p className="text-[10px] text-pulse-orange dark:text-orange-400 font-medium">
+                      <p className="text-[11px] text-pulse-orange dark:text-orange-400 font-medium">
                         {founder.role}
                       </p>
-                      <p className="text-[10px] text-zinc-500 dark:text-zinc-400 mt-1 line-clamp-2 leading-relaxed">
+                      <p className="text-[11px] text-zinc-600 dark:text-zinc-300 mt-1 line-clamp-2 leading-relaxed">
                         {founder.bio}
                       </p>
                     </div>
@@ -234,12 +234,12 @@ export default function StartupProfile() {
                 <div key={index} className="flex gap-4 relative pl-7 last:pb-0">
                   <div className="absolute left-1.5 top-1.5 w-3 h-3 rounded-full bg-pulse-orange border-2 border-white dark:border-zinc-900" />
                   <div className="space-y-0.5">
-                    <span className="text-[9px] text-zinc-400 dark:text-zinc-400 block font-semibold">{hist.date}</span>
+                    <span className="text-[11px] text-zinc-400 dark:text-zinc-400 block font-semibold">{hist.date}</span>
                     <h4 className="text-xs font-bold text-zinc-900 dark:text-white">
                       {hist.round}{hist.amount ? ` — ${hist.amount}` : ''}
                     </h4>
                     {hist.investor && (
-                      <p className="text-[10px] text-zinc-500 dark:text-zinc-400 leading-relaxed">
+                      <p className="text-[11px] text-zinc-600 dark:text-zinc-300 leading-relaxed">
                         {language === 'en' ? 'Investors' : 'Investisseurs'}: {hist.investor}
                       </p>
                     )}

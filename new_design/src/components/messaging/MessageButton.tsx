@@ -259,7 +259,7 @@ export default function MessageButton({
                 }
                 className="text-sm resize-none"
               />
-              <p className="text-[11px] text-zinc-400 mt-1 text-right">{body.trim().length}/5000</p>
+              <p className="text-[11px] text-zinc-500 dark:text-zinc-400 mt-1 text-right">{body.trim().length}/5000</p>
             </div>
 
             <DialogFooter className="gap-2">

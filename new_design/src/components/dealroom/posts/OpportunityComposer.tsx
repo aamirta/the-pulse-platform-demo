@@ -186,7 +186,7 @@ export default function OpportunityComposer({
   };
 
   const field = 'text-sm';
-  const sectionTitle = 'text-xs font-semibold uppercase tracking-wide text-zinc-400 mb-3';
+  const sectionTitle = 'text-xs font-semibold uppercase tracking-wide text-zinc-500 dark:text-zinc-400 mb-3';
   const card = 'bg-white dark:bg-zinc-900 rounded-xl border border-zinc-100 dark:border-zinc-800 p-5';
 
   return (
@@ -287,7 +287,7 @@ export default function OpportunityComposer({
                   : 'ex. Levée de 4M MAD en amorçage pour notre plateforme logistique'
               }
             />
-            <p className="text-[10px] text-zinc-400 mt-1">
+            <p className="text-[11px] text-zinc-500 dark:text-zinc-400 mt-1">
               {form.title.trim().length}/160
               {!titleOk && form.title.length > 0 && (
                 <span className="text-amber-600 ml-2">
@@ -314,7 +314,7 @@ export default function OpportunityComposer({
                   : "L'accroche visible sur le tableau. Ce que vous faites, la traction, et ce que vous cherchez."
               }
             />
-            <p className="text-[10px] text-zinc-400 mt-1">
+            <p className="text-[11px] text-zinc-500 dark:text-zinc-400 mt-1">
               {form.summary.trim().length}/400
               {!summaryOk && form.summary.length > 0 && (
                 <span className="text-amber-600 ml-2">
@@ -340,7 +340,7 @@ export default function OpportunityComposer({
                   : "L'objet de la demande, les chiffres qui la soutiennent, et tout ce qu'un interlocuteur sérieux doit savoir."
               }
             />
-            <p className="text-[10px] text-zinc-400 mt-1">
+            <p className="text-[11px] text-zinc-500 dark:text-zinc-400 mt-1">
               {form.details.trim().length}/8000
               {!detailsOk && form.details.length > 0 && (
                 <span className="text-amber-600 ml-2">
@@ -510,7 +510,7 @@ export default function OpportunityComposer({
               placeholder="0"
             />
             {!rangeOk && (
-              <p className="text-[10px] text-amber-600 mt-1">
+              <p className="text-[11px] text-amber-600 mt-1">
                 {en
                   ? 'The upper figure must be at least the lower one.'
                   : 'Le montant maximum doit être supérieur au minimum.'}
@@ -588,7 +588,7 @@ export default function OpportunityComposer({
                   ))}
                 </SelectContent>
               </Select>
-              <p className="text-[10px] text-zinc-400 mt-1">
+              <p className="text-[11px] text-zinc-500 dark:text-zinc-400 mt-1">
                 {en
                   ? 'Readers see that a data room exists. They still have to request access.'
                   : "Les lecteurs voient qu'une data room existe. Ils doivent toujours demander l'accès."}
@@ -618,7 +618,7 @@ export default function OpportunityComposer({
         <Button
           type="submit"
           size="sm"
-          className="bg-pulse-orange hover:bg-pulse-orange-hover text-white ml-auto"
+          className="bg-pulse-orange hover:bg-pulse-orange-hover text-primary-foreground ml-auto"
           disabled={!valid || saving}
         >
           {saving ? (

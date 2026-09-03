@@ -322,7 +322,7 @@ function NewConversationDialog({
         {!recipient ? (
           <div className="space-y-3">
             <div className="relative">
-              <Search className="w-3.5 h-3.5 absolute left-3 top-1/2 -translate-y-1/2 text-zinc-400" />
+              <Search className="w-3.5 h-3.5 absolute left-3 top-1/2 -translate-y-1/2 text-zinc-500 dark:text-zinc-400" />
               <Input
                 autoFocus
                 value={query}
@@ -335,10 +335,10 @@ function NewConversationDialog({
             <div className="max-h-64 overflow-y-auto -mx-1">
               {searching && results.length === 0 ? (
                 <div className="py-6 flex justify-center" role="status">
-                  <Loader2 className="w-4 h-4 animate-spin text-zinc-400" />
+                  <Loader2 className="w-4 h-4 animate-spin text-zinc-500 dark:text-zinc-400" />
                 </div>
               ) : results.length === 0 ? (
-                <p className="text-xs text-zinc-500 dark:text-zinc-400 text-center py-6">
+                <p className="text-xs text-zinc-600 dark:text-zinc-300 text-center py-6">
                   {en ? 'No member matches this search.' : 'Aucun membre ne correspond.'}
                 </p>
               ) : (
@@ -361,7 +361,7 @@ function NewConversationDialog({
                       <span className="block text-sm font-medium text-zinc-900 dark:text-white truncate">
                         {person.full_name}
                       </span>
-                      <span className="block text-[11px] text-zinc-500 dark:text-zinc-400 capitalize truncate">
+                      <span className="block text-[11px] text-zinc-600 dark:text-zinc-300 capitalize truncate">
                         {person.role}
                       </span>
                     </span>
@@ -385,14 +385,14 @@ function NewConversationDialog({
                 <span className="block text-sm font-medium text-zinc-900 dark:text-white truncate">
                   {recipient.full_name}
                 </span>
-                <span className="block text-[11px] text-zinc-500 dark:text-zinc-400 capitalize">
+                <span className="block text-[11px] text-zinc-600 dark:text-zinc-300 capitalize">
                   {recipient.role}
                 </span>
               </span>
               <button
                 type="button"
                 onClick={() => setRecipient(null)}
-                className="text-[11px] text-zinc-400 hover:underline"
+                className="text-[11px] text-zinc-500 dark:text-zinc-400 hover:underline"
               >
                 {en ? 'Change' : 'Changer'}
               </button>
@@ -427,7 +427,7 @@ function NewConversationDialog({
                 type="submit"
                 size="sm"
                 disabled={!body.trim() || sending}
-                className="h-8 text-xs bg-pulse-orange hover:bg-pulse-orange-hover text-white"
+                className="h-8 text-xs bg-pulse-orange hover:bg-pulse-orange-hover text-primary-foreground"
               >
                 {sending ? (
                   <Loader2 className="w-3 h-3 mr-1.5 animate-spin" />
@@ -708,7 +708,7 @@ export default function Inbox() {
   if (isBootstrapping) {
     return (
       <div className="min-h-[60vh] flex items-center justify-center" role="status" aria-live="polite">
-        <Loader2 className="w-6 h-6 animate-spin text-zinc-400" />
+        <Loader2 className="w-6 h-6 animate-spin text-zinc-500 dark:text-zinc-400" />
         <span className="sr-only">{en ? 'Loading your messages' : 'Chargement de vos messages'}</span>
       </div>
     );
@@ -729,7 +729,7 @@ export default function Inbox() {
               ? 'Sign in to read and send messages.'
               : 'Connectez-vous pour lire et envoyer des messages.'}
           </p>
-          <Button asChild className="bg-pulse-orange hover:bg-pulse-orange-hover text-white h-9 text-xs">
+          <Button asChild className="bg-pulse-orange hover:bg-pulse-orange-hover text-primary-foreground h-9 text-xs">
             <Link to="/login">{en ? 'Sign in' : 'Se connecter'}</Link>
           </Button>
         </div>
@@ -744,12 +744,12 @@ export default function Inbox() {
           <h1 className="text-2xl font-bold text-zinc-900 dark:text-white flex items-center gap-2">
             {en ? 'Messages' : 'Messagerie'}
             {totalUnread > 0 && (
-              <Badge className="bg-pulse-orange hover:bg-pulse-orange text-white text-[10px] px-2 ve-badge-pop">
+              <Badge className="bg-pulse-orange hover:bg-pulse-orange text-primary-foreground text-[11px] px-2 ve-badge-pop">
                 {totalUnread}
               </Badge>
             )}
           </h1>
-          <p className="text-sm text-zinc-500 dark:text-zinc-400">
+          <p className="text-sm text-zinc-600 dark:text-zinc-300">
             {en
               ? 'Your private conversations with the ecosystem.'
               : "Vos échanges privés avec l'écosystème."}
@@ -757,7 +757,7 @@ export default function Inbox() {
         </div>
         <Button
           onClick={() => setComposeOpen(true)}
-          className="bg-pulse-orange hover:bg-pulse-orange-hover text-white h-9 text-xs self-start sm:self-auto"
+          className="bg-pulse-orange hover:bg-pulse-orange-hover text-primary-foreground h-9 text-xs self-start sm:self-auto"
         >
           <PenSquare className="w-3.5 h-3.5 mr-1.5" />
           {en ? 'New message' : 'Nouveau message'}
@@ -786,7 +786,7 @@ export default function Inbox() {
         >
           <div className="p-3 border-b border-zinc-100 dark:border-zinc-800 space-y-2">
             <div className="relative">
-              <Search className="w-3.5 h-3.5 absolute left-3 top-1/2 -translate-y-1/2 text-zinc-400" />
+              <Search className="w-3.5 h-3.5 absolute left-3 top-1/2 -translate-y-1/2 text-zinc-500 dark:text-zinc-400" />
               <Input
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
@@ -803,7 +803,7 @@ export default function Inbox() {
                   className="absolute right-2 top-1/2 -translate-y-1/2 p-1 rounded hover:bg-zinc-100 dark:hover:bg-zinc-800"
                   aria-label={en ? 'Clear search' : 'Effacer la recherche'}
                 >
-                  <X className="w-3 h-3 text-zinc-400" />
+                  <X className="w-3 h-3 text-zinc-500 dark:text-zinc-400" />
                 </button>
               )}
             </div>
@@ -813,7 +813,7 @@ export default function Inbox() {
               onClick={() => setUnreadOnly((v) => !v)}
               className={`h-7 text-[11px] w-full ${
                 unreadOnly
-                  ? 'bg-pulse-orange hover:bg-pulse-orange-hover text-white'
+                  ? 'bg-pulse-orange hover:bg-pulse-orange-hover text-primary-foreground'
                   : 'dark:bg-zinc-800 dark:border-zinc-700'
               }`}
               aria-pressed={unreadOnly}
@@ -840,7 +840,7 @@ export default function Inbox() {
             ) : listError ? (
               <div className="p-6 text-center">
                 <AlertCircle className="w-6 h-6 text-amber-500 mx-auto mb-2" />
-                <p className="text-xs text-zinc-500 dark:text-zinc-400 mb-3">{listError}</p>
+                <p className="text-xs text-zinc-600 dark:text-zinc-300 mb-3">{listError}</p>
                 <Button
                   size="sm"
                   variant="outline"
@@ -854,7 +854,7 @@ export default function Inbox() {
             ) : partners.length === 0 && !hits?.length ? (
               <div className="p-8 text-center">
                 <MessageSquare className="w-7 h-7 text-zinc-300 dark:text-zinc-600 mx-auto mb-2" />
-                <p className="text-xs text-zinc-500 dark:text-zinc-400">
+                <p className="text-xs text-zinc-600 dark:text-zinc-300">
                   {search || unreadOnly
                     ? en
                       ? 'Nothing matches this search.'
@@ -881,7 +881,7 @@ export default function Inbox() {
                         <span className="font-semibold text-sm text-zinc-900 dark:text-white truncate">
                           {partner.name || partner.email}
                         </span>
-                        <span className="text-[10px] text-zinc-400 flex-shrink-0">
+                        <span className="text-[11px] text-zinc-500 dark:text-zinc-400 flex-shrink-0">
                           {formatTime(partner.last_message_at, language)}
                         </span>
                       </div>
@@ -889,7 +889,7 @@ export default function Inbox() {
                         className={`text-xs truncate mt-0.5 ${
                           partner.unread_count > 0
                             ? 'text-zinc-800 dark:text-zinc-100 font-medium'
-                            : 'text-zinc-500 dark:text-zinc-400'
+                            : 'text-zinc-600 dark:text-zinc-300'
                         }`}
                       >
                         {partner.last_message_preview || (en ? 'No messages' : 'Aucun message')}
@@ -897,7 +897,7 @@ export default function Inbox() {
                     </div>
                     {partner.unread_count > 0 && (
                       <span
-                        className="mt-1 flex-shrink-0 bg-pulse-orange text-white text-[10px] font-bold min-w-[18px] h-[18px] px-1 rounded-full grid place-items-center ve-badge-pop"
+                        className="mt-1 flex-shrink-0 bg-pulse-orange text-primary-foreground text-[11px] font-bold min-w-[18px] h-[18px] px-1 rounded-full grid place-items-center ve-badge-pop"
                         aria-label={`${partner.unread_count} ${en ? 'unread' : 'non lus'}`}
                       >
                         {partner.unread_count}
@@ -908,7 +908,7 @@ export default function Inbox() {
 
                 {hits && hits.length > 0 && (
                   <div>
-                    <p className="px-3 pt-3 pb-1 text-[10px] font-semibold text-zinc-400 uppercase tracking-wide">
+                    <p className="px-3 pt-3 pb-1 text-[11px] font-semibold text-zinc-500 dark:text-zinc-400 uppercase tracking-wide">
                       {en ? 'Matching messages' : 'Messages correspondants'}
                     </p>
                     {hits.map((hit) => (
@@ -932,11 +932,11 @@ export default function Inbox() {
                                 ? `${en ? 'To' : 'À'} ${hit.partner_name || hit.partner_email}`
                                 : hit.partner_name || hit.partner_email}
                             </span>
-                            <span className="text-[10px] text-zinc-400 flex-shrink-0">
+                            <span className="text-[11px] text-zinc-500 dark:text-zinc-400 flex-shrink-0">
                               {formatTime(hit.created_at, language)}
                             </span>
                           </div>
-                          <p className="text-[11px] text-zinc-500 dark:text-zinc-400 line-clamp-2 mt-0.5">
+                          <p className="text-[11px] text-zinc-600 dark:text-zinc-300 line-clamp-2 mt-0.5">
                             {hit.message}
                           </p>
                         </div>
@@ -961,7 +961,7 @@ export default function Inbox() {
               <p className="text-sm font-medium text-zinc-700 dark:text-zinc-200">
                 {en ? 'Select a conversation' : 'Sélectionnez une conversation'}
               </p>
-              <p className="text-xs text-zinc-500 dark:text-zinc-400 mt-1 max-w-xs">
+              <p className="text-xs text-zinc-600 dark:text-zinc-300 mt-1 max-w-xs">
                 {en
                   ? 'Choose someone on the left to read your message history.'
                   : "Choisissez un contact à gauche pour lire l'historique."}
@@ -983,7 +983,7 @@ export default function Inbox() {
                   <p className="font-semibold text-sm text-zinc-900 dark:text-white truncate">
                     {partnerInfo.name || partnerInfo.email}
                   </p>
-                  <p className="text-[11px] text-zinc-500 dark:text-zinc-400 truncate">
+                  <p className="text-[11px] text-zinc-600 dark:text-zinc-300 truncate">
                     {partnerInfo.email}
                   </p>
                 </div>
@@ -998,13 +998,13 @@ export default function Inbox() {
               >
                 {loadingThread ? (
                   <div className="flex justify-center py-6" role="status">
-                    <Loader2 className="w-5 h-5 animate-spin text-zinc-400" />
+                    <Loader2 className="w-5 h-5 animate-spin text-zinc-500 dark:text-zinc-400" />
                     <span className="sr-only">{en ? 'Loading messages' : 'Chargement'}</span>
                   </div>
                 ) : threadError ? (
                   <div className="flex flex-col items-center justify-center py-10 text-center">
                     <AlertCircle className="w-6 h-6 text-amber-500 mb-2" />
-                    <p className="text-xs text-zinc-500 dark:text-zinc-400 mb-3">{threadError}</p>
+                    <p className="text-xs text-zinc-600 dark:text-zinc-300 mb-3">{threadError}</p>
                     <Button
                       size="sm"
                       variant="outline"
@@ -1033,7 +1033,7 @@ export default function Inbox() {
                     )}
 
                     {thread?.messages.length === 0 && pending.length === 0 && (
-                      <p className="text-center text-xs text-zinc-500 dark:text-zinc-400 py-8">
+                      <p className="text-center text-xs text-zinc-600 dark:text-zinc-300 py-8">
                         {en ? 'No messages yet. Say hello.' : 'Aucun message. Lancez la conversation.'}
                       </p>
                     )}
@@ -1056,7 +1056,7 @@ export default function Inbox() {
                         <div key={message.id}>
                           {showDay && (
                             <div className="flex justify-center my-3">
-                              <span className="text-[10px] font-medium text-zinc-400 bg-zinc-50 dark:bg-zinc-800 px-2.5 py-1 rounded-full">
+                              <span className="text-[11px] font-medium text-zinc-500 dark:text-zinc-400 bg-zinc-50 dark:bg-zinc-800 px-2.5 py-1 rounded-full">
                                 {formatDay(message.created_at, language)}
                               </span>
                             </div>
@@ -1069,14 +1069,14 @@ export default function Inbox() {
                               <div
                                 className={`px-3.5 py-2.5 rounded-2xl text-sm leading-relaxed whitespace-pre-wrap [overflow-wrap:anywhere] ${
                                   mine
-                                    ? 'bg-pulse-orange text-white rounded-br-sm'
+                                    ? 'bg-pulse-orange text-primary-foreground rounded-br-sm'
                                     : 'bg-zinc-100 dark:bg-zinc-800 text-zinc-800 dark:text-zinc-100 rounded-bl-sm'
                                 }`}
                               >
                                 <MessageBody text={message.message} />
                               </div>
                               <div className="flex items-center gap-1.5 mt-1 px-1">
-                                <span className="text-[10px] text-zinc-400">
+                                <span className="text-[11px] text-zinc-500 dark:text-zinc-400">
                                   {message.created_at
                                     ? new Date(message.created_at).toLocaleTimeString(
                                         en ? 'en-GB' : 'fr-FR',
@@ -1087,7 +1087,7 @@ export default function Inbox() {
                                 {mine &&
                                   (message.is_read ? (
                                     <MailOpen
-                                      className="w-3 h-3 text-zinc-400"
+                                      className="w-3 h-3 text-zinc-500 dark:text-zinc-400"
                                       aria-label={en ? 'Read' : 'Lu'}
                                     />
                                   ) : (
@@ -1111,32 +1111,32 @@ export default function Inbox() {
                             className={`px-3.5 py-2.5 rounded-2xl rounded-br-sm text-sm leading-relaxed whitespace-pre-wrap [overflow-wrap:anywhere] ${
                               item.status === 'failed'
                                 ? 'bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-300 border border-red-200 dark:border-red-900/60'
-                                : 'bg-pulse-orange/70 text-white'
+                                : 'bg-pulse-orange/70 text-primary-foreground'
                             }`}
                           >
                             <MessageBody text={item.body} />
                           </div>
                           {item.status === 'sending' ? (
-                            <span className="text-[10px] text-zinc-400 mt-1 px-1 flex items-center gap-1">
+                            <span className="text-[11px] text-zinc-500 dark:text-zinc-400 mt-1 px-1 flex items-center gap-1">
                               <Clock className="w-3 h-3" />
                               {en ? 'Sending…' : 'Envoi…'}
                             </span>
                           ) : (
                             <div className="flex items-center gap-2 mt-1 px-1">
-                              <span className="text-[10px] text-red-600 dark:text-red-400">
+                              <span className="text-[11px] text-red-600 dark:text-red-400">
                                 {item.error || (en ? 'Not sent' : 'Non envoyé')}
                               </span>
                               <button
                                 type="button"
                                 onClick={() => retry(item)}
-                                className="text-[10px] font-medium text-pulse-orange hover:underline"
+                                className="text-[11px] font-medium text-pulse-orange hover:underline"
                               >
                                 {en ? 'Retry' : 'Réessayer'}
                               </button>
                               <button
                                 type="button"
                                 onClick={() => discard(item.localId)}
-                                className="text-[10px] text-zinc-400 hover:underline"
+                                className="text-[11px] text-zinc-500 dark:text-zinc-400 hover:underline"
                               >
                                 {en ? 'Discard' : 'Supprimer'}
                               </button>
@@ -1182,21 +1182,21 @@ export default function Inbox() {
                   <Button
                     type="submit"
                     disabled={!reply.trim() || composerTooLong}
-                    className="bg-pulse-orange hover:bg-pulse-orange-hover text-white h-10 w-10 p-0 flex-shrink-0"
+                    className="bg-pulse-orange hover:bg-pulse-orange-hover text-primary-foreground h-10 w-10 p-0 flex-shrink-0"
                     aria-label={en ? 'Send' : 'Envoyer'}
                   >
                     <Send className="w-4 h-4" />
                   </Button>
                 </div>
                 <div className="flex items-center justify-between px-1 min-h-[14px]">
-                  <span className="text-[10px] text-zinc-400">
+                  <span className="text-[11px] text-zinc-500 dark:text-zinc-400">
                     {en
                       ? 'Enter to send · Shift+Enter for a new line'
                       : 'Entrée pour envoyer · Maj+Entrée pour une nouvelle ligne'}
                   </span>
                   {showCounter && (
                     <span
-                      className={`text-[10px] ${composerTooLong ? 'text-red-600 dark:text-red-400 font-medium' : 'text-zinc-400'}`}
+                      className={`text-[11px] ${composerTooLong ? 'text-red-600 dark:text-red-400 font-medium' : 'text-zinc-500 dark:text-zinc-400'}`}
                     >
                       {reply.length} / {MAX_MESSAGE_LENGTH}
                     </span>
@@ -1218,28 +1218,28 @@ export default function Inbox() {
                 <p className="font-semibold text-sm text-zinc-900 dark:text-white">
                   {partnerInfo.name || partnerInfo.email}
                 </p>
-                <p className="text-[11px] text-zinc-500 dark:text-zinc-400 break-all mt-0.5">
+                <p className="text-[11px] text-zinc-600 dark:text-zinc-300 break-all mt-0.5">
                   {partnerInfo.email}
                 </p>
                 {partnerInfo.role && (
-                  <Badge variant="secondary" className="mt-2 text-[10px] capitalize">
+                  <Badge variant="secondary" className="mt-2 text-[11px] capitalize">
                     {partnerInfo.role}
                   </Badge>
                 )}
               </div>
 
               <div className="bg-white dark:bg-zinc-900 rounded-xl border border-zinc-100 dark:border-zinc-800 p-4 space-y-3">
-                <h2 className="text-[11px] font-semibold text-zinc-400 uppercase tracking-wide">
+                <h2 className="text-[11px] font-semibold text-zinc-500 dark:text-zinc-400 uppercase tracking-wide">
                   Conversation
                 </h2>
                 <div className="flex justify-between text-xs">
-                  <span className="text-zinc-500 dark:text-zinc-400">Messages</span>
+                  <span className="text-zinc-600 dark:text-zinc-300">Messages</span>
                   <span className="font-semibold text-zinc-900 dark:text-white">
                     {thread?.total ?? partnerInfo.message_count ?? 0}
                   </span>
                 </div>
                 <div className="flex justify-between text-xs">
-                  <span className="text-zinc-500 dark:text-zinc-400">
+                  <span className="text-zinc-600 dark:text-zinc-300">
                     {en ? 'Last activity' : 'Dernière activité'}
                   </span>
                   <span className="font-semibold text-zinc-900 dark:text-white">
@@ -1249,8 +1249,8 @@ export default function Inbox() {
               </div>
 
               <div className="bg-white dark:bg-zinc-900 rounded-xl border border-zinc-100 dark:border-zinc-800 p-4">
-                <p className="text-[11px] text-zinc-500 dark:text-zinc-400 flex items-start gap-2 leading-relaxed">
-                  <ShieldCheck className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400 flex-shrink-0 mt-0.5" />
+                <p className="text-[11px] text-zinc-600 dark:text-zinc-300 flex items-start gap-2 leading-relaxed">
+                  <ShieldCheck className="w-3.5 h-3.5 text-emerald-700 dark:text-emerald-400 flex-shrink-0 mt-0.5" />
                   {en
                     ? 'Only you and this contact can read these messages.'
                     : 'Vous seul et ce contact pouvez lire ces messages.'}
@@ -1260,7 +1260,7 @@ export default function Inbox() {
           ) : (
             <div className="bg-white dark:bg-zinc-900 rounded-xl border border-zinc-100 dark:border-zinc-800 p-6 text-center">
               <User className="w-6 h-6 text-zinc-200 dark:text-zinc-700 mx-auto mb-2" />
-              <p className="text-[11px] text-zinc-500 dark:text-zinc-400">
+              <p className="text-[11px] text-zinc-600 dark:text-zinc-300">
                 {en ? 'Contact details appear here.' : 'Les détails du contact apparaissent ici.'}
               </p>
             </div>

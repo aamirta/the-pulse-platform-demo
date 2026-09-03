@@ -10,6 +10,7 @@ import { useStartups } from '@/hooks/useStartups';
 import { useStartupFilters } from '@/hooks/useStartupFilters';
 import { useInvestors, useVentureStudios } from '@/hooks/useInvestors';
 import { useStats } from '@/hooks/useStats';
+import { formatCount } from '@/lib/utils';
 
 const stages: Record<string, string> = {
   SCALING: 'bg-emerald-100 text-emerald-700 dark:bg-emerald-950/40 dark:text-emerald-400',
@@ -125,7 +126,7 @@ export default function Startups() {
           <h1 className="text-2xl font-bold text-zinc-900 dark:text-white mb-1">
             {t('incubatorsTitle')}
           </h1>
-          <p className="text-sm text-zinc-500 dark:text-zinc-400">
+          <p className="text-sm text-zinc-600 dark:text-zinc-300">
             {t('incubatorsSubtitle')}
           </p>
         </div>
@@ -152,12 +153,12 @@ export default function Startups() {
                     <h3 className="text-sm font-semibold text-zinc-900 dark:text-white group-hover:text-pulse-orange transition-colors">
                       {inc.name}
                     </h3>
-                    <span className="text-[10px] text-zinc-500 dark:text-zinc-400">
+                    <span className="text-[11px] text-zinc-600 dark:text-zinc-300">
                       {inc.location}
                     </span>
                   </div>
                 </div>
-                <Badge className="bg-purple-50 dark:bg-zinc-800 text-purple-600 dark:text-purple-400 font-semibold border-none text-[10px]">
+                <Badge className="bg-purple-50 dark:bg-zinc-800 text-purple-600 dark:text-purple-400 font-semibold border-none text-[11px]">
                   {inc.type}
                 </Badge>
               </div>
@@ -199,7 +200,7 @@ export default function Startups() {
           <h1 className="text-2xl font-bold text-zinc-900 dark:text-white mb-1">
             {t('ventureStudiosTitle')}
           </h1>
-          <p className="text-sm text-zinc-500 dark:text-zinc-400">
+          <p className="text-sm text-zinc-600 dark:text-zinc-300">
             {t('ventureStudiosSubtitle')}
           </p>
         </div>
@@ -226,12 +227,12 @@ export default function Startups() {
                     <h3 className="text-sm font-semibold text-zinc-900 dark:text-white group-hover:text-pulse-orange transition-colors">
                       {studio.name}
                     </h3>
-                    <span className="text-[10px] text-zinc-500 dark:text-zinc-400">
+                    <span className="text-[11px] text-zinc-600 dark:text-zinc-300">
                       {studio.location}
                     </span>
                   </div>
                 </div>
-                <Badge className="bg-orange-50 dark:bg-zinc-800 text-pulse-orange font-semibold border-none text-[10px]">
+                <Badge className="bg-orange-50 dark:bg-zinc-800 text-pulse-orange font-semibold border-none text-[11px]">
                   Venture Builder
                 </Badge>
               </div>
@@ -253,10 +254,8 @@ export default function Startups() {
         {studioList.length === 0 && (
           <div className="p-8 text-center bg-white dark:bg-zinc-900 rounded-xl border border-zinc-100 dark:border-zinc-800">
             <Building className="w-8 h-8 mx-auto mb-3 text-zinc-300 dark:text-zinc-600" />
-            <p className="text-sm text-zinc-500 dark:text-zinc-400">
-              {language === 'en'
-                ? 'No venture studios found.'
-                : 'Aucun venture studio trouvé.'}
+            <p className="text-sm text-zinc-600 dark:text-zinc-300">
+              {t('ventureStudiosEmpty')}
             </p>
           </div>
         )}
@@ -271,7 +270,7 @@ export default function Startups() {
         <h1 className="text-2xl font-bold text-zinc-900 dark:text-white mb-1">
           {t('startupsTitle')}
         </h1>
-        <p className="text-sm text-zinc-500 dark:text-zinc-400">
+        <p className="text-sm text-zinc-600 dark:text-zinc-300">
           {t('startupsSubtitle')}
         </p>
       </div>
@@ -279,7 +278,7 @@ export default function Startups() {
       {/* Stats */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
         {[
-          { label: t('totalStartupsLabel'), value: ecosystemStats?.startups.toLocaleString() ?? '' },
+          { label: t('totalStartupsLabel'), value: ecosystemStats ? formatCount(ecosystemStats.startups, language) : '' },
           { label: t('sectorsLabel'), value: ecosystemStats?.sectors.toString() ?? '' },
           { label: t('totalRaisedLabel'), value: ecosystemStats?.totalFunding ?? '' },
           { label: t('citiesLabel'), value: ecosystemStats?.cities.toString() ?? '' },
@@ -291,7 +290,7 @@ export default function Startups() {
             <div className="text-2xl font-bold text-zinc-900 dark:text-white">
               {stat.value || <Skeleton className="h-8 w-16" />}
             </div>
-            <div className="text-xs text-zinc-500 dark:text-zinc-455 mt-0.5">{stat.label}</div>
+            <div className="text-xs text-zinc-500 dark:text-zinc-450 mt-0.5">{stat.label}</div>
           </div>
         ))}
       </div>
@@ -333,7 +332,7 @@ export default function Startups() {
             )}
           </div>
           <div className="flex items-center gap-2 sm:ml-auto">
-            <span className="text-xs text-zinc-400">{t('sortBy')}</span>
+            <span className="text-xs text-zinc-500 dark:text-zinc-400">{t('sortBy')}</span>
             <select
               aria-label={t('sortBy')}
               value={`${searchParams.get('sort_by') || 'startup_name'}:${searchParams.get('order') || 'asc'}`}
@@ -392,7 +391,7 @@ export default function Startups() {
                   </Badge>
                 )
             )}
-            <span className="text-xs text-zinc-500 dark:text-zinc-400 ml-2">
+            <span className="text-xs text-zinc-600 dark:text-zinc-300 ml-2">
               {total} {language === 'fr' ? 'résultat(s)' : 'result(s)'}
             </span>
           </div>
@@ -429,7 +428,7 @@ export default function Startups() {
                     </h3>
                     <div className="flex items-center gap-1.5 mt-0.5">
                       {startup.sector.slice(0, 2).map((s) => (
-                        <span key={s} className="text-[10px] text-zinc-500 dark:text-zinc-400">
+                        <span key={s} className="text-[11px] text-zinc-600 dark:text-zinc-300">
                           {s}
                         </span>
                       ))}
@@ -438,24 +437,24 @@ export default function Startups() {
                 </div>
                 <div className="flex items-center gap-2">
                   <Badge
-                    className={`text-[10px] font-semibold ${stages[startup.stage] || 'bg-zinc-100 text-zinc-700'}`}
+                    className={`text-[11px] font-semibold ${stages[startup.stage] || 'bg-zinc-100 text-zinc-700'}`}
                   >
                     {startup.stage}
                   </Badge>
                   <Badge
                     variant="outline"
-                    className="text-[10px] font-semibold border-emerald-200 text-emerald-600 dark:border-emerald-900 dark:text-emerald-400 bg-emerald-50/50 dark:bg-emerald-950/20"
+                    className="text-[11px] font-semibold border-emerald-200 text-emerald-700 dark:text-emerald-400 dark:border-emerald-900 dark:text-emerald-400 bg-emerald-50/50 dark:bg-emerald-950/20"
                   >
                     {startup.status}
                   </Badge>
                 </div>
               </div>
 
-              <p className="text-xs text-zinc-500 dark:text-zinc-400 leading-relaxed mb-3 line-clamp-2">
+              <p className="text-xs text-zinc-600 dark:text-zinc-300 leading-relaxed mb-3 line-clamp-2">
                 {startup.description}
               </p>
 
-              <div className="flex items-center justify-between text-xs text-zinc-500 dark:text-zinc-400">
+              <div className="flex items-center justify-between text-xs text-zinc-600 dark:text-zinc-300">
                 <span>{startup.location}</span>
                 {startup.funding > 0 && (
                   <span className="font-semibold text-zinc-700 dark:text-zinc-300">
@@ -465,7 +464,7 @@ export default function Startups() {
                 )}
               </div>
 
-              <div className="flex items-center gap-3 mt-2 pt-2 border-t border-zinc-50 dark:border-zinc-800/80 text-[11px] text-zinc-500 dark:text-zinc-400">
+              <div className="flex items-center gap-3 mt-2 pt-2 border-t border-zinc-50 dark:border-zinc-800/80 text-[11px] text-zinc-600 dark:text-zinc-300">
                 <span>{startup.teamSize} {t('employeesLabel')}</span>
                 <span>•</span>
                 <span>{t('foundedInLabel')} {startup.yearFounded}</span>

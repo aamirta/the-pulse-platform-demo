@@ -1,5 +1,5 @@
 import { lazy, Suspense, type ReactNode } from 'react';
-import { HashRouter, Routes, Route } from 'react-router-dom';
+import { HashRouter, Routes, Route, Navigate } from 'react-router-dom';
 import AppLayout from '@/components/layout/AppLayout';
 import { ProtectedRoute } from '@/components/ProtectedRoute';
 import Home from '@/pages/Home';
@@ -31,6 +31,8 @@ const Inbox = lazy(() => import('@/pages/Inbox'));
 const DealRoom = lazy(() => import('@/pages/DealRoom'));
 const BadgeDownload = lazy(() => import('@/pages/BadgeDownload'));
 const CommunityNewsfeed = lazy(() => import('@/pages/CommunityNewsfeed'));
+const Talents = lazy(() => import('@/pages/Talents'));
+const DealRoomAccess = lazy(() => import('@/pages/DealRoomAccess'));
 const NotFound = lazy(() => import('@/pages/NotFound'));
 
 /** Shown while a route chunk loads; mirrors the in-app loading treatment. */
@@ -79,6 +81,16 @@ function App() {
           <Route path="/visualizer" element={<Lazy><EcosystemVisualizer /></Lazy>} />
           <Route path="/login" element={<Lazy><Login /></Lazy>} />
           <Route path="/onboarding" element={<Lazy><Onboarding /></Lazy>} />
+          {/* "Créer un compte" links point here. The route was missing, so
+              #/register was a 404 while the sign-up form sat on /onboarding. */}
+          <Route path="/register" element={<Lazy><Onboarding /></Lazy>} />
+          <Route path="/talents" element={<Lazy><Talents /></Lazy>} />
+          {/* Clean URLs for the views the sidebar reaches through a query
+              parameter, so they survive being typed, shared or refreshed. */}
+          <Route path="/venture-studios" element={<Navigate to="/startups?type=venture-studio" replace />} />
+          <Route path="/experts" element={<Navigate to="/founders?type=expert" replace />} />
+          <Route path="/cofounders" element={<Navigate to="/founders?type=co-founder" replace />} />
+          <Route path="/blog" element={<Navigate to="/news?type=blog" replace />} />
           <Route path="/forgot-password" element={<Lazy><ForgotPassword /></Lazy>} />
           <Route path="/reset-password" element={<Lazy><ResetPassword /></Lazy>} />
           <Route
@@ -92,7 +104,7 @@ function App() {
           <Route
             path="/deal-room"
             element={
-              <ProtectedRoute>
+              <ProtectedRoute fallback={<Lazy><DealRoomAccess /></Lazy>}>
                 <Lazy><DealRoom /></Lazy>
               </ProtectedRoute>
             }

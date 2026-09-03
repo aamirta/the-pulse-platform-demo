@@ -46,7 +46,8 @@ export function useIncubators(): IncubatorListState {
       })
       .catch((err) => {
         if (!cancelled) {
-          setError(new Error(err instanceof Error ? err.message : 'Une erreur est survenue'));
+          // Kept intact so the copy layer can read `kind`; re-wrapping lost it.
+          setError(err instanceof Error ? err : new Error(String(err)));
         }
       })
       .finally(() => {

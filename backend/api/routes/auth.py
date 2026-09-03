@@ -30,6 +30,8 @@ from backend.schemas import (
     PasswordChangeRequest,
     RefreshTokenResponse,
     ResetPasswordRequest,
+    SignInRequest,
+    SignInResponse,
     Token,
     UserMe,
 )
@@ -69,6 +71,80 @@ def login(
         "access_token": access_token,
         "refresh_token": refresh_token,
         "token_type": "bearer",
+    }
+
+
+@router.post(
+    "/signin",
+    response_model=SignInResponse,
+    summary="Sign in",
+    description=(
+        "Single sign-in entry point. Accepts an administrator username or a member "
+        "email in the same field and resolves the account server-side, returning the "
+        "matching token pair and the account type."
+    ),
+)
+@limiter.limit(settings.RATE_LIMIT_AUTH)
+def signin(
+    request: Request,
+    data: SignInRequest,
+    db: Session = Depends(get_db),
+) -> dict[str, Any]:
+    """Authenticate against either account store and report which one matched.
+
+    The client used to pick the endpoint itself, which meant the person signing
+    in had to know whether they were an "admin" or a "member" before they could
+    type anything. Deciding that here is the server's job: it owns both stores.
+
+    Failures are deliberately indistinguishable -- an unknown identifier and a
+    wrong password return the same 401 -- so this cannot be used to discover
+    which usernames or email addresses exist.
+    """
+    identifier = data.identifier.strip()
+    invalid = HTTPException(
+        status_code=status.HTTP_401_UNAUTHORIZED,
+        detail="Incorrect username or password",
+        headers={"WWW-Authenticate": "Bearer"},
+    )
+    if not identifier:
+        raise invalid
+
+    user = db.query(User).filter(User.username == identifier).first()
+    if user and verify_password(data.password, user.password):
+        if needs_rehash(user.password):
+            user.password = hash_password(data.password)
+            db.commit()
+        claims = {"sub": user.username, "tv": user.token_version}
+        return {
+            "access_token": create_access_token(claims),
+            "refresh_token": create_refresh_token(claims),
+            "token_type": "bearer",
+            "account_type": "admin",
+        }
+
+    member = db.query(PulseMember).filter(PulseMember.email == identifier.lower()).first()
+    if not member or not member.password_hash or not verify_password(
+        data.password, member.password_hash
+    ):
+        raise invalid
+
+    if not member.is_confirmed:
+        # Same gate as the member-only endpoint: email verification is only
+        # meaningful if it actually blocks sign-in.
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Please confirm your email address before signing in.",
+        )
+
+    claims = {"sub": f"member:{member.id}", "email": member.email, "tv": member.token_version}
+    return {
+        "access_token": create_member_access_token(claims),
+        "refresh_token": create_member_refresh_token(claims),
+        "token_type": "bearer",
+        "account_type": "member",
+        "member_id": member.id,
+        "full_name": member.full_name,
+        "role": member.role,
     }
 
 

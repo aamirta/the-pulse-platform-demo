@@ -14,10 +14,12 @@ import {
   Line,
   Legend,
 } from 'recharts';
-import { TrendingUp, TrendingDown, Loader2, AlertCircle } from 'lucide-react';
+import { Loader2, AlertCircle } from 'lucide-react';
 import { useTheme } from '@/hooks/useTheme';
 import { useLanguage } from '@/context/LanguageContext';
 import { apiGet } from '@/lib/api';
+import { describeError } from '@/lib/errors';
+import { formatCount } from '@/lib/utils';
 
 interface ChartSeries {
   labels: string[];
@@ -49,6 +51,7 @@ interface StatsResponse {
   topSectors: ChartSeries;
   topFundedStartups: ChartSeries | null;
   fundingBySector: ChartSeries | null;
+  startupsByCity: ChartSeries | null;
 }
 
 const COLORS = ['#b8521c', '#d56426', '#e07b43', '#f0a878', '#fde4cf', '#f59e0b', '#a855f7', '#3b82f6', '#10b981', '#a855f7'];
@@ -71,14 +74,14 @@ export default function Analytics() {
       })
       .catch((err) => {
         if (!cancelled) {
-          setError(err.message || t('errorLoading'));
+          setError(describeError(err, language));
           setLoading(false);
         }
       });
     return () => {
       cancelled = true;
     };
-  }, [t]);
+  }, [language]);
 
   const chartTextColor = theme === 'dark' ? '#a1a1aa' : '#52525b';
   const chartGridColor = theme === 'dark' ? '#27272a' : '#f4f4f5';
@@ -124,28 +127,31 @@ export default function Analytics() {
     }));
   }, [stats]);
 
+  // Only measured figures. The month-on-month deltas that used to sit on these
+  // tiles ("+12%", "+28%", "-2%") and the 18% growth rate were literals in the
+  // component -- nothing in the API produces them.
   const kpiCards = useMemo(() => {
     if (!stats) return [];
     const c = stats.counts;
     return [
-      { label: t('activeStartupsKpi'), value: c.startups.toLocaleString(), change: '+12%', up: true },
-      { label: t('fundraisingKpi'), value: c.totalFunding, change: '+28%', up: true },
-      { label: t('newFoundersKpi'), value: c.founders.toLocaleString(), change: '+8%', up: true },
-      { label: t('growthRateKpi'), value: '18%', change: '-2%', up: false },
+      { label: t('activeStartupsKpi'), value: formatCount(c.startups, language) },
+      { label: t('fundraisingKpi'), value: c.totalFunding },
+      { label: t('newFoundersKpi'), value: formatCount(c.founders, language) },
+      { label: t('investorsKpi'), value: formatCount(c.investors, language) },
     ];
   }, [stats, t]);
 
+  // Served by /stats/charts. This chart used to render a hardcoded city
+  // breakdown (Casablanca 892, Rabat 312...) unrelated to the database.
   const cityData = useMemo(() => {
+    const series = stats?.startupsByCity;
+    if (!series) return [];
     const others = language === 'en' ? 'Others' : 'Autres';
-    return [
-      { city: 'Casablanca', count: 892 },
-      { city: 'Rabat', count: 312 },
-      { city: 'Marrakech', count: 187 },
-      { city: 'Tanger', count: 156 },
-      { city: 'Agadir', count: 98 },
-      { city: others, count: 306 },
-    ];
-  }, [language]);
+    return series.labels.map((city, i) => ({
+      city: city === 'Autres' ? others : city,
+      count: series.values[i] ?? 0,
+    }));
+  }, [stats, language]);
 
   if (loading) {
     return (
@@ -158,9 +164,14 @@ export default function Analytics() {
 
   if (error || !stats) {
     return (
-      <div className="flex items-center justify-center min-h-[60vh] text-red-500">
-        <AlertCircle className="w-6 h-6 mr-2" />
-        {error || t('errorLoading')}
+      <div
+        className="flex flex-col items-center justify-center gap-3 min-h-[60vh] text-center px-6"
+        role="alert"
+      >
+        <AlertCircle className="w-8 h-8 text-amber-500" />
+        <p className="text-sm text-zinc-600 dark:text-zinc-300 max-w-sm">
+          {error ?? t('errorLoading')}
+        </p>
       </div>
     );
   }
@@ -171,7 +182,7 @@ export default function Analytics() {
         <h1 className="text-2xl font-bold text-zinc-900 dark:text-white mb-1 font-serif">
           {t('analyticsTitle')}
         </h1>
-        <p className="text-sm text-zinc-500 dark:text-zinc-400">
+        <p className="text-sm text-zinc-600 dark:text-zinc-300">
           {t('analyticsSubtitle')}
         </p>
       </div>
@@ -183,20 +194,8 @@ export default function Analytics() {
             key={kpi.label}
             className="p-4 bg-white dark:bg-zinc-900 rounded-xl border border-zinc-100 dark:border-zinc-800 transition-colors"
           >
-            <div className="text-xs text-zinc-500 dark:text-zinc-400 mb-1">{kpi.label}</div>
+            <div className="text-xs text-zinc-600 dark:text-zinc-300 mb-1">{kpi.label}</div>
             <div className="text-2xl font-bold text-zinc-900 dark:text-white">{kpi.value}</div>
-            <div
-              className={`inline-flex items-center gap-0.5 text-xs font-semibold mt-1 ${
-                kpi.up ? 'text-emerald-600 dark:text-emerald-455' : 'text-red-500 dark:text-red-400'
-              }`}
-            >
-              {kpi.up ? (
-                <TrendingUp className="w-3 h-3" />
-              ) : (
-                <TrendingDown className="w-3 h-3" />
-              )}
-              {kpi.change} {t('vsLastMonth')}
-            </div>
           </div>
         ))}
       </div>

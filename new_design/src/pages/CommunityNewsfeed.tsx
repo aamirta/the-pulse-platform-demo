@@ -121,7 +121,7 @@ export default function Newsfeed() {
 
       {loading && posts.length === 0 && (
         <div className="flex justify-center py-8">
-          <Loader2 className="w-6 h-6 animate-spin text-zinc-400" />
+          <Loader2 className="w-6 h-6 animate-spin text-zinc-500 dark:text-zinc-400" />
         </div>
       )}
 
@@ -185,7 +185,7 @@ export default function Newsfeed() {
               {(post.comments ?? []).map((c) => (
                 <div key={c.id} className="bg-zinc-50 dark:bg-zinc-800/50 p-3 rounded-lg text-sm">
                   <p>{c.content}</p>
-                  <p className="text-[10px] text-zinc-500 mt-1">
+                  <p className="text-[11px] text-zinc-500 mt-1">
                     {new Date(c.created_at).toLocaleString()}
                   </p>
                 </div>
@@ -205,7 +205,7 @@ export default function Newsfeed() {
                   <Button
                     onClick={() => submitComment(post)}
                     disabled={!commentText[post.post_id]?.trim()}
-                    className="bg-pulse-orange hover:bg-pulse-orange-hover text-white"
+                    className="bg-pulse-orange hover:bg-pulse-orange-hover text-primary-foreground"
                   >
                     <Send className="w-4 h-4" />
                   </Button>

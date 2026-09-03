@@ -139,7 +139,7 @@ export default function OpportunityBoard({ language }: OpportunityBoardProps) {
                 ? 'Post an opportunity'
                 : 'Publier une opportunité'}
           </h2>
-          <p className="text-xs text-zinc-500 dark:text-zinc-400 mt-1">
+          <p className="text-xs text-zinc-600 dark:text-zinc-300 mt-1">
             {en
               ? 'Say what you are looking for and who should reach out. Responses arrive in your inbox.'
               : 'Dites ce que vous cherchez et qui doit vous contacter. Les réponses arrivent dans votre boîte.'}
@@ -209,7 +209,7 @@ export default function OpportunityBoard({ language }: OpportunityBoardProps) {
           <h2 className="text-base font-semibold text-zinc-900 dark:text-white">
             {en ? 'Opportunities' : 'Opportunités'}
           </h2>
-          <p className="text-xs text-zinc-500 dark:text-zinc-400 mt-0.5">
+          <p className="text-xs text-zinc-600 dark:text-zinc-300 mt-0.5">
             {en
               ? 'Capital, co-founders, partners and talent across the Moroccan ecosystem.'
               : "Capital, cofondateurs, partenaires et talents de l'écosystème marocain."}
@@ -218,7 +218,7 @@ export default function OpportunityBoard({ language }: OpportunityBoardProps) {
         {canPost && (
           <Button
             size="sm"
-            className="bg-pulse-orange hover:bg-pulse-orange-hover text-white flex-shrink-0"
+            className="bg-pulse-orange hover:bg-pulse-orange-hover text-primary-foreground flex-shrink-0"
             onClick={() => {
               setEditing(null);
               setOpenPostId(null);
@@ -251,11 +251,11 @@ export default function OpportunityBoard({ language }: OpportunityBoardProps) {
               className={`flex items-center gap-1.5 px-3 py-2 text-xs font-medium border-b-2 transition-colors ${
                 view === key
                   ? 'border-pulse-orange text-pulse-orange'
-                  : 'border-transparent text-zinc-500 dark:text-zinc-400 hover:text-zinc-800 dark:hover:text-zinc-200'
+                  : 'border-transparent text-zinc-600 dark:text-zinc-300 hover:text-zinc-800 dark:hover:text-zinc-200'
               }`}
             >
               {label}
-              {count > 0 && <span className="text-[10px] text-zinc-400 font-normal">({count})</span>}
+              {count > 0 && <span className="text-[11px] text-zinc-500 dark:text-zinc-400 font-normal">({count})</span>}
             </button>
           ))}
         </nav>
@@ -266,7 +266,7 @@ export default function OpportunityBoard({ language }: OpportunityBoardProps) {
         <div className="space-y-2">
           <div className="flex gap-2">
             <div className="relative flex-1">
-              <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-zinc-400 pointer-events-none" />
+              <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-zinc-500 dark:text-zinc-400 pointer-events-none" />
               <Input
                 value={search}
                 onChange={(event) => setSearch(event.target.value)}
@@ -281,7 +281,7 @@ export default function OpportunityBoard({ language }: OpportunityBoardProps) {
                 <button
                   type="button"
                   onClick={() => setSearch('')}
-                  className="absolute right-2 top-1/2 -translate-y-1/2 text-zinc-400 hover:text-zinc-600"
+                  className="absolute right-2 top-1/2 -translate-y-1/2 text-zinc-500 dark:text-zinc-400 hover:text-zinc-600"
                   aria-label={en ? 'Clear search' : 'Effacer'}
                 >
                   <X className="w-3.5 h-3.5" />
@@ -297,7 +297,7 @@ export default function OpportunityBoard({ language }: OpportunityBoardProps) {
               <SlidersHorizontal className="w-3.5 h-3.5 sm:mr-1.5" />
               <span className="hidden sm:inline">{en ? 'Filters' : 'Filtres'}</span>
               {activeFilterCount > 0 && (
-                <span className="ml-1.5 bg-pulse-orange text-white text-[9px] font-bold w-4 h-4 rounded-full grid place-items-center">
+                <span className="ml-1.5 bg-pulse-orange text-primary-foreground text-[11px] font-bold w-4 h-4 rounded-full grid place-items-center">
                   {activeFilterCount}
                 </span>
               )}
@@ -423,7 +423,7 @@ export default function OpportunityBoard({ language }: OpportunityBoardProps) {
                 <button
                   type="button"
                   onClick={clearFilters}
-                  className="col-span-2 lg:col-span-5 text-[11px] text-zinc-400 hover:text-pulse-orange text-left"
+                  className="col-span-2 lg:col-span-5 text-[11px] text-zinc-500 dark:text-zinc-400 hover:text-pulse-orange text-left"
                 >
                   {en ? 'Clear all filters' : 'Effacer les filtres'}
                 </button>
@@ -445,7 +445,7 @@ export default function OpportunityBoard({ language }: OpportunityBoardProps) {
         </div>
       ) : state.error ? (
         <div className="text-center py-16 bg-white dark:bg-zinc-900 rounded-xl border border-zinc-100 dark:border-zinc-800">
-          <p className="text-sm text-zinc-500 dark:text-zinc-400">{state.error}</p>
+          <p className="text-sm text-zinc-600 dark:text-zinc-300">{state.error}</p>
           <Button variant="outline" size="sm" className="mt-3" onClick={state.reload}>
             {en ? 'Try again' : 'Réessayer'}
           </Button>
@@ -466,7 +466,7 @@ export default function OpportunityBoard({ language }: OpportunityBoardProps) {
                   ? 'No opportunities posted yet'
                   : 'Aucune opportunité publiée'}
           </p>
-          <p className="text-xs text-zinc-400 mt-1 max-w-sm mx-auto">
+          <p className="text-xs text-zinc-500 dark:text-zinc-400 mt-1 max-w-sm mx-auto">
             {showingMine
               ? en
                 ? 'Post what you are looking for — capital, a co-founder, a partner — and responses land in your inbox.'
@@ -495,7 +495,7 @@ export default function OpportunityBoard({ language }: OpportunityBoardProps) {
           {showingMine && canPost && (
             <Button
               size="sm"
-              className="mt-3 bg-pulse-orange hover:bg-pulse-orange-hover text-white"
+              className="mt-3 bg-pulse-orange hover:bg-pulse-orange-hover text-primary-foreground"
               onClick={() => {
                 setEditing(null);
                 setView('compose');
@@ -530,7 +530,7 @@ export default function OpportunityBoard({ language }: OpportunityBoardProps) {
               >
                 {en ? 'Previous' : 'Précédent'}
               </Button>
-              <span className="text-xs text-zinc-400">
+              <span className="text-xs text-zinc-500 dark:text-zinc-400">
                 {en ? 'Page' : 'Page'} {state.page} / {state.pages}
               </span>
               <Button

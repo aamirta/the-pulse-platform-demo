@@ -34,7 +34,7 @@ export default function Footer() {
               <p>
                 En rassemblant les données clés sur les startups, les fondateurs, les investisseurs, les incubateurs et les opportunités, nous offrons aux acteurs nationaux et internationaux une visibilité unique et des outils d'aide à la décision.
               </p>
-              <p className="text-xs text-zinc-400">Version 2.0.0 (Juillet 2026) — Fièrement soutenu par nos partenaires.</p>
+              <p className="text-xs text-zinc-500 dark:text-zinc-400">Version 2.0.0 (Juillet 2026) — Fièrement soutenu par nos partenaires.</p>
             </div>
           </>
         );
@@ -56,7 +56,7 @@ export default function Footer() {
                 <p><strong>Téléphone :</strong> +212 (0) 5 22 22 88 44</p>
                 <p><strong>Adresse :</strong> Technopark, Secteur Startup, Casablanca, Maroc</p>
               </div>
-              <p className="text-xs text-zinc-400">Nous répondons généralement sous 24h ouvrées.</p>
+              <p className="text-xs text-zinc-500 dark:text-zinc-400">Nous répondons généralement sous 24h ouvrées.</p>
             </div>
           </>
         );
@@ -111,43 +111,43 @@ export default function Footer() {
   };
 
   return (
-    <footer className="mt-8 -mx-4 lg:-mx-6 px-4 lg:px-6 py-6 bg-card/60 border-t border-border/40 transition-all duration-200 ease-in-out">
+    <footer className="mt-8 -mx-4 lg:-mx-6 px-4 lg:px-6 py-7 bg-card border-t-2 border-border transition-all duration-200 ease-in-out">
       <div className="flex flex-col lg:flex-row items-center justify-between gap-4">
         {/* Partners */}
         <div className="flex items-center gap-4 flex-wrap">
           <span className="text-xs text-muted-foreground">{t('footerSupportedBy')}</span>
           <div className="flex items-center gap-4">
-            <div className="flex items-center gap-1.5 opacity-70 hover:opacity-100 transition-all duration-200 ease-in-out">
-              <div className="w-8 h-8 bg-white border border-border/40 rounded flex items-center justify-center shadow-soft-sm overflow-hidden p-0.5">
+            <div className="flex items-center gap-1.5 transition-all duration-200 ease-in-out">
+              <div className="w-12 h-12 bg-white border border-border/40 rounded-md flex items-center justify-center shadow-soft-sm overflow-hidden p-1.5">
                 <img src="/avatars/um6p_logo.png" alt="UM6P" className="w-full h-full object-contain" />
               </div>
-              <span className="inline-flex items-center min-h-6 text-[11px] font-medium text-foreground/75 hover:text-foreground transition-colors">
-                Africa Business School
+              <span className="inline-flex items-center min-h-6 text-xs font-semibold text-foreground hover:text-pulse-orange transition-colors">
+                Africa Business School – UM6P
               </span>
             </div>
-            <div className="flex items-center gap-1.5 opacity-70 hover:opacity-100 transition-all duration-200 ease-in-out">
-              <div className="w-8 h-8 bg-white border border-border/40 rounded flex items-center justify-center shadow-soft-sm overflow-hidden p-0.5">
-                <img src="/avatars/tamwilcom_logo.png" alt="TAMWILCOM" className="w-full h-full object-contain" />
+            <div className="flex items-center gap-1.5 transition-all duration-200 ease-in-out">
+              <div className="w-12 h-12 bg-white border border-border/40 rounded-md flex items-center justify-center shadow-soft-sm overflow-hidden p-1.5">
+                <img src="/avatars/tamwilcom_logo.png" alt="Tamwilcom" className="w-full h-full object-contain" />
               </div>
               <div className="flex flex-col">
-                <span className="inline-flex items-center min-h-6 text-[11px] font-medium text-foreground/75 hover:text-foreground leading-tight transition-colors">
-                  TAMWILCOM
+                <span className="inline-flex items-center min-h-6 text-xs font-semibold text-foreground hover:text-pulse-orange leading-tight transition-colors">
+                  Tamwilcom
                 </span>
-                <span className="text-[10px] text-foreground/90 leading-tight">
-                  GROUPE CDG
+                <span className="text-[11px] text-muted-foreground leading-tight">
+                  Groupe CDG
                 </span>
               </div>
             </div>
-            <div className="flex items-center gap-1.5 opacity-70 hover:opacity-100 transition-all duration-200 ease-in-out">
-              <div className="w-8 h-8 bg-white border border-border/40 rounded flex items-center justify-center shadow-soft-sm overflow-hidden p-0.5">
+            <div className="flex items-center gap-1.5 transition-all duration-200 ease-in-out">
+              <div className="w-12 h-12 bg-white border border-border/40 rounded-md flex items-center justify-center shadow-soft-sm overflow-hidden p-1.5">
                 <img src="/avatars/amic_logo.png" alt="AMIC" className="w-full h-full object-contain" />
               </div>
               <div className="flex flex-col">
-                <span className="inline-flex items-center min-h-6 text-[11px] font-medium text-foreground/75 hover:text-foreground leading-tight transition-colors">
+                <span className="inline-flex items-center min-h-6 text-xs font-semibold text-foreground hover:text-pulse-orange leading-tight transition-colors">
                   AMIC
                 </span>
-                <span className="text-[10px] text-foreground/90 leading-tight">
-                  Agence Marocaine
+                <span className="text-[11px] text-muted-foreground leading-tight">
+                  Association marocaine des investisseurs en capital
                 </span>
               </div>
             </div>

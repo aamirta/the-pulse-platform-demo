@@ -1,5 +1,7 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { useInView } from 'framer-motion';
+import { formatCount } from '@/lib/utils';
+import { useLanguage } from '@/context/LanguageContext';
 
 interface CounterNumberProps {
   value: string | number;
@@ -16,6 +18,7 @@ export const CounterNumber: React.FC<CounterNumberProps> = ({
   prefix = '',
   suffix = '',
 }) => {
+  const { language } = useLanguage();
   const ref = useRef<HTMLSpanElement>(null);
   const isInView = useInView(ref, { once: true, amount: 0.5 });
   const [displayValue, setDisplayValue] = useState<string>('0');
@@ -28,7 +31,7 @@ export const CounterNumber: React.FC<CounterNumberProps> = ({
     const targetNum = parseFloat(numericStr);
 
     if (isNaN(targetNum)) {
-      setDisplayValue(String(value));
+      setDisplayValue(typeof value === 'number' ? formatCount(value, language) : String(value));
       return;
     }
 
@@ -46,18 +49,18 @@ export const CounterNumber: React.FC<CounterNumberProps> = ({
       if (isDecimal) {
         setDisplayValue(currentNum.toFixed(1));
       } else {
-        setDisplayValue(Math.floor(currentNum).toLocaleString());
+        setDisplayValue(formatCount(Math.floor(currentNum), language));
       }
 
       if (progress < 1) {
         requestAnimationFrame(animate);
       } else {
-        setDisplayValue(String(value));
+        setDisplayValue(typeof value === 'number' ? formatCount(value, language) : String(value));
       }
     };
 
     requestAnimationFrame(animate);
-  }, [isInView, value, duration]);
+  }, [isInView, value, duration, language]);
 
   return (
     <span ref={ref} className={className}>

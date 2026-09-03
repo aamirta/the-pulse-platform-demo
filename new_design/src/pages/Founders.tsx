@@ -57,12 +57,17 @@ export default function Founders() {
       {/* Header */}
       <div>
         <h1 className="text-2xl font-bold text-zinc-900 dark:text-white mb-1">
-          {en ? 'Founders & Co-Founders' : 'Fondateurs & Cofondateurs'}
+          {en ? 'Founders' : 'Fondateurs'}
         </h1>
-        <p className="text-sm text-zinc-500 dark:text-zinc-400">
-          {en
-            ? 'Everyone who has founded a company in the Moroccan ecosystem. Open a profile to see their full details.'
-            : "Toutes les personnes ayant fondé une entreprise dans l'écosystème marocain. Ouvrez un profil pour voir tous les détails."}
+        <p className="text-sm text-zinc-600 dark:text-zinc-300">
+          {/* The count is the server total, so it never contradicts the list. */}
+          {total > 0
+            ? en
+              ? `${total.toLocaleString('en')} founders and co-founders of Moroccan startups.`
+              : `${total.toLocaleString('fr-FR')} fondateurs et co-fondateurs de startups marocaines.`
+            : en
+              ? 'Founders and co-founders of Moroccan startups.'
+              : 'Fondateurs et co-fondateurs de startups marocaines.'}
         </p>
       </div>
 
@@ -76,7 +81,7 @@ export default function Founders() {
           [
             { key: undefined, label: en ? 'Everyone' : 'Tous' },
             { key: 'founder' as const, label: en ? 'Founders' : 'Fondateurs' },
-            { key: 'cofounder' as const, label: en ? 'Co-Founders' : 'Cofondateurs' },
+            { key: 'cofounder' as const, label: en ? 'Co-founders' : 'Co-fondateurs' },
           ] as const
         ).map(({ key, label }) => (
           <button
@@ -92,12 +97,12 @@ export default function Founders() {
             className={`px-3 py-2 text-xs font-medium whitespace-nowrap border-b-2 transition-colors ${
               roleFilter === key
                 ? 'border-pulse-orange text-pulse-orange'
-                : 'border-transparent text-zinc-500 dark:text-zinc-400 hover:text-zinc-800 dark:hover:text-zinc-200'
+                : 'border-transparent text-zinc-600 dark:text-zinc-300 hover:text-zinc-800 dark:hover:text-zinc-200'
             }`}
           >
             {label}
             {roleFilter === key && total > 0 && (
-              <span className="ml-1.5 text-[10px] text-zinc-400 font-normal">{total}</span>
+              <span className="ml-1.5 text-[11px] text-zinc-500 dark:text-zinc-400 font-normal">{total}</span>
             )}
           </button>
         ))}
@@ -150,7 +155,7 @@ export default function Founders() {
                     the API from the startup-founder join, not guessed here. */}
                 <Badge
                   variant="outline"
-                  className={`text-[10px] px-1.5 py-0 font-medium ${
+                  className={`text-[11px] px-1.5 py-0 font-medium ${
                     founder.founder_type === 'cofounder'
                       ? 'border-violet-500/30 text-violet-700 dark:text-violet-400 bg-violet-500/10'
                       : 'border-pulse-orange/30 text-pulse-orange bg-pulse-orange/10'
@@ -172,19 +177,19 @@ export default function Founders() {
               <p className="text-xs text-pulse-orange dark:text-orange-400 font-medium mt-0.5">
                 {founder.role}
               </p>
-              <p className="text-xs text-zinc-500 dark:text-zinc-400 mt-0.5">{founder.startup}</p>
+              <p className="text-xs text-zinc-600 dark:text-zinc-300 mt-0.5">{founder.startup}</p>
               <div className="flex items-center gap-3 mt-2">
-                <span className="flex items-center gap-1 text-xs text-zinc-500 dark:text-zinc-400">
+                <span className="flex items-center gap-1 text-xs text-zinc-600 dark:text-zinc-300">
                   <MapPin className="w-3 h-3" />
                   {founder.location}
                 </span>
                 {founder.experience && (
-                  <span className="text-xs text-zinc-500 dark:text-zinc-400">
+                  <span className="text-xs text-zinc-600 dark:text-zinc-300">
                     {founder.experience}
                   </span>
                 )}
               </div>
-              <p className="text-xs text-zinc-500 dark:text-zinc-400 mt-2 line-clamp-2 leading-relaxed">
+              <p className="text-xs text-zinc-600 dark:text-zinc-300 mt-2 line-clamp-2 leading-relaxed">
                 {founder.bio}
               </p>
             </div>
@@ -196,7 +201,7 @@ export default function Founders() {
                 }}
                 aria-label={`LinkedIn profile of ${founder.name}`}
                 title={`LinkedIn profile of ${founder.name}`}
-                className="p-2 text-zinc-400 hover:text-blue-600 hover:bg-blue-50 dark:hover:bg-zinc-800 rounded-lg transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pulse-orange/50"
+                className="p-2 text-zinc-500 dark:text-zinc-400 hover:text-blue-600 hover:bg-blue-50 dark:hover:bg-zinc-800 rounded-lg transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pulse-orange/50"
               >
                 <Linkedin className="w-4 h-4" aria-hidden="true" />
               </button>
@@ -235,14 +240,14 @@ function SectionEmpty({ message }: { message: string }) {
   return (
     <div className="p-8 text-center bg-white dark:bg-zinc-900 rounded-xl border border-zinc-100 dark:border-zinc-800">
       <Users className="w-8 h-8 mx-auto mb-3 text-zinc-300 dark:text-zinc-600" />
-      <p className="text-sm text-zinc-500 dark:text-zinc-400">{message}</p>
+      <p className="text-sm text-zinc-600 dark:text-zinc-300">{message}</p>
     </div>
   );
 }
 
 /** "Experts & Mentors" — reads the dedicated `/experts/` directory. */
 function ExpertsSection() {
-  const { t, language } = useLanguage();
+  const { t } = useLanguage();
   const { data: experts = [], total, hasMore, isLoading, isLoadingMore, loadMore } = useExperts();
 
   if (isLoading) return <SectionSkeleton />;
@@ -253,7 +258,7 @@ function ExpertsSection() {
         <h1 className="text-2xl font-bold text-zinc-900 dark:text-white mb-1">
           {t('expertsTitle')}
         </h1>
-        <p className="text-sm text-zinc-500 dark:text-zinc-400">{t('expertsSubtitle')}</p>
+        <p className="text-sm text-zinc-600 dark:text-zinc-300">{t('expertsSubtitle')}</p>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -292,25 +297,25 @@ function ExpertsSection() {
                 </p>
               )}
               {expert.organization && (
-                <p className="text-xs text-zinc-500 dark:text-zinc-400 mt-0.5">
+                <p className="text-xs text-zinc-600 dark:text-zinc-300 mt-0.5">
                   {expert.organization}
                 </p>
               )}
               <div className="flex items-center gap-3 mt-2">
                 {expert.location && (
-                  <span className="flex items-center gap-1 text-xs text-zinc-500 dark:text-zinc-400">
+                  <span className="flex items-center gap-1 text-xs text-zinc-600 dark:text-zinc-300">
                     <MapPin className="w-3 h-3" />
                     {expert.location}
                   </span>
                 )}
                 {expert.yearsExperience && (
-                  <span className="text-xs text-zinc-500 dark:text-zinc-400">
+                  <span className="text-xs text-zinc-600 dark:text-zinc-300">
                     {expert.yearsExperience}
                   </span>
                 )}
               </div>
               {expert.skills.length > 0 && (
-                <p className="text-xs text-zinc-500 dark:text-zinc-400 mt-2 line-clamp-2 leading-relaxed">
+                <p className="text-xs text-zinc-600 dark:text-zinc-300 mt-2 line-clamp-2 leading-relaxed">
                   {expert.skills.slice(0, 5).join(' · ')}
                 </p>
               )}
@@ -320,7 +325,7 @@ function ExpertsSection() {
                 onClick={() => openExternal(expert.linkedin ?? undefined)}
                 aria-label={`LinkedIn profile of ${expert.name}`}
                 title={`LinkedIn profile of ${expert.name}`}
-                className="p-2 text-zinc-400 hover:text-blue-600 hover:bg-blue-50 dark:hover:bg-zinc-800 rounded-lg transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pulse-orange/50"
+                className="p-2 text-zinc-500 dark:text-zinc-400 hover:text-blue-600 hover:bg-blue-50 dark:hover:bg-zinc-800 rounded-lg transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pulse-orange/50"
               >
                 <Linkedin className="w-4 h-4" aria-hidden="true" />
               </button>
@@ -331,11 +336,7 @@ function ExpertsSection() {
 
       {experts.length === 0 && (
         <SectionEmpty
-          message={
-            language === 'en'
-              ? 'No experts or mentors are listed yet.'
-              : "Aucun expert ou mentor n'est encore répertorié."
-          }
+          message={t('expertsEmpty')}
         />
       )}
 
@@ -357,7 +358,7 @@ function ExpertsSection() {
  * opportunity cards: what is being built, and which roles are open.
  */
 function CofoundersSection() {
-  const { t, language } = useLanguage();
+  const { t } = useLanguage();
   const { data: projects = [], total, hasMore, isLoading, isLoadingMore, loadMore } =
     useCofounderProjects();
 
@@ -369,7 +370,7 @@ function CofoundersSection() {
         <h1 className="text-2xl font-bold text-zinc-900 dark:text-white mb-1">
           {t('cofoundersTitle')}
         </h1>
-        <p className="text-sm text-zinc-500 dark:text-zinc-400">{t('cofoundersSubtitle')}</p>
+        <p className="text-sm text-zinc-600 dark:text-zinc-300">{t('cofoundersSubtitle')}</p>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -383,7 +384,7 @@ function CofoundersSection() {
                 {project.title}
               </h2>
               {project.stage && (
-                <Badge className="bg-orange-50 dark:bg-zinc-800 text-pulse-orange border-none text-[10px] font-semibold flex-shrink-0">
+                <Badge className="bg-orange-50 dark:bg-zinc-800 text-pulse-orange border-none text-[11px] font-semibold flex-shrink-0">
                   {project.stage}
                 </Badge>
               )}
@@ -396,7 +397,7 @@ function CofoundersSection() {
             )}
 
             {project.description && (
-              <p className="text-xs text-zinc-500 dark:text-zinc-400 mt-2 line-clamp-2 leading-relaxed">
+              <p className="text-xs text-zinc-600 dark:text-zinc-300 mt-2 line-clamp-2 leading-relaxed">
                 {project.description}
               </p>
             )}
@@ -406,7 +407,7 @@ function CofoundersSection() {
                 {project.rolesNeeded.slice(0, 4).map((role) => (
                   <span
                     key={role}
-                    className="px-2 py-0.5 text-[10px] font-medium rounded-md bg-zinc-100 text-zinc-650 dark:bg-zinc-800 dark:text-zinc-300"
+                    className="px-2 py-0.5 text-[11px] font-medium rounded-md bg-zinc-100 text-zinc-650 dark:bg-zinc-800 dark:text-zinc-300"
                   >
                     {role}
                   </span>
@@ -414,7 +415,7 @@ function CofoundersSection() {
               </div>
             )}
 
-            <div className="border-t border-zinc-50 dark:border-zinc-800/80 pt-3 mt-3 flex items-center justify-between text-xs text-zinc-500 dark:text-zinc-400">
+            <div className="border-t border-zinc-50 dark:border-zinc-800/80 pt-3 mt-3 flex items-center justify-between text-xs text-zinc-600 dark:text-zinc-300">
               <span className="truncate">{project.authorName}</span>
               <div className="flex items-center gap-2 flex-shrink-0">
                 {project.equityOffered && (
@@ -425,7 +426,7 @@ function CofoundersSection() {
                     onClick={() => openExternal(project.authorLinkedin ?? undefined)}
                     aria-label={`LinkedIn profile of ${project.authorName ?? 'author'}`}
                     title={`LinkedIn profile of ${project.authorName ?? 'author'}`}
-                    className="p-1 text-zinc-400 hover:text-blue-600 hover:bg-blue-50 dark:hover:bg-zinc-800 rounded transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pulse-orange/50"
+                    className="p-1 text-zinc-500 dark:text-zinc-400 hover:text-blue-600 hover:bg-blue-50 dark:hover:bg-zinc-800 rounded transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pulse-orange/50"
                   >
                     <Linkedin className="w-3.5 h-3.5" aria-hidden="true" />
                   </button>
@@ -438,11 +439,7 @@ function CofoundersSection() {
 
       {projects.length === 0 && (
         <SectionEmpty
-          message={
-            language === 'en'
-              ? 'No co-founder searches are open right now.'
-              : "Aucune recherche de co-fondateur n'est ouverte actuellement."
-          }
+          message={t('cofoundersEmpty')}
         />
       )}
 

@@ -120,11 +120,11 @@ export default function AIAssistant() {
         <div>
           <h1 className="text-lg font-semibold text-zinc-900 dark:text-white flex items-center gap-2">
             PulseGPT
-            <span className="px-1.5 py-0.5 text-[10px] font-semibold text-pulse-orange border border-pulse-orange/30 rounded">
+            <span className="px-1.5 py-0.5 text-[11px] font-semibold text-pulse-orange border border-pulse-orange/30 rounded">
               BETA
             </span>
           </h1>
-          <p className="text-xs text-zinc-500 dark:text-zinc-400">{t('aiSubtitle')}</p>
+          <p className="text-xs text-zinc-600 dark:text-zinc-300">{t('aiSubtitle')}</p>
         </div>
       </div>
 
@@ -143,7 +143,7 @@ export default function AIAssistant() {
             <div
               className={`max-w-[80%] p-3.5 rounded-xl text-sm leading-relaxed whitespace-pre-line ${
                 msg.role === 'user'
-                  ? 'bg-pulse-orange text-white rounded-br-sm'
+                  ? 'bg-pulse-orange text-primary-foreground rounded-br-sm'
                   : 'bg-white dark:bg-zinc-900 border border-zinc-100 dark:border-zinc-800 text-zinc-700 dark:text-zinc-300 rounded-bl-sm'
               }`}
             >
@@ -151,7 +151,7 @@ export default function AIAssistant() {
             </div>
             {msg.role === 'user' && (
               <div className="w-7 h-7 rounded-lg bg-zinc-100 dark:bg-zinc-800 flex items-center justify-center flex-shrink-0 mt-1">
-                <User className="w-4 h-4 text-zinc-550 dark:text-zinc-405" />
+                <User className="w-4 h-4 text-zinc-550 dark:text-zinc-400" />
               </div>
             )}
           </div>
@@ -162,7 +162,7 @@ export default function AIAssistant() {
               <Bot className="w-4 h-4 text-pulse-orange" />
             </div>
             <div className="p-3.5 bg-white dark:bg-zinc-900 border border-zinc-100 dark:border-zinc-800 rounded-xl rounded-bl-sm">
-              <Loader2 className="w-4 h-4 text-zinc-400 dark:text-zinc-500 animate-spin" />
+              <Loader2 className="w-4 h-4 text-zinc-500 dark:text-zinc-400 animate-spin" />
             </div>
           </div>
         )}
@@ -191,12 +191,12 @@ export default function AIAssistant() {
           value={input}
           onChange={(e) => setInput(e.target.value)}
           placeholder={t('pulseGptPlaceholder')}
-          className="w-full h-12 pl-4 pr-12 bg-white dark:bg-zinc-900 border border-zinc-250 dark:border-zinc-800 rounded-xl text-sm text-zinc-900 dark:text-white placeholder:text-zinc-400 focus:outline-none focus:border-pulse-orange/40 dark:focus:border-pulse-orange/40 focus:ring-2 focus:ring-pulse-orange/10 transition-all"
+          className="w-full h-12 pl-4 pr-12 bg-white dark:bg-zinc-900 border border-zinc-250 dark:border-zinc-800 rounded-xl text-sm text-zinc-900 dark:text-white placeholder:text-zinc-500 dark:text-zinc-400 focus:outline-none focus:border-pulse-orange/40 dark:focus:border-pulse-orange/40 focus:ring-2 focus:ring-pulse-orange/10 transition-all"
         />
         <button
           type="submit"
           disabled={!input.trim() || isLoading}
-          className="absolute right-2 top-1/2 -translate-y-1/2 p-2 text-zinc-400 hover:text-pulse-orange disabled:opacity-40 disabled:hover:text-zinc-400 transition-colors"
+          className="absolute right-2 top-1/2 -translate-y-1/2 p-2 text-zinc-500 dark:text-zinc-400 hover:text-pulse-orange disabled:opacity-40 disabled:hover:text-zinc-500 dark:text-zinc-400 transition-colors"
         >
           <Send className="w-4 h-4" />
         </button>

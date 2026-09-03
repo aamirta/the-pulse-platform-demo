@@ -79,7 +79,7 @@ export default function PlatformOverviewSection() {
     <ScrollReveal variants={fadeUp} className="w-full py-8 space-y-6">
       {/* Header */}
       <div className="text-center space-y-2 max-w-3xl mx-auto">
-        <span className="text-xs font-extrabold uppercase tracking-widest text-pulse-orange flex items-center justify-center gap-1.5">
+        <span className="text-xs font-extrabold tracking-wide text-pulse-orange flex items-center justify-center gap-1.5">
           <Sparkles className="w-3.5 h-3.5" />
           {t('overviewTag')}
         </span>
@@ -128,7 +128,7 @@ export default function PlatformOverviewSection() {
                 </p>
               </div>
 
-              <div className="mt-3 pt-2 border-t border-border/40 flex items-center justify-between text-[10px] font-bold text-muted-foreground">
+              <div className="mt-3 pt-2 border-t border-border/40 flex items-center justify-between text-[11px] font-bold text-muted-foreground">
                 <span>{pillar.statLabel}</span>
                 <span className="text-foreground font-black">{pillar.statValue}</span>
               </div>
@@ -155,7 +155,7 @@ export default function PlatformOverviewSection() {
                   <span className="p-2 rounded-xl bg-pulse-orange/15 text-pulse-orange">
                     {currentPillar.icon}
                   </span>
-                  <span className="text-xs font-mono font-bold uppercase tracking-wider text-pulse-orange">
+                  <span className="text-xs font-bold tracking-wide text-pulse-orange">
                     {t('overviewModuleTag')}
                   </span>
                 </div>
@@ -182,27 +182,31 @@ export default function PlatformOverviewSection() {
               {/* Interactive Visual Graphic Representation (Span 5) */}
               <div className="lg:col-span-5 p-6 rounded-2xl bg-secondary/60 text-foreground border border-border/50 space-y-4 relative overflow-hidden shadow-soft-md">
                 <div className="flex items-center justify-between">
-                  <span className="text-[11px] font-mono text-muted-foreground uppercase">
-                    {t('overviewComponentIndicator')}
-                  </span>
-                  <Zap className="w-4 h-4 text-pulse-orange" />
+                  {t('overviewComponentIndicator') && (
+                    <span className="text-[11px] text-muted-foreground">
+                      {t('overviewComponentIndicator')}
+                    </span>
+                  )}
+                  <Zap className="w-4 h-4 text-pulse-orange ml-auto" />
                 </div>
 
                 <div className="space-y-3">
                   <div className="p-3 rounded-xl bg-card/70 border border-border/40 flex items-center justify-between text-xs">
-                    <span className="text-muted-foreground">{t('overviewCoverageLabel')}</span>
-                    <span className="font-mono font-bold text-emerald-600 dark:text-emerald-400">{t('overviewCoverageValue')}</span>
+                    <span className="text-muted-foreground shrink-0">{t('overviewCoverageLabel')}</span>
+                    <span className="font-semibold text-emerald-700 dark:text-emerald-400 text-right">{t('overviewCoverageValue')}</span>
                   </div>
                   <div className="p-3 rounded-xl bg-card/70 border border-border/40 flex items-center justify-between text-xs">
-                    <span className="text-muted-foreground">{t('overviewApiLabel')}</span>
-                    <span className="font-mono font-bold text-pulse-orange">{t('overviewApiValue')}</span>
+                    <span className="text-muted-foreground shrink-0">{t('overviewApiLabel')}</span>
+                    <span className="font-semibold text-pulse-orange text-right">{t('overviewApiValue')}</span>
                   </div>
                 </div>
 
-                <div className="pt-2 text-[10px] text-muted-foreground font-mono flex items-center gap-1">
-                  <Sparkles className="w-3 h-3 text-pulse-orange" />
-                  <span>{t('overviewSyncInfo')}</span>
-                </div>
+                {t('overviewSyncInfo') && (
+                  <div className="pt-2 text-[11px] text-muted-foreground flex items-center gap-1">
+                    <Sparkles className="w-3 h-3 text-pulse-orange" />
+                    <span>{t('overviewSyncInfo')}</span>
+                  </div>
+                )}
               </div>
 
             </div>

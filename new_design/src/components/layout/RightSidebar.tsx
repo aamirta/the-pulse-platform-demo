@@ -83,7 +83,9 @@ export default function RightSidebar() {
                 </div>
                 <div className="flex items-center gap-1.5 mt-0.5">
                   <span className="text-[11px] text-muted-foreground">{round.round}</span>
-                  <span className="text-[11px] text-muted-foreground/50">•</span>
+                  {/* Decorative separator: hidden from assistive tech, and at
+                      full token opacity so it stays legible (it read 2.2:1). */}
+                  <span className="text-[11px] text-muted-foreground" aria-hidden="true">•</span>
                   <span className="text-[11px] text-muted-foreground truncate">
                     {round.investor}
                   </span>
@@ -99,7 +101,7 @@ export default function RightSidebar() {
         <div className="flex items-center gap-2">
           <Sparkles className="w-4 h-4 text-pulse-orange" />
           <h3 className="text-sm font-semibold text-foreground">{t('pulseGptTitle')}</h3>
-          <span className="px-1.5 py-0.5 text-[10px] font-semibold text-pulse-orange border border-pulse-orange/30 rounded">
+          <span className="px-1.5 py-0.5 text-[11px] font-semibold text-pulse-orange border border-pulse-orange/30 rounded">
             BETA
           </span>
         </div>

@@ -30,7 +30,7 @@ export default function Guides() {
   const categories = [
     { id: 'all', labelFr: 'Tous', labelEn: 'All' },
     { id: 'funding', labelFr: 'Financement', labelEn: 'Funding' },
-    { id: 'legal', labelFr: 'Cadre Légal', labelEn: 'Legal Framework' },
+    { id: 'legal', labelFr: 'Cadre légal', labelEn: 'Legal framework' },
     { id: 'incubator', labelFr: 'Accompagnement', labelEn: 'Support' },
     { id: 'talent', labelFr: 'Talents', labelEn: 'Talent & HR' },
     { id: 'tax', labelFr: 'Fiscalité', labelEn: 'Taxation' },
@@ -41,10 +41,10 @@ export default function Guides() {
     {
       id: 'fundraising-morocco',
       category: 'funding',
-      titleFr: 'Le Guide Complet de la Levée de Fonds au Maroc',
-      titleEn: 'The Complete Guide to Fundraising in Morocco',
-      subtitleFr: 'Comprendre les étapes clés, les investisseurs actifs et la préparation de votre pitch deck.',
-      subtitleEn: 'Understand key milestones, active investors, and pitch deck preparation.',
+      titleFr: 'Lever des fonds au Maroc : le guide',
+      titleEn: 'Raising funds in Morocco: the guide',
+      subtitleFr: 'Étapes, investisseurs actifs et préparation du pitch deck.',
+      subtitleEn: 'Stages, active investors and preparing your pitch deck.',
       readTimeFr: '8 min de lecture',
       readTimeEn: '8 min read',
       icon: <Coins className="w-5 h-5 text-pulse-orange" />,
@@ -82,9 +82,9 @@ export default function Guides() {
     {
       id: 'startup-label-act',
       category: 'legal',
-      titleFr: 'Le Label Startup & Startup Act Maroc',
+      titleFr: 'Label startup et Startup Act : mode d’emploi',
       titleEn: 'The Startup Label & Moroccan Startup Act',
-      subtitleFr: 'Comment labelliser sa startup et bénéficier des avantages douaniers, de change et fiscaux.',
+      subtitleFr: 'Obtenir le label et accéder aux avantages douaniers, de change et fiscaux.',
       subtitleEn: 'How to label your startup and leverage customs, forex, and tax benefits.',
       readTimeFr: '5 min de lecture',
       readTimeEn: '5 min read',
@@ -119,9 +119,9 @@ export default function Guides() {
     {
       id: 'incubation-programs',
       category: 'incubator',
-      titleFr: 'Choisir son Incubateur au Maroc',
+      titleFr: 'Choisir son incubateur au Maroc',
       titleEn: 'Choosing Your Incubator in Morocco',
-      subtitleFr: 'Comparatif des meilleurs programmes d\'incubation et d\'accélération de l\'écosystème.',
+      subtitleFr: 'Comparatif des programmes d\'incubation et d\'accélération.',
       subtitleEn: 'Comparison of the top incubation and acceleration programs in the ecosystem.',
       readTimeFr: '6 min de lecture',
       readTimeEn: '6 min read',
@@ -156,9 +156,9 @@ export default function Guides() {
     {
       id: 'talent-recruitment-morocco',
       category: 'talent',
-      titleFr: 'Recruter et Fidéliser ses Talents Tech',
+      titleFr: 'Recruter et fidéliser des talents tech',
       titleEn: 'Recruiting & Retaining Tech Talents',
-      subtitleFr: 'Attirer les meilleurs profils de développeurs, chefs de produit et growth hackers au Maroc.',
+      subtitleFr: 'Attirer et garder développeurs, product managers et profils growth.',
       subtitleEn: 'Attract top developer profiles, product managers, and growth hackers in Morocco.',
       readTimeFr: '7 min de lecture',
       readTimeEn: '7 min read',
@@ -189,9 +189,9 @@ export default function Guides() {
     {
       id: 'taxation-incentives',
       category: 'tax',
-      titleFr: 'Fiscalité et Avantages Fiscaux des Startups',
+      titleFr: 'Fiscalité des startups : IS, IR et exonérations',
       titleEn: 'Taxation & Fiscal Incentives for Startups',
-      subtitleFr: 'Comprendre l\'Impôt sur les Sociétés (IS), l\'IR et les exonérations applicables aux jeunes entreprises.',
+      subtitleFr: 'Ce que paie une jeune entreprise, et ce qu\'elle ne paie pas.',
       subtitleEn: 'Understand Corporate Income Tax (IS), Personal Income Tax (IR), and exemptions.',
       readTimeFr: '5 min de lecture',
       readTimeEn: '5 min read',
@@ -216,9 +216,9 @@ export default function Guides() {
     {
       id: 'regional-expansion',
       category: 'expansion',
-      titleFr: 'S\'étendre du Maroc vers l\'Afrique Subsaharienne',
+      titleFr: 'S\'étendre en Afrique subsaharienne depuis le Maroc',
       titleEn: 'Expanding from Morocco to Subsaharian Africa',
-      subtitleFr: 'Les aspects logistiques, de change et réglementaires pour adresser les marchés régionaux.',
+      subtitleFr: 'Logistique, change et réglementation pour attaquer les marchés régionaux.',
       subtitleEn: 'Logistics, foreign exchange, and regulatory frameworks to capture regional markets.',
       readTimeFr: '6 min de lecture',
       readTimeEn: '6 min read',
@@ -261,12 +261,12 @@ export default function Guides() {
       {/* Header */}
       <div>
         <h1 className="text-2xl font-bold text-zinc-900 dark:text-white mb-1 font-serif">
-          {language === 'fr' ? 'Guides de l\'écosystème' : 'Ecosystem Guides'}
+          {language === 'fr' ? 'Guides' : 'Guides'}
         </h1>
-        <p className="text-sm text-zinc-500 dark:text-zinc-400">
+        <p className="text-sm text-zinc-600 dark:text-zinc-300">
           {language === 'fr' 
-            ? 'Retrouvez toutes les ressources et informations essentielles pour structurer, financer et développer votre projet innovant au Maroc.'
-            : 'Find all essential resources and insights to structure, fund, and scale your innovative project in Morocco.'}
+            ? 'L\'essentiel pour créer, financer et développer une startup au Maroc.'
+            : 'What it takes to start, fund and grow a startup in Morocco.'}
         </p>
       </div>
 
@@ -279,7 +279,7 @@ export default function Guides() {
               onClick={() => setSelectedCategory(cat.id)}
               className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all duration-200 ${
                 selectedCategory === cat.id
-                  ? 'bg-pulse-orange text-white shadow-soft-sm'
+                  ? 'bg-pulse-orange text-primary-foreground shadow-soft-sm'
                   : 'bg-secondary/40 text-muted-foreground hover:bg-secondary/60 hover:text-foreground'
               }`}
             >
@@ -329,7 +329,7 @@ export default function Guides() {
                   <h3 className="text-base font-bold text-zinc-900 dark:text-white mb-2 group-hover:text-pulse-orange transition-colors duration-200">
                     {language === 'fr' ? guide.titleFr : guide.titleEn}
                   </h3>
-                  <p className="text-xs text-zinc-500 dark:text-zinc-400 leading-relaxed mb-4">
+                  <p className="text-xs text-zinc-600 dark:text-zinc-300 leading-relaxed mb-4">
                     {language === 'fr' ? guide.subtitleFr : guide.subtitleEn}
                   </p>
                 </div>
@@ -354,12 +354,12 @@ export default function Guides() {
             <>
               <DialogHeader className="border-b border-border/30 pb-4 mb-4">
                 <div className="flex items-center gap-2 mb-2">
-                  <Badge className="bg-pulse-orange/10 text-pulse-orange hover:bg-pulse-orange/15 font-semibold text-[10px]">
+                  <Badge className="bg-pulse-orange/10 text-pulse-orange hover:bg-pulse-orange/15 font-semibold text-[11px]">
                     {language === 'fr' 
                       ? categories.find(c => c.id === selectedGuide.category)?.labelFr 
                       : categories.find(c => c.id === selectedGuide.category)?.labelEn}
                   </Badge>
-                  <div className="flex items-center gap-1 text-[10px] text-muted-foreground">
+                  <div className="flex items-center gap-1 text-[11px] text-muted-foreground">
                     <Clock className="w-3 h-3" />
                     <span>{language === 'fr' ? selectedGuide.readTimeFr : selectedGuide.readTimeEn}</span>
                   </div>

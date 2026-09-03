@@ -35,7 +35,7 @@ export default function ForgotPassword() {
       <div className="w-full max-w-md p-8 bg-white dark:bg-zinc-900 rounded-2xl border border-zinc-100 dark:border-zinc-800 shadow-soft-lg">
         <div className="text-center mb-6">
           <h1 className="text-2xl font-bold text-zinc-900 dark:text-white">Reset password</h1>
-          <p className="text-sm text-zinc-500 dark:text-zinc-400 mt-1">
+          <p className="text-sm text-zinc-600 dark:text-zinc-300 mt-1">
             Enter your email and we will send you a reset link.
           </p>
         </div>
@@ -54,7 +54,7 @@ export default function ForgotPassword() {
             <div className="space-y-1">
               <Label className="text-xs font-semibold text-zinc-600 dark:text-zinc-300">Email</Label>
               <div className="relative">
-                <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-zinc-400" />
+                <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-zinc-500 dark:text-zinc-400" />
                 <Input
                   type="email"
                   value={email}
@@ -68,12 +68,12 @@ export default function ForgotPassword() {
             <Button
               type="submit"
               disabled={loading}
-              className="w-full bg-pulse-orange hover:bg-pulse-orange-hover text-white"
+              className="w-full bg-pulse-orange hover:bg-pulse-orange-hover text-primary-foreground"
             >
               {loading ? 'Sending...' : 'Send reset link'}
             </Button>
 
-            <p className="text-center text-xs text-zinc-500 dark:text-zinc-400">
+            <p className="text-center text-xs text-zinc-600 dark:text-zinc-300">
               <a href="/#/login" className="text-pulse-orange hover:underline">
                 Back to sign in
               </a>

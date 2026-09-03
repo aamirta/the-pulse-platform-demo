@@ -9,9 +9,34 @@ module.exports = {
         serif: ['"Plus Jakarta Sans"', 'Inter', 'system-ui', 'sans-serif'],
       },
       colors: {
+        // Tailwind's palette steps in hundreds, so half-steps like `zinc-150`
+        // or `zinc-650` -- used in ~78 places across the pages -- matched no
+        // class and emitted no CSS at all. The colour then fell through to
+        // whatever was inherited: the Analytics chart legend, for one, was
+        // rendering at 1.22:1, and several "borders" had no colour of their
+        // own. These are the midpoints the markup was already asking for, so
+        // every existing class now resolves to the shade it names.
+        zinc: {
+          150: '#ececee',
+          250: '#dcdcdf',
+          350: '#bbbbc1',
+          450: '#898992',
+          550: '#62626b',
+          650: '#494950',
+          750: '#333338',
+          850: '#1f1f22',
+        },
+        emerald: { 450: '#22c58b' },
+        amber: { 450: '#f8ae17' },
+        purple: { 650: '#8a2bdc' },
+        blue: { 650: '#2158e2', 750: '#1d47c4' },
         pulse: {
-          orange: '#D56426',
-          'orange-hover': '#B8521C',
+          // The brand terracotta is unchanged (#D56426 / #B8521C); it moved
+          // behind CSS variables only so it lives in one place and can be
+          // tuned per theme later if wanted. Every existing
+          // `text-pulse-orange` / `bg-pulse-orange` class works unchanged.
+          orange: 'rgb(var(--pulse-orange) / <alpha-value>)',
+          'orange-hover': 'rgb(var(--pulse-orange-hover) / <alpha-value>)',
           'orange-50': '#FAF3ED',
           cream: '#FAF5EF',
           'cream-border': '#E8CBB3',

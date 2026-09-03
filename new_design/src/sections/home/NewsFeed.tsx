@@ -128,7 +128,7 @@ export default function NewsFeed() {
                     {/* Content */}
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center gap-2 mb-1.5">
-                        <Badge className={`text-[9px] font-extrabold tracking-wider px-2 py-0.5 ${badge.className}`}>
+                        <Badge className={`text-[11px] font-extrabold tracking-wider px-2 py-0.5 ${badge.className}`}>
                           {badge.text}
                         </Badge>
                       </div>
@@ -141,7 +141,7 @@ export default function NewsFeed() {
                       <div className="flex items-center gap-3">
                         <div className="flex items-center gap-1.5">
                           <div className="w-5 h-5 rounded-full bg-pulse-orange/15 flex items-center justify-center">
-                            <span className="text-[9px] font-bold text-pulse-orange">
+                            <span className="text-[11px] font-bold text-pulse-orange">
                               {item.source[0]}
                             </span>
                           </div>
@@ -162,7 +162,7 @@ export default function NewsFeed() {
                         <span className="text-base sm:text-lg font-extrabold text-foreground flex items-center gap-0.5">
                           {item.amount}
                         </span>
-                        <span className="text-[10px] font-bold text-pulse-orange bg-pulse-orange/10 px-2 py-0.5 rounded">
+                        <span className="text-[11px] font-bold text-pulse-orange bg-pulse-orange/10 px-2 py-0.5 rounded">
                           {item.round}
                         </span>
                       </div>
@@ -172,7 +172,7 @@ export default function NewsFeed() {
                         <span className="text-xs font-bold text-foreground">
                           {item.eventDate.split(' ')[0]}
                         </span>
-                        <span className="text-[10px] text-muted-foreground">
+                        <span className="text-[11px] text-muted-foreground">
                           {item.eventDate.split(' ').slice(1).join(' ')}
                         </span>
                       </div>

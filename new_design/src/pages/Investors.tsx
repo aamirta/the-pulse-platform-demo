@@ -9,7 +9,7 @@ import { useInvestors } from '@/hooks/useInvestors';
 import { ImageWithFallback } from '@/components/ImageWithFallback';
 import { openExternal } from '@/lib/url';
 
-const filters = ['Type d\'investisseur', 'Localisation'];
+const filters = ['Type', 'Localisation'];
 
 export default function Investors() {
   const navigate = useNavigate();
@@ -62,7 +62,7 @@ export default function Investors() {
            typeFilter === 'public' ? t('publicTitle') :
            t('investorsTitle')}
         </h1>
-        <p className="text-sm text-zinc-500 dark:text-zinc-400">
+        <p className="text-sm text-zinc-600 dark:text-zinc-300">
           {typeFilter === 'vc' ? t('vcSubtitle') :
            typeFilter === 'ba' ? t('baSubtitle') :
            typeFilter === 'public' ? t('publicSubtitle') :
@@ -80,7 +80,7 @@ export default function Investors() {
         ].map((stat) => (
           <div key={stat.label} className="p-4 bg-white dark:bg-zinc-900 rounded-xl border border-zinc-100 dark:border-zinc-800 transition-colors">
             <div className="text-2xl font-bold text-zinc-900 dark:text-white">{stat.value}</div>
-            <div className="text-xs text-zinc-500 dark:text-zinc-455 mt-0.5">{stat.label}</div>
+            <div className="text-xs text-zinc-500 dark:text-zinc-450 mt-0.5">{stat.label}</div>
           </div>
         ))}
       </div>
@@ -121,7 +121,7 @@ export default function Investors() {
                     <ImageWithFallback src={investor.logo} alt={investor.name} className="w-full h-full object-contain p-1" />
                   ) : (
                     <div className="w-full h-full bg-gradient-to-br from-emerald-50 to-emerald-100 dark:from-emerald-950/40 dark:to-emerald-950/20 flex items-center justify-center">
-                      <Building2 className="w-5 h-5 text-emerald-600 dark:text-emerald-450" />
+                      <Building2 className="w-5 h-5 text-emerald-700 dark:text-emerald-400 dark:text-emerald-450" />
                     </div>
                   )}
                 </div>
@@ -132,11 +132,11 @@ export default function Investors() {
                   <div className="flex items-center gap-2 mt-0.5">
                     <Badge
                       variant="outline"
-                      className="text-[10px] font-medium border-zinc-200 dark:border-zinc-800 text-zinc-500 dark:text-zinc-400"
+                      className="text-[11px] font-medium border-zinc-200 dark:border-zinc-800 text-zinc-600 dark:text-zinc-300"
                     >
                       {investor.type}
                     </Badge>
-                    <span className="flex items-center gap-1 text-xs text-zinc-500 dark:text-zinc-400">
+                    <span className="flex items-center gap-1 text-xs text-zinc-600 dark:text-zinc-300">
                       <MapPin className="w-3 h-3" />
                       {investor.location}
                     </span>
@@ -150,7 +150,7 @@ export default function Investors() {
                     e.stopPropagation();
                     openExternal(investor.website);
                   }}
-                  className="p-2 text-zinc-400 hover:text-pulse-orange hover:bg-orange-50 dark:hover:bg-zinc-800 rounded-lg transition-colors"
+                  className="p-2 text-zinc-500 dark:text-zinc-400 hover:text-pulse-orange hover:bg-orange-50 dark:hover:bg-zinc-800 rounded-lg transition-colors"
                   title={t('visitWebsite')}
                 >
                   <Globe className="w-4 h-4" />
@@ -169,7 +169,7 @@ export default function Investors() {
               ))}
             </div>
 
-            <div className="flex items-center gap-4 pt-3 border-t border-zinc-50 dark:border-zinc-800/80 text-xs text-zinc-500 dark:text-zinc-400">
+            <div className="flex items-center gap-4 pt-3 border-t border-zinc-50 dark:border-zinc-800/80 text-xs text-zinc-600 dark:text-zinc-300">
               <span>
                 <strong className="text-zinc-700 dark:text-zinc-200">{investor.investments}</strong>{' '}
                 {t('investmentsLabel')}

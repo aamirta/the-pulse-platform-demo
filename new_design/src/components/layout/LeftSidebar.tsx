@@ -71,21 +71,21 @@ export default function LeftSidebar() {
       section: language === 'fr' ? 'DECOUVRIR' : 'DISCOVER',
     },
     {
-      // The people directory. Distinct from "Co-fondateurs" below, which lists
-      // co-founder *postings* rather than the founders themselves.
-      label: language === 'fr' ? 'Fondateurs & Cofondateurs' : 'Founders & Co-Founders',
+      // The people directory. Distinct from "Co-fondateurs recherchés" below,
+      // which lists co-founder *postings* rather than the founders themselves.
+      label: t('navFounders'),
       icon: <UserRound className="w-[18px] h-[18px]" />,
       href: '/founders',
       section: language === 'fr' ? 'DECOUVRIR' : 'DISCOVER',
     },
     {
-      label: language === 'fr' ? 'Experts' : 'Experts',
+      label: t('navExperts'),
       icon: <Users className="w-[18px] h-[18px]" />,
       href: '/founders?type=expert',
       section: language === 'fr' ? 'DECOUVRIR' : 'DISCOVER',
     },
     {
-      label: language === 'fr' ? 'Co-fondateurs' : 'Co-founders',
+      label: t('navCofounders'),
       icon: <Handshake className="w-[18px] h-[18px]" />,
       href: '/founders?type=co-founder',
       section: language === 'fr' ? 'DECOUVRIR' : 'DISCOVER',
@@ -123,9 +123,11 @@ export default function LeftSidebar() {
         ]
       : []),
     {
-      label: 'Talent Marketplace',
+      // Was '/opportunities?type=talent', which rendered the Opportunities
+      // page under the Talents label. The marketplace has its own route now.
+      label: t('navTalent'),
       icon: <Search className="w-[18px] h-[18px]" />,
-      href: '/opportunities?type=talent',
+      href: '/talents',
       section: language === 'fr' ? 'PARTICIPER' : 'ENGAGE',
     },
     {
@@ -141,13 +143,13 @@ export default function LeftSidebar() {
       section: language === 'fr' ? 'RESSOURCES' : 'RESOURCES',
     },
     {
-      label: language === 'fr' ? 'Guides' : 'Guides',
+      label: t('navGuides'),
       icon: <BookOpen className="w-[18px] h-[18px]" />,
       href: '/guides',
       section: language === 'fr' ? 'RESSOURCES' : 'RESOURCES',
     },
     {
-      label: 'Blog',
+      label: t('navBlog'),
       icon: <FileText className="w-[18px] h-[18px]" />,
       href: '/news?type=blog',
       section: language === 'fr' ? 'RESSOURCES' : 'RESOURCES',
@@ -157,6 +159,17 @@ export default function LeftSidebar() {
   const sections = language === 'fr'
     ? ['DECOUVRIR', 'PARTICIPER', 'RESSOURCES']
     : ['DISCOVER', 'ENGAGE', 'RESOURCES'];
+
+  // The keys above are internal grouping ids; these are what the reader sees.
+  // Rendered in sentence case, per the editorial rules in the review.
+  const sectionLabels: Record<string, string> = {
+    DECOUVRIR: 'Découvrir',
+    PARTICIPER: 'Participer',
+    RESSOURCES: 'Ressources',
+    DISCOVER: 'Discover',
+    ENGAGE: 'Engage',
+    RESOURCES: 'Resources',
+  };
 
   const isActive = (href: string) => {
     const [hrefPath, hrefQuery] = href.split('?');
@@ -196,8 +209,8 @@ export default function LeftSidebar() {
       {sections.map((section) => (
         <div key={section} className="mb-2">
           <div className="px-5 py-2">
-            <span className="text-[11px] font-semibold text-muted-foreground uppercase tracking-wider">
-              {section}
+            <span className="text-[11px] font-semibold text-muted-foreground tracking-wider">
+              {sectionLabels[section] ?? section}
             </span>
           </div>
           {navItems
@@ -222,7 +235,7 @@ export default function LeftSidebar() {
                   <span className="flex-1 text-left">{item.label}</span>
                   {item.badge ? (
                     <span
-                      className="bg-pulse-orange text-white text-[10px] font-bold min-w-[18px] h-[18px] px-1 rounded-full grid place-items-center"
+                      className="bg-pulse-orange text-primary-foreground text-[11px] font-bold min-w-[18px] h-[18px] px-1 rounded-full grid place-items-center"
                       aria-label={`${item.badge} ${language === 'fr' ? 'non lus' : 'unread'}`}
                     >
                       {item.badge > 99 ? '99+' : item.badge}
@@ -245,8 +258,8 @@ export default function LeftSidebar() {
         <p className="text-xs text-muted-foreground mb-3 leading-relaxed">
           {t('joinSub')}
         </p>
-        <Button 
-          onClick={() => navigate('/opportunities')}
+        <Button
+          onClick={() => navigate('/register')}
           className="w-full h-9 text-xs font-medium bg-pulse-orange hover:bg-pulse-orange-hover text-primary-foreground rounded-lg shadow-soft-sm hover:shadow-soft-md transition-all duration-200 ease-in-out"
         >
           {t('createAccount')}

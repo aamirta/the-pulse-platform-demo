@@ -64,7 +64,7 @@ export default function Home() {
               </h3>
               <button
                 onClick={() => navigate('/startups')}
-                className="inline-flex items-center gap-0.5 min-h-11 px-1 text-xs font-bold text-zinc-500 dark:text-zinc-400 hover:text-pulse-orange transition-colors rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pulse-orange/60"
+                className="inline-flex items-center gap-0.5 min-h-11 px-1 text-xs font-bold text-zinc-600 dark:text-zinc-300 hover:text-pulse-orange transition-colors rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pulse-orange/60"
               >
                 {t('seeAll')} <ChevronRight className="w-3.5 h-3.5" />
               </button>
@@ -109,11 +109,11 @@ export default function Home() {
                           {s.name}
                         </h4>
                         <div className="flex items-center gap-1.5 mt-0.5">
-                          <span className="text-[10px] text-zinc-500 dark:text-zinc-400 font-medium">
+                          <span className="text-[11px] text-zinc-600 dark:text-zinc-300 font-medium">
                             {s.sector[0]}
                           </span>
-                          <span className="text-[10px] text-zinc-300 dark:text-zinc-700">•</span>
-                          <span className="text-[10px] text-zinc-500 dark:text-zinc-400 font-medium">
+                          <span className="text-[11px] text-zinc-300 dark:text-zinc-700">•</span>
+                          <span className="text-[11px] text-zinc-600 dark:text-zinc-300 font-medium">
                             {s.location}
                           </span>
                         </div>
@@ -122,7 +122,7 @@ export default function Home() {
                         <span className="text-xs font-bold text-zinc-900 dark:text-white block">
                           {s.fundingCurrency}{(s.funding / 1000000).toFixed(1)}M
                         </span>
-                        <span className="text-[9px] font-extrabold text-emerald-600 dark:text-emerald-400 bg-emerald-500/10 px-1.5 py-0.5 rounded">
+                        <span className="text-[11px] font-extrabold text-emerald-700 dark:text-emerald-400 bg-emerald-500/10 px-1.5 py-0.5 rounded">
                           {s.stage}
                         </span>
                       </div>
@@ -137,12 +137,12 @@ export default function Home() {
           <GlowCard className="p-6">
             <div className="flex items-center justify-between mb-4">
               <h3 className="text-base font-bold text-zinc-900 dark:text-white flex items-center gap-2">
-                <Landmark className="w-4 h-4 text-emerald-500" />
+                <Landmark className="w-4 h-4 text-emerald-700 dark:text-emerald-400" />
                 {t('activeInvestorsTitle')}
               </h3>
               <button
                 onClick={() => navigate('/investors')}
-                className="inline-flex items-center gap-0.5 min-h-11 px-1 text-xs font-bold text-zinc-500 dark:text-zinc-400 hover:text-pulse-orange transition-colors rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pulse-orange/60"
+                className="inline-flex items-center gap-0.5 min-h-11 px-1 text-xs font-bold text-zinc-600 dark:text-zinc-300 hover:text-pulse-orange transition-colors rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pulse-orange/60"
               >
                 {t('seeAll')} <ChevronRight className="w-3.5 h-3.5" />
               </button>
@@ -177,21 +177,21 @@ export default function Home() {
                         {i.logo ? (
                           <FadeInImage src={i.logo} alt={i.name} className="w-full h-full object-contain p-1" />
                         ) : (
-                          <div className="w-full h-full bg-emerald-500/10 text-emerald-600 font-bold flex items-center justify-center">
+                          <div className="w-full h-full bg-emerald-500/10 text-emerald-700 dark:text-emerald-400 font-bold flex items-center justify-center">
                             {i.name[0]}
                           </div>
                         )}
                       </div>
                       <div className="flex-1 min-w-0">
-                        <h4 className="text-xs font-bold text-zinc-900 dark:text-white group-hover:text-emerald-500 transition-colors truncate">
+                        <h4 className="text-xs font-bold text-zinc-900 dark:text-white group-hover:text-emerald-700 dark:text-emerald-400 transition-colors truncate">
                           {i.name}
                         </h4>
                         <div className="flex items-center gap-1.5 mt-0.5">
-                          <span className="text-[10px] text-zinc-500 dark:text-zinc-400 font-medium truncate">
+                          <span className="text-[11px] text-zinc-600 dark:text-zinc-300 font-medium truncate">
                             {i.type}
                           </span>
-                          <span className="text-[10px] text-zinc-300 dark:text-zinc-700">•</span>
-                          <span className="text-[10px] text-zinc-500 dark:text-zinc-400 font-medium truncate">
+                          <span className="text-[11px] text-zinc-300 dark:text-zinc-700">•</span>
+                          <span className="text-[11px] text-zinc-600 dark:text-zinc-300 font-medium truncate">
                             {i.location}
                           </span>
                         </div>
@@ -200,7 +200,7 @@ export default function Home() {
                         <span className="text-xs font-bold text-zinc-900 dark:text-white block">
                           {i.portfolio} startups
                         </span>
-                        <span className="text-[9px] font-extrabold text-emerald-600 dark:text-emerald-400 bg-emerald-500/10 px-1.5 py-0.5 rounded">
+                        <span className="text-[11px] font-extrabold text-emerald-700 dark:text-emerald-400 bg-emerald-500/10 px-1.5 py-0.5 rounded">
                           {t('portfolioLabel')}
                         </span>
                       </div>

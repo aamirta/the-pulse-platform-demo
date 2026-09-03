@@ -15,9 +15,21 @@ import { GlowCard } from '@/components/ui/GlowCard';
 import { fadeUp, staggerContainer } from '@/lib/motion';
 import { motion } from 'framer-motion';
 import { useLanguage } from '@/context/LanguageContext';
+import { useFundingBySector } from '@/hooks/useFundingBySector';
 
 export default function FeaturesBentoSection() {
   const navigate = useNavigate();
+  // Measured split, replacing the invented "Fintech & Payments 32%" figures.
+  const { data: sectors } = useFundingBySector();
+  const topSectors = (() => {
+    if (!sectors?.values?.length) return [];
+    const total = sectors.values.reduce((a, b) => a + b, 0);
+    if (!total) return [];
+    return sectors.labels.slice(0, 2).map((label, i) => ({
+      label,
+      share: Math.round((sectors.values[i] / total) * 100),
+    }));
+  })();
   const { t } = useLanguage();
 
   return (
@@ -25,7 +37,7 @@ export default function FeaturesBentoSection() {
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
         <div>
-          <span className="text-xs font-extrabold uppercase tracking-widest text-pulse-orange flex items-center gap-1.5 mb-1">
+          <span className="text-xs font-extrabold tracking-wide text-pulse-orange flex items-center gap-1.5 mb-1">
             <Zap className="w-3.5 h-3.5" />
             {t('bentoTag')}
           </span>
@@ -57,7 +69,7 @@ export default function FeaturesBentoSection() {
                 <div className="w-10 h-10 rounded-xl bg-pulse-orange/15 text-pulse-orange flex items-center justify-center font-bold">
                   <BarChart className="w-5 h-5" />
                 </div>
-                <span className="inline-flex items-center gap-1 text-[10px] font-extrabold uppercase tracking-wider text-pulse-orange bg-pulse-orange/10 px-2.5 py-1 rounded-full">
+                <span className="inline-flex items-center gap-1 text-[11px] font-extrabold tracking-wide text-pulse-orange bg-pulse-orange/10 px-2.5 py-1 rounded-full">
                   {t('bentoLiveBadge')}
                 </span>
               </div>
@@ -72,30 +84,24 @@ export default function FeaturesBentoSection() {
             {/* Visual Mini Chart Representation */}
             <div className="p-4 rounded-2xl bg-secondary/40 border border-border/40 shadow-soft-sm space-y-3">
               <div className="flex items-center justify-between text-xs font-bold text-foreground">
-                <span>Distribution Capital 2026</span>
-                <span className="text-emerald-500 flex items-center gap-0.5">
-                  <TrendingUp className="w-3.5 h-3.5" /> +24% YOY
-                </span>
+                <span>{t('bentoChartTitle')}</span>
+                <TrendingUp className="w-3.5 h-3.5 text-emerald-700 dark:text-emerald-400" aria-hidden="true" />
               </div>
               <div className="space-y-2">
-                <div>
-                  <div className="flex justify-between text-[10px] text-muted-foreground mb-1">
-                    <span>Fintech & Payments</span>
-                    <span>32%</span>
+                {topSectors.map((s, i) => (
+                  <div key={s.label}>
+                    <div className="flex justify-between text-[11px] text-muted-foreground mb-1">
+                      <span>{s.label}</span>
+                      <span>{s.share} %</span>
+                    </div>
+                    <div className="w-full h-2 rounded-full bg-muted overflow-hidden">
+                      <div
+                        className={i === 0 ? 'h-full bg-pulse-orange' : 'h-full bg-muted-foreground/60'}
+                        style={{ width: `${s.share}%` }}
+                      />
+                    </div>
                   </div>
-                  <div className="w-full h-2 rounded-full bg-muted overflow-hidden">
-                    <div className="h-full bg-pulse-orange w-[32%]" />
-                  </div>
-                </div>
-                <div>
-                  <div className="flex justify-between text-[10px] text-muted-foreground mb-1">
-                    <span>AgriTech & Climate</span>
-                    <span>24%</span>
-                  </div>
-                  <div className="w-full h-2 rounded-full bg-muted overflow-hidden">
-                    <div className="h-full bg-muted-foreground/60 w-[24%]" />
-                  </div>
-                </div>
+                ))}
               </div>
             </div>
           </GlowCard>
@@ -161,7 +167,7 @@ export default function FeaturesBentoSection() {
             className="p-6 flex flex-col justify-between h-full bg-card border border-border/40 shadow-soft-sm hover:shadow-soft-md transition-all duration-200 ease-in-out"
           >
             <div>
-              <div className="w-10 h-10 rounded-xl bg-emerald-500/15 text-emerald-500 flex items-center justify-center font-bold mb-4">
+              <div className="w-10 h-10 rounded-xl bg-emerald-500/15 text-emerald-700 dark:text-emerald-400 flex items-center justify-center font-bold mb-4">
                 <ShieldCheck className="w-5 h-5" />
               </div>
               <h3 className="text-lg font-bold text-foreground mb-1">
@@ -171,7 +177,7 @@ export default function FeaturesBentoSection() {
                 {t('bento4Desc')}
               </p>
             </div>
-            <span className="text-xs font-bold text-emerald-500 flex items-center gap-1 mt-4">
+            <span className="text-xs font-bold text-emerald-700 dark:text-emerald-400 flex items-center gap-1 mt-4">
               {t('bento4Action')} <ArrowUpRight className="w-3.5 h-3.5" />
             </span>
           </GlowCard>

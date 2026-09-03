@@ -88,7 +88,7 @@ export default function OpportunityCard({
             {en ? 'Data room' : 'Data room'}
           </Chip>
         )}
-        <span className="ml-auto text-[10px] text-zinc-400 whitespace-nowrap">
+        <span className="ml-auto text-[11px] text-zinc-500 dark:text-zinc-400 whitespace-nowrap">
           {relativeTime(post.published_at ?? post.created_at, language)}
         </span>
       </div>
@@ -98,7 +98,7 @@ export default function OpportunityCard({
         <h3 className="text-sm font-semibold text-zinc-900 dark:text-white leading-snug line-clamp-2 group-hover:text-pulse-orange transition-colors">
           {post.title}
         </h3>
-        <p className="text-xs text-zinc-500 dark:text-zinc-400 mt-1.5 line-clamp-2 leading-relaxed">
+        <p className="text-xs text-zinc-600 dark:text-zinc-300 mt-1.5 line-clamp-2 leading-relaxed">
           {post.summary}
         </p>
       </div>
@@ -111,19 +111,19 @@ export default function OpportunityCard({
           </Chip>
         )}
         {post.sector && (
-          <Chip className="bg-transparent text-zinc-500 dark:text-zinc-400 border-zinc-200 dark:border-zinc-700">
+          <Chip className="bg-transparent text-zinc-600 dark:text-zinc-300 border-zinc-200 dark:border-zinc-700">
             {post.sector}
           </Chip>
         )}
         {post.stage && post.stage !== 'not_applicable' && (
-          <Chip className="bg-transparent text-zinc-500 dark:text-zinc-400 border-zinc-200 dark:border-zinc-700">
+          <Chip className="bg-transparent text-zinc-600 dark:text-zinc-300 border-zinc-200 dark:border-zinc-700">
             {stageLabel(post.stage, language)}
           </Chip>
         )}
         {post.location && (
           <Chip
             icon={<MapPin className="w-2.5 h-2.5" />}
-            className="bg-transparent text-zinc-500 dark:text-zinc-400 border-zinc-200 dark:border-zinc-700"
+            className="bg-transparent text-zinc-600 dark:text-zinc-300 border-zinc-200 dark:border-zinc-700"
           >
             {post.location}
           </Chip>
@@ -153,7 +153,7 @@ export default function OpportunityCard({
             className="w-6 h-6 rounded-full object-cover flex-shrink-0"
           />
         ) : (
-          <span className="w-6 h-6 rounded-full bg-pulse-orange/10 text-pulse-orange text-[9px] font-bold grid place-items-center flex-shrink-0">
+          <span className="w-6 h-6 rounded-full bg-pulse-orange/10 text-pulse-orange text-[11px] font-bold grid place-items-center flex-shrink-0">
             {initials(displayName)}
           </span>
         )}
@@ -162,14 +162,14 @@ export default function OpportunityCard({
             {displayName}
           </p>
           {post.counterparty_type !== 'any' && (
-            <p className="text-[10px] text-zinc-400 truncate">
+            <p className="text-[11px] text-zinc-500 dark:text-zinc-400 truncate">
               {en ? 'Looking for' : 'Recherche'}{' '}
               {counterpartyLabel(post.counterparty_type, language).toLowerCase()}
             </p>
           )}
         </div>
 
-        <div className="flex items-center gap-2.5 text-[10px] text-zinc-400 flex-shrink-0">
+        <div className="flex items-center gap-2.5 text-[11px] text-zinc-500 dark:text-zinc-400 flex-shrink-0">
           <span className="inline-flex items-center gap-0.5" title={en ? 'Views' : 'Vues'}>
             <Eye className="w-3 h-3" />
             {post.view_count}
@@ -183,7 +183,7 @@ export default function OpportunityCard({
 
       {/* Already contacted: say so rather than inviting a duplicate */}
       {post.responded_by_me && (
-        <p className="inline-flex items-center gap-1 text-[10px] font-medium text-emerald-600 dark:text-emerald-400 -mt-1">
+        <p className="inline-flex items-center gap-1 text-[11px] font-medium text-emerald-700 dark:text-emerald-400 -mt-1">
           <MessagesSquare className="w-3 h-3" />
           {en ? 'You have contacted this author' : 'Vous avez déjà contacté cet auteur'}
         </p>

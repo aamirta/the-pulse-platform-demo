@@ -230,7 +230,7 @@ export default function DealRoomInsights({ room, language }: Props) {
                 <li key={doc.document_id} className="px-4 py-2.5 flex items-center justify-between gap-3">
                   <div className="min-w-0">
                     <p className="text-[13px] text-zinc-900 dark:text-white truncate">{doc.title}</p>
-                    <p className="text-[10px] text-zinc-500 dark:text-zinc-400">
+                    <p className="text-[11px] text-zinc-600 dark:text-zinc-300">
                       {categoryLabel(doc.category, language)} · {doc.unique_investors}{' '}
                       {en ? 'investors' : 'investisseurs'}
                     </p>
@@ -265,7 +265,7 @@ export default function DealRoomInsights({ room, language }: Props) {
                       <p className="text-[13px] text-zinc-900 dark:text-white truncate">
                         {investor.full_name || investor.email}
                       </p>
-                      <p className="text-[10px] text-zinc-500 dark:text-zinc-400">
+                      <p className="text-[11px] text-zinc-600 dark:text-zinc-300">
                         {investor.documents_viewed} {en ? 'viewed' : 'vus'} · {investor.downloads}{' '}
                         {en ? 'downloads' : 'téléch.'} · {investor.questions_asked}{' '}
                         {en ? 'questions' : 'questions'}
@@ -355,7 +355,7 @@ export default function DealRoomInsights({ room, language }: Props) {
             <div className="overflow-x-auto">
               <table className="w-full text-sm">
                 <thead>
-                  <tr className="text-left text-[11px] uppercase tracking-wide text-zinc-400 border-b border-zinc-100 dark:border-zinc-800">
+                  <tr className="text-left text-[11px] uppercase tracking-wide text-zinc-500 dark:text-zinc-400 border-b border-zinc-100 dark:border-zinc-800">
                     <th className="font-semibold px-4 py-2 whitespace-nowrap">{en ? 'When' : 'Quand'}</th>
                     <th className="font-semibold px-3 py-2">{en ? 'Who' : 'Qui'}</th>
                     <th className="font-semibold px-3 py-2">{en ? 'Action' : 'Action'}</th>
@@ -366,12 +366,12 @@ export default function DealRoomInsights({ room, language }: Props) {
                 <tbody className="divide-y divide-zinc-50 dark:divide-zinc-800/60">
                   {audit.items.map((event) => (
                     <tr key={event.id} className="hover:bg-zinc-50/60 dark:hover:bg-zinc-800/30">
-                      <td className="px-4 py-2 text-[11px] text-zinc-500 dark:text-zinc-400 whitespace-nowrap">
+                      <td className="px-4 py-2 text-[11px] text-zinc-600 dark:text-zinc-300 whitespace-nowrap">
                         {formatDateTime(event.created_at, language)}
                       </td>
                       <td className="px-3 py-2 text-[11px] text-zinc-700 dark:text-zinc-200">
                         <span className="block truncate max-w-[180px]">{event.actor_email || '—'}</span>
-                        <span className="text-[10px] text-zinc-400 capitalize">{event.actor_role}</span>
+                        <span className="text-[11px] text-zinc-500 dark:text-zinc-400 capitalize">{event.actor_role}</span>
                       </td>
                       <td className="px-3 py-2">
                         {/* The raw identifier is kept in `title` and in the CSV
@@ -390,10 +390,10 @@ export default function DealRoomInsights({ room, language }: Props) {
                           {auditActionLabel(event.action, language)}
                         </span>
                       </td>
-                      <td className="px-3 py-2 text-[11px] text-zinc-500 dark:text-zinc-400">
+                      <td className="px-3 py-2 text-[11px] text-zinc-600 dark:text-zinc-300">
                         {event.resource_type ? `${event.resource_type} #${event.resource_id}` : '—'}
                       </td>
-                      <td className="px-4 py-2 text-[11px] text-zinc-400 whitespace-nowrap">
+                      <td className="px-4 py-2 text-[11px] text-zinc-500 dark:text-zinc-400 whitespace-nowrap">
                         {event.ip || '—'}
                       </td>
                     </tr>
@@ -404,7 +404,7 @@ export default function DealRoomInsights({ room, language }: Props) {
 
             {audit.pages > 1 && (
               <footer className="px-4 py-3 border-t border-zinc-100 dark:border-zinc-800 flex items-center justify-between">
-                <span className="text-[11px] text-zinc-500 dark:text-zinc-400">
+                <span className="text-[11px] text-zinc-600 dark:text-zinc-300">
                   <Activity className="w-3 h-3 inline mr-1" />
                   {audit.total} {en ? 'events' : 'événements'}
                 </span>

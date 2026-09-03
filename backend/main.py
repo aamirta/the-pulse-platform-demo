@@ -35,6 +35,7 @@ from backend.api.routes import (
     search,
     startups,
     stats,
+    talents,
 )
 from backend.core.config import PROJECT_ROOT, settings
 from backend.database import engine
@@ -151,6 +152,7 @@ app.include_router(startups.router, prefix="/api/v1")
 app.include_router(founders.router, prefix="/api/v1")
 app.include_router(experts.router, prefix="/api/v1")
 app.include_router(cofounders.router, prefix="/api/v1")
+app.include_router(talents.router, prefix="/api/v1")
 app.include_router(investors.router, prefix="/api/v1")
 app.include_router(funding_rounds.router, prefix="/api/v1")
 app.include_router(incubators.router, prefix="/api/v1")

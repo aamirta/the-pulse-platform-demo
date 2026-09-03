@@ -46,7 +46,7 @@ export default function InvestorProfile() {
     return (
       <div className="text-center py-12">
         <h2 className="text-xl font-semibold text-zinc-900 dark:text-white">{t('investorNotFound')}</h2>
-        <Button onClick={() => navigate('/investors')} className="mt-4 bg-pulse-orange hover:bg-pulse-orange-hover text-white">
+        <Button onClick={() => navigate('/investors')} className="mt-4 bg-pulse-orange hover:bg-pulse-orange-hover text-primary-foreground">
           {t('backToInvestors')}
         </Button>
       </div>
@@ -102,19 +102,19 @@ export default function InvestorProfile() {
                 <FadeInImage src={investor.logo} alt={investor.name} className="w-full h-full object-contain p-2" />
               ) : (
                 <div className="w-full h-full bg-gradient-to-br from-emerald-50 to-emerald-100 dark:from-emerald-950/40 dark:to-emerald-900/10 flex items-center justify-center">
-                  <Landmark className="w-8 h-8 text-emerald-600 dark:text-emerald-450" />
+                  <Landmark className="w-8 h-8 text-emerald-700 dark:text-emerald-400 dark:text-emerald-450" />
                 </div>
               )}
             </div>
             <div>
               <div className="flex items-center gap-2 flex-wrap">
                 <h1 className="text-2xl font-bold text-zinc-900 dark:text-white">{investor.name}</h1>
-                <Badge className="bg-emerald-50 dark:bg-emerald-950/30 text-emerald-700 dark:text-emerald-450 font-semibold border-none text-[10px]">
+                <Badge className="bg-emerald-50 dark:bg-emerald-950/30 text-emerald-700 dark:text-emerald-450 font-semibold border-none text-[11px]">
                   {investor.type}
                 </Badge>
               </div>
-              <div className="flex items-center gap-2 mt-1 text-sm text-zinc-500 dark:text-zinc-400">
-                <MapPin className="w-4 h-4 text-zinc-400" />
+              <div className="flex items-center gap-2 mt-1 text-sm text-zinc-600 dark:text-zinc-300">
+                <MapPin className="w-4 h-4 text-zinc-500 dark:text-zinc-400" />
                 {investor.location}
               </div>
             </div>
@@ -139,7 +139,7 @@ export default function InvestorProfile() {
               </Button>
             )}
             <Button
-              className="h-9 px-4 text-xs bg-pulse-orange hover:bg-pulse-orange-hover text-white rounded-lg"
+              className="h-9 px-4 text-xs bg-pulse-orange hover:bg-pulse-orange-hover text-primary-foreground rounded-lg"
               onClick={() => navigate(`/visualizer?highlight=${investor.id}`)}
             >
               {t('viewNetworkMap')}
@@ -149,7 +149,7 @@ export default function InvestorProfile() {
 
         {/* Sectors Focus Badges */}
         <div className="border-t border-zinc-50 dark:border-zinc-800 pt-4">
-          <span className="text-xs font-semibold text-zinc-400 dark:text-zinc-500 uppercase tracking-wider block mb-2">
+          <span className="text-xs font-semibold text-zinc-500 dark:text-zinc-400 uppercase tracking-wider block mb-2">
             {t('preferredSectors')}
           </span>
           <div className="flex flex-wrap gap-2">
@@ -169,19 +169,19 @@ export default function InvestorProfile() {
       {/* Stats Cards */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
         <div className="bg-white dark:bg-zinc-900 p-5 rounded-xl border border-zinc-100 dark:border-zinc-800 transition-colors duration-200 ve-card-lift">
-          <span className="text-xs font-medium text-zinc-500 dark:text-zinc-400 block mb-1">{language === 'en' ? 'Number of Deals' : 'Nombre de Deals'}</span>
+          <span className="text-xs font-medium text-zinc-600 dark:text-zinc-300 block mb-1">{language === 'en' ? 'Number of Deals' : 'Nombre de Deals'}</span>
           <span className="text-2xl font-bold text-zinc-900 dark:text-white">{investor.investments}</span>
         </div>
         <div className="bg-white dark:bg-zinc-900 p-5 rounded-xl border border-zinc-100 dark:border-zinc-800 transition-colors duration-200 ve-card-lift">
-          <span className="text-xs font-medium text-zinc-500 dark:text-zinc-400 block mb-1">{language === 'en' ? 'Active Startups' : 'Startups Actives'}</span>
+          <span className="text-xs font-medium text-zinc-600 dark:text-zinc-300 block mb-1">{language === 'en' ? 'Active Startups' : 'Startups Actives'}</span>
           <span className="text-2xl font-bold text-zinc-900 dark:text-white">{investor.portfolio}</span>
         </div>
         <div className="bg-white dark:bg-zinc-900 p-5 rounded-xl border border-zinc-100 dark:border-zinc-800 transition-colors duration-200 ve-card-lift">
-          <span className="text-xs font-medium text-zinc-500 dark:text-zinc-400 block mb-1">{language === 'en' ? 'Average Ticket' : 'Ticket Moyen'}</span>
+          <span className="text-xs font-medium text-zinc-600 dark:text-zinc-300 block mb-1">{language === 'en' ? 'Average Ticket' : 'Ticket Moyen'}</span>
           <span className="text-2xl font-bold text-zinc-900 dark:text-white">$250k - $1.5M</span>
         </div>
         <div className="bg-white dark:bg-zinc-900 p-5 rounded-xl border border-zinc-100 dark:border-zinc-800 transition-colors duration-200 ve-card-lift">
-          <span className="text-xs font-medium text-zinc-500 dark:text-zinc-400 block mb-1">{language === 'en' ? 'Geo Focus' : 'Focus Géographique'}</span>
+          <span className="text-xs font-medium text-zinc-600 dark:text-zinc-300 block mb-1">{language === 'en' ? 'Geo Focus' : 'Focus Géographique'}</span>
           <span className="text-2xl font-bold text-zinc-900 dark:text-white">Morocco & MENA</span>
         </div>
       </div>
@@ -225,7 +225,7 @@ export default function InvestorProfile() {
               {sectorData.map((item, index) => (
                 <div key={index} className="flex items-center gap-1.5">
                   <span className="w-3 h-3 rounded-full flex-shrink-0" style={{ backgroundColor: item.color }} />
-                  <span className="text-zinc-500 dark:text-zinc-400 truncate">{item.name}</span>
+                  <span className="text-zinc-600 dark:text-zinc-300 truncate">{item.name}</span>
                   <span className="font-semibold text-zinc-900 dark:text-white ml-auto">{item.value}%</span>
                 </div>
               ))}
@@ -289,16 +289,16 @@ export default function InvestorProfile() {
                     <h4 className="text-xs font-bold text-zinc-900 dark:text-white group-hover:text-pulse-orange transition-colors truncate">
                       {s.name}
                     </h4>
-                    <p className="text-[10px] text-zinc-500 dark:text-zinc-400 truncate">
+                    <p className="text-[11px] text-zinc-600 dark:text-zinc-300 truncate">
                       {s.sector.join(', ')}
                     </p>
                   </div>
-                  <ChevronRight className="w-3.5 h-3.5 text-zinc-400 group-hover:text-pulse-orange transition-colors" />
+                  <ChevronRight className="w-3.5 h-3.5 text-zinc-500 dark:text-zinc-400 group-hover:text-pulse-orange transition-colors" />
                 </div>
               ))}
             </div>
           ) : (
-            <div className="text-center py-8 text-xs text-zinc-500 dark:text-zinc-455">
+            <div className="text-center py-8 text-xs text-zinc-500 dark:text-zinc-450">
               {language === 'en' ? 'No portfolio startups listed yet.' : 'Aucune startup du portefeuille référencée pour le moment.'}
             </div>
           )}
@@ -314,7 +314,7 @@ export default function InvestorProfile() {
             {language === 'en' ? 'Focus sectors' : 'Secteurs de focus'}
           </h3>
           {investor.focus.length === 0 ? (
-            <p className="text-xs text-zinc-500 dark:text-zinc-400">
+            <p className="text-xs text-zinc-600 dark:text-zinc-300">
               {language === 'en' ? 'No focus sectors recorded.' : 'Aucun secteur renseigné.'}
             </p>
           ) : (
@@ -322,7 +322,7 @@ export default function InvestorProfile() {
               {investor.focus.map((sector) => (
                 <span
                   key={sector}
-                  className="text-[10px] px-2 py-1 bg-zinc-50 dark:bg-zinc-800/40 border border-zinc-100 dark:border-zinc-800 rounded text-zinc-700 dark:text-zinc-300"
+                  className="text-[11px] px-2 py-1 bg-zinc-50 dark:bg-zinc-800/40 border border-zinc-100 dark:border-zinc-800 rounded text-zinc-700 dark:text-zinc-300"
                 >
                   {sector}
                 </span>

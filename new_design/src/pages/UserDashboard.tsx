@@ -59,7 +59,7 @@ const STAT_ICONS: Record<string, typeof Building2> = {
 
 const ROLE_ACCENT: Record<string, string> = {
   startup: 'text-pulse-orange',
-  investor: 'text-emerald-600 dark:text-emerald-455',
+  investor: 'text-emerald-700 dark:text-emerald-400 dark:text-emerald-450',
   partner: 'text-purple-600 dark:text-purple-400',
   admin: 'text-blue-600 dark:text-blue-400',
 };
@@ -136,7 +136,7 @@ export default function UserDashboard() {
           <h1 className="text-2xl font-bold text-zinc-900 dark:text-white flex items-center gap-2">
             {t('dashboardTitle')}
           </h1>
-          <p className="text-sm text-zinc-500 dark:text-zinc-400">
+          <p className="text-sm text-zinc-600 dark:text-zinc-300">
             {t('dashboardSubtitle')}
           </p>
         </div>
@@ -204,10 +204,10 @@ export default function UserDashboard() {
                    className="bg-white dark:bg-zinc-900 p-5 rounded-xl border border-zinc-100 dark:border-zinc-800 transition-colors duration-200 flex items-center justify-between ve-card-lift"
                 >
                   <div className="min-w-0">
-                    <span className="text-xs text-zinc-500 dark:text-zinc-400 block mb-1">{stat.label}</span>
+                    <span className="text-xs text-zinc-600 dark:text-zinc-300 block mb-1">{stat.label}</span>
                     <span className="text-2xl font-bold text-zinc-900 dark:text-white">{stat.value}</span>
                     {stat.hint && (
-                      <span className="text-[10px] text-zinc-500 dark:text-zinc-400 block mt-0.5 truncate">
+                      <span className="text-[11px] text-zinc-600 dark:text-zinc-300 block mt-0.5 truncate">
                         {stat.hint}
                       </span>
                     )}
@@ -236,7 +236,7 @@ export default function UserDashboard() {
               </div>
               <div className="h-64">
                 {fundingSeries.length === 0 ? (
-                  <div className="h-full flex items-center justify-center text-xs text-zinc-500 dark:text-zinc-400">
+                  <div className="h-full flex items-center justify-center text-xs text-zinc-600 dark:text-zinc-300">
                     {language === 'en' ? 'No funding data yet' : 'Aucune donnée de financement'}
                   </div>
                 ) : (
@@ -275,8 +275,8 @@ export default function UserDashboard() {
                   </h3>
                   {data.moderation_queue.length === 0 ? (
                     <div className="text-center py-8">
-                      <CheckCircle2 className="w-7 h-7 text-emerald-500/50 mx-auto mb-2" />
-                      <p className="text-xs text-zinc-500 dark:text-zinc-400">
+                      <CheckCircle2 className="w-7 h-7 text-emerald-700 dark:text-emerald-400/50 mx-auto mb-2" />
+                      <p className="text-xs text-zinc-600 dark:text-zinc-300">
                         {language === 'en' ? 'Nothing awaiting review' : 'Rien à traiter'}
                       </p>
                     </div>
@@ -289,17 +289,17 @@ export default function UserDashboard() {
                         >
                           <div className="flex justify-between items-center mb-1 gap-2">
                             <span className="font-bold text-zinc-950 dark:text-zinc-200 truncate">{item.full_name}</span>
-                            <Badge className="text-[9px] px-1 bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 border-none shrink-0">
+                            <Badge className="text-[11px] px-1 bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 border-none shrink-0">
                               {item.role}
                             </Badge>
                           </div>
-                          <p className="text-[10px] text-zinc-500 dark:text-zinc-400 mb-3 truncate">{item.email}</p>
+                          <p className="text-[11px] text-zinc-600 dark:text-zinc-300 mb-3 truncate">{item.email}</p>
                           <div className="flex gap-2">
                             <Button
                               size="sm"
                               disabled={pendingAction === item.id}
                               onClick={() => void moderate(item, 'confirm')}
-                              className="h-6 text-[10px] flex-1 bg-blue-600 hover:bg-blue-755 text-white rounded"
+                              className="h-6 text-[11px] flex-1 bg-blue-600 hover:bg-blue-750 text-white rounded"
                             >
                               {t('approveButton')}
                             </Button>
@@ -308,7 +308,7 @@ export default function UserDashboard() {
                               variant="outline"
                               disabled={pendingAction === item.id}
                               onClick={() => void moderate(item, 'reject')}
-                              className="h-6 text-[10px] flex-1 border-zinc-250 dark:border-zinc-700 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-350 rounded"
+                              className="h-6 text-[11px] flex-1 border-zinc-250 dark:border-zinc-700 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-350 rounded"
                             >
                               {t('rejectButton')}
                             </Button>
@@ -326,7 +326,7 @@ export default function UserDashboard() {
                   </h3>
                   {data.recent_posts.length === 0 ? (
                     <div className="text-center py-8">
-                      <p className="text-xs text-zinc-500 dark:text-zinc-400">
+                      <p className="text-xs text-zinc-600 dark:text-zinc-300">
                         {language === 'en' ? 'No posts yet' : 'Aucune publication'}
                       </p>
                     </div>
@@ -340,7 +340,7 @@ export default function UserDashboard() {
                           <p className="text-xs font-bold text-zinc-900 dark:text-white truncate">
                             {post.author_name || (language === 'en' ? 'Member' : 'Membre')}
                           </p>
-                          <p className="text-[10px] text-zinc-500 dark:text-zinc-400 mt-1 line-clamp-2">
+                          <p className="text-[11px] text-zinc-600 dark:text-zinc-300 mt-1 line-clamp-2">
                             {post.content}
                           </p>
                         </div>
