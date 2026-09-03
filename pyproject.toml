@@ -47,6 +47,33 @@ build-backend = "setuptools.build_meta"
 name = "thepulse-backend"
 version = "0.1.0"
 requires-python = ">=3.11"
+# Runtime dependencies for the serverless function in api/index.py.
+#
+# Vercel's Python builder prefers pyproject.toml over requirements.txt: with no
+# `dependencies` here it created the venv and installed nothing, so importing
+# backend.main raised ImportError and every request returned 503. Keep this list
+# in step with requirements.txt, minus the packages the function never imports
+# (the legacy Flask app, and the scrape/import helpers that .vercelignore drops).
+dependencies = [
+  "fastapi",
+  "pydantic",
+  "pydantic-settings",
+  "python-multipart",
+  "SQLAlchemy>=2.0.0",
+  "psycopg2-binary",
+  "alembic",
+  "python-jose[cryptography]",
+  "passlib[argon2]",
+  "itsdangerous",
+  "slowapi",
+  "limits",
+  "pypdf",
+  "reportlab",
+  "Pillow",
+  "qrcode",
+  "python-dotenv",
+  "resend",
+]
 
 [tool.setuptools.packages.find]
 include = ["backend*"]
